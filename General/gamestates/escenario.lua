@@ -7,7 +7,7 @@ local escenario = Class{
 }
 
 function escenario:init()
-	Base:init(self,"mapas/sinnombre.lua")
+	Base:init(self,"mapas/sinnombre.lua",1)
 end
 
 function escenario:draw()
@@ -23,7 +23,7 @@ function escenario:keypressed(key)
 end
 
 function escenario:keyreleased(key)
-
+	self.entidades:keyreleased(key)
 end
 
 function escenario:mousepressed(x,y,button)

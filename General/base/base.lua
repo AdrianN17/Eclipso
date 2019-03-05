@@ -9,7 +9,7 @@ local entidad = require "entidades.entidad"
 
 local base = Class{}
 
-function base:init(escenario,nombre_mapa)
+function base:init(escenario,nombre_mapa,eleccion)
 	--objetos principales
 	local collider=HC.new()
 
@@ -28,7 +28,7 @@ function base:init(escenario,nombre_mapa)
 	local signal=signal
 	local vector=vector
 
-	escenario.entidades=entidad(collider,cam,map,timer,signal,vector)
+	escenario.entidades=entidad(collider,cam,map,timer,signal,vector,eleccion)
 
 end
 
