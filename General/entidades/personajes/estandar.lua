@@ -4,62 +4,112 @@ local estandar = Class{}
 
 function estandar:init()
 	self.movimiento={a=false,d=false,w=false,s=false}
-	self.velocidad=self.entidad.vector(0,0)
+	self.delta_velocidad=self.entidad.vector(0,0)
 	
-	self.friction=20
+	self.radio=0
+	self.z=0
+
+	self.collision= self.entidad.collisions
+
+	self.estados={congelado=false,quemadura=false,paralisis=false,protegido=false}
+
+	self.vivo=true
+	self.velocidad_media=self.velocidad/4
+	self.velocidad_normal=self.velocidad
+
+	self.timer=self.entidad.timer.new()
+
+	self.ira=0
+
+	self.timer:every(0.1, function() 
+		self.ira=self.ira-2.5
+		if self.ira<0 then
+			self.ira=0
+		end
+	end)
 end
 
 function estandar:drawing()
 	lg.print("OX,OY : " .. self.ox .. " , " .. self.oy ,self.ox,self.oy+100)
-	lg.print("vx,vy : " .. self.velocidad.x .. " , " .. self.velocidad.y,self.ox,self.oy+120)
-	--lg.print("dx,dy" .. self.delta.x .. " , " .. self.delta.y,self.ox,self.oy+140)
-	self.collider:draw("fill")
+	lg.print("vx,vy : " .. self.delta_velocidad.x .. " , " .. self.delta_velocidad.y,self.ox,self.oy+120)
+
+	lg.print("Radio : " .. self.radio , self.ox,self.oy+150)
+	lg.print("Z : " .. self.z , self.ox,self.oy+180)
+
+	lg.print("HP : " .. self.hp,self.ox,self.oy+200)
+
+	lg.print("congelado : " .. tostring(self.estados.congelado),self.ox,self.oy+220)
+	lg.print("Ira : " .. self.ira,self.ox,self.oy+240)
+
+	self.collider:draw("line")
+
+	if self.estados.protegido then
+		self.escudo:draw("line")
+	end
+
+	for _,point in ipairs(self.points) do
+		local x,y=point:center()
+		lg.circle("fill",x,y,2)
+	end
 end
 
 function estandar:updating(dt)
+
+	self.timer:update(dt)
+
+	self:check_mouse_pos(self.entidad:getXY())
+
+	self.delta_velocidad = self.delta_velocidad * (1 - math.min(dt * self.friccion, 1))
 
 	delta = self.entidad.vector(0,0)
 
 	if self.movimiento.a then
 		delta.x=-1
-	elseif self.movimiento.d then
+	end
+
+	if self.movimiento.d then
 		delta.x= 1
 	end
 
 	if self.movimiento.w then
 		delta.y=-1
-	elseif self.movimiento.s then
+	end
+
+	if self.movimiento.s then
 		delta.y=1
 	end
 
-
 	delta:normalizeInplace()
 
-	--[[delta=delta+ delta * self.velocidad *dt
+	self.delta_velocidad=self.delta_velocidad+self.velocidad*delta*dt
 
-	print(delta:unpack())
 
-	]]
-
-	self.velocidad = self.velocidad + delta * self.acc * dt
-
-    if self.velocidad:len() > self.max_velocidad then
-        self.velocidad = self.velocidad:normalized() * self.max_velocidad
+	if self.delta_velocidad:len()<0.01 then
+    	self.delta_velocidad=self.delta_velocidad*0
     end
 
-    self.collider:move(delta:unpack())
+    if not self.estados.congelado then
+	    self.collider:move(self.delta_velocidad:unpack())
+	    self.escudo:move(self.delta_velocidad:unpack())
+	end
 
 	self.ox,self.oy=self.collider:center()
-end
 
-function estandar:shoot()
+	if not self.estados.congelado then
+		for _,point in ipairs(self.points) do
+	    	point:move(self.delta_velocidad:unpack())
+	    	point:setRotation(self.radio-math.pi/2,self.ox,self.oy)
+	    end
+	end
 
 end
 
 function estandar:keys_down(key)
 	if key=="a" then
 		self.movimiento.a=true
-	elseif key=="d" then
+	end
+
+	if key=="d" then
 		self.movimiento.d=true
 	end
 
@@ -68,23 +118,112 @@ function estandar:keys_down(key)
 	elseif key=="s" then
 		self.movimiento.s=true
 	end
+
+	if key=="e" then
+		self.estados.protegido=true
+		self.timer:after(self.escudo_tiempo,function() self.estados.protegido=false end)
+	end
+
+
 end
 
 function estandar:keys_up(key)
 	if key=="a" then
 		self.movimiento.a=false
-		self.velocidad.x=0
-	elseif key=="d" then
+
+	end
+
+	if key=="d" then
 		self.movimiento.d=false
-		self.velocidad.x=0
+		
 	end
 
 	if key=="w" then
 		self.movimiento.w=false
-		self.velocidad.y=0
-	elseif key=="s" then
+	end
+
+	if key=="s" then
 		self.movimiento.s=false
-		self.velocidad.y=0
+	end
+
+	if key=="e" then
+		self.estados.protegido=false
+	end
+end
+
+function estandar:check_mouse_pos(x,y)
+	self.radio=math.atan2( y-self.oy, x -self.ox)
+end
+
+function estandar:shoot_down(x,y,bullet,rad)
+	local bala= bullet(self.entidad,x,y,self.z,rad,self.creador)
+
+	self.collision:add_collision_object("balas",bala)
+end
+
+function estandar:shoot_up(x,y,button)
+
+end
+
+function estandar:wheel(x,y)
+	self.z=self.z+y*5
+
+	if self.z>45 then
+		self.z=45
+	elseif self.z<0 then
+		self.z=0
+	end
+end
+
+function estandar:attack(daño)
+	self.ira=self.ira+daño*2
+
+	if self.ira>self.max_ira then
+		self.ira=self.max_ira
+	end
+
+	self.hp=self.hp-(daño+daño*(self.ira/self.max_ira))
+	if self.hp<1 then
+		self.vivo=false
+	end
+end
+
+function estandar:efecto(tipo,rapidez)
+
+	local len=0
+
+	if tipo=="congelado" then
+		len=12
+		time=3
+	elseif tipo=="quemadura" then
+		len=7
+		time=5
+	elseif tipo=="paralisis" then
+		len=5
+		time=2
+	end
+
+	
+
+	local seed=lm.random(1,len)
+	local prob=lm.random(1,len)
+
+	if seed==prob or rapidez then
+
+		self.estados[tipo]=true
+
+		if tipo=="quemadura" then
+			self.timer:during(time, function(dt) self.hp=self.hp-dt*0.02 end)
+		elseif tipo=="paralisis" then
+			self.velocidad=self.velocidad_media
+		end
+
+		self.timer:after(time,function() 
+			self.estados[tipo]=false 
+			if self.estados["paralisis"]==false then
+				self.velocidad=self.velocidad_normal
+			end
+		end)
 	end
 end
 

@@ -5,7 +5,9 @@ function love.load()
 
 	--inicio
 	_G.lg=love.graphics
+	_G.lm=love.math
 
 	Gamestate.registerEvents()
     Gamestate.switch(Escenario)
 end
+
