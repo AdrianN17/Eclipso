@@ -1,6 +1,6 @@
 local Class = require "libs.hump.class"
 local estandar = require "entidades.personajes.estandar"
-local plasma = require "entidades.balas.plasma"
+local plasma = require "entidades.objetos.balas.plasma"
 
 local R = Class{
 	__includes = estandar

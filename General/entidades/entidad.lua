@@ -37,7 +37,7 @@ function entidad:init(collider,cam,map,timer,signal,vector,eleccion)
 		elseif obj1.name=="bala-fuego" then
 			obj2:remove()
 			obj1:remove()
-		elseif obj1.name=="bala-electricidad" then
+		elseif obj1.name=="bala-electricidad" or obj1.name=="bala-ectoplasma" then
 			obj2:attack(obj1.daño)
 			obj1:remove()
 		end
@@ -68,7 +68,7 @@ function entidad:init(collider,cam,map,timer,signal,vector,eleccion)
 
 
 	self.collisions:add_collisions_filter_parameter("player-balas-protegido","player","balas",function(obj1,obj2,dx,dy)
-		if obj1.creador ~= obj2.creador then
+		if obj1.creador ~= obj2.creador and obj2.type~= "bala-ectoplasma" then
 			if obj1.estados.protegido then
 				if obj1.reflejo then
 					obj1:reflejo(obj2,dx,dy)

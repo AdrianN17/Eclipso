@@ -17,7 +17,7 @@ function ectoplasma:init(entidad,x,y,z,angle,creador)
 
 	self.ox,self.oy=self.collider:center()
 
-	self.name="ectoplasma"
+	self.name="bala-ectoplasma"
 	--self.efecto="ectoplasma"
 
 	self.daño=15

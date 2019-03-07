@@ -1,6 +1,6 @@
 local Class = require "libs.hump.class"
 local estandar = require "entidades.personajes.estandar"
-local agujas = require "entidades.balas.agujas"
+local agujas = require "entidades.objetos.balas.agujas"
 
 local X = Class{
 	__includes = estandar
