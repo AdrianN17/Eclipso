@@ -5,7 +5,7 @@ local bullet_control = require "libs.Bullets.bullet_control"
 local melee = require "entidades.objetos.melees.melee"
 
 local R = Class{
-	__includes = estandar,melee
+	__includes = estandar
 }
 
 
@@ -38,8 +38,13 @@ function R:init(entidad,x,y,creador)
 
 	self.recargando_1=false
 
+	self.estados.atacando=false
+
+	self.time_melee=0.5
+
 	estandar.init(self)
-	--melee.init(self,75,entidad.collider:rectangle(self.ox,self.oy,20,40))
+	
+	self.melee=melee(75,entidad.collider:rectangle(self.ox-25,self.oy+15,10,50),self,self.creador)
 
 	self.entidad.collisions:add_collision_object("player",self)
 	self.plasma_control=bullet_control(2,2,"infinito","infinito",self.timer,0.6)
@@ -47,21 +52,28 @@ end
 
 function R:draw()
 	self:drawing()
-	--self:drawing_melee()
 end
 
 function R:update(dt)
 	self:updating(dt)
-	--self:updating_melee(dt)
 end
 
 function R:keypressed(key)
 	self:keys_down(key)
 	self:recarga(key,"plasma_control")
+
+	if key=="q" and not self.estados.protegido then
+		self.estados.atacando=true
+		self.timer:after(self.time_melee,function() self.estados.atacando=false end)
+	end
 end
 
 function R:keyreleased(key)
 	self:keys_up(key)
+
+	if key=="q" then
+		self.estados.atacando=false
+	end
 end
 
 function R:mousepressed(x,y,button)

@@ -5,7 +5,7 @@ local bullet_control = require "libs.Bullets.bullet_control"
 local melee = require "entidades.objetos.melees.melee"
 
 local X = Class{
-	__includes = estandar,melee
+	__includes = estandar
 }
 
 function X:init(entidad,x,y,creador)
@@ -39,11 +39,18 @@ function X:init(entidad,x,y,creador)
 
 	estandar.init(self)
 
+	self.melee=melee(50,entidad.collider:rectangle(self.ox-25,self.oy+15,10,25),self,self.creador)
+
 	self.entidad.collisions:add_collision_object("player",self)
 
 	self.agujas_control=bullet_control(10,10,"infinito","infinito",self.timer,0.5)
 
 	self.disparo_continuo=false
+
+	self.time_melee=0.4
+	self.estados.atacando=false
+
+
 
 	self.timer:every(0.2,function() 
 		if self.disparo_continuo and not self.estados.protegido and self.agujas_control:check_bullet() and not self.recargando_1 then
@@ -63,17 +70,23 @@ end
 
 function X:update(dt)
 	self:updating(dt)
-
-	
 end
 
 function X:keypressed(key)
 	self:keys_down(key)
 	self:recarga(key,"agujas_control")
+
+	if key=="q" and not self.estados.protegido then
+		self.estados.atacando=true
+		self.timer:after(self.time_melee,function() self.estados.atacando=false end)
+	end
 end
 
 function X:keyreleased(key)
 	self:keys_up(key)
+	if key=="q" then
+		self.estados.atacando=false
+	end
 end
 
 function X:mousepressed(x,y,button)

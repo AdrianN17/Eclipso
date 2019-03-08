@@ -7,7 +7,7 @@ local escenario = Class{
 }
 
 function escenario:init()
-	Base:init(self,"mapas/sinnombre.lua",4)
+	Base:init(self,"mapas/sinnombre.lua",3)
 end
 
 function escenario:draw()

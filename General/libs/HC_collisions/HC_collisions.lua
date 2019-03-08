@@ -17,6 +17,10 @@ function HC_collisions:init(HC)
 			for _,point in ipairs(obj1.points) do
 		    	point:move(dx,dy)
 		    end
+
+		    if obj1.melee then
+		    	obj1.melee:moves(dx,dy)
+		    end
 		end,
 
 		aniquilar = function(obj1,obj2)

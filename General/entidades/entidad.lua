@@ -20,6 +20,7 @@ function entidad:init(collider,cam,map,timer,signal,vector,eleccion)
 	self.collisions=HC_collisions(self.collider)
 	--clases de colisiones
 	self.collisions:add_collision_class("player")
+	self.collisions:add_collision_class("melee")
 	self.collisions:add_collision_class("balas")
 	self.collisions:add_collision_class("suelo_llamas")
 	self.collisions:add_collision_class("campo_electrico")
@@ -80,6 +81,8 @@ function entidad:init(collider,cam,map,timer,signal,vector,eleccion)
 		end
 	end,"escudo")
 
+
+
 	self.collisions:add_collisions_filter_parameter("player-suelo_llamas","player","suelo_llamas", function(obj1,obj2)
 		obj1:efecto("quemadura",true)
 	end)
@@ -101,6 +104,44 @@ function entidad:init(collider,cam,map,timer,signal,vector,eleccion)
 	end)
 
 
+	self.collisions:add_collisions_filter_parameter("melee-balas","melee","balas", function(obj1,obj2)
+		if obj1.creador ~= obj2.creador and obj1.player.estados.atacando then
+			obj2:remove()
+		end
+	end,"melee_shape")
+
+	self.collisions:add_collisions_filter_parameter("melee-balas","melee","player", function(obj1,obj2)
+		if obj1.creador ~= obj2.creador and not obj2.estados.atacado and obj1.player.estados.atacando then
+			obj2:attack(obj1.damage)
+			obj2.estados.atacado=true
+			obj2.timer:after(1,function() obj2.estados.atacado=false end)
+		end
+	end,"melee_shape")
+
+	self.collisions:add_collisions_filter_parameter("player_escudo-player","player","player", function(obj1,obj2,dx,dy)
+		if obj1.creador ~= obj2.creador and obj1.estados.protegido   then
+			obj2.collider:move(-dx,-dy)
+			obj2.escudo:move(-dx,-dy)
+			for _,point in ipairs(obj2.points) do
+		    	point:move(-dx,-dy)
+		    end
+
+		    if obj2.melee then
+		    	obj2.melee:moves(-dx,-dy)
+		    end
+		end
+	end,"escudo")
+
+	self.collisions:add_collisions_filter_parameter("melee-barrera_hielo","melee","barrera_hielo", function(obj1,obj2)
+		if obj1.player.estados.atacando then
+			obj2:attack(obj1.damage)
+			obj1.player.estados.atacando=false
+		end 
+
+	end,"melee_shape" )
+
+
+
 
 
 
@@ -109,7 +150,7 @@ function entidad:init(collider,cam,map,timer,signal,vector,eleccion)
 	self.camwiew.x,self.camwiew.y,self.camwiew.w,self.camwiew.h=self.cam:getWorld()
 
 	self.player=player[eleccion](self,100,100,1)
-	--self.player2=player[1](self,300,300,2)
+	self.player2=player[1](self,300,300,2)
 
 	self.cam:setScale(0.75)
 
