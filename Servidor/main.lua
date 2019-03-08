@@ -1,5 +1,5 @@
 local Gamestate = require "libs.hump.gamestate"
-local Menu = require "gamestates.menu"
+local Escenario = require "gamestates.escenario"
 
 function love.load()
 
@@ -8,6 +8,6 @@ function love.load()
 	_G.lm=love.math
 
 	Gamestate.registerEvents()
-    Gamestate.switch(Menu)
+    Gamestate.switch(Escenario)
 end
 

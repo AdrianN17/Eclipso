@@ -1,5 +1,6 @@
 local Class = require "libs.hump.class"
-
+local sock = require "libs.sock.sock"
+local bitser = require "libs.bitser.bitser"
 local player = {require "entidades.personajes.A", require "entidades.personajes.S" , require "entidades.personajes.X" , require "entidades.personajes.R" , require "entidades.personajes.MrH_S" , require "entidades.personajes.C"}
 local HC_collisions= require "libs.HC_collisions.HC_collisions"
 
@@ -26,8 +27,33 @@ function entidad:init(collider,cam,map,timer,signal,vector,eleccion)
 	self.collisions:add_collision_class("campo_electrico")
 	self.collisions:add_collision_class("barrera_hielo")
 	self.collisions:add_collision_class("explosion_plasma")
+	--jugadores
+	self.players={}
 
-	
+
+	---Servidor
+
+
+	self.server = sock.newServer("*", 22122, 4)
+	self.server:setSerialization(bitser.dumps, bitser.loads)
+
+	self.server:on("connect", function(data, client)
+        -- tell the peer what their index is
+        client:send("id", client:getIndex())
+    end)
+
+
+
+
+
+
+
+
+
+
+
+	--colisiones
+
 
 	self.collisions:add_collisions_filter_parameter("bala-barrera_hielo","balas","barrera_hielo",function(obj1,obj2) 
 		if obj1.name=="bala-hielo" then
@@ -140,63 +166,32 @@ function entidad:init(collider,cam,map,timer,signal,vector,eleccion)
 
 	end,"melee_shape" )
 
-
-
-
-
-
 	--camara
 	self.camwiew={}
 	self.camwiew.x,self.camwiew.y,self.camwiew.w,self.camwiew.h=self.cam:getWorld()
 
-	self.player=player[eleccion](self,100,100,1)
 
 	self.cam:setScale(0.75)
 
-
+	self.tickRate = 1/60
+    self.tick = 0
 end
 
 function entidad:draw()
-	
 	self.cam:draw(function(l,t,w,h)
  		
  		self.collisions:draw()
 	end)
-
-
 end
-
 
 function entidad:update(dt)
+	self.server:update()
+
+    local enoughPlayers = #server.clients >= 4
+
+    if not enoughPlayers then return end
+
 	self.collisions:update(dt)
-	self.cam:setPosition( self.player.ox, self.player.oy)
-end
-
-function entidad:keypressed(key)
-	self.player:keypressed(key)
-end
-
-function entidad:keyreleased(key)
-	self.player:keyreleased(key)
-end
-
-function entidad:mousepressed(x,y,button)
-	local cx,cy=self.cam:toWorld(x,y)
-	self.player:mousepressed(cx,cy,button)
-end
-
-function entidad:mousereleased(x,y,button)
-	local cx,cy=self.cam:toWorld(x,y)
-	self.player:mousereleased(cx,cy,button)
-end
-
-function entidad:wheelmoved(x,y) 
-	self.player:wheelmoved(x,y)
-end
-
-function entidad:getXY()
-	local cx,cy=self.cam:toWorld(love.mouse.getPosition())
-	return cx,cy 
 end
 
 
