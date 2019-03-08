@@ -35,14 +35,17 @@ function A:init(entidad,x,y,creador)
 		entidad.collider:point(self.ox-30,self.oy),entidad.collider:point(self.ox+30,self.oy)
 	}
 
-	--herencia
-	estandar.init(self)
+	self.recargando_1=false
+	self.recargando_2=false
 
 	--enviado a la clase HC_collisions
 	self.entidad.collisions:add_collision_object("player",self)
 
-	self.hielo.control=bullet_control(2,2,2,"infinito",self.timer,0.5)
-	self.fuego.control=bullet_control(4,4,4,"infinito",self.timer,0.2)
+	--herencia
+	estandar.init(self)
+
+	self.hielo_control=bullet_control(2,2,"infinito","infinito",self.timer,0.5)
+	self.fuego_control=bullet_control(4,4,"infinito","infinito",self.timer,0.2)
 end
 
 function A:draw()
@@ -55,6 +58,7 @@ end
 
 function A:keypressed(key)
 	self:keys_down(key)
+	self:recarga(key,"fuego_control","hielo_control")
 end
 
 function A:keyreleased(key)
@@ -65,10 +69,12 @@ function A:mousepressed(x,y,button)
 	local px,py=self.points[button]:center()
 	local rad=math.atan2( y-py, x -px)
 
-	if button==1 and not self.estados.protegido then
-		self:shoot_down(px,py,hielo,rad,self.creador)
-	elseif button==2 and not self.estados.protegido then
+	if button==1 and not self.estados.protegido and self.fuego_control:check_bullet() and not self.recargando_1 then
 		self:shoot_down(px,py,fuego,rad,self.creador)
+		self.fuego_control:newbullet()
+	elseif button==2 and not self.estados.protegido and self.hielo_control:check_bullet() and not self.recargando_2 then
+		self:shoot_down(px,py,hielo,rad,self.creador)
+		self.hielo_control:newbullet()
 	end
 end
 

@@ -24,6 +24,7 @@ function entidad:init(collider,cam,map,timer,signal,vector,eleccion)
 	self.collisions:add_collision_class("suelo_llamas")
 	self.collisions:add_collision_class("campo_electrico")
 	self.collisions:add_collision_class("barrera_hielo")
+	self.collisions:add_collision_class("explosion_plasma")
 
 	
 
@@ -37,7 +38,7 @@ function entidad:init(collider,cam,map,timer,signal,vector,eleccion)
 		elseif obj1.name=="bala-fuego" then
 			obj2:remove()
 			obj1:remove()
-		elseif obj1.name=="bala-electricidad" or obj1.name=="bala-ectoplasma" then
+		elseif obj1.name=="bala-electricidad" or obj1.name=="bala-ectoplasma" or obj1.name=="bala-plasma" or obj1.name=="bala-semilla" or obj1.name=="bala-aguja" then
 			obj2:attack(obj1.daño)
 			obj1:remove()
 		end
@@ -87,7 +88,17 @@ function entidad:init(collider,cam,map,timer,signal,vector,eleccion)
 		obj1:efecto("paralisis",true)
 	end)
 
-	self.collisions:add_collisions_filter_parameter("balas-balas","balas","balas","aniquilar")
+	self.collisions:add_collisions_filter_parameter("player-suelo_llamas","player","explosion_plasma", function(obj1,obj2)
+		obj1:efecto("plasma",true)
+	end)
+
+
+	self.collisions:add_collisions_filter_parameter("balas-balas","balas","balas",function(obj1,obj2)
+		if obj1.creador ~= obj2.creador then
+			obj1:collides_bala(obj2)
+			obj2:collides_bala(obj1)
+		end
+	end)
 
 
 

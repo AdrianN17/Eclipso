@@ -22,6 +22,7 @@ function hielo:init(entidad,x,y,z,angle,creador)
 	self.efecto="congelado"
 
 	self.daño=30
+	self.hp=50
 
 	bala.init(self)
 end

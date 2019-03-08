@@ -27,6 +27,8 @@ function estandar:init()
 			self.ira=0
 		end
 	end)
+
+	self.touch_melee_attack=false
 end
 
 function estandar:drawing()
@@ -40,6 +42,8 @@ function estandar:drawing()
 
 	lg.print("congelado : " .. tostring(self.estados.congelado),self.ox,self.oy+220)
 	lg.print("Ira : " .. self.ira,self.ox,self.oy+240)
+
+	
 
 	self.collider:draw("line")
 
@@ -201,6 +205,8 @@ function estandar:efecto(tipo,rapidez)
 	elseif tipo=="paralisis" then
 		len=5
 		time=2
+	elseif tipo=="plasma" then
+		time=1.5
 	end
 
 	
@@ -213,7 +219,7 @@ function estandar:efecto(tipo,rapidez)
 		self.estados[tipo]=true
 
 		if tipo=="quemadura" then
-			self.timer:during(time, function(dt) self.hp=self.hp-dt*0.02 end)
+			self.timer:during(time, function(dt) self.hp=self.hp-dt*1.25 end)
 		elseif tipo=="paralisis" then
 			self.velocidad=self.velocidad_media
 		end
@@ -224,6 +230,25 @@ function estandar:efecto(tipo,rapidez)
 				self.velocidad=self.velocidad_normal
 			end
 		end)
+
+		if tipo=="plasma" then
+			self.timer:during(time, function(dt) self.hp=self.hp-dt*2.5 end)
+		end
+	end
+end
+
+function estandar:recarga(key,arma1,arma2)
+
+	if key=="r" then
+		if arma1 then
+			self.recargando_1=true
+			self[arma1]:reload(self)
+		end
+
+		if arma2 then
+			self.recargando_2=true
+			self[arma2]:reload(self)
+		end
 	end
 end
 

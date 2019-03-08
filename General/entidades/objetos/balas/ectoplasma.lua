@@ -21,6 +21,7 @@ function ectoplasma:init(entidad,x,y,z,angle,creador)
 	--self.efecto="ectoplasma"
 
 	self.daño=15
+	self.hp=40
 
 	bala.init(self)
 end

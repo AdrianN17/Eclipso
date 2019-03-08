@@ -5,7 +5,7 @@ local gamera = require "libs.gamera.gamera"
 local signal = require "libs.hump.signal"
 local timer = require "libs.hump.timer"
 local vector = require "libs.hump.vector"
-local entidad = require "entidades/entidad"
+local entidad = require "entidades.entidad"
 
 local base = Class{}
 

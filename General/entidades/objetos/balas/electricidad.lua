@@ -25,6 +25,7 @@ function electricidad:init(entidad,x,y,z,angle,creador)
 	self.efecto="paralisis"
 
 	self.daño=25
+	self.hp=55
 
 	bala.init(self)
 

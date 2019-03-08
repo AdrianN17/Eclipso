@@ -22,6 +22,7 @@ function fuego:init(entidad,x,y,z,angle,creador)
 	self.efecto="quemadura"
 
 	self.daño=50
+	self.hp=65
 
 	bala.init(self)
 end

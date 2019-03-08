@@ -38,4 +38,11 @@ function bala:remove()
 	self.collision:remove_collision_object("balas",self)
 end
 
+function bala:collides_bala(obj)
+	self.hp=self.hp-obj.daño
+	if self.hp<1 then
+		self:remove()
+	end
+end
+
 return bala

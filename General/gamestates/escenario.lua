@@ -7,11 +7,12 @@ local escenario = Class{
 }
 
 function escenario:init()
-	Base:init(self,"mapas/sinnombre.lua",3)
+	Base:init(self,"mapas/sinnombre.lua",4)
 end
 
 function escenario:draw()
 	self.entidades:draw()
+	lg.print("Current FPS: "..tostring(love.timer.getFPS( )), 500, 10)
 end
 
 function escenario:update(dt)
