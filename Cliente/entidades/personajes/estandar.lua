@@ -27,7 +27,6 @@ function estandar:init()
 			self.ira=0
 		end
 	end)
-
 end
 
 function estandar:drawing()
@@ -41,6 +40,8 @@ function estandar:drawing()
 
 	lg.print("congelado : " .. tostring(self.estados.congelado),self.ox,self.oy+220)
 	lg.print("Ira : " .. self.ira,self.ox,self.oy+240)
+
+	
 
 	self.collider:draw("line")
 
@@ -57,6 +58,8 @@ end
 function estandar:updating(dt)
 
 	self.timer:update(dt)
+
+	self:check_mouse_pos(self.entidad:getXY())
 
 	self.delta_velocidad = self.delta_velocidad * (1 - math.min(dt * self.friccion, 1))
 

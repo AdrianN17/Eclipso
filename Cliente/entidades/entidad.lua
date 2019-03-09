@@ -7,7 +7,7 @@ local HC_collisions= require "libs.HC_collisions.HC_collisions"
 
 local entidad = Class{}
 
-function entidad:init(collider,cam,map,timer,signal,vector)
+function entidad:init(collider,cam,map,timer,signal,vector,eleccion)
 	--objetos principales
 	self.collider=collider
 	self.cam=cam
@@ -27,40 +27,46 @@ function entidad:init(collider,cam,map,timer,signal,vector)
 	self.collisions:add_collision_class("campo_electrico")
 	self.collisions:add_collision_class("barrera_hielo")
 	self.collisions:add_collision_class("explosion_plasma")
-	--jugadores
+
+	--cliente
 	self.players={}
 
 
-	---Servidor
 	self.tickRate = 1/60
     self.tick = 0
 
-	self.server = sock.newServer("192.168.0.3", 22122, 4)
-	self.server:setSerialization(bitser.dumps, bitser.loads)
+	self.client = sock.newClient("192.168.0.3", 22122)
+	self.client:setSerialization(bitser.dumps, bitser.loads)
+    self.client:setSchema("jugadores", {
+        "index",
+        "player",
+    })
 
-	self.server:on("connect", function(data, client)
-        client:send("playerNum", client:getIndex())
-        table.insert(self.players, player[data](self,100,100,client:getIndex()))
+
+    self.client:on("playerNum", function(num)
+    	self.id_player=num
+    	print(eleccion)
+    	self.players[num]=player[eleccion](self,100,100,num)   
     end)
 
-    self.server:on("datos", function(datos, client)
-        local index = client:getIndex()
-        local pl=self.players[index]
-        pl.ox=datos.ox 
-        pl.oy=datos.oy 
-        pl.radio=datos.radio 
-        pl.estados=datos.estados
-        pl.movimiento=datos.movimiento
+    self.client:on("jugadores", function(data)
+        local index = data.index
+        local player = data.player_data
+
+        -- only accept updates for the other player
+        if self.id_player and index ~= self.id_player then
+            self.players[index].ox=player.ox
+            self.players[index].oy=player.oy
+            self.players[index].radio=player.radio
+            self.players[index].estados=player.estados
+            self.players[index].movimiento=player.movimiento
+        end
     end)
 
+    
 
-
-
-
-
+	
 	--colisiones
-
-
 	self.collisions:add_collisions_filter_parameter("bala-barrera_hielo","balas","barrera_hielo",function(obj1,obj2) 
 		if obj1.name=="bala-hielo" then
 			if obj2.scale < 1.50  then
@@ -176,37 +182,83 @@ function entidad:init(collider,cam,map,timer,signal,vector)
 	self.camwiew={}
 	self.camwiew.x,self.camwiew.y,self.camwiew.w,self.camwiew.h=self.cam:getWorld()
 
-
+	
 	self.cam:setScale(0.75)
+
+	self.client:connect(eleccion)
 end
 
 function entidad:draw()
+	
 	self.cam:draw(function(l,t,w,h)
  		
  		self.collisions:draw()
 	end)
+
+	if self.id_player then
+        love.graphics.print("Player " .. self.id_player, 5, 25)
+    else
+        love.graphics.print("No player number assigned", 5, 25)
+    end
 end
 
+
 function entidad:update(dt)
-	self.server:update()
-
-	local enoughPlayers = #self.server.clients >= 4
-
-    --if not enoughPlayers then return end
+	self.client:update()
 	
 
-    self.tick = self.tick + dt
+	if self.client:getState() == "connected" then
+        self.tick = self.tick + dt
+    end
 
-	self.collisions:update(dt)
-
-	if self.tick >= self.tickRate then
+    if self.tick >= self.tickRate then
         self.tick = 0
 
-        for i, player in pairs(self.players) do
-        	local player_data= {ox=player.ox,oy=player.oy,radio=player.radio,estados=player.estados,movimiento=player.movimiento}
-            self.server:sendToAll("jugadores", {i, player_data})
+        if self.id_player then
+            self.collisions:update(dt)
+			self.cam:setPosition( self.players[self.id_player].ox, self.players[self.id_player].oy)
+
+			local pl=self.players[self.id_player]
+            self.client:send("datos", {ox=pl.ox,oy=pl.oy,radio=pl.radio,estados=pl.estados,movimiento=pl.movimiento})
         end
     end
+end
+
+function entidad:keypressed(key)
+	if self.client:getState() == "connected" then
+		self.players[self.id_player]:keypressed(key)
+	end
+end
+
+function entidad:keyreleased(key)
+	if self.client:getState() == "connected" then
+		self.players[self.id_player]:keyreleased(key)
+	end
+end
+
+function entidad:mousepressed(x,y,button)
+	if self.client:getState() == "connected" then
+		local cx,cy=self.cam:toWorld(x,y)
+		self.players[self.id_player]:mousepressed(cx,cy,button)
+	end
+end
+
+function entidad:mousereleased(x,y,button)
+	if self.client:getState() == "connected" then
+		local cx,cy=self.cam:toWorld(x,y)
+		self.players[self.id_player]:mousereleased(cx,cy,button)
+	end
+end
+
+function entidad:wheelmoved(x,y) 
+	if self.client:getState() == "connected" then
+		self.players[self.id_player]:wheelmoved(x,y)
+	end
+end
+
+function entidad:getXY()
+	local cx,cy=self.cam:toWorld(love.mouse.getPosition())
+	return cx,cy 
 end
 
 

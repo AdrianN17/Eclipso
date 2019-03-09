@@ -4,7 +4,7 @@ function love.conf(t)
   	t.window.width = 600
   	t.window.height = 640
   
-  	t.title="Servidor"
+  	t.title="Cliente"
   	t.window.fullscreen = false 
   	t.window.fullscreentype = "desktop"
   	t.window.vsync = 1 
