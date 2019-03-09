@@ -1,7 +1,7 @@
 local Class = require "libs.hump.class"
 local sock = require "libs.sock.sock"
 local bitser = require "libs.bitser.bitser"
-local player = {require "entidades.personajes.A", require "entidades.personajes.S" , require "entidades.personajes.X" , require "entidades.personajes.R" , require "entidades.personajes.MrH_S" , require "entidades.personajes.C"}
+local Player = {require "entidades.personajes.A", require "entidades.personajes.S" , require "entidades.personajes.X" , require "entidades.personajes.R" , require "entidades.personajes.MrH_S" , require "entidades.personajes.C"}
 local HC_collisions= require "libs.HC_collisions.HC_collisions"
 
 
@@ -39,20 +39,17 @@ function entidad:init(collider,cam,map,timer,signal,vector)
 	self.server:setSerialization(bitser.dumps, bitser.loads)
 
 	self.server:on("connect", function(data, client)
-        client:send("playerNum", client:getIndex())
-        table.insert(self.players, player[data](self,100,100,client:getIndex()))
+        client:send("player_id", client:getIndex())
+        table.insert(self.players, Player[data](self,100,100,client:getIndex()))
     end)
 
     self.server:on("datos", function(datos, client)
         local index = client:getIndex()
         local pl=self.players[index]
-        pl.ox=datos.ox 
-        pl.oy=datos.oy 
-        pl.radio=datos.radio 
-        pl.estados=datos.estados
-        pl.movimiento=datos.movimiento
-    end)
+        --recibe recibir_data_jugador(data,obj,...)
 
+        self:recibir_data_jugador(datos,pl,"radio","movimiento")
+    end)
 
 
 
@@ -197,17 +194,39 @@ function entidad:update(dt)
 
     self.tick = self.tick + dt
 
-	self.collisions:update(dt)
-
 	if self.tick >= self.tickRate then
         self.tick = 0
 
+        self.collisions:update(dt)
+
         for i, player in pairs(self.players) do
-        	local player_data= {ox=player.ox,oy=player.oy,radio=player.radio,estados=player.estados,movimiento=player.movimiento}
-            self.server:sendToAll("jugadores", {i, player_data})
+        	if player then
+	        	--enviar
+        		local player_data=self:enviar_data_jugador(player,"ox","oy","estados","hp","ira")
+            	self.server:sendToAll("jugadores", {i, player_data})
+	        end
         end
     end
 end
 
+function entidad:enviar_data_jugador(obj,...)
+	local args={...}
+	local data={}
+	
+	for _,arg in ipairs(args) do
+		data[arg]=obj[arg]
+	end
+
+	return data
+end
+
+function entidad:recibir_data_jugador(data,obj,...)
+	local args={...}
+	local obj=obj 
+
+	for _,arg in ipairs(args) do
+		obj[arg]=data[arg]
+	end
+end
 
 return entidad

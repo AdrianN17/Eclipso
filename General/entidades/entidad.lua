@@ -187,7 +187,8 @@ end
 
 function entidad:mousereleased(x,y,button)
 	local cx,cy=self.cam:toWorld(x,y)
-	self.player:mousereleased(cx,cy,button)
+	--self.player:mousereleased(cx,cy,button)
+	self.player:mover_todo(cx,cy)
 end
 
 function entidad:wheelmoved(x,y) 
@@ -197,6 +198,27 @@ end
 function entidad:getXY()
 	local cx,cy=self.cam:toWorld(love.mouse.getPosition())
 	return cx,cy 
+end
+
+function entidad:enviar_data_jugador(obj,...)
+	--servidor - cliente
+	local args={...}
+	local data={}
+	
+	for _,arg in ipairs(args) do
+		data[arg]=obj[arg]
+	end
+
+	return data
+end
+
+function entidad:recibir_data_jugador(data,obj,...)
+	local args={...}
+	local obj=obj 
+
+	for _,arg in ipairs(args) do
+		obj[arg]=data[arg]
+	end
 end
 
 

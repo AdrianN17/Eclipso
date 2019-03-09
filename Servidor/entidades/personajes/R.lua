@@ -38,13 +38,13 @@ function R:init(entidad,x,y,creador)
 
 	self.recargando_1=false
 
-	self.estados.atacando=false
-
 	self.time_melee=0.5
 
 	estandar.init(self)
 	
 	self.melee=melee(75,entidad.collider:rectangle(self.ox-25,self.oy+15,10,50),self,self.creador)
+
+	self.estados.atacando=false
 
 	self.entidad.collisions:add_collision_object("player",self)
 	self.plasma_control=bullet_control(2,2,"infinito","infinito",self.timer,0.6)

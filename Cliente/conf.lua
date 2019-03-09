@@ -8,7 +8,7 @@ function love.conf(t)
   	t.window.fullscreen = false 
   	t.window.fullscreentype = "desktop"
   	t.window.vsync = 1 
-
+    t.console = true
     t.modules.audio = true              -- Enable the audio module (boolean)
     t.modules.data = true               -- Enable the data module (boolean)
     t.modules.event = true              -- Enable the event module (boolean)

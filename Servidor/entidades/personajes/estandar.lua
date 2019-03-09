@@ -247,5 +247,19 @@ function estandar:recarga(key,arma1,arma2)
 	end
 end
 
+function estandar:mover_todo(ox,oy)
+	local x,y=ox-self.ox,oy-self.oy
+	self.collider:move(x,y)
+	self.escudo:move(x,y)
+
+	for _,point in ipairs(self.points) do
+    	point:move(x,y)
+    end
+
+    if self.melee then
+    	self.melee:moves(x,y)
+    end
+end
+
 
 return estandar
