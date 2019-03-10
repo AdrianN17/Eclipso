@@ -1,6 +1,7 @@
 local Class = require "libs.hump.class"
 local sock = require "libs.sock.sock"
 local bitser = require "libs.bitser.bitser"
+local data_cliente= require "data_cliente"
 
 local entidad = Class{}
 
@@ -27,7 +28,7 @@ function entidad:init(collider,cam,map,timer,signal,vector,eleccion)
 	self.tickRate = 1/60
     self.tick = 0
 
-	self.client = sock.newClient("192.168.0.3", 22122)
+	self.client = sock.newClient(data_cliente.ip, data_cliente.port)
 	self.client:setSerialization(bitser.dumps, bitser.loads)
     self.client:setSchema("jugadores", {
         "index",
@@ -102,6 +103,8 @@ function entidad:draw()
 	 				if player.tx and player.ty and player.estados.atacando then
 	 					love.graphics.circle("fill", player.tx,player.ty,10)
 	 				end
+
+	 				love.graphics.print(player.hp,player.ox,player.oy+100)
 	 			end
 	 		end
 

@@ -3,7 +3,7 @@ local sock = require "libs.sock.sock"
 local bitser = require "libs.bitser.bitser"
 local Player = {require "entidades.personajes.A", require "entidades.personajes.S" , require "entidades.personajes.X" , require "entidades.personajes.R" , require "entidades.personajes.MrH_S" , require "entidades.personajes.C"}
 local HC_collisions= require "libs.HC_collisions.HC_collisions"
-
+local data_server= require "data_server"
 
 local entidad = Class{}
 
@@ -35,7 +35,7 @@ function entidad:init(collider,cam,map,timer,signal,vector)
 	self.tickRate = 1/60
     self.tick = 0
 
-	self.server = sock.newServer("192.168.0.3", 22122, 4)
+	self.server = sock.newServer(data_server.ip, data_server.port, data_server.max)
 	self.server:setSerialization(bitser.dumps, bitser.loads)
 
 	self.server:on("connect", function(data, client)
@@ -221,7 +221,7 @@ end
 function entidad:update(dt)
 	self.server:update()
 
-	local enoughPlayers = #self.server.clients >= 4
+	--local enoughPlayers = #self.server.clients >= 4
 
     --if not enoughPlayers then return end
 	
