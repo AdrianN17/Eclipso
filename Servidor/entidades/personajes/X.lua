@@ -50,13 +50,10 @@ function X:init(entidad,x,y,creador)
 	self.time_melee=0.4
 	self.estados.atacando=false
 
-
-
 	self.timer:every(0.2,function() 
 		if self.disparo_continuo and not self.estados.protegido and self.agujas_control:check_bullet() and not self.recargando_1 then
-			local x,y = self.entidad:getXY()
 			local px,py=self.points[1]:center()
-			local rad=math.atan2( y-py, x -px)
+			local rad=math.atan2( self.ry-py, self.rx -px)
 
 			self:shoot_down(px,py,agujas,rad)
 			self.agujas_control:newbullet()

@@ -50,17 +50,20 @@ function C:init(entidad,x,y,creador)
 
 	self.time_melee=0.8
 
+
 	self.timer:every(0.1, function()
 		if self.disparo_continuo and not self.estados.protegido and self.semillas_control:check_bullet() and not self.recargando_1 then
-			local x,y = self.entidad:getXY()
+			local x,y = self.rx,self.ry
 			local px,py=self.points[1]:center()
-			local rad=math.atan2( y-py, x -px)
+			local rad=math.atan2( self.ry-py, self.rx -px)
 			self:shoot_down(px,py,semillas,rad)
 			self.semillas_control:newbullet()
 		end
 	end)
 
 	self.no_moverse_atacando=false
+
+	self.tx,self.ty=self.melee.melee_shape:center()
 end
 
 function C:draw()
@@ -69,6 +72,7 @@ end
 
 function C:update(dt)
 	self:updating(dt)
+	self.tx,self.ty=self.melee.melee_shape:center()
 end
 
 function C:keypressed(key)

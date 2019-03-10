@@ -48,7 +48,41 @@ function entidad:init(collider,cam,map,timer,signal,vector)
         local pl=self.players[index]
         --recibe recibir_data_jugador(data,obj,...)
 
-        self:recibir_data_jugador(datos,pl,"radio","movimiento")
+        self:recibir_data_jugador(datos,pl,"rx","ry","camx","camy","camw","camh")
+    end)
+
+
+
+    self.server:on("mouse_pressed" , function(datos, client)
+    	local index = client:getIndex()
+        local pl=self.players[index]
+
+        pl:mousepressed(datos.x,datos.y,datos.button)
+
+    end)
+
+    self.server:on("mouse_released" , function(datos, client)
+    	local index = client:getIndex()
+        local pl=self.players[index]
+
+        pl:mousereleased(datos.x,datos.y,datos.button)
+
+    end)
+
+    self.server:on("key_pressed" , function(datos, client)
+    	local index = client:getIndex()
+        local pl=self.players[index]
+
+        pl:keypressed(datos.key)
+
+    end)
+
+    self.server:on("key_released" , function(datos, client)
+    	local index = client:getIndex()
+        local pl=self.players[index]
+
+        pl:keyreleased(datos.key)
+
     end)
 
 
@@ -203,7 +237,15 @@ function entidad:update(dt)
         	if player then
 	        	--enviar
         		local player_data=self:enviar_data_jugador(player,"ox","oy","estados","hp","ira")
-            	self.server:sendToAll("jugadores", {i, player_data})
+
+        		if player.tx and player.ty then
+        			player_data.tx=player.tx
+        			player_data.ty=player.ty
+        		end
+
+        		local balas_data=self:get_balas(player.camx,player.camy,player.camw,player.camh)
+            	self.server:sendToAll("jugadores", {i, player_data,balas_data})
+            	--las balas deben ir aca para limitarla segun su camara
 	        end
         end
     end
@@ -227,6 +269,25 @@ function entidad:recibir_data_jugador(data,obj,...)
 	for _,arg in ipairs(args) do
 		obj[arg]=data[arg]
 	end
+end
+
+function entidad:get_balas(x,y,w,h)
+	local data={}
+	for i,balas in ipairs(self.collisions.collisions_class.balas) do
+		if balas.ox>x-100 and balas.oy>y-100 and balas.ox<w and balas.oy<h then
+			table.insert(data,{ox=balas.ox,oy=balas.oy})
+		end
+	end
+
+	return data
+end
+
+function entidad:get_efectos(x,y,w,h)
+	local data={}
+
+	--for i, efectos in ipairs(self.collisions.collisions) do
+
+	--end
 end
 
 return entidad

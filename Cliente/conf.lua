@@ -1,8 +1,8 @@
 function love.conf(t)
 	t.version = "11.2" 
   	t.author="AdrianN"
-  	t.window.width = 600
-  	t.window.height = 640
+  	t.window.width = 200
+  	t.window.height = 240
   
   	t.title="Cliente"
   	t.window.fullscreen = false 

@@ -3,6 +3,11 @@ local Class = require "libs.hump.class"
 local estandar = Class{}
 
 function estandar:init()
+	self.camx=0
+	self.camy=0
+	self.camw=0
+	self.camh=0
+
 	self.movimiento={a=false,d=false,w=false,s=false}
 	self.delta_velocidad=self.entidad.vector(0,0)
 	
@@ -28,19 +33,11 @@ function estandar:init()
 		end
 	end)
 
+	self.rx,self.ry=0,0
+
 end
 
 function estandar:drawing()
-	lg.print("OX,OY : " .. self.ox .. " , " .. self.oy ,self.ox,self.oy+100)
-	lg.print("vx,vy : " .. self.delta_velocidad.x .. " , " .. self.delta_velocidad.y,self.ox,self.oy+120)
-
-	lg.print("Radio : " .. self.radio , self.ox,self.oy+150)
-	lg.print("Z : " .. self.z , self.ox,self.oy+180)
-
-	lg.print("HP : " .. self.hp,self.ox,self.oy+200)
-
-	lg.print("congelado : " .. tostring(self.estados.congelado),self.ox,self.oy+220)
-	lg.print("Ira : " .. self.ira,self.ox,self.oy+240)
 
 	self.collider:draw("line")
 
@@ -57,6 +54,11 @@ end
 function estandar:updating(dt)
 
 	self.timer:update(dt)
+
+	if not self.estados.congelado and not self.no_moverse_atacando then
+		self.radio=self:check_mouse_pos(self.rx,self.ry)
+	end
+
 
 	self.delta_velocidad = self.delta_velocidad * (1 - math.min(dt * self.friccion, 1))
 
@@ -148,10 +150,6 @@ function estandar:keys_up(key)
 	if key=="e" then
 		self.estados.protegido=false
 	end
-end
-
-function estandar:check_mouse_pos(x,y)
-	self.radio=math.atan2( y-self.oy, x -self.ox)
 end
 
 function estandar:shoot_down(x,y,bullet,rad)
@@ -259,6 +257,10 @@ function estandar:mover_todo(ox,oy)
     if self.melee then
     	self.melee:moves(x,y)
     end
+end
+
+function estandar:check_mouse_pos(x,y)
+	return math.atan2( y-self.oy, x -self.ox)
 end
 
 

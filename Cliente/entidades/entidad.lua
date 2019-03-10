@@ -19,6 +19,7 @@ function entidad:init(collider,cam,map,timer,signal,vector,eleccion)
 	
 	--cliente
 	self.players={}
+	self.balas={}
 
 
 
@@ -30,7 +31,10 @@ function entidad:init(collider,cam,map,timer,signal,vector,eleccion)
     self.client:setSchema("jugadores", {
         "index",
         "player_data",
+        "balas_data",
     })
+
+    
 
   
 
@@ -41,21 +45,28 @@ function entidad:init(collider,cam,map,timer,signal,vector,eleccion)
     self.client:on("jugadores", function(data)
         local index = data.index
         local player = data.player_data
+        local balas= data.balas_data
         
 
         if self.id_player and index  then
-
         	
-
         	if not self.players[index] then
-        		self.players[index]={movimiento={a=false,d=false,w=false,s=false},radio=0}
+        		self.players[index]={tx=0,ty=0}
         	end
 
         	local pl=self.players[index]
 
-        	pl.radio= 
         	--recoger data entidad:recibir_data_jugador(data,obj,...)
         	self:recibir_data_jugador(player,pl,"ox","oy","estados","hp","ira")
+
+        	if player.tx and player.ty then
+        		pl.tx=player.tx
+        		pl.ty=player.ty
+        	end
+
+        	if balas then
+        		self.balas=balas
+        	end
         end
     end)
 
@@ -80,9 +91,17 @@ function entidad:draw()
 	 		for _, player in pairs(self.players) do
 	 			if player then
 	 				love.graphics.circle("fill" ,player.ox,player.oy,20)
+
+	 				if player.tx and player.ty and player.estados.atacando then
+	 					love.graphics.circle("fill", player.tx,player.ty,10)
+	 				end
 	 			end
 	 		end
- 		end
+
+	 		for _, bala in ipairs(self.balas) do
+	 				love.graphics.circle("fill" ,bala.ox,bala.oy,5)
+	 			end
+	 		end
 	end)
 
 	if self.id_player then
@@ -110,9 +129,12 @@ function entidad:update(dt)
 
 			self.cam:setPosition( pl.ox,pl.oy)
 
-			pl.radio=self:getRadio(pl.ox,pl.oy)
+			pl.rx,pl.ry=self:getXY()
 
-			local datos=self:enviar_data_jugador(pl,"radio","movimiento")
+			local datos=self:enviar_data_jugador(pl,"rx","ry")
+			datos.camx,datos.camy,datos.camw,datos.camh=self.cam:getVisible()
+			datos.camw=datos.camx+datos.camw
+			datos.camh=datos.camy+datos.camh
 		    self.client:send("datos", datos)
 		end
     end
@@ -122,19 +144,7 @@ function entidad:keypressed(key)
 	if self.client:getState() == "connected" and self.id_player then
 		 local pl=self.players[self.id_player]
 
-		 if pl then
-		 	if key=="a" then
-		 		pl.movimiento.a=true
-		 	elseif key=="d" then
-		 		pl.movimiento.d=true
-		 	end
-
-		 	if key=="w" then
-		 		pl.movimiento.w=true
-		 	elseif key=="s" then
-		 		pl.movimiento.s=true
-		 	end
-		 end
+		 self.client:send("key_pressed", {key=key})
 	end
 end
 
@@ -142,39 +152,27 @@ function entidad:keyreleased(key)
 	if self.client:getState() == "connected" and self.id_player then
 		local pl=self.players[self.id_player]
 
-		 if pl then
-		 	if key=="a" then
-		 		pl.movimiento.a=false
-		 	elseif key=="d" then
-		 		pl.movimiento.d=false
-		 	end
-
-		 	if key=="w" then
-		 		pl.movimiento.w=false
-		 	elseif key=="s" then
-		 		pl.movimiento.s=false
-		 	end
-		 end
+		 self.client:send("key_released", {key=key})
 	end
 end
 
 function entidad:mousepressed(x,y,button)
 	if self.client:getState() == "connected" and self.id_player then
 		local cx,cy=self.cam:toWorld(x,y)
-		
+		self.client:send("mouse_pressed", {x=cx,y=cy,button=button})
 	end
 end
 
 function entidad:mousereleased(x,y,button)
 	if self.client:getState() == "connected" and self.id_player then
 		local cx,cy=self.cam:toWorld(x,y)
-		
+		self.client:send("mouse_released", {x=cx,y=cy,button=button})
 	end
 end
 
 function entidad:wheelmoved(x,y) 
 	if self.client:getState() == "connected" and self.id_player then
-		
+		self.client:send("wheel_moved", {x=x,y=y})
 	end
 end
 
