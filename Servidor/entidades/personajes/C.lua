@@ -61,8 +61,6 @@ function C:init(entidad,x,y,creador)
 		end
 	end)
 
-	self.no_moverse_atacando=false
-
 	self.tx,self.ty=self.melee.melee_shape:center()
 end
 
@@ -82,8 +80,8 @@ function C:keypressed(key)
 
 	if key=="q" and not self.estados.protegido then
 		self.estados.atacando=true
-		self.no_moverse_atacando=true
-		self.timer:after(self.time_melee,function() self.estados.atacando=false self.no_moverse_atacando=false end)
+		self.estados.no_moverse_atacando=true
+		self.timer:after(self.time_melee,function() self.estados.atacando=false self.estados.no_moverse_atacando=false end)
 	end
 end
 
@@ -92,7 +90,7 @@ function C:keyreleased(key)
 
 	if key=="q" then
 		self.estados.atacando=false
-		self.no_moverse_atacando=false
+		self.estados.no_moverse_atacando=false
 	end
 end
 

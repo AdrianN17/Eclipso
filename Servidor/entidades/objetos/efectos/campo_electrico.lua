@@ -7,6 +7,8 @@ function campo_electrico:init(entidad,x,y)
 	self.collider=self.entidad.collider:circle(x,y,40)
 
 	self.time=0
+	self.tipo="circulo"
+	self.ox,self.oy=self.collider:center()
 end
 
 function campo_electrico:draw()

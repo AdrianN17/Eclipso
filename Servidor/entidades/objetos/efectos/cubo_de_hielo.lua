@@ -9,10 +9,11 @@ function cubo_de_hielo:init(entidad,x,y)
 	self.collider:rotate(math.rad(self.radio))
 	self.hp=100
 
-	self.ox,self.oy=self.collider:center()
 	self.scale=1
 
 	self.time=0
+	self.tipo="poligono"
+	self.ox,self.oy=self.collider:center()
 end
 
 function cubo_de_hielo:draw()

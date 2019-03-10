@@ -244,7 +244,8 @@ function entidad:update(dt)
         		end
 
         		local balas_data=self:get_balas(player.camx,player.camy,player.camw,player.camh)
-            	self.server:sendToAll("jugadores", {i, player_data,balas_data})
+        		local efectos_data=self:get_efectos(player.camx,player.camy,player.camw,player.camh)
+            	self.server:sendToAll("jugadores", {i, player_data,balas_data,efectos_data})
             	--las balas deben ir aca para limitarla segun su camara
 	        end
         end
@@ -284,10 +285,19 @@ end
 
 function entidad:get_efectos(x,y,w,h)
 	local data={}
+	local tabla={"suelo_llamas","campo_electrico","barrera_hielo","explosion_plasma"}
 
-	--for i, efectos in ipairs(self.collisions.collisions) do
+	for _,name in pairs(tabla) do
+		for _,obj in pairs(self.collisions.collisions_class[name]) do
+			if obj.tipo =="circulo" then
+				table.insert(data,{tipo=obj.tipo,ox=obj.ox,oy=obj.oy})
+			elseif obj.tipo=="poligono" then
+				table.insert(data,{tipo=obj.tipo,ox=obj.ox,oy=obj.oy,escala=obj.scale,radio=obj.radio})
+			end
+		end
+	end
 
-	--end
+	return data
 end
 
 return entidad

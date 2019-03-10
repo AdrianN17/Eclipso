@@ -20,6 +20,7 @@ function entidad:init(collider,cam,map,timer,signal,vector,eleccion)
 	--cliente
 	self.players={}
 	self.balas={}
+	self.efectos={}
 
 
 
@@ -32,6 +33,7 @@ function entidad:init(collider,cam,map,timer,signal,vector,eleccion)
         "index",
         "player_data",
         "balas_data",
+        "efectos_data",
     })
 
     
@@ -46,6 +48,7 @@ function entidad:init(collider,cam,map,timer,signal,vector,eleccion)
         local index = data.index
         local player = data.player_data
         local balas= data.balas_data
+        local efectos= data.efectos_data
         
 
         if self.id_player and index  then
@@ -66,6 +69,10 @@ function entidad:init(collider,cam,map,timer,signal,vector,eleccion)
 
         	if balas then
         		self.balas=balas
+        	end
+
+        	if efectos then
+        		self.efectos=efectos
         	end
         end
     end)
@@ -99,9 +106,17 @@ function entidad:draw()
 	 		end
 
 	 		for _, bala in ipairs(self.balas) do
-	 				love.graphics.circle("fill" ,bala.ox,bala.oy,5)
+	 			love.graphics.circle("fill" ,bala.ox,bala.oy,5)
+	 		end
+
+	 		for _ ,efec in ipairs(self.efectos) do
+	 			if efec.tipo=="circulo" then
+	 				love.graphics.circle("line" ,efec.ox,efec.oy,15)
+	 			elseif efec.tipo=="poligono" then
+	 				love.graphics.circle("line" ,efec.ox,efec.oy,efec.radio)
 	 			end
 	 		end
+	 	end
 	end)
 
 	if self.id_player then
@@ -181,11 +196,7 @@ function entidad:getXY()
 	return cx,cy 
 end
 
-function entidad:getRadio(ox,oy)
-	local mx,my=self:getXY()
-	local r= math.atan2( my-oy, mx -ox)
-	return r
-end
+
 
 function entidad:enviar_data_jugador(obj,...)
 	local args={...}

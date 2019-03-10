@@ -16,7 +16,7 @@ function estandar:init()
 
 	self.collision= self.entidad.collisions
 
-	self.estados={congelado=false,quemadura=false,paralisis=false,protegido=false,atacando=false,atacado=false}
+	self.estados={congelado=false,quemadura=false,paralisis=false,protegido=false,atacando=false,atacado=false,no_moverse_atacando=false}
 
 	self.vivo=true
 	self.velocidad_media=self.velocidad/4
@@ -55,7 +55,7 @@ function estandar:updating(dt)
 
 	self.timer:update(dt)
 
-	if not self.estados.congelado and not self.no_moverse_atacando then
+	if not self.estados.congelado and not self.estados.no_moverse_atacando then
 		self.radio=self:check_mouse_pos(self.rx,self.ry)
 	end
 
@@ -89,14 +89,14 @@ function estandar:updating(dt)
     	self.delta_velocidad=self.delta_velocidad*0
     end
 
-    if not self.estados.congelado and not self.no_moverse_atacando then
+    if not self.estados.congelado and not self.estados.no_moverse_atacando then
 	    self.collider:move(self.delta_velocidad:unpack())
 	    self.escudo:move(self.delta_velocidad:unpack())
 	end
 
 	self.ox,self.oy=self.collider:center()
 
-	if not self.estados.congelado and not self.no_moverse_atacando then
+	if not self.estados.congelado and not self.estados.no_moverse_atacando then
 		for _,point in ipairs(self.points) do
 	    	point:move(self.delta_velocidad:unpack())
 	    	point:setRotation(self.radio-math.pi/2,self.ox,self.oy)

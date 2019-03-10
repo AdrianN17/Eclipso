@@ -6,6 +6,9 @@ function barrera_de_fuego:init(entidad,x,y)
 	self.entidad=entidad
 	self.collider=self.entidad.collider:circle(x,y,25)
 	self.time=0
+
+	self.tipo="circulo"
+	self.ox,self.oy=self.collider:center()
 end
 
 function barrera_de_fuego:draw()

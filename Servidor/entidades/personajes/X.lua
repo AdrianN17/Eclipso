@@ -48,7 +48,6 @@ function X:init(entidad,x,y,creador)
 	self.disparo_continuo=false
 
 	self.time_melee=0.4
-	self.estados.atacando=false
 
 	self.timer:every(0.2,function() 
 		if self.disparo_continuo and not self.estados.protegido and self.agujas_control:check_bullet() and not self.recargando_1 then
