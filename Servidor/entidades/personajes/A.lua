@@ -9,6 +9,7 @@ local A = Class{
 }
 
 function A:init(entidad,x,y,creador)
+	self.personaje="A"
 	--inicializar
 	self.entidad=entidad
 	self.x,self.y=x,y

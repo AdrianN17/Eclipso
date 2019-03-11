@@ -11,7 +11,7 @@ function estandar:init()
 
 	self.collision= self.entidad.collisions
 
-	self.estados={congelado=false,quemadura=false,paralisis=false,protegido=false,atacando=false,atacado=false}
+	self.estados={moviendo=false,congelado=false,quemadura=false,paralisis=false,protegido=false,atacando=false,atacado=false}
 
 	self.vivo=true
 	self.velocidad_media=self.velocidad/4
@@ -56,6 +56,7 @@ function estandar:drawing()
 end
 
 function estandar:updating(dt)
+	self.moviendo=false
 
 	self.timer:update(dt)
 
@@ -67,19 +68,26 @@ function estandar:updating(dt)
 
 	if self.movimiento.a then
 		delta.x=-1
+		self.moviendo=true
 	end
 
 	if self.movimiento.d then
 		delta.x= 1
+		self.moviendo=true
 	end
 
 	if self.movimiento.w then
 		delta.y=-1
+		self.moviendo=true
 	end
 
 	if self.movimiento.s then
 		delta.y=1
+		self.moviendo=true
 	end
+
+
+
 
 	delta:normalizeInplace()
 

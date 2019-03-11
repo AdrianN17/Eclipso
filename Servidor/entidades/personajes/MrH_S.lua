@@ -8,6 +8,7 @@ local MrH_S = Class{
 }
 
 function MrH_S:init(entidad,x,y,creador)
+	self.personaje="MrH_S"
 	--inicializar
 	self.entidad=entidad
 	self.x,self.y=x,y

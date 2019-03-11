@@ -11,3 +11,7 @@ function love.load()
     Gamestate.switch(Escenario)
 end
 
+--bugs
+
+--bug tamaño iceber
+--bug pegar melee

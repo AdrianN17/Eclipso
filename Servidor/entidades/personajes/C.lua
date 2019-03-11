@@ -10,6 +10,7 @@ local C = Class{
 
 
 function C:init(entidad,x,y,creador)
+	self.personaje="C"
 	--inicializar
 	self.entidad=entidad
 	self.x,self.y=x,y

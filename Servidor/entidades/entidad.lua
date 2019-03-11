@@ -38,6 +38,8 @@ function entidad:init(collider,cam,map,timer,signal,vector)
 	self.server = sock.newServer(data_server.ip, data_server.port, data_server.max)
 	self.server:setSerialization(bitser.dumps, bitser.loads)
 
+	self.server:enableCompression()
+
 	self.server:on("connect", function(data, client)
         client:send("player_id", client:getIndex())
         table.insert(self.players, Player[data](self,100,100,client:getIndex()))
@@ -236,7 +238,7 @@ function entidad:update(dt)
         for i, player in pairs(self.players) do
         	if player then
 	        	--enviar
-        		local player_data=self:enviar_data_jugador(player,"ox","oy","estados","hp","ira")
+        		local player_data=self:enviar_data_jugador(player,"personaje","ox","oy","estados","hp","ira")
 
         		if player.tx and player.ty then
         			player_data.tx=player.tx

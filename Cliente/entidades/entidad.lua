@@ -30,6 +30,9 @@ function entidad:init(collider,cam,map,timer,signal,vector,eleccion)
 
 	self.client = sock.newClient(data_cliente.ip, data_cliente.port)
 	self.client:setSerialization(bitser.dumps, bitser.loads)
+
+	self.client:enableCompression()
+
     self.client:setSchema("jugadores", {
         "index",
         "player_data",
@@ -55,13 +58,13 @@ function entidad:init(collider,cam,map,timer,signal,vector,eleccion)
         if self.id_player and index  then
         	
         	if not self.players[index] then
-        		self.players[index]={tx=0,ty=0}
+        		self.players[index]={tx=nil,ty=nil}
         	end
 
         	local pl=self.players[index]
 
         	--recoger data entidad:recibir_data_jugador(data,obj,...)
-        	self:recibir_data_jugador(player,pl,"ox","oy","estados","hp","ira")
+        	self:recibir_data_jugador(player,pl,"personaje","ox","oy","estados","hp","ira")
 
         	if player.tx and player.ty then
         		pl.tx=player.tx
@@ -100,11 +103,15 @@ function entidad:draw()
 	 			if player then
 	 				love.graphics.circle("fill" ,player.ox,player.oy,20)
 
-	 				if player.tx and player.ty and player.estados.atacando then
+	 				if player.tx and player.ty and player.estados.atacando and player.personaje=="C" then
 	 					love.graphics.circle("fill", player.tx,player.ty,10)
 	 				end
 
 	 				love.graphics.print(player.hp,player.ox,player.oy+100)
+
+	 				if player.estados.protegido then
+	 					love.graphics.circle("line" ,player.ox,player.oy,30)
+	 				end
 	 			end
 	 		end
 
@@ -116,7 +123,7 @@ function entidad:draw()
 	 			if efec.tipo=="circulo" then
 	 				love.graphics.circle("line" ,efec.ox,efec.oy,15)
 	 			elseif efec.tipo=="poligono" then
-	 				love.graphics.circle("line" ,efec.ox,efec.oy,efec.radio)
+	 				love.graphics.circle("line" ,efec.ox,efec.oy,20)
 	 			end
 	 		end
 	 	end
