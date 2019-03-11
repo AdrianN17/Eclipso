@@ -19,4 +19,8 @@ function escenario:update(dt)
 	self.entidades:update(dt)
 end
 
+function escenario:keypressed(key)
+	self.entidades:keypressed(key)
+end
+
 return escenario

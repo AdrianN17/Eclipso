@@ -85,7 +85,7 @@ function HC_collisions:add_collision_class(name)
 end
 
 function HC_collisions:remove_collision_class(name)
-
+	
 end
 
 function HC_collisions:add_collision_object(name,obj)

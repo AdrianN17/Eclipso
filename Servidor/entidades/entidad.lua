@@ -45,12 +45,21 @@ function entidad:init(collider,cam,map,timer,signal,vector)
         table.insert(self.players, Player[data](self,100,100,client:getIndex()))
     end)
 
+    self.server:on("disconnect", function(data, client)
+    	local index =client:getIndex()
+
+    	self.players[index]:remove_player()
+    	table.remove(self.players,index)
+
+    	self.server:sendToAll("desconexion_player", index)
+    end)
+
     self.server:on("datos", function(datos, client)
         local index = client:getIndex()
         local pl=self.players[index]
         --recibe recibir_data_jugador(data,obj,...)
 
-        self:recibir_data_jugador(datos,pl,"rx","ry","camx","camy","camw","camh")
+        self:recibir_data_jugador(datos,pl,"rx","ry","z","camx","camy","camw","camh")
     end)
 
 
@@ -86,8 +95,6 @@ function entidad:init(collider,cam,map,timer,signal,vector)
         pl:keyreleased(datos.key)
 
     end)
-
-
 
 
 
@@ -223,7 +230,7 @@ end
 function entidad:update(dt)
 	self.server:update()
 
-	--local enoughPlayers = #self.server.clients >= 4
+	--local enoughPlayers = #self.server.clients >= data_server.max
 
     --if not enoughPlayers then return end
 	
@@ -278,7 +285,7 @@ function entidad:get_balas(x,y,w,h)
 	local data={}
 	for i,balas in ipairs(self.collisions.collisions_class.balas) do
 		if balas.ox>x-100 and balas.oy>y-100 and balas.ox<w and balas.oy<h then
-			table.insert(data,{ox=balas.ox,oy=balas.oy})
+			table.insert(data,{ox=balas.ox,oy=balas.oy,tipo=balas.name,z=balas.z})
 		end
 	end
 
@@ -300,6 +307,13 @@ function entidad:get_efectos(x,y,w,h)
 	end
 
 	return data
+end
+
+function entidad:keypressed(key)
+	if key=="escape" then
+		self.server:destroy()
+		love.event.quit()
+	end
 end
 
 return entidad

@@ -168,15 +168,6 @@ function estandar:shoot_up(x,y,button)
 
 end
 
-function estandar:wheel(x,y)
-	self.z=self.z+y*5
-
-	if self.z>45 then
-		self.z=45
-	elseif self.z<0 then
-		self.z=0
-	end
-end
 
 function estandar:attack(daño)
 	self.ira=self.ira+daño*2
@@ -269,5 +260,8 @@ function estandar:check_mouse_pos(x,y)
 	return math.atan2( y-self.oy, x -self.ox)
 end
 
+function estandar:remove_player()
+	self.entidad.collisions:remove_collision_object("player",self)
+end
 
 return estandar
