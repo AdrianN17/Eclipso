@@ -7,15 +7,13 @@ local entidad = Class{}
 
 
 
-function entidad:init(collider,cam,map,timer,signal,vector,eleccion)
+function entidad:init(cam,map,timer,signal,eleccion)
 	--objetos principales
-	self.collider=collider
 	self.cam=cam
 	self.map=map
 	--librerias
 	self.timer=timer
 	self.signal=signal
-	self.vector=vector
 
 	
 	--cliente
@@ -144,6 +142,8 @@ function entidad:draw()
     if self.check_detalles then
     	self:check_vidas_personajes(self.players)
     end
+
+    lg.print(self.client:getState(), 5, 70)
 end
 
 

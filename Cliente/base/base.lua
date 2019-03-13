@@ -1,17 +1,13 @@
 local Class = require "libs.hump.class"
-local HC = require "libs.HC"
 local sti = require "libs.sti"
 local gamera = require "libs.gamera.gamera"
 local signal = require "libs.hump.signal"
-local timer = require "libs.hump.timer"
-local vector = require "libs.hump.vector"
 local entidad = require "entidades.entidad"
 
 local base = Class{}
 
 function base:init(escenario,nombre_mapa,eleccion)
 	--objetos principales
-	local collider=HC.new()
 
 	local scale=1
 	
@@ -26,9 +22,8 @@ function base:init(escenario,nombre_mapa,eleccion)
 	--librerias auxiliares
 	local timer=timer
 	local signal=signal
-	local vector=vector
 
-	escenario.entidades=entidad(collider,cam,map,timer,signal,vector,eleccion)
+	escenario.entidades=entidad(cam,map,timer,signal,eleccion)
 
 end
 

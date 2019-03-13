@@ -21,7 +21,7 @@ function melee:draw()
 end
 
 function melee:update(dt)
-	if not self.player.no_moverse_atacando then
+	if not self.player.estados.no_moverse_atacando then
 		self:moves()
 		self:rotate()
 	end

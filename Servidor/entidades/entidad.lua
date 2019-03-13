@@ -192,15 +192,7 @@ function entidad:init(collider,cam,map,timer,signal,vector)
 
 	self.collisions:add_collisions_filter_parameter("player_escudo-player","player","player", function(obj1,obj2,dx,dy)
 		if obj1.creador ~= obj2.creador and obj1.estados.protegido   then
-			obj2.collider:move(-dx,-dy)
-			obj2.escudo:move(-dx,-dy)
-			for _,point in ipairs(obj2.points) do
-		    	point:move(-dx,-dy)
-		    end
-
-		    if obj2.melee then
-		    	obj2.melee:moves(-dx,-dy)
-		    end
+			obj2:mover_player(-dx,-dy)	
 		end
 	end,"escudo")
 
@@ -211,6 +203,13 @@ function entidad:init(collider,cam,map,timer,signal,vector)
 		end 
 
 	end,"melee_shape" )
+
+	self.collisions:add_collisions_filter_parameter("player_player","player","player", function(obj1,obj2,dx,dy)
+		if obj1.creador ~= obj2.creador then
+			obj1:mover_player(dx,dy)	
+			obj2:mover_player(-dx,-dy)	
+		end
+	end)
 
 	--camara
 	self.camwiew={}

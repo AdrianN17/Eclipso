@@ -52,10 +52,9 @@ function estandar:drawing()
 end
 
 function estandar:updating(dt)
+	self.moviendo=false
 
 	self.timer:update(dt)
-
-	self.moviendo=false
 
 	if not self.estados.congelado and not self.estados.no_moverse_atacando then
 		self.radio=self:check_mouse_pos(self.rx,self.ry)
@@ -91,7 +90,7 @@ function estandar:updating(dt)
 	self.delta_velocidad=self.delta_velocidad+self.velocidad*delta*dt
 
 
-	if self.delta_velocidad:len()<0.01 then
+	if math.abs(self.delta_velocidad:len())<0.01 then
     	self.delta_velocidad=self.delta_velocidad*0
     end
 
@@ -262,6 +261,18 @@ end
 
 function estandar:remove_player()
 	self.entidad.collisions:remove_collision_object("player",self)
+end
+
+function estandar:mover_player(x,y)
+	self.collider:move(x,y)
+	self.escudo:move(x,y)
+	for _,point in ipairs(self.points) do
+    	point:move(x,y)
+    end
+
+    if self.melee then
+    	self.melee:moves(x,y)
+    end
 end
 
 return estandar

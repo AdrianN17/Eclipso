@@ -63,6 +63,7 @@ function C:init(entidad,x,y,creador)
 	end)
 
 	self.tx,self.ty=self.melee.melee_shape:center()
+	self.estados.no_moverse_atacando=false
 end
 
 function C:draw()
