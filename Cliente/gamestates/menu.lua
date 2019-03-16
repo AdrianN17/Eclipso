@@ -17,12 +17,13 @@ function menu:update(dt)
 end
 
 function menu:keypressed(key)
-	for i,k in ipairs(self.keys) do 
+	for i,k in ipairs(self.keys) do
 		if key==k then
 			 Gamestate.switch(Escenario(i))
 		end
 	end
 end
+
 
 
 return menu
