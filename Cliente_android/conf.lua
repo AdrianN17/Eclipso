@@ -1,13 +1,12 @@
 function love.conf(t)
-  t.version = "11.2" 
     t.author="AdrianN"
     t.window.width = 320
     t.window.height = 569
-  
+
     t.title="Cliente_Android"
-    t.window.fullscreen = false 
+    t.window.fullscreen = false
     t.window.fullscreentype = "desktop"
-    t.window.vsync = 1 
+    t.window.vsync = 1
     t.modules.audio = true              -- Enable the audio module (boolean)
     t.modules.data = true               -- Enable the data module (boolean)
     t.modules.event = true              -- Enable the event module (boolean)

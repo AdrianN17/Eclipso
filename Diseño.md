@@ -1,4 +1,4 @@
-# Proyecto Overclock
+# Hypernova
 
 Indice
 
@@ -36,9 +36,23 @@ Esta viene de otro juego que tenia pensado, pero por razones de tiempo seria un 
 
 Son un total de 6 personajes, los cuales se dividen en:
 
-### A
+### Aegis
 
 <!--- Insertar imagen -->
+
+#### Comportamiento
+
+Esta preparado para todo, solo quiere quitarse todo ese peso de encima. Calculador en la mayoria de cosas, ademas de improvisar sus ataques. Tiene afecto a los que lo siguen, aunque cree que el mundo ya esta roto. Siente remordimiento por los que murieron en sus fracasos.
+
+Vive en la zona media de la ciudad
+
+#### Diseño
+
+Utiliza una capa de color ploma/gris, una mascara de proteccion negra con interfaz roja, botas marrones y un chaleco de proteccion plomo.
+
+Utiliza una pistola de color azul/negra y roja/negra
+
+#### Armas
 
 * Pistola de habilidad hielo-fuego
 	* Hielo crea un escudo
@@ -50,9 +64,25 @@ Son un total de 6 personajes, los cuales se dividen en:
 * A su máximo poder puede transformarse en otra forma de vida.
 
 
-### S
+### Solange
 
 <!--- Insertar imagen -->
+
+### Comportamiento
+
+De caracter dulce, es muy decidida y sabe encontrar el lado bueno de las personas, no le gusta utilizar armas y solo lo hace para defender a los demas, es empatica y amigable.
+
+Vive en la zona rural a las afueras de la ciudad, pero se muda temporalmente a la ciudad.
+
+Tiene un hermano que se volvio mitad planta.
+
+#### Diseño
+
+Utiliza un abrigo de invierno color gris y blanco, jeans gris, unas botas grises.
+
+Utiliza una pistola de color negro con amarillo
+
+#### Armas
 
 * Pistola de habilidad electricidad.
 	* Electricidad genera un porcentaje de parálisis, ademas del daño. Daño bajo.
@@ -62,9 +92,21 @@ Son un total de 6 personajes, los cuales se dividen en:
 	* Armadura creada para generar mayor movilidad y recibir la mayoría de golpes.
 * A su máximo poder puede convocar un androide para que pelee en su lugar.
 
-### X
+### Xeon
 
 <!--- Insertar imagen -->
+
+#### Comportamiento
+
+Es un moustruo que tiene un odio hacia los humanos, ya que fue creados por estos como un experimento para crear una quimera. Cree estar en la cima de la evolucion y solo sigue ordenes de alguien mas fuerte que el. Le gusta las grandes luchas.
+
+Fue creado en el laboratorio del area secreta, cerca a la ciudad.
+
+#### Diseño
+
+Es un ser sin vestimenta, sin genero y de color mostaza/piel.
+
+#### Armas
 
 * Agujas
 	* Agujas hechas de material orgánico, capaz de atravesar el acero, hace un daño medio.
@@ -76,7 +118,26 @@ Son un total de 6 personajes, los cuales se dividen en:
 	* Escudo capaz de repeler varios ataques y ademas servir para el ataque.
 * A su máximo poder se transforma en una bestia irregular.
 
-### R
+### Radian
+
+<!--- Insertar imagen -->
+
+#### Comportamiento
+
+Es el ultimo rey de su raza, conocidos como immortales, es de los mas fuertes del universo e intenta restaurar a cualquier costo el imperio de su familia. Ve a los humanos como seres carentes de empatia y autodestructivos.
+
+Tiene un caracter muy deductivo y pensativo, tiene habilidades como telepatia y es el que controla todo desde las sombras.
+
+Nacio en el planeta de los immortales, antes del choque de meteoros en la batalla contra Dios.
+
+#### Diseño
+
+Utiliza una armadura de color dorado con blanco, con varias gemas incrustadas, ademas de una capa azul.
+
+Utiliza una pistola verde y negro, junto a una espada de color verde/azul y mango color dorado.
+
+#### Armas
+
 * Plasma
 	* Plasma cargado capaz de causar un daño enorme. Gran daño
 * Espada
@@ -85,11 +146,22 @@ Son un total de 6 personajes, los cuales se dividen en:
 	* La mejor armadura del universo, generado con material de estrellas.
 * A su máximo poder la armadura genera una ráfaga de luz muy potente.
 
-<!--- Insertar imagen -->
-
-### Mr h y  Ms S
+### Mr horror & Mrs sorrow
 
 <!--- Insertar imagen -->
+
+#### Comportamiento
+
+Fueron cientificos que pudieron controlar el ectoplasma de manera eficiente, son muy confiados e inteligentes.
+
+Son de la ciudad, pero viven en la casa maldita.
+
+#### Diseño
+
+Utilizan unos trajes de la era victoriana, ademas de un sombrero. Todo de color negro
+Utilizan unas pistolas de color verde oscuro con negro.
+
+#### Armas
 
 * Pistolas fantasmas
 	* Pistolas que lanzan ectoplasma, hace daño bajo.
@@ -99,9 +171,21 @@ Son un total de 6 personajes, los cuales se dividen en:
 	* Armadura generada para una mayor velocidad, capaz de recibir pocos daños.
 * Puede alternar entre los personajes.
 
-### C
+### Cromwell
 
 <!--- Insertar imagen -->
+
+#### Comportamiento
+
+Es un soldado transformado en arma, al serle implantado celulas vegetales, es muy recto y sigue las ordenes que le dan.
+
+Vivia en las afueras de la ciudad en un pueblo con sus hermanos, pero se muda a la ciudad .
+
+#### Diseño
+
+Tiene caracteristicas de una planta, tiene el cuerpo de color verde y marron
+
+#### Armas
 
 * Balas semillas
 	* Balas de semillas orgánicas generadas por el individuo, Daño bajo
@@ -162,10 +246,10 @@ Los enemigos en el juego serán de respawn aleatorios, básicamente estarán en 
 ## Planeacion
 
 Se requiere que se avance según el siguiente modelo.
-1. Mes 1 : Creación de los assets.
-2. Mes 2 : Creación del mapa y el entorno de trabajo.
-3. Mes 3 : Pulir físicas y personajes.
-4. Mes 4 : Generar el cliente y servidor.
+1. Mes 1 : Creación de los assets.		
+2. Mes 2 : Creación del mapa y el entorno de trabajo.	A medias	
+3. Mes 3 : Pulir físicas y personajes.		A medias
+4. Mes 4 : Generar el cliente y servidor.		x
 5. Mes 5 : Pasar a producción el servidor.
 6. Mes 6 : Levantar en servidor real.
 
