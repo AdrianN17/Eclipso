@@ -26,13 +26,13 @@ function Aegis:init(entidades,x,y,creador)
 
 	self.friccion=30
 
-	
-	Modelo.init(self,x,y,20)
 
-	self.points={
-		{x=self.ox-30, y=self.oy+30,d=-30},
-		{x=self.ox+30, y=self.oy+30,d=30}
+	self.points_data={
+		{x=25, y=25},
+		{x=25, y=-25}
 	}
+
+	Modelo.init(self,x,y,20)
 
 	
 	self.hielo_control=bullet_control(2,2,"infinito","infinito",self.timer,0.5)
@@ -59,7 +59,10 @@ function Aegis:keyreleased(key)
 end
 
 function Aegis:mousepressed(x,y,button)
-	local px,py=self.points[button].x,self.points[button].y
+	local s= self.points[button].fixture:getShape()
+	local px,py=self.collider:getWorldPoints(s:getPoint())
+
+
 	local rad=math.atan2( y-py, x -px)
 
 	if button==1 and not self.estados.protegido and self.fuego_control:check_bullet() and not self.recargando_1 then

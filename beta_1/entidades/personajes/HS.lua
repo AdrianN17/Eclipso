@@ -27,11 +27,13 @@ function HS:init(entidades,x,y,creador)
 
 	self.escudo_tiempo=1
 
+	self.points_data={
+		{x=25, y=-25}
+	}
+
+
 	Modelo.init(self,x,y,20)
 
-	self.points={
-		{x=self.ox-30, y=self.oy,d=-30}
-	}
 
 	self.recargando_1=false
 
@@ -63,7 +65,8 @@ end
 
 
 function HS:mousepressed(x,y,button)
-	local px,py=self.points[button].x,self.points[button].y
+	local s= self.points[1].fixture:getShape()
+	local px,py=self.collider:getWorldPoints(s:getPoint())
 	local rad=math.atan2( y-py, x -px)
 
 	if button==1 and not self.estados.protegido and self.ectoplasma_control:check_bullet() and not self.recargando_1  then
@@ -77,7 +80,7 @@ function HS:mousereleased(x,y,button)
 end
 
 function HS:wheelmoved(x,y)
-	self:wheel(x,y)
+	self:wheel_moved(x,y)
 end
 
 return HS

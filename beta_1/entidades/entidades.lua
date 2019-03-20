@@ -40,12 +40,14 @@ function entidades:init(cam,timer,signal,vector,eleccion)
     self.world:setCallbacks(self:callbacks())
 
 
-	self:add_obj("players",personajes[1](self,100,100,1))
+	self:add_obj("players",personajes[eleccion](self,100,100,1))
 
 
 	self.pl=self.gameobject.players[1]
 
 	self.ox,self.oy=self.pl.ox,self.pl.oy
+
+	--self:init_servidor()
 
 end
 
@@ -128,6 +130,12 @@ end
 function entidades:touchreleased(id,x,y,dx,dy,pressure)
 	
 end
+
+function entidades:wheelmoved(x,y)
+	self.pl:wheelmoved(x,y)
+end
+
+
 
 function entidades:add_obj(name,obj)
 
@@ -265,6 +273,23 @@ function entidades:callbacks()
 	end
 
 	return beginContact,endContact,preSolve,postSolve
+end
+
+function entidades:init_servidor()
+	self.server:on("connect", function(data, client)
+		local index=client:getIndex()
+        client:send("player_id", index+1)
+        table.insert(self.players, Player[data](self,100,100,index+1))
+    end)
+
+    self.server:on("disconnect", function(data, client)
+    	--[[local index =client:getIndex()
+
+    	self.players[index]:remove_player()
+    	table.remove(self.players,index)
+
+    	self.server:sendToAll("desconexion_player", index)]]
+    end)
 end
 
 return entidades

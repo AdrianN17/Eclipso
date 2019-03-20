@@ -7,7 +7,9 @@ local juego_servidor = Class{
 }
 
 function juego_servidor:init()
-	Base:init(self,1)
+	self.eleccion_personaje=_G.detalles.personaje
+	self.port=_G.detalles.port
+	Base:init(self,self.eleccion_personaje)
 end
 
 function juego_servidor:draw()
@@ -41,6 +43,10 @@ end
 
 function juego_servidor:touchreleased(id,x,y,dx,dy,pressure)
 	self.entidades:touchreleased(id,x,y,dx,dy,pressure)
+end
+
+function juego_servidor:wheelmoved(x,y)
+	self.entidades:wheelmoved(x,y)
 end
 
 return juego_servidor

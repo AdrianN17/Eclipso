@@ -25,11 +25,13 @@ function Xeon:init(entidades,x,y,creador)
 
 	self.escudo_tiempo=0.6
 
+	self.points_data={
+		{x=25, y=25}
+	}
+
 	Modelo.init(self,x,y,20)
 
-	self.points={
-		{x=self.ox+35, y=self.oy,d=35}
-	}
+	
 
 	self.recargando_1=false
 
@@ -44,7 +46,8 @@ function Xeon:init(entidades,x,y,creador)
 
 	self.timer:every(0.2,function() 
 		if self.disparo_continuo and not self.estados.protegido and self.agujas_control:check_bullet() and not self.recargando_1 then
-			local px,py=self.points[1].x,self.points[1].y
+			local s= self.points[1].fixture:getShape()
+			local px,py=self.collider:getWorldPoints(s:getPoint())
 
 			local rad=math.atan2( self.ry-py, self.rx -px)
 
@@ -92,7 +95,8 @@ end
 
 function Xeon:mousepressed(x,y,button)
 
-	local px,py=self.points[1].x,self.points[1].y
+	local s= self.points[1].fixture:getShape()
+	local px,py=self.collider:getWorldPoints(s:getPoint())
 
 	local rad=math.atan2( y-py, x -px)
 
@@ -119,7 +123,7 @@ function Xeon:mousereleased(x,y,button)
 end
 
 function Xeon:wheelmoved(x,y)
-	self:wheel(x,y)
+	self:wheel_moved(x,y)
 end
 
 return Xeon

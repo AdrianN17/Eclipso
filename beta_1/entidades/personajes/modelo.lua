@@ -57,6 +57,24 @@ function modelo:init(x,y,r)
 	self.fixture_escudo:setGroupIndex( -self.creador )
 	self.fixture_escudo:setUserData( {data="escudo",obj=self}  )
 	self.fixture_escudo:setDensity(0)
+
+
+	self.points={}
+
+	for _,p in ipairs(self.points_data) do
+		local t={}
+
+		t.shape=py.newCircleShape(p.x,p.y,4)
+		t.fixture=py.newFixture(self.collider,t.shape)
+		t.fixture:setSensor( true )
+		t.fixture:setGroupIndex( -self.creador )
+		t.fixture:setUserData( {data="postura",obj=self}  )
+		t.fixture:setDensity(0)
+
+		table.insert(self.points,t)
+	end
+
+
 end
 
 function modelo:reset_mass(mass)
@@ -72,16 +90,16 @@ end
 
 function modelo:drawing()
 
-	for i, point in ipairs(self.points) do
-		lg.circle("fill",point.x,point.y,5)
-	end
+	--for i, point in ipairs(self.points) do
+		--lg.circle("fill",point.x,point.y,5)
+	--end
 
 	--local vx,vy=self.collider:getLinearVelocity()
 
 	lg.circle("fill",self.collider:getX(),self.collider:getY(),5)
 
 	--lg.print(vx .. " , " ..  vy,self.ox,self.oy-100)
-	lg.print(tostring(self.estados.atacando),self.ox,self.oy-100)
+	lg.print(tostring(self.z),self.ox,self.oy-100)
 end
 
 function modelo:updating(dt)
@@ -131,7 +149,7 @@ function modelo:updating(dt)
 
 	self.ox,self.oy=self.collider:getX(),self.collider:getY()
 
-	self:points_shoot(self.radio)
+	--self:points_shoot(self.radio)
 
 	self.collider:setAngle(self.radio)
 

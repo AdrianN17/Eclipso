@@ -4,7 +4,7 @@ local Gamestate = require "libs.hump.gamestate"
 local Escenario = require "gamestates.escenarios"
 local Conexion = require "gamestates.conexion"
 
-local game = require "gamestates.juego_servidor"
+local Escenario = require "gamestates.escenarios"
 
 require "libs.extra.extras"
 
@@ -17,8 +17,8 @@ function Menu:init()
 	self.w,self.h=self.boton:getDimensions()
 
 	self.colliders={
-		{x=(self.x/2)-self.w,	y=(self.y/2)-100,	w=self.w, h=self.h, tipo= game},
-		{x=(self.x/2)-self.w,	y=(self.y/2),		w=self.w, h=self.h, tipo= Conexion}
+		{x=(self.x/2)-self.w,	y=(self.y/2)-100,	w=self.w, h=self.h, tipo= Escenario,texto="servidor local"},
+		{x=(self.x/2)-self.w,	y=(self.y/2),		w=self.w, h=self.h, tipo= Conexion,texto="como cliente"}
 		--{x=(self.x/2)-self.w,	y=(self.y/2)+100,	w=self.w, h=self.h}
 		--{x=(self.x/2)-self.w,	y=(self.y/2)+200,	w=self.w, h=self.h}
 	}
@@ -26,8 +26,12 @@ end
 
 function Menu:draw()
 	lg.printf("Menu",100,50,50,"center")
-	lg.draw(self.boton,(self.x/2)-self.w,(self.y/2)-100)
-	lg.draw(self.boton,(self.x/2)-self.w,(self.y/2))
+
+	for _, botones in ipairs(self.colliders) do
+		lg.draw(self.boton,botones.x,botones.y)
+		lg.print(botones.texto,botones.x,botones.y)
+	end
+
 	--lg.draw(self.boton,(self.x/2)-self.w,(self.y/2)+100)
 	--lg.draw(self.boton,(self.x/2)-self.w,(self.y/2)+200)
 end

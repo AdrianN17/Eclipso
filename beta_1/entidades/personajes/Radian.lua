@@ -25,11 +25,13 @@ function Radian:init(entidades,x,y,creador)
 
 	self.escudo_tiempo=0.6
 
+	self.points_data={
+		{x=25, y=-25}
+	}
+
 	Modelo.init(self,x,y,20)
 
-	self.points={
-		{x=self.ox+30, y=self.oy,d=30}
-	}
+	
 
 	self.recargando_1=false
 
@@ -79,7 +81,8 @@ function Radian:keyreleased(key)
 end
 
 function Radian:mousepressed(x,y,button)
-	local px,py=self.points[1].x,self.points[1].y
+	local s= self.points[1].fixture:getShape()
+	local px,py=self.collider:getWorldPoints(s:getPoint())
 	local rad=math.atan2( y-py, x -px)
 
 	if button==1 and not self.estados.protegido and self.plasma_control:check_bullet() and not self.recargando_1 then
@@ -93,7 +96,7 @@ function Radian:mousereleased(x,y,button)
 end
 
 function Radian:wheelmoved(x,y)
-	self:wheel(x,y)
+	self:wheel_moved(x,y)
 end
 
 return Radian
