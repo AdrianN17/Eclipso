@@ -2,17 +2,28 @@ local Class = require "libs.hump.class"
 
 local campo_electrico = Class {}
 
-function campo_electrico:init(entidad,x,y)
-	self.entidad=entidad
-	self.collider=self.entidad.collider:circle(x,y,40)
+function campo_electrico:init(entidades,x,y)
+	self.entidades=entidades
+
+	self.entidades:add_obj("efectos",self)
+
+	self.collider=py.newBody(self.entidades.world,x,y,"static")
+	self.collider:setMass(10)
+	self.shape=py.newCircleShape(40)
+	self.fixture=py.newFixture(self.collider,self.shape)
+
+	self.fixture:setUserData( {data="campo_electrico",obj=self} )
+	self.fixture:setSensor(true)
 
 	self.time=0
-	self.tipo="circulo"
-	self.ox,self.oy=self.collider:center()
+	self.tipo="campo_electrico"
+	self.efecto="paralisis"
+
+	self.ox,self.oy=self.collider:getWorldCenter()
 end
 
 function campo_electrico:draw()
-	self.collider:draw("line")
+	
 end
 
 function campo_electrico:update(dt)
@@ -23,8 +34,8 @@ function campo_electrico:update(dt)
 end
 
 function campo_electrico:remove()
-	self.entidad.collider:remove(self.collider)
-	self.entidad.collisions:remove_collision_object("campo_electrico",self)
+	self.collider:destroy()
+	self.entidades:remove_obj("efectos",self)
 end
 
 return campo_electrico

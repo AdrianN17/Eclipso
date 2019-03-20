@@ -1,0 +1,109 @@
+local Class = require "libs.hump.class"
+local Modelo = require "entidades.personajes.modelo"
+local semillas = require "entidades.objetos.balas.semillas"
+local bullet_control = require "libs.Bullets.bullet_control"
+--local melee = require "entidadeses.objetos.melees.melee"
+
+local Cromwell = Class{
+	__includes = Modelo
+}
+
+
+function Cromwell:init(entidades,x,y,creador)
+	self.personaje="Cromwell"
+	--inicializar
+	self.entidades=entidades
+
+	self.creador=creador
+
+	self.velocidad=250
+
+	self.friccion=30
+
+	self.hp=800
+
+	self.max_ira=100
+
+	self.escudo_tiempo=0.6
+
+	Modelo.init(self,x,y,20)
+
+	self.points={
+		{x=self.ox+30, y=self.oy,d=30}
+	}
+
+	self.recargando_1=false
+
+
+	--self.melee=melee(60,entidades.collider:rectangle(self.ox-12.5,self.oy+45,30,30),self,self.creador)
+
+
+	self.semillas_control=bullet_control(20,20,"infinito","infinito",self.timer,0.5)
+
+	self.disparo_continuo=false
+
+	self.time_melee=0.8
+
+
+	self.timer:every(0.1, function()
+		if self.disparo_continuo and not self.estados.protegido and self.semillas_control:check_bullet() and not self.recargando_1 then
+			local x,y = self.rx,self.ry
+			local px,py=self.points[1].x,self.points[1].y
+			local rad=math.atan2( self.ry-py, self.rx -px)
+			self:shoot_down(px,py,semillas,rad)
+			self.semillas_control:newbullet()
+		end
+	end)
+
+	self.estados.no_moverse_atacando=false
+end
+
+function Cromwell:draw()
+	self:drawing()
+end
+
+function Cromwell:update(dt)
+	self:updating(dt)
+end
+
+function Cromwell:keypressed(key)
+	self:key_pressed(key)
+
+	self:recarga(key,"semillas_control")
+
+	if key=="q" and not self.estados.protegido then
+		self.estados.atacando=true
+		self.estados.no_moverse_atacando=true
+		self.timer:after(self.time_melee,function() self.estados.atacando=false self.estados.no_moverse_atacando=false end)
+	end
+end
+
+function Cromwell:keyreleased(key)
+	self:key_released(key)
+
+	if key=="q" then
+		self.estados.atacando=false
+		self.estados.no_moverse_atacando=false
+	end
+end
+
+function Cromwell:mousepressed(x,y,button)
+
+	if button==1 then
+		self.disparo_continuo=true
+	end
+end
+
+function Cromwell:mousereleased(x,y,button)
+	self:shoot_up(x,y,button)
+
+	if button==1 then
+		self.disparo_continuo=false
+	end
+end
+
+function Cromwell:wheelmoved(x,y)
+	self:wheel(x,y)
+end
+
+return Cromwell

@@ -9,16 +9,9 @@ local fuego = Class {
 function fuego:init(entidades,x,y,z,angle,creador)
 	self.entidades=entidades
 
-	table.insert(self.entidades.entidad["balas"],self)
-
-	--self.entidades:add("",)
-
 	self.creador=creador
 
 	self.z=z
-
-
-
 
 	self.velocidad=500
 
@@ -33,7 +26,7 @@ function fuego:init(entidades,x,y,z,angle,creador)
 end
 
 function fuego:draw()
-	--self:drawing()
+	self:drawing()
 
 end
 
@@ -42,8 +35,7 @@ function fuego:update(dt)
 end
 
 function fuego:destroy()
-	--local efecto= barrera_de_fuego(self.entidades,self.ox,self.oy)
-	--self.collision:add_collision_object("suelo_llamas",efecto)
+	local efecto= barrera_de_fuego(self.entidades,self.ox,self.oy)
 end
 
 return fuego

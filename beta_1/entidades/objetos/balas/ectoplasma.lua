@@ -5,25 +5,22 @@ local ectoplasma = Class{
 	__includes=bala
 }
 
-function ectoplasma:init(entidad,x,y,z,angle,creador)
-	self.entidad=entidad
+function ectoplasma:init(entidades,x,y,z,angle,creador)
+	self.entidades=entidades
 
 	self.creador=creador
 
-	self.x,self.y,self.z,self.angle=x,y,z,angle
-	self.collider=entidad.collider:circle(x,y,5)
+	self.z=z
 
 	self.velocidad=900
 
-	self.ox,self.oy=self.collider:center()
-
 	self.name="bala-ectoplasma"
-	--self.efecto="ectoplasma"
+	self.efecto="ectoplasma"
 
 	self.daño=15
 	self.hp=40
 
-	bala.init(self)
+	bala.init(self,x,y,angle,5)
 end
 
 function ectoplasma:draw()

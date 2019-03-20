@@ -5,24 +5,22 @@ local semilla=Class{
 	__includes=bala
 }
 
-function semilla:init(entidad,x,y,z,angle,creador)
-	self.entidad=entidad
+function semilla:init(entidades,x,y,z,angle,creador)
+	self.entidades=entidades
 
 	self.creador=creador
 
-	self.x,self.y,self.z,self.angle=x,y,z,angle
-	self.collider=entidad.collider:circle(x,y,2.5)
+	self.z=z
 
 	self.velocidad=750
 
-	self.ox,self.oy=self.collider:center()
 
 	self.name="bala-semilla"
 
 	self.daño=10
 	self.hp=15
 
-	bala.init(self)
+	bala.init(self,x,y,angle,2.5)
 end
 
 function semilla:draw()

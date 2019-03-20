@@ -5,24 +5,21 @@ local aguja=Class{
 	__includes=bala
 }
 
-function aguja:init(entidad,x,y,z,angle,creador)
-	self.entidad=entidad
+function aguja:init(entidades,x,y,z,angle,creador)
+	self.entidades=entidades
 
 	self.creador=creador
 
-	self.x,self.y,self.z,self.angle=x,y,z,angle
-	self.collider=entidad.collider:circle(x,y,2.5)
+	self.z=z
 
 	self.velocidad=900
-
-	self.ox,self.oy=self.collider:center()
 
 	self.name="bala-aguja"
 
 	self.daño=25
 	self.hp=25
 
-	bala.init(self)
+	bala.init(self,x,y,angle,2.5)
 end
 
 function aguja:draw()

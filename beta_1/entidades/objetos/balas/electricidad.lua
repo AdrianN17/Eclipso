@@ -7,19 +7,17 @@ local electricidad = Class {
 	__includes=bala
 }
 
-function electricidad:init(entidad,x,y,z,angle,creador)
+function electricidad:init(entidades,x,y,z,angle,creador)
 
-	self.entidad=entidad
+	self.entidades=entidades
 
 	self.creador=creador
 
 
-	self.x,self.y,self.z,self.angle=x,y,z,angle
-	self.collider=entidad.collider:circle(x,y,5)
+	self.z=z
 
 	self.velocidad=700
 
-	self.ox,self.oy=self.collider:center()
 
 	self.name="bala-electricidad"
 	self.efecto="paralisis"
@@ -27,7 +25,7 @@ function electricidad:init(entidad,x,y,z,angle,creador)
 	self.daño=25
 	self.hp=55
 
-	bala.init(self)
+	bala.init(self,x,y,angle,5)
 
 end
 
@@ -40,8 +38,8 @@ function electricidad:update(dt)
 end
 
 function electricidad:destroy()
-	local efecto= campo_electrico(self.entidad,self.ox,self.oy)
-	self.collision:add_collision_object("campo_electrico",efecto)
+	local efecto= campo_electrico(self.entidades,self.ox,self.oy)
+
 end
 
 return electricidad

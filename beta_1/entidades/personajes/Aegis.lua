@@ -12,7 +12,7 @@ function Aegis:init(entidades,x,y,creador)
 	self.personaje="Aegis"
 
 	self.entidades=entidades
-	self.x,self.y=x,y
+	
 	self.creador=creador
 
 	self.velocidad=400
@@ -51,6 +51,7 @@ end
 
 function Aegis:keypressed(key)
 	self:key_pressed(key)
+	self:recarga(key,"fuego_control","hielo_control")
 end
 
 function Aegis:keyreleased(key)
@@ -65,13 +66,25 @@ function Aegis:mousepressed(x,y,button)
 		self:shoot_down(px,py,fuego,rad,self.creador)
 		self.fuego_control:newbullet()
 	elseif button==2 and not self.estados.protegido and self.hielo_control:check_bullet() and not self.recargando_2 then
-		--self:shoot_down(px,py,hielo,rad,self.creador)
-		--self.hielo_control:newbullet()
+		self:shoot_down(px,py,hielo,rad,self.creador)
+		self.hielo_control:newbullet()
 	end
 end
 
 function Aegis:mousereleased(x,y,button)
+	self:shoot_up(x,y,button)
+end
 
+function Aegis:wheelmoved(x,y)
+	self:wheel_moved(x,y)
+end
+
+function Aegis:reflejo(obj,dx,dy) 
+	obj.z=obj.z+5
+
+	obj.delta_velocidad.x,obj.delta_velocidad.y=-dx,-dy
+
+	self.estados.protegido=false
 end
 
 

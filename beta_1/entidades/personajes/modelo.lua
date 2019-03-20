@@ -38,6 +38,8 @@ function modelo:init(x,y,r)
 	self.collider:setMass(10)
 	self.shape=py.newCircleShape(r)
 	self.fixture=py.newFixture(self.collider,self.shape)
+	self.fixture:setGroupIndex( -self.creador )
+	self.fixture:setUserData( {data="personaje",obj=self} )
 
 	self.ox,self.oy=self.collider:getWorldCenter()
 
@@ -46,9 +48,11 @@ function modelo:init(x,y,r)
 	self.radio=0
 
 
-	self.shape_escudo=py.newCircleShape(r*2)
+	self.shape_escudo=py.newCircleShape(r*2.5)
 	self.fixture_escudo=py.newFixture(self.collider,self.shape_escudo)
 	self.fixture_escudo:setSensor( true )
+	self.fixture_escudo:setGroupIndex( -self.creador )
+	self.fixture_escudo:setUserData( {data="escudo",obj=self}  )
 
 
 end
@@ -60,6 +64,8 @@ function modelo:drawing()
 	for i, point in ipairs(self.points) do
 		lg.circle("fill",point.x,point.y,5)
 	end
+
+	lg.print(self.hp .. " , " .. tostring( self.estados.paralisis ),self.ox,self.oy-100)
 end
 
 function modelo:updating(dt)
@@ -71,7 +77,8 @@ function modelo:updating(dt)
 	self.timer:update(dt)
 
 	if not self.estados.congelado and not self.estados.no_moverse_atacando then
-		self.radio=self:check_mouse_pos(self.entidades:getXY())
+		self.rx,self.ry=self.entidades:getXY()
+		self.radio=self:check_mouse_pos(self.rx,self.ry)
 	end
 
 	
@@ -178,8 +185,18 @@ function modelo:points_shoot(radio)
 	end
 end
 
+function modelo:wheel_moved(x,y)
+	self.z=self.z+y*5
+
+	if self.z>45 then
+		self.z=45
+	elseif self.z<0 then
+		self.z=0
+	end
+end
+
 function modelo:shoot_down(x,y,bullet,rad)
-	local bala= bullet(self.entidad,x,y,self.z,rad,self.creador)
+	local bala= bullet(self.entidades,x,y,self.z,rad,self.creador)
 end
 
 
@@ -200,9 +217,11 @@ end
 
 function modelo:shoot_down(x,y,bullet,rad)
 	local bala= bullet(self.entidades,x,y,self.z,rad,self.creador)
-
 end
 
+function modelo:shoot_up(x,y,button)
+	
+end
 
 
 function modelo:attack(daño)

@@ -2,22 +2,32 @@ local Class = require "libs.hump.class"
 
 local cubo_de_hielo = Class {}
 
-function cubo_de_hielo:init(entidad,x,y)
-	self.entidad=entidad
-	self.collider=self.entidad.collider:polygon(x-20,y-20,x-30,y,x-20,y+20,x+20,y+20,x+30,y,x+20,y-20)
-	self.radio=love.math.random(0,360)
-	self.collider:rotate(math.rad(self.radio))
+function cubo_de_hielo:init(entidades,x,y)
+	self.entidades=entidades
+	--self.collider=self.entidad.collider:polygon(x-20,y-20,x-30,y,x-20,y+20,x+20,y+20,x+30,y,x+20,y-20)
+
+
+	--self.radio=love.math.random(0,360)
+	--self.collider:rotate(math.rad(self.radio))
+
+	self.collider=py.newBody(self.entidades.world,x,y,"static")
+	self.collider:setMass(10)
+	self.shape=py.newCircleShape(40)
+	self.fixture=py.newFixture(self.collider,self.shape)
+
+	self.fixture:setUserData( {data="cubo_de_hielo",obj=self} )
+
 	self.hp=100
 
-	self.scale=1
 
 	self.time=0
-	self.tipo="poligono"
-	self.ox,self.oy=self.collider:center()
+	self.tipo="cubo_de_hielo"
+	self.ox,self.oy=self.collider:getWorldCenter()
+
 end
 
 function cubo_de_hielo:draw()
-	self.collider:draw("line")
+
 end
 
 function cubo_de_hielo:update(dt)
@@ -27,15 +37,30 @@ function cubo_de_hielo:update(dt)
 	end
 end
 
-function cubo_de_hielo:resize(type)
-	self.scale=self.scale*1.25
-	self.collider:scale(self.scale)
+function cubo_de_hielo:resize()
+	local f=self.fixture:getShape()
+
+	local r=f:getRadius()
+
+
+	if r<80 then
+		f:setRadius(r+20)
+		
+	end
+
+	if self.hp<200 then
+		self.hp=self.hp+25
+	end
+
+	
+	--self.scale=self.scale*1.25
+	--self.collider:scale(self.scale)
 	--se puede hacer con uno que sea 1.25 y otro 0.75, con un counter de -3 a 3 siendo 0 el punto estandar
 end
 
 function cubo_de_hielo:remove()
-	self.entidad.collider:remove(self.collider)
-	self.entidad.collisions:remove_collision_object("barrera_hielo",self)
+	self.collider:destroy()
+	self.entidades:remove_obj("efectos",self)
 end
 
 function cubo_de_hielo:attack(daño)

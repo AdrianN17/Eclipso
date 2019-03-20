@@ -2,18 +2,30 @@ local Class = require "libs.hump.class"
 
 local explosion_plasma = Class {}
 
-function explosion_plasma:init(entidad,x,y)
-	self.entidad=entidad
-	self.collider=self.entidad.collider:circle(x,y,45)
+function explosion_plasma:init(entidades,x,y)
+	self.entidades=entidades
+
+	self.entidades:add_obj("efectos",self)
+
+	self.collider=py.newBody(self.entidades.world,x,y,"static")
+	self.collider:setMass(10)
+	self.shape=py.newCircleShape(45)
+	self.fixture=py.newFixture(self.collider,self.shape)
+	
+	self.fixture:setUserData( {data="explosion_plasma",obj=self} )
+	self.fixture:setSensor(true)
+
 
 	self.time=0
 
-	self.tipo=circulo
-	self.ox,self.oy=self.collider:center()
+	self.tipo="explosion_plasma"
+	self.efecto="plasma"
+
+	self.ox,self.oy=self.collider:getWorldCenter()
 end
 
 function explosion_plasma:draw()
-	self.collider:draw("line")
+	
 end
 
 function explosion_plasma:update(dt)
@@ -24,8 +36,8 @@ function explosion_plasma:update(dt)
 end
 
 function explosion_plasma:remove()
-	self.entidad.collider:remove(self.collider)
-	self.entidad.collisions:remove_collision_object("explosion_plasma",self)
+	self.collider:destroy()
+	self.entidades:remove_obj("efectos",self)
 end
 
 return explosion_plasma
