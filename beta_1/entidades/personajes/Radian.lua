@@ -33,9 +33,9 @@ function Radian:init(entidades,x,y,creador)
 
 	self.recargando_1=false
 
-	self.time_melee=0.5
+	self.time_melee=0.7
 	
-	--self.melee=melee(75,entidad.collider:rectangle(self.ox-25,self.oy+15,10,50),self,self.creador)
+	self.melee_attack=100
 
 	self.plasma_control=bullet_control(2,2,"infinito","infinito",self.timer,0.6)
 
@@ -46,6 +46,9 @@ function Radian:init(entidades,x,y,creador)
 
 	self.fixture_melee:setGroupIndex( -self.creador )
 	self.fixture_melee:setUserData( {data="melee",obj=self}  )
+	self.fixture_melee:setDensity( 0 )
+
+	self:reset_mass(50)
 
 end
 

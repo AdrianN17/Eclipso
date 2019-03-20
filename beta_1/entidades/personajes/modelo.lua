@@ -8,7 +8,6 @@ function modelo:init(x,y,r)
 
 	self.movimiento={a=false,d=false,w=false,s=false}
 
-	self.delta_velocidad=self.entidades.vector(0,0)
 	self.delta=self.entidades.vector(0,0)
 	
 	self.radio=0
@@ -37,14 +36,14 @@ function modelo:init(x,y,r)
 
 
 	self.collider=py.newBody(self.entidades.world,x,y,"dynamic")
-	self.collider:setMass(10)
+	self.collider:setFixedRotation(true)
+
 	self.shape=py.newCircleShape(r)
 	self.fixture=py.newFixture(self.collider,self.shape)
 	self.fixture:setGroupIndex( -self.creador )
 	self.fixture:setUserData( {data="personaje",obj=self} )
-
+	self.fixture:setDensity(0)
 	self.collider:setInertia( 0 )
-	self.collider:setGravityScale( 0 )
 
 	self.ox,self.oy=self.collider:getX(),self.collider:getY()
 
@@ -52,16 +51,21 @@ function modelo:init(x,y,r)
 
 	self.radio=0
 
-
-
-
 	self.shape_escudo=py.newCircleShape(r*2.5)
 	self.fixture_escudo=py.newFixture(self.collider,self.shape_escudo)
 	self.fixture_escudo:setSensor( true )
 	self.fixture_escudo:setGroupIndex( -self.creador )
 	self.fixture_escudo:setUserData( {data="escudo",obj=self}  )
+	self.fixture_escudo:setDensity(0)
+end
 
+function modelo:reset_mass(mass)
+	self.collider:resetMassData()
+	self.collider:setMass(mass)
+	self.mass=self.collider:getMass()
 
+	--self.fixture:setFriction(0.5 )
+	self.collider:setLinearDamping(mass/20)
 end
 
 
@@ -72,66 +76,68 @@ function modelo:drawing()
 		lg.circle("fill",point.x,point.y,5)
 	end
 
+	--local vx,vy=self.collider:getLinearVelocity()
+
 	lg.circle("fill",self.collider:getX(),self.collider:getY(),5)
 
-	lg.print(self.delta_velocidad.x .. " , " .. self.delta_velocidad.y .. " , " .. tostring( self.estados.atacando ),self.ox,self.oy-100)
+	--lg.print(vx .. " , " ..  vy,self.ox,self.oy-100)
+	lg.print(tostring(self.estados.atacando),self.ox,self.oy-100)
 end
 
 function modelo:updating(dt)
 
-	self.delta_velocidad = self.delta_velocidad * (1 - math.min(dt * self.friccion, 1))
-
-	self.moviendo=false
+	self.estados.moviendo=false
 
 	self.timer:update(dt)
 
-	if not self.estados.congelado and not self.estados.no_moverse_atacando then
+	if not self.estados.congelado then
 		self.rx,self.ry=self.entidades:getXY()
 		self.radio=self:check_mouse_pos(self.entidades:getXY())
 	end
-
-	
-
 
 	self.delta = self.entidades.vector(0,0)
 
 	if self.movimiento.a then
 		self.delta.x=-1
-		self.moviendo=true
+		self.estados.moviendo=true
 	end
 
 	if self.movimiento.d then
 		self.delta.x= 1
-		self.moviendo=true
+		self.estados.moviendo=true
 	end
 
 	if self.movimiento.w then
 		self.delta.y=-1
-		self.moviendo=true
+		self.estados.moviendo=true
 	end
 
 	if self.movimiento.s then
 		self.delta.y=1
-		self.moviendo=true
+		self.estados.moviendo=true
 	end
 
 
 	self.delta:normalizeInplace()
 
-	self.delta_velocidad=self.delta_velocidad+self.velocidad*self.delta
+	if self.estados.moviendo and not self.estados.atacado then
+		local x,y=self.delta.x*self.mass*self.velocidad*dt,self.delta.y*self.mass*self.velocidad*dt
+		local vx,vy=self.collider:getLinearVelocity()
 
-	if math.abs(self.delta_velocidad:len())<0.01 then
-    	self.delta_velocidad=self.delta_velocidad*0
-    end
-	
-
-	self.collider:setLinearVelocity(self.delta_velocidad:unpack())
+		if vx<self.velocidad or vy<self.velocidad then
+			self.collider:applyLinearImpulse(x,y)
+		end
+	end
 
 	self.ox,self.oy=self.collider:getX(),self.collider:getY()
 
 	self:points_shoot(self.radio)
 
 	self.collider:setAngle(self.radio)
+
+	 if  not self.vivo then
+	 	self:remove()
+	 end
 
 end
 
@@ -291,6 +297,11 @@ function modelo:efecto(tipo,rapidez)
 			self.timer:during(time, function(dt) self.hp=self.hp-dt*2.5 end)
 		end
 	end
+end
+
+function modelo:remove()
+	self.collider:destroy()
+	self.entidades:remove_obj("players",self)
 end
 
 return modelo

@@ -37,6 +37,8 @@ function HS:init(entidades,x,y,creador)
 
 
 	self.ectoplasma_control=bullet_control(12,12,"infinito","infinito",self.timer,0.7)
+
+	self:reset_mass(27)
 end
 
 function HS:draw()

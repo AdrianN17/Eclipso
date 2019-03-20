@@ -35,14 +35,14 @@ function Cromwell:init(entidades,x,y,creador)
 	self.recargando_1=false
 
 
-	--self.melee=melee(60,entidades.collider:rectangle(self.ox-12.5,self.oy+45,30,30),self,self.creador)
+	self.melee_attack=95
 
 
 	self.semillas_control=bullet_control(20,20,"infinito","infinito",self.timer,0.5)
 
 	self.disparo_continuo=false
 
-	self.time_melee=0.8
+	self.time_melee=1.5
 
 
 	self.timer:every(0.1, function()
@@ -63,6 +63,9 @@ function Cromwell:init(entidades,x,y,creador)
 	self.fixture_melee:setSensor( true )
 	self.fixture_melee:setGroupIndex( -self.creador )
 	self.fixture_melee:setUserData( {data="melee",obj=self})
+	self.fixture_melee:setDensity( 0 )
+
+	self:reset_mass(60)
 
 
 end

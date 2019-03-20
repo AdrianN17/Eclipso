@@ -38,7 +38,7 @@ function Aegis:init(entidades,x,y,creador)
 	self.hielo_control=bullet_control(2,2,"infinito","infinito",self.timer,0.5)
 	self.fuego_control=bullet_control(4,4,"infinito","infinito",self.timer,0.2)
 
-	
+	self:reset_mass(30)
 end
 
 function Aegis:draw()

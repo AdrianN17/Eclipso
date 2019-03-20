@@ -36,19 +36,16 @@ function entidades:init(cam,timer,signal,vector,eleccion)
 
 	self.world = love.physics.newWorld(0, 0, false)
 
-
 	
-   -- self.world:setCallbacks(self:callbacks())
+    self.world:setCallbacks(self:callbacks())
 
 
-
-
-	self:add_obj("players",personajes[3](self,100,100,1))
-
-	self:add_obj("players",personajes[3](self,200,200,2))
+	self:add_obj("players",personajes[1](self,100,100,1))
 
 
 	self.pl=self.gameobject.players[1]
+
+	self.ox,self.oy=self.pl.ox,self.pl.oy
 
 end
 
@@ -60,7 +57,7 @@ function entidades:draw()
 	self.cam:draw(function(l,t,w,h)
 		for i, obj in pairs(self.gameobject) do
 			for _, obj2 in ipairs(obj) do
-				--obj2:draw()
+				obj2:draw()
 			end
 		end
 
@@ -92,18 +89,26 @@ function entidades:update(dt)
 		end
 	end
 
-	self.cam:setPosition(self.pl.ox,self.pl.oy)
+	if self.pl then
+		self.cam:setPosition(self.pl.ox,self.pl.oy)
+		self.ox,self.oy=self.pl.ox,self.pl.oy
+	else
+		self.cam:setPosition(self.ox,self.oy)
+	end
 
 end
 
 function entidades:keypressed(key)
 	self.pl:keypressed(key)
-	--self.gameobject.players[2]:keypressed(key)
+
+	if key=="k" then
+		self.gameobject.players[1].vivo=false
+	end
+
 end
 
 function entidades:keyreleased(key)
 	self.pl:keyreleased(key)
-	--self.gameobject.players[2]:keyreleased(key)
 end
 
 function entidades:mousepressed(x,y,button)
@@ -170,7 +175,11 @@ function entidades:callbacks()
  			if obj1.obj.estados.protegido  then
 
  				if obj1.obj.personaje=="Aegis" then
- 					obj1.obj:reflejo(obj2.obj,x,y) 
+
+ 					local r=math.atan2(y,x)
+ 					local ix,iy=math.cos(r),math.sin(r)
+
+ 					obj1.obj:reflejo(obj2.obj,-ix,-iy) 
  				else
  					obj2.obj:remove()
  				end
@@ -195,16 +204,43 @@ function entidades:callbacks()
 	 			obj1.obj:remove()
 	 			obj2.obj:remove()
 	 		end
- 		elseif obj1.data=="melee" and obj2.data=="balas" then
+ 		elseif obj1.data=="melee" and obj2.data=="bala" then
  			if obj1.obj.estados.atacando then
  				obj2.obj:remove()
+ 			end
+ 		elseif obj1.data=="melee" and obj2.data=="cubo_de_hielo" then
+ 			if obj1.obj.estados.atacando then
+ 				obj2.obj:attack(obj1.obj.melee_attack)
+ 				obj1.obj.estados.atacando=false
+ 			end
+ 		elseif obj1.data=="melee" and obj2.data=="personaje" then
+ 			if obj1.obj.estados.atacando then
+ 				
+ 				local r=math.atan2(y,x)
+ 				local ix,iy=math.cos(r),math.sin(r)
+
+ 				obj2.obj.collider:applyLinearImpulse( 10000*-ix,10000*-iy )
+
+ 				obj2.obj:attack(obj1.obj.melee_attack)
+ 				obj1.obj.estados.atacando=false
+ 			end
+ 		elseif obj1.data=="melee" and obj2.data=="escudo" then
+ 			if obj1.obj.estados.atacando and obj1.obj.estados.protegido then
+ 				local r=math.atan2(y,x)
+ 				local ix,iy=math.cos(r),math.sin(r)
+
+ 				obj1.obj.collider:applyLinearImpulse( 10000*-ix,10000*-iy )
+ 				obj1.obj.estados.atacando=false
  			end
  		end
 	end
 
 
 	local endContact =  function(a, b, coll)
- 	
+ 		--local obj1=a:getUserData()
+ 		---local obj2=b:getUserData()
+ 		--local x,y=coll:getNormal()
+
 
 	end
 
@@ -220,11 +256,12 @@ function entidades:callbacks()
  			obj1.obj:collides_bala(obj2.obj)
  			obj2.obj:collides_bala(obj1.obj)
  		end
- 
 	end
 
 	local postSolve =  function(a, b, coll, normalimpulse, tangentimpulse)
- 		
+ 		--local obj1=a:getUserData()
+ 		--local obj2=b:getUserData()
+
 	end
 
 	return beginContact,endContact,preSolve,postSolve

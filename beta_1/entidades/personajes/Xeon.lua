@@ -38,7 +38,9 @@ function Xeon:init(entidades,x,y,creador)
 
 	self.disparo_continuo=false
 
-	self.time_melee=0.4
+	self.time_melee=1
+
+	self.melee_attack=75
 
 	self.timer:every(0.2,function() 
 		if self.disparo_continuo and not self.estados.protegido and self.agujas_control:check_bullet() and not self.recargando_1 then
@@ -52,14 +54,16 @@ function Xeon:init(entidades,x,y,creador)
 	end)
 
 
-	--self.collider_melee=py.newBody(self.entidades.world,self.ox-30,self.oy,"dynamic")
-	--[[self.shape_melee=py.newRectangleShape(45,20,100,35)
+	self.shape_melee=py.newRectangleShape(45,20,100,35)
 	self.fixture_melee=py.newFixture(self.collider,self.shape_melee)
 	self.fixture_melee:setSensor( true )
 	self.fixture_melee:setGroupIndex( -self.creador )
-	self.fixture_melee:setUserData( {data="melee",obj=self}  )]]
+	self.fixture_melee:setUserData( {data="melee",obj=self}  )
+	self.fixture_melee:setDensity( 0 )
 
+	self:reset_mass(25)
 end
+
 
 function Xeon:draw()
 	self:drawing()

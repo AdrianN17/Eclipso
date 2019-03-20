@@ -34,8 +34,9 @@ function Solange:init(entidades,x,y,creador)
 	}
 
 
-
 	self.electricidad_control=bullet_control(7,7,"infinito","infinito",self.timer,0.3)
+
+	self:reset_mass(30)
 end
 
 function Solange:draw()
