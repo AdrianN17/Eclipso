@@ -30,8 +30,8 @@ function Aegis:init(entidades,x,y,creador)
 	Modelo.init(self,x,y,20)
 
 	self.points={
-		{x=self.ox-30, y=self.oy,d=-30},
-		{x=self.ox+30, y=self.oy,d=30}
+		{x=self.ox-30, y=self.oy+30,d=-30},
+		{x=self.ox+30, y=self.oy+30,d=30}
 	}
 
 	

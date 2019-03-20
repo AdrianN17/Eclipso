@@ -34,6 +34,8 @@ function modelo:init(x,y,r)
 	self.rx,self.ry=0,0
 
 
+
+
 	self.collider=py.newBody(self.entidades.world,x,y,"dynamic")
 	self.collider:setMass(10)
 	self.shape=py.newCircleShape(r)
@@ -41,11 +43,16 @@ function modelo:init(x,y,r)
 	self.fixture:setGroupIndex( -self.creador )
 	self.fixture:setUserData( {data="personaje",obj=self} )
 
-	self.ox,self.oy=self.collider:getWorldCenter()
+	self.collider:setInertia( 0 )
+	self.collider:setGravityScale( 0 )
+
+	self.ox,self.oy=self.collider:getX(),self.collider:getY()
 
 	self.rad=self.shape:getRadius()
 
 	self.radio=0
+
+
 
 
 	self.shape_escudo=py.newCircleShape(r*2.5)
@@ -65,7 +72,9 @@ function modelo:drawing()
 		lg.circle("fill",point.x,point.y,5)
 	end
 
-	lg.print(self.hp .. " , " .. tostring( self.estados.paralisis ),self.ox,self.oy-100)
+	lg.circle("fill",self.collider:getX(),self.collider:getY(),5)
+
+	lg.print(self.delta_velocidad.x .. " , " .. self.delta_velocidad.y .. " , " .. tostring( self.estados.atacando ),self.ox,self.oy-100)
 end
 
 function modelo:updating(dt)
@@ -78,7 +87,7 @@ function modelo:updating(dt)
 
 	if not self.estados.congelado and not self.estados.no_moverse_atacando then
 		self.rx,self.ry=self.entidades:getXY()
-		self.radio=self:check_mouse_pos(self.rx,self.ry)
+		self.radio=self:check_mouse_pos(self.entidades:getXY())
 	end
 
 	
@@ -118,9 +127,11 @@ function modelo:updating(dt)
 
 	self.collider:setLinearVelocity(self.delta_velocidad:unpack())
 
-	self.ox,self.oy=self.collider:getWorldCenter()
+	self.ox,self.oy=self.collider:getX(),self.collider:getY()
 
 	self:points_shoot(self.radio)
+
+	self.collider:setAngle(self.radio)
 
 end
 
@@ -177,8 +188,8 @@ end
 function modelo:points_shoot(radio)
 	local r=radio-math.pi/2
 	for _,point in ipairs(self.points) do
-		local qx=math.cos(r)*point.d+self.ox
-		local qy=math.sin(r)*point.d+self.oy
+		local qx=math.cos(r)*point.d+(self.ox)
+		local qy=math.sin(r)*point.d+(self.oy)
 
 		point.x=qx
 		point.y=qy

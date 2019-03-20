@@ -56,6 +56,15 @@ function Cromwell:init(entidades,x,y,creador)
 	end)
 
 	self.estados.no_moverse_atacando=false
+
+
+	self.shape_melee=py.newRectangleShape(100,0,50,50)
+	self.fixture_melee=py.newFixture(self.collider,self.shape_melee)
+	self.fixture_melee:setSensor( true )
+	self.fixture_melee:setGroupIndex( -self.creador )
+	self.fixture_melee:setUserData( {data="melee",obj=self})
+
+
 end
 
 function Cromwell:draw()

@@ -22,8 +22,7 @@ function entidades:init(cam,timer,signal,vector,eleccion)
 		require "entidades.personajes.Xeon",
 		require "entidades.personajes.Radian",
 		require "entidades.personajes.HS",
-		require "entidades.personajes.Cromwell",
-		
+		require "entidades.personajes.Cromwell"
 	}
 
 	self.gameobject={}
@@ -39,14 +38,15 @@ function entidades:init(cam,timer,signal,vector,eleccion)
 
 
 	
-    self.world:setCallbacks(self:callbacks())
+   -- self.world:setCallbacks(self:callbacks())
 
 
 
 
-	self:add_obj("players",personajes[1](self,100,100,1))
+	self:add_obj("players",personajes[3](self,100,100,1))
 
-	self:add_obj("players",personajes[1](self,200,200,2))
+	self:add_obj("players",personajes[3](self,200,200,2))
+
 
 	self.pl=self.gameobject.players[1]
 
@@ -60,7 +60,7 @@ function entidades:draw()
 	self.cam:draw(function(l,t,w,h)
 		for i, obj in pairs(self.gameobject) do
 			for _, obj2 in ipairs(obj) do
-				obj2:draw()
+				--obj2:draw()
 			end
 		end
 
@@ -87,7 +87,7 @@ function entidades:update(dt)
 	self.world:update(dt)
 
 	for i, obj in pairs(self.gameobject) do
-		for _, obj2 in ipairs(obj) do
+		for _, obj2 in pairs(obj) do
 			obj2:update(dt)
 		end
 	end
@@ -98,10 +98,12 @@ end
 
 function entidades:keypressed(key)
 	self.pl:keypressed(key)
+	--self.gameobject.players[2]:keypressed(key)
 end
 
 function entidades:keyreleased(key)
 	self.pl:keyreleased(key)
+	--self.gameobject.players[2]:keyreleased(key)
 end
 
 function entidades:mousepressed(x,y,button)
@@ -140,7 +142,6 @@ end
 
 function entidades:getXY()
 	local cx,cy=self.cam:toWorld(love.mouse.getX(),love.mouse.getY())
-
 	return cx,cy
 end
 
@@ -194,6 +195,10 @@ function entidades:callbacks()
 	 			obj1.obj:remove()
 	 			obj2.obj:remove()
 	 		end
+ 		elseif obj1.data=="melee" and obj2.data=="balas" then
+ 			if obj1.obj.estados.atacando then
+ 				obj2.obj:remove()
+ 			end
  		end
 	end
 

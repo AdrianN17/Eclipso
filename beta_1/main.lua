@@ -1,5 +1,6 @@
 local Gamestate = require "libs.hump.gamestate"
-local Inicio = require "gamestates.inicio"
+local Inicio = require "gamestates.juego_servidor"
+--local Inicio = require "gamestates.inicio"
 
 function love.load()
 

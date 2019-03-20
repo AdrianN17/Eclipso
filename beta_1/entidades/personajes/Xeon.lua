@@ -28,7 +28,7 @@ function Xeon:init(entidades,x,y,creador)
 	Modelo.init(self,x,y,20)
 
 	self.points={
-		{x=self.ox+30, y=self.oy,d=30}
+		{x=self.ox+35, y=self.oy,d=35}
 	}
 
 	self.recargando_1=false
@@ -50,6 +50,15 @@ function Xeon:init(entidades,x,y,creador)
 			self.agujas_control:newbullet()
 		end
 	end)
+
+
+	--self.collider_melee=py.newBody(self.entidades.world,self.ox-30,self.oy,"dynamic")
+	--[[self.shape_melee=py.newRectangleShape(45,20,100,35)
+	self.fixture_melee=py.newFixture(self.collider,self.shape_melee)
+	self.fixture_melee:setSensor( true )
+	self.fixture_melee:setGroupIndex( -self.creador )
+	self.fixture_melee:setUserData( {data="melee",obj=self}  )]]
+
 end
 
 function Xeon:draw()

@@ -2,7 +2,6 @@ local Class = require "libs.hump.class"
 local Modelo = require "entidades.personajes.modelo"
 local plasma = require "entidades.objetos.balas.plasma"
 local bullet_control = require "libs.Bullets.bullet_control"
-local melee = require "entidades.objetos.melees.melee"
 
 local Radian = Class{
 	__includes = Modelo
@@ -39,6 +38,15 @@ function Radian:init(entidades,x,y,creador)
 	--self.melee=melee(75,entidad.collider:rectangle(self.ox-25,self.oy+15,10,50),self,self.creador)
 
 	self.plasma_control=bullet_control(2,2,"infinito","infinito",self.timer,0.6)
+
+
+	self.shape_melee=py.newRectangleShape(50,0,100,75)
+	self.fixture_melee=py.newFixture(self.collider,self.shape_melee)
+	self.fixture_melee:setSensor( true )
+
+	self.fixture_melee:setGroupIndex( -self.creador )
+	self.fixture_melee:setUserData( {data="melee",obj=self}  )
+
 end
 
 function Radian:draw()
