@@ -189,7 +189,15 @@ function juego_cliente:mousereleased(x,y,button)
 end
 
 function juego_cliente:wheelmoved(x,y)
+    local pl=self.players[self.id_player]
 
+    pl.z=pl.z+y*5
+
+    if pl.z>45 then
+        pl.z=45
+    elseif pl.z<0 then
+        pl.z=0
+    end
 end
 
 function juego_cliente:quit()
