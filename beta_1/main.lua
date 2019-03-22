@@ -1,6 +1,8 @@
 local Gamestate = require "libs.hump.gamestate"
 local Inicio = require "gamestates.inicio"
 
+
+
 function love.load()
 
 	--inicio
@@ -14,7 +16,9 @@ function love.load()
 	_G.lm=love.math
 	_G.font = font
 	_G.py=love.physics
-	_G.detalles={personaje=0,ip="*",port="22122",type=""}
+	_G.detalles={personaje=0,ip="*",port=22122,type=""}
+
+
 
 	Gamestate.registerEvents()
     Gamestate.switch(Inicio)

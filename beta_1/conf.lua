@@ -26,8 +26,8 @@ function love.conf(t)
     t.modules.window = true             -- Enable the window module (boolean)
 
 
-      t.modules.touch = true             -- Enable the touch module (boolean)
-      t.modules.mouse = true              -- Enable the mouse module (boolean)
+    t.modules.touch = true             -- Enable the touch module (boolean)
+    t.modules.mouse = false              -- Enable the mouse module (boolean)
 
 
 

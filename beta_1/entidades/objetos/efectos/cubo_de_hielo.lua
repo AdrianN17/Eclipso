@@ -4,6 +4,7 @@ local cubo_de_hielo = Class {}
 
 function cubo_de_hielo:init(entidades,x,y)
 	self.entidades=entidades
+	self.entidades:add_obj("efectos",self)
 	--self.collider=self.entidad.collider:polygon(x-20,y-20,x-30,y,x-20,y+20,x+20,y+20,x+30,y,x+20,y-20)
 
 
@@ -68,6 +69,19 @@ function cubo_de_hielo:attack(daño)
 	if self.hp<1 then
 		self:remove()
 	end
+end
+
+function cubo_de_hielo:send_data()
+	local data={}
+	data.tipo=self.tipo
+	data.ox,data.oy=self.ox,self.oy
+	data.hp=self.hp 
+
+	local f=self.fixture:getShape()
+	data.r=f:getRadius()
+
+
+	return data
 end
 
 return cubo_de_hielo

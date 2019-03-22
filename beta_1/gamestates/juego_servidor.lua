@@ -49,4 +49,8 @@ function juego_servidor:wheelmoved(x,y)
 	self.entidades:wheelmoved(x,y)
 end
 
+function juego_servidor:quit()
+    self.entidades:quit()
+end
+
 return juego_servidor

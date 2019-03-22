@@ -11,9 +11,9 @@ function base:init(game,eleccion)
 	--objetos principales
 
 	local scale=1
-
+	local x,y=lg.getDimensions( )
 	local cam = gamera.new(0,0,2000,2000)
-	--cam:setWindow(0,0,800,600)
+	cam:setWindow(0,0,x,y)
 
 	cam:setScale(1)
 

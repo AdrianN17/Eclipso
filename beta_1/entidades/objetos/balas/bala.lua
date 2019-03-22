@@ -20,7 +20,7 @@ function bala:init(x,y,angle,r)
 	
 	self.fixture:setGroupIndex( -self.creador )
 
-	self.ox,self.oy=self.collider:getWorldCenter()
+	self.ox,self.oy=self.collider:getX(),self.collider:getY()
 
 
 
@@ -39,7 +39,7 @@ function bala:updating(dt)
 
 	self.collider:setLinearVelocity(delta:unpack())
 
-	self.ox,self.oy=self.collider:getWorldCenter()
+	self.ox,self.oy=self.collider:getX(),self.collider:getY()
 
 	if self.z<0 then
 		if self.destroy then
@@ -60,6 +60,18 @@ function bala:collides_bala(obj)
 	if self.hp<1 then
 		self:remove()
 	end
+end
+
+function bala:send_data()
+	local data={}
+	data.name=self.name
+	data.ox,data.oy=self.ox,self.oy
+	data.hp=self.hp 
+
+	local f=self.fixture:getShape()
+	data.r=f:getRadius()
+
+	return data
 end
 
 return bala

@@ -40,4 +40,16 @@ function explosion_plasma:remove()
 	self.entidades:remove_obj("efectos",self)
 end
 
+function explosion_plasma:send_data()
+	local data={}
+	data.tipo=self.tipo
+	data.ox,data.oy=self.ox,self.oy
+	data.hp=self.hp 
+
+	local f=self.fixture:getShape()
+	data.r=f:getRadius()
+
+	return data
+end
+
 return explosion_plasma

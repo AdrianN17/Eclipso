@@ -19,7 +19,7 @@ function campo_electrico:init(entidades,x,y)
 	self.tipo="campo_electrico"
 	self.efecto="paralisis"
 
-	self.ox,self.oy=self.collider:getWorldCenter()
+	self.ox,self.oy=self.collider:getX(),self.collider:getY()
 end
 
 function campo_electrico:draw()
@@ -37,5 +37,19 @@ function campo_electrico:remove()
 	self.collider:destroy()
 	self.entidades:remove_obj("efectos",self)
 end
+
+function campo_electrico:send_data()
+	local data={}
+	data.tipo=self.tipo
+	data.ox,data.oy=self.ox,self.oy
+	data.hp=self.hp 
+
+	local f=self.fixture:getShape()
+	data.r=f:getRadius()
+
+	return data
+end
+
+
 
 return campo_electrico

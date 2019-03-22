@@ -20,7 +20,7 @@ function barrera_de_fuego:init(entidades,x,y)
 	self.tipo="barrera_de_fuego"
 	self.efecto="quemadura"
 
-	self.ox,self.oy=self.collider:getWorldCenter()
+	self.ox,self.oy=self.collider:getX(),self.collider:getY()
 end
 
 function barrera_de_fuego:draw()
@@ -37,6 +37,18 @@ end
 function barrera_de_fuego:remove()
 	self.collider:destroy()
 	self.entidades:remove_obj("efectos",self)
+end
+
+function barrera_de_fuego:send_data()
+	local data={}
+	data.tipo=self.tipo
+	data.ox,data.oy=self.ox,self.oy
+	data.hp=self.hp 
+
+	local f=self.fixture:getShape()
+	data.r=f:getRadius()
+
+	return data
 end
 
 return barrera_de_fuego

@@ -4,7 +4,10 @@ local modelo = Class{}
 
 function modelo:init(x,y,r)
 
-	self.camview={x=0,y=0,w=0,h=0}
+	self.camx=0
+	self.camy=0
+	self.camw=0
+	self.camh=0
 
 	self.movimiento={a=false,d=false,w=false,s=false}
 
@@ -96,10 +99,10 @@ function modelo:drawing()
 
 	--local vx,vy=self.collider:getLinearVelocity()
 
-	lg.circle("fill",self.collider:getX(),self.collider:getY(),5)
+	--lg.circle("fill",self.collider:getX(),self.collider:getY(),5)
 
 	--lg.print(vx .. " , " ..  vy,self.ox,self.oy-100)
-	lg.print(tostring(self.z),self.ox,self.oy-100)
+	--lg.print(tostring(self.z),self.ox,self.oy-100)
 end
 
 function modelo:updating(dt)
@@ -109,8 +112,7 @@ function modelo:updating(dt)
 	self.timer:update(dt)
 
 	if not self.estados.congelado then
-		self.rx,self.ry=self.entidades:getXY()
-		self.radio=self:check_mouse_pos(self.entidades:getXY())
+		self.radio=self:check_mouse_pos(self.rx,self.ry)
 	end
 
 	self.delta = self.entidades.vector(0,0)
@@ -149,13 +151,13 @@ function modelo:updating(dt)
 
 	self.ox,self.oy=self.collider:getX(),self.collider:getY()
 
-	--self:points_shoot(self.radio)
 
 	self.collider:setAngle(self.radio)
 
 	 if  not self.vivo then
 	 	self:remove()
 	 end
+
 
 end
 
@@ -207,17 +209,6 @@ end
 
 function modelo:check_mouse_pos(x,y)
 	return math.atan2( y-self.oy, x -self.ox)
-end
-
-function modelo:points_shoot(radio)
-	local r=radio-math.pi/2
-	for _,point in ipairs(self.points) do
-		local qx=math.cos(r)*point.d+(self.ox)
-		local qy=math.sin(r)*point.d+(self.oy)
-
-		point.x=qx
-		point.y=qy
-	end
 end
 
 function modelo:wheel_moved(x,y)
@@ -320,6 +311,34 @@ end
 function modelo:remove()
 	self.collider:destroy()
 	self.entidades:remove_obj("players",self)
+end
+
+function modelo:send_data()
+	local data={}
+	data.personaje=self.personaje
+	data.ox,data.oy=self.ox,self.oy
+	data.hp=self.hp 
+	data.ira=self.ira 
+	data.movimiento=self.movimiento
+	data.estados=self.estados
+
+	if self.fixture_melee then
+		local s= self.fixture_melee:getShape()
+
+		local x1,y1,x2,y2,x3,y3,x4,y4=self.collider:getWorldPoints(s:getPoints())
+
+
+		data.px=(x1+x2+x3+x4)/4
+		data.py=(y1+y2+y3+y4)/4
+
+		
+	end
+
+	local f=self.fixture:getShape()
+	data.r=f:getRadius()
+
+
+	return data
 end
 
 return modelo

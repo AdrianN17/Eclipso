@@ -15,7 +15,6 @@ function entidades:init(cam,timer,signal,vector,eleccion)
 	self.vector=vector
 
 
-
 	personajes={
 		require "entidades.personajes.Aegis",
 		require "entidades.personajes.Solange",
@@ -47,7 +46,7 @@ function entidades:init(cam,timer,signal,vector,eleccion)
 
 	self.ox,self.oy=self.pl.ox,self.pl.oy
 
-	--self:init_servidor()
+	self:init_servidor()
 
 end
 
@@ -77,13 +76,17 @@ function entidades:draw()
 		        end
 		    end
 	    end
-
-
 	end)
+
+
+	lg.print("jugadores : " .. (self.server:getClientCount()+1) ,10,30)
+	lg.print("IP : " .. (self.server:getAddress()) , 10, 5)
+
 end
 
 function entidades:update(dt)
 	self.world:update(dt)
+	self:update_server(dt)
 
 	for i, obj in pairs(self.gameobject) do
 		for _, obj2 in pairs(obj) do
@@ -92,11 +95,14 @@ function entidades:update(dt)
 	end
 
 	if self.pl then
+		self.pl.rx,self.pl.ry=self:getXY()
+
 		self.cam:setPosition(self.pl.ox,self.pl.oy)
 		self.ox,self.oy=self.pl.ox,self.pl.oy
 	else
 		self.cam:setPosition(self.ox,self.oy)
 	end
+
 
 end
 
@@ -276,20 +282,130 @@ function entidades:callbacks()
 end
 
 function entidades:init_servidor()
+	self.tickRate = 1/60
+    self.tick = 0
+
+	self.server = sock.newServer(_G.detalles.ip, _G.detalles.port, 4)
+	self.server:setSerialization(bitser.dumps, bitser.loads)
+
+	self.server:enableCompression()
+
+
+	--cuando se conecta
 	self.server:on("connect", function(data, client)
 		local index=client:getIndex()
         client:send("player_id", index+1)
-        table.insert(self.players, Player[data](self,100,100,index+1))
+        table.insert(self.gameobject.players, personajes[data](self,100,100,index+1))
     end)
+
 
     self.server:on("disconnect", function(data, client)
-    	--[[local index =client:getIndex()
+    	local index =client:getIndex()
 
-    	self.players[index]:remove_player()
-    	table.remove(self.players,index)
+    	if self.gameobject.players[index+1] then
 
-    	self.server:sendToAll("desconexion_player", index)]]
+	    	self.gameobject.players[index+1]:remove()
+	    	table.remove(self.gameobject.players,index+1)
+
+	    end
+
+    	self.server:sendToAll("desconexion_player", (index+1))
     end)
+
+
+    self.server:on("datos", function(datos, client)
+        local index = client:getIndex()
+        local pl=self.gameobject.players[index+1]
+
+        if pl then
+        	recibir_data_jugador(datos,pl)
+        end
+    end)
+
+    --callbacks
+
+    self.server:on("mouse_pressed" , function(datos, client)
+    	local index = client:getIndex()
+        local pl=self.gameobject.players[index+1]
+
+        pl:mousepressed(datos.x,datos.y,datos.button)
+
+    end)
+
+    self.server:on("mouse_released" , function(datos, client)
+    	local index = client:getIndex()
+        local pl=self.gameobject.players[index+1]
+
+        pl:mousereleased(datos.x,datos.y,datos.button)
+
+    end)
+
+    self.server:on("key_pressed" , function(datos, client)
+    	local index = client:getIndex()
+        local pl=self.gameobject.players[index+1]
+
+        pl:keypressed(datos.key)
+
+    end)
+
+    self.server:on("key_released" , function(datos, client)
+    	local index = client:getIndex()
+        local pl=self.gameobject.players[index+1]
+
+        pl:keyreleased(datos.key)
+
+    end)
+
+end
+
+function entidades:update_server(dt)
+	self.server:update()
+	self.tick = self.tick + dt
+
+	if self.tick >= self.tickRate then
+        self.tick = 0
+
+
+        for i, player in pairs(self.gameobject.players) do
+        	if player then
+	        	--enviar
+        		
+
+        		local extra_data=self:extra_data(player.camx,player.camy,player.camw,player.camh)
+        		local player_data=player:send_data()
+
+            	self.server:sendToAll("jugadores", {i,player_data,extra_data})
+            	--las balas deben ir aca para limitarla segun su camara
+	        end
+        end
+    end
+end
+
+function entidades:extra_data(x,y,w,h)
+	local cx,cy,cw,ch=x,y,x+w,y+h
+
+	local data={}
+
+	for i,bala in ipairs(self.gameobject.balas) do 
+		if collides_object(bala,cx-100,cy-100,cw+100,ch+100) then
+			local t=bala:send_data()
+			table.insert(data,t)
+		end
+	end
+
+	for i,efecto in ipairs(self.gameobject.efectos) do 
+		if collides_object(efecto,cx-100,cy-100,cw+100,ch+100) then
+			local t=efecto:send_data()
+			table.insert(data,t)
+		end
+	end
+
+	return data
+end
+
+
+function entidades:quit()
+    self.server:destroy()
 end
 
 return entidades
