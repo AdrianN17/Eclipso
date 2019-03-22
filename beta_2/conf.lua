@@ -1,5 +1,5 @@
 function love.conf(t)
-	t.version = "11.2" 
+	--t.version = "11.2" 
   	t.author="AdrianN"
   	t.window.width = 600
   	t.window.height = 640
@@ -24,10 +24,9 @@ function love.conf(t)
     t.modules.timer = true              -- Enable the timer module (boolean), Disabling it will result 0 delta time in love.update
     t.modules.video = false             -- Enable the video module (boolean)
     t.modules.window = true             -- Enable the window module (boolean)
-
-
-    t.modules.touch = true             -- Enable the touch module (boolean)
-    t.modules.mouse = false              -- Enable the mouse module (boolean)
+    t.modules.touch = false             -- Enable the touch module (boolean)
+    
+    t.modules.mouse = true              -- Enable the mouse module (boolean)
 
 
 

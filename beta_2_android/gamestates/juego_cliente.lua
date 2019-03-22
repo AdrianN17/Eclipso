@@ -76,7 +76,7 @@ function juego_cliente:init()
 
     self.cam:setScale(1)
 
-
+    self.dispositivo=_G.detalles.dispositivo
 
 
     self.camwiew={}
@@ -134,7 +134,9 @@ function juego_cliente:update(dt)
 
             self.cam:setPosition(pl.ox,pl.oy)
 
-            pl.rx,pl.ry=self:getXY()
+            if self.dispositivo ~= "Android" then
+                pl.rx,pl.ry=self:getXY()
+            end
 
             local datos=enviar_data_jugador(pl,"rx","ry","z")
             datos.camx,datos.camy,datos.camw,datos.camh=self.cam:getVisible()

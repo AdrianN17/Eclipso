@@ -32,6 +32,7 @@ function personajes:draw( )
 
 	for _, botones in ipairs(self.colliders) do
 		lg.draw(self.boton,botones.x,botones.y)
+		lg.rectangle("line",botones.x,botones.y,botones.w,botones.h)
 	end
 end
 
@@ -58,26 +59,27 @@ function personajes:mousepressed(x,y,button)
 			end
 		end
 	end
-
-
 end
 
 function personajes:touchpressed(id, x, y, dx, dy, pressure)
-	for _, botones in ipairs(self.colliders) do
-		if collides(botones,x,y) then
+	
+		if collides(self.colliders[1],x,y) then
+
 			self.i=self.i+1
 
-			if self.i+1<6 then
+			if self.i>6 then
 				self.i=1
 			end
 		else
 			if _G.detalles.type=="Servidor" then
+				_G.detalles.personaje=self.i
 				Gamestate.switch(Juego_servidor)
 			elseif _G.detalles.type=="Cliente" then
+				_G.detalles.personaje=self.i
 				Gamestate.switch(Juego_cliente)
 			end
 		end
-	end
+
 end
 
 

@@ -46,6 +46,8 @@ function entidades:init(cam,timer,signal,vector,eleccion)
 
 	self.ox,self.oy=self.pl.ox,self.pl.oy
 
+	self.dispositivo=_G.detalles.dispositivo
+
 	self:init_servidor()
 
 end
@@ -95,7 +97,10 @@ function entidades:update(dt)
 	end
 
 	if self.pl then
-		self.pl.rx,self.pl.ry=self:getXY()
+
+		if self.dispositivo ~= "Android" then
+			self.pl.rx,self.pl.ry=self:getXY()
+		end
 
 		self.cam:setPosition(self.pl.ox,self.pl.oy)
 		self.ox,self.oy=self.pl.ox,self.pl.oy

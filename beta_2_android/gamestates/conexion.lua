@@ -20,6 +20,10 @@ function conexion:init()
 	self.text=""
 
 	self.cadena_admitida={"1","2","3","4","5","6","7","8","9","0","."}
+
+	if _G.detalles.dispositivo=="Android" then
+		love.keyboard.setTextInput( true, (self.x/2)-50, (self.y/2)-100, 100, 100 )
+	end
 end
 
 function conexion:draw()
