@@ -5,8 +5,10 @@ local langostas = Class{
 	__includes=Molde
 }
 
-function langostas:init()
+function langostas:init(entidades,x,y)
+	self.entidades=entidades
 
+	Molde.init(self,x,y,)
 end
 
 function langostas:draw()

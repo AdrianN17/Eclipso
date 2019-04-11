@@ -7,6 +7,7 @@ require "libs.extra.extras"
 local entidades=Class{}
 
 local personajes={}
+local enemigos={}
 
 function entidades:init(cam,timer,signal,vector,eleccion,map)
 	self.cam=cam
@@ -24,6 +25,10 @@ function entidades:init(cam,timer,signal,vector,eleccion,map)
 		require "entidades.personajes.Radian",
 		require "entidades.personajes.HS",
 		require "entidades.personajes.Cromwell"
+	}
+
+	enemigos={
+		require "entidades.enemigos.muymuy"
 	}
 
 	self.gameobject={}
@@ -44,9 +49,12 @@ function entidades:init(cam,timer,signal,vector,eleccion,map)
 	self:add_obj("players",personajes[eleccion](self,100,100,1))
 
 
+
 	self.ox,self.oy=self.gameobject.players[1].ox,self.gameobject.players[1].oy
 
 	self:init_servidor()
+
+	self:add_obj("enemigos",enemigos[1](self,500,500))
 
 end
 
@@ -216,18 +224,6 @@ function entidades:callbacks()
 
 	 			obj2.obj:remove()
 	 		end
-	 	elseif obj1.data=="escudo" and obj2.data=="personaje" then
-	 		--agregado
-
-	 		if obj1.obj.estados.protegido then
-
-	 			local r=math.atan2(y,x)
- 				local ix,iy=math.cos(r),math.sin(r)
-
- 				obj2.obj.collider:applyLinearImpulse( 1000*-ix,1000*-iy )
-
-	 		end
-
 
  		elseif obj1.data=="escudo" and obj2.data=="bala"  then
 
@@ -291,6 +287,22 @@ function entidades:callbacks()
  				obj1.obj.collider:applyLinearImpulse( 10000*-ix,10000*-iy )
  				obj1.obj.estados.atacando=false
  			end
+ 		elseif obj1.data=="personaje" and obj2.data=="enemigo_vision" then
+
+
+
+ 		--[[elseif obj1.data=="escudo" and obj2.data=="personaje" then
+	 		--agregado
+
+	 		if obj1.obj.estados.protegido then
+
+	 			local r=math.atan2(y,x)
+ 				local ix,iy=math.cos(r),math.sin(r)
+
+ 				obj2.obj.collider:applyLinearImpulse( 1000*-ix,1000*-iy )
+
+	 		end]]
+
  		end
 	end
 
