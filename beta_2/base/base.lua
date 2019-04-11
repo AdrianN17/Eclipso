@@ -4,6 +4,7 @@ local signal = require "libs.hump.signal"
 local timer = require "libs.hump.timer"
 local vector = require "libs.hump.vector"
 local entidades = require "entidades.entidades"
+local sti = require "libs.sti"
 
 local base = Class{}
 
@@ -22,8 +23,10 @@ function base:init(game,eleccion)
 	local signal=signal
 	local vector=vector
 
+	local map= sti("assets/map/sinnombre.lua")
 
-	game.entidades=entidades(cam,timer,signal,vector,eleccion)
+
+	game.entidades=entidades(cam,timer,signal,vector,eleccion,map)
 
 end
 

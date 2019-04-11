@@ -31,6 +31,8 @@ function conexion:draw()
 	for _, botones in ipairs(self.colliders) do
 		lg.draw(self.boton,botones.x,botones.y)
 	end
+
+	lg.print("aceptar",self.colliders[1].x,	self.colliders[1].y)
 end
 
 function conexion:update(dt)

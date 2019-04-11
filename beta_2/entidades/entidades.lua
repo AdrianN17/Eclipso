@@ -8,11 +8,13 @@ local entidades=Class{}
 
 local personajes={}
 
-function entidades:init(cam,timer,signal,vector,eleccion)
+function entidades:init(cam,timer,signal,vector,eleccion,map)
 	self.cam=cam
 	self.timer=timer
 	self.signal=signal
 	self.vector=vector
+
+	self.map=map
 
 
 	personajes={
@@ -53,6 +55,9 @@ function entidades:enter()
 end
 
 function entidades:draw()
+	local cx,cy,cw,ch=self.cam:getVisible()
+	self.map:draw(-cx,-cy,1,1)
+
 	self.cam:draw(function(l,t,w,h)
 		for i, obj in pairs(self.gameobject) do
 			for _, obj2 in pairs(obj) do
@@ -157,13 +162,47 @@ function entidades:getXY()
 	return cx,cy
 end
 
+--[[
+function entidades:collisions()
+	self:collisions_detection("players","balas",function(obj1,obj2)
+
+ 		if  obj1.collider:isTouching(obj2.collider) then
+ 			if not obj1.estados.protegido  then
+
+
+ 				obj1:attack(obj2.daño)
+
+	 			if obj2.efecto then
+					obj1:efecto(obj2.efecto)
+				end
+
+	 			obj2:remove()
+ 			end
+ 		end
+
+	end)
+
+
+end
+
+function entidades:collisions_detection(a,b,fun)
+	for _,obj1 in pairs(self.gameobject[a]) do
+		for _,obj2 in pairs(self.gameobject[b]) do
+			if obj1 and obj2 then
+				fun(obj1,obj2)
+			end
+		end
+	end
+end]]
+
+
 function entidades:callbacks()
 	local beginContact =  function(a, b, coll)
  		local obj1=a:getUserData()
  		local obj2=b:getUserData()
  		local x,y=coll:getNormal()
 
- 		--print(obj1.data,obj2.data)
+ 		print(obj1.data,obj2.data)
 
  		if obj1.data=="personaje" and obj2.data=="bala" then
  			if not obj1.obj.estados.protegido  then
@@ -177,6 +216,19 @@ function entidades:callbacks()
 
 	 			obj2.obj:remove()
 	 		end
+	 	elseif obj1.data=="escudo" and obj2.data=="personaje" then
+	 		--agregado
+
+	 		if obj1.obj.estados.protegido then
+
+	 			local r=math.atan2(y,x)
+ 				local ix,iy=math.cos(r),math.sin(r)
+
+ 				obj2.obj.collider:applyLinearImpulse( 1000*-ix,1000*-iy )
+
+	 		end
+
+
  		elseif obj1.data=="escudo" and obj2.data=="bala"  then
 
  			if obj1.obj.estados.protegido  then
@@ -359,13 +411,16 @@ end
 
 function entidades:update_server(dt)
 	self.server:update(dt)
+	self.map:update(dt)
+	self.world:update(dt)
+	--self:collisions()
 
 	self.tick = self.tick + dt
 
 	if self.tick >= self.tickRate then
         self.tick = 0
 
-        self.world:update(dt)
+        
 
 		for i, obj in pairs(self.gameobject) do
 			for _, obj2 in pairs(obj) do
@@ -440,6 +495,8 @@ function entidades:extra_data_all()
 
 	return data
 end
+
+
 
 
 function entidades:quit()

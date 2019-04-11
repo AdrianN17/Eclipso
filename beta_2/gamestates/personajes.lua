@@ -26,7 +26,7 @@ function personajes:enter()
 end
 
 function personajes:draw( )
-	lg.print(self.i,self.x/2,10)
+	lg.print("Personaje elegido : " .. self.i,self.x/2,10)
 	lg.print(_G.detalles.type,self.x/2,40)
 
 
@@ -34,6 +34,10 @@ function personajes:draw( )
 		lg.draw(self.boton,botones.x,botones.y)
 		lg.rectangle("line",botones.x,botones.y,botones.w,botones.h)
 	end
+
+	lg.print("Cambiar",self.colliders[1].x,	self.colliders[1].y)
+
+
 end
 
 function personajes:update(dt)
