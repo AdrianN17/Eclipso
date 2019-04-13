@@ -44,7 +44,7 @@ function modelo:init(x,y,r)
 	self.shape=py.newCircleShape(r)
 	self.fixture=py.newFixture(self.collider,self.shape)
 	self.fixture:setGroupIndex( -self.creador )
-	self.fixture:setUserData( {data="personaje",obj=self} )
+	self.fixture:setUserData( {data="personaje",obj=self, pos=0} )
 	self.fixture:setDensity(0)
 	self.collider:setInertia( 0 )
 
@@ -58,7 +58,7 @@ function modelo:init(x,y,r)
 	self.fixture_escudo=py.newFixture(self.collider,self.shape_escudo)
 	self.fixture_escudo:setSensor( true )
 	self.fixture_escudo:setGroupIndex( -self.creador )
-	self.fixture_escudo:setUserData( {data="escudo",obj=self}  )
+	self.fixture_escudo:setUserData( {data="escudo",obj=self, pos=1}  )
 	self.fixture_escudo:setDensity(0)
 
 
@@ -71,7 +71,7 @@ function modelo:init(x,y,r)
 		t.fixture=py.newFixture(self.collider,t.shape)
 		t.fixture:setSensor( true )
 		t.fixture:setGroupIndex( -self.creador )
-		t.fixture:setUserData( {data="postura",obj=self}  )
+		t.fixture:setUserData( {data="postura",obj=self, pos=2}  )
 		t.fixture:setDensity(0)
 
 		table.insert(self.points,t)
@@ -144,9 +144,9 @@ function modelo:updating(dt)
 
 	self.collider:setAngle(self.radio)
 
-	 if  not self.vivo then
+	if not self.vivo then
 	 	self:remove()
-	 end
+	end
 
 
 end
@@ -241,13 +241,15 @@ end
 
 
 function modelo:attack(daño)
+	
+	self.hp=self.hp-(daño+daño*(self.ira/self.max_ira))
+
 	self.ira=self.ira+daño*2
 
 	if self.ira>self.max_ira then
 		self.ira=self.max_ira
 	end
 
-	self.hp=self.hp-(daño+daño*(self.ira/self.max_ira))
 	if self.hp<1 then
 		self.vivo=false
 	end

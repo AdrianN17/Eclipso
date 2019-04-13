@@ -23,3 +23,4 @@ function love.load()
     Gamestate.switch(Inicio)
 end
 
+--ordenar con un numero las colisiones x>y

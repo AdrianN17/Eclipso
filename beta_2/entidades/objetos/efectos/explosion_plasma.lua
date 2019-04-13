@@ -12,7 +12,7 @@ function explosion_plasma:init(entidades,x,y)
 	self.shape=py.newCircleShape(45)
 	self.fixture=py.newFixture(self.collider,self.shape)
 	
-	self.fixture:setUserData( {data="explosion_plasma",obj=self} )
+	self.fixture:setUserData( {data="explosion_plasma",obj=self, pos=7} )
 	self.fixture:setSensor(true)
 
 

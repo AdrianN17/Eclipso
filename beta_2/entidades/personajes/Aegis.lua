@@ -16,7 +16,7 @@ function Aegis:init(entidades,x,y,creador)
 	self.creador=creador
 
 	self.velocidad=400
-	self.hp=500
+	self.hp=1000
 	self.max_ira=200
 
 	self.recargando_1=false

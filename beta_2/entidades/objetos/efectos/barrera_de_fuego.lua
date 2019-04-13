@@ -12,7 +12,7 @@ function barrera_de_fuego:init(entidades,x,y)
 	self.shape=py.newCircleShape(25)
 	self.fixture=py.newFixture(self.collider,self.shape)
 
-	self.fixture:setUserData( {data="barrera_de_fuego",obj=self} )
+	self.fixture:setUserData( {data="barrera_de_fuego",obj=self, pos=5} )
 	self.fixture:setSensor(true)
 
 	self.time=0

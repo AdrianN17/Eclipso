@@ -16,7 +16,7 @@ function cubo_de_hielo:init(entidades,x,y)
 	self.shape=py.newCircleShape(40)
 	self.fixture=py.newFixture(self.collider,self.shape)
 
-	self.fixture:setUserData( {data="cubo_de_hielo",obj=self} )
+	self.fixture:setUserData( {data="cubo_de_hielo",obj=self, pos=8} )
 
 	self.hp=100
 

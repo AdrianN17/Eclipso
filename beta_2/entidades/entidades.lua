@@ -206,11 +206,29 @@ end]]
 
 function entidades:callbacks()
 	local beginContact =  function(a, b, coll)
- 		local obj1=a:getUserData()
- 		local obj2=b:getUserData()
+
+		local obj1=nil
+ 		local obj2=nil
+
+		local o1,o2=a:getUserData(),b:getUserData()
+
+		print(o1.data,o2.data,o1.pos,o2.pos)
+
+		if o1.pos<o2.pos then
+			obj1=o1
+			obj2=o2
+		else
+			obj1=o2
+			obj2=o1
+		end
+
+
+ 		
  		local x,y=coll:getNormal()
 
- 		print(obj1.data,obj2.data)
+
+
+ 		
 
  		if obj1.data=="personaje" and obj2.data=="bala" then
  			if not obj1.obj.estados.protegido  then
@@ -289,7 +307,12 @@ function entidades:callbacks()
  			end
  		elseif obj1.data=="personaje" and obj2.data=="enemigo_vision" then
 
+ 			if not obj2.obj.atacante then
 
+	 			obj2.obj.sensor_activado=true
+
+	 			table.insert(obj2.obj.presas,{obj=obj1.obj, id = obj1.obj.creador})
+	 		end
 
  		--[[elseif obj1.data=="escudo" and obj2.data=="personaje" then
 	 		--agregado
@@ -302,17 +325,45 @@ function entidades:callbacks()
  				obj2.obj.collider:applyLinearImpulse( 1000*-ix,1000*-iy )
 
 	 		end]]
+	 	elseif obj1.data=="bala" and obj2.data=="enemigos" then
+	 		obj2.obj:attack(obj1.obj.daño)
 
+ 			if obj1.obj.efecto then
+				obj2.obj:efecto(obj1.obj.efecto)
+			end
+
+			if #obj2.obj.presas==0 and not obj2.obj.atacante then
+
+
+				obj2.obj.radio_atacante=obj1.obj.radio
+
+				obj2.obj.atacante=true
+
+				obj2.obj:detener_caza()
+			end
+
+	 		obj1.obj:remove()
  		end
 	end
 
 
 	local endContact =  function(a, b, coll)
- 		--local obj1=a:getUserData()
- 		---local obj2=b:getUserData()
- 		--local x,y=coll:getNormal()
+ 		local obj1=a:getUserData()
+ 		local obj2=b:getUserData()
+ 		local x,y=coll:getNormal()
 
+ 		if obj1.data=="personaje" and obj2.data=="enemigo_vision" then
 
+ 			obj2.obj.sensor_activado=false
+
+ 			for i,data in ipairs(obj2.obj.presas) do
+ 				if data.id == obj1.obj.creador then
+ 					table.remove(obj2.obj.presas,i)
+ 					break
+ 				end
+ 			end
+
+ 		end
 	end
 
 	local preSolve =  function(a, b, coll)

@@ -61,7 +61,7 @@ function Xeon:init(entidades,x,y,creador)
 	self.fixture_melee=py.newFixture(self.collider,self.shape_melee)
 	self.fixture_melee:setSensor( true )
 	self.fixture_melee:setGroupIndex( -self.creador )
-	self.fixture_melee:setUserData( {data="melee",obj=self}  )
+	self.fixture_melee:setUserData( {data="melee",obj=self, pos=3}  )
 	self.fixture_melee:setDensity( 0 )
 
 	self:reset_mass(25)

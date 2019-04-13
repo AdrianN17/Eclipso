@@ -7,14 +7,14 @@ function bala:init(x,y,angle,r)
 	self.entidades:add_obj("balas",self)
 
 	self.delta_velocidad=self.entidades.vector(math.cos(angle),math.sin(angle))
-	self.radio=0
+	self.radio=angle
 
 
 	self.collider=py.newBody(self.entidades.world,x,y,"dynamic")
 	self.collider:setMass(10)
 	self.shape=py.newCircleShape(r)
 	self.fixture=py.newFixture(self.collider,self.shape)
-	self.fixture:setUserData( {data="bala",obj=self} )
+	self.fixture:setUserData( {data="bala",obj=self, pos=4} )
 
 	--categoria 2
 	

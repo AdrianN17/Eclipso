@@ -12,7 +12,7 @@ function campo_electrico:init(entidades,x,y)
 	self.shape=py.newCircleShape(40)
 	self.fixture=py.newFixture(self.collider,self.shape)
 
-	self.fixture:setUserData( {data="campo_electrico",obj=self} )
+	self.fixture:setUserData( {data="campo_electrico",obj=self, pos=6} )
 	self.fixture:setSensor(true)
 
 	self.time=0

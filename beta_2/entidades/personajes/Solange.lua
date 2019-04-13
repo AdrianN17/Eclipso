@@ -18,7 +18,7 @@ function Solange:init(entidades,x,y,creador)
 
 	self.friccion=30
 
-	self.hp=600
+	self.hp=100
 
 	self.max_ira=100
 

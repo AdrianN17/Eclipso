@@ -20,7 +20,7 @@ function HS:init(entidades,x,y,creador)
 
 	self.friccion=30
 
-	self.hp=200
+	self.hp=1000
 
 	self.max_ira=170
 
