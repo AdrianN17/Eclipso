@@ -2,13 +2,13 @@ local Class = require "libs.hump.class"
 
 local molde = Class{}
 
-function molde:init(x,y,w,h)
+function molde:init(x,y,w,h,bala_enemigo,bullet_control)
 	self.collider=py.newBody(self.entidades.world,x,y,"dynamic")
 	self.collider:setFixedRotation(true)
 
 	self.shape=py.newRectangleShape(w,h)
 	self.fixture=py.newFixture(self.collider,self.shape)
-	self.fixture:setGroupIndex( self.creador )
+	self.fixture:setGroupIndex( -self.creador )
 	self.fixture:setUserData( {data="enemigos",obj=self, pos=9} )
 	self.fixture:setDensity(0)
 	self.collider:setInertia( 0 )
@@ -19,7 +19,7 @@ function molde:init(x,y,w,h)
 	self.shape_vision=py.newCircleShape(120)
 	self.fixture_vision=py.newFixture(self.collider,self.shape_vision)
 	self.fixture_vision:setSensor( true )
-	self.fixture_vision:setGroupIndex( self.creador )
+	self.fixture_vision:setGroupIndex( -self.creador )
 	self.fixture_vision:setUserData( {data="enemigo_vision",obj=self, pos=10}  )
 	self.fixture_vision:setDensity(0)
 
@@ -38,6 +38,19 @@ function molde:init(x,y,w,h)
 		end
 	end)
 
+	self.control=bullet_control(self.stock,self.municion,"infinito","infinito",self.timer,self.tiempo_recarga)
+
+	self.every_2=self.timer:every(self.tiempo_disparo, function() 
+		if  not self.estados.protegido and self.control:check_bullet() and not self.recargando and self.estados.atacando then
+			local bala= bala_enemigo(self.entidades,self.ox,self.oy,self.z,self.radio,self.creador)
+			self.control:newbullet()
+		elseif self.control:check_bullet_cantidad()==0 and not self.recargando then
+			self.control:reload(self)
+		end
+
+
+	end)
+
 	self.ox,self.oy=self.collider:getX(),self.collider:getY()
 
 	local data={{-50,0,20,60},{50,0,20,60},{0,-50,70,20},{0,50,70,20}}
@@ -49,7 +62,7 @@ function molde:init(x,y,w,h)
 		self.shapes_sensor[i]=py.newRectangleShape(d[1],d[2],d[3],d[4])
 		self.fixtures_sensor[i]=py.newFixture(self.collider,self.shapes_sensor[i])
 		self.fixtures_sensor[i]:setSensor( true )
-		self.fixtures_sensor[i]:setGroupIndex( self.creador )
+		self.fixtures_sensor[i]:setGroupIndex( -self.creador )
 		self.fixtures_sensor[i]:setUserData( {data="enemigo_sensor",obj=self, pos=11}  )
 		self.fixtures_sensor[i]:setDensity(0)
 	end
@@ -82,12 +95,13 @@ function molde:reset_mass(mass)
 end
 
 function molde:drawing()
-	lg.print(tostring(self.atacante),self.ox,self.oy-50)
+	lg.print(self.control:check_bullet_cantidad(),self.ox,self.oy-100)
 end
 
 function molde:updating(dt)
 
 	self.timer:update(dt)
+	self.estados.atacando=false
 
 	--seguir
 	if self.sensor_activado and #self.presas>0 and not self.atacante then
@@ -96,9 +110,13 @@ function molde:updating(dt)
 
 		self:seguir(x,y)
 
-	elseif self.atacante then
+		self.estados.atacando=true
 
-		self:set_vel(self.radio_atacante-math.pi)
+	elseif self.atacante then
+		self.radio=self.radio_atacante-math.pi
+		self:set_vel(self.radio)
+
+		self.estados.atacando=true
 	end
 
 

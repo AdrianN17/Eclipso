@@ -231,10 +231,6 @@ function modelo:recarga(key,arma1,arma2)
 	end
 end
 
-function modelo:shoot_down(x,y,bullet,rad)
-	local bala= bullet(self.entidades,x,y,self.z,rad,self.creador)
-end
-
 function modelo:shoot_up(x,y,button)
 	
 end
