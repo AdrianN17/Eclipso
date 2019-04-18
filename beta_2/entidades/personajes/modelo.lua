@@ -92,7 +92,7 @@ end
 
 
 function modelo:drawing()
-	lg.print(tostring(self.estados.quemadura),self.ox,self.oy-100)
+	lg.print(self.hp,self.ox,self.oy-100)
 end
 
 function modelo:updating(dt)
@@ -334,6 +334,10 @@ function modelo:send_data()
 	data.r=f:getRadius()
 
 	return data
+end
+
+function modelo:obj_atacado()
+	self.timer:after(0.5, function () self.estados.atacado=false end)
 end
 
 return modelo

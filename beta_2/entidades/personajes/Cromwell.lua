@@ -68,7 +68,7 @@ function Cromwell:init(entidades,x,y,creador)
 	self.fixture_melee:setUserData( {data="melee",obj=self, pos=3})
 	self.fixture_melee:setDensity( 0 )
 
-	self:reset_mass(60)
+	self:reset_mass(45)
 
 
 end

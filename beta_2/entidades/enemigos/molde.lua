@@ -2,7 +2,7 @@ local Class = require "libs.hump.class"
 
 local molde = Class{}
 
-function molde:init(x,y,w,h,bala_enemigo,bullet_control)
+function molde:init(x,y,w,h,bala_enemigo,bullet_control,rad_rango)
 	self.collider=py.newBody(self.entidades.world,x,y,"dynamic")
 	self.collider:setFixedRotation(true)
 
@@ -16,7 +16,7 @@ function molde:init(x,y,w,h,bala_enemigo,bullet_control)
 	self.timer=self.entidades.timer.new()
 
 
-	self.shape_vision=py.newCircleShape(120)
+	self.shape_vision=py.newCircleShape(rad_rango)
 	self.fixture_vision=py.newFixture(self.collider,self.shape_vision)
 	self.fixture_vision:setSensor( true )
 	self.fixture_vision:setGroupIndex( -self.creador )
@@ -42,7 +42,11 @@ function molde:init(x,y,w,h,bala_enemigo,bullet_control)
 
 	self.every_2=self.timer:every(self.tiempo_disparo, function() 
 		if  not self.estados.protegido and self.control:check_bullet() and not self.recargando and self.estados.atacando then
-			local bala= bala_enemigo(self.entidades,self.ox,self.oy,self.z,self.radio,self.creador)
+
+			local s= self.point_fixture:getShape()
+			local px,py=self.collider:getWorldPoints(s:getPoint())
+
+			local bala= bala_enemigo(self.entidades,px,py,self.z,self.radio,self.creador)
 			self.control:newbullet()
 		elseif self.control:check_bullet_cantidad()==0 and not self.recargando then
 			self.control:reload(self)
@@ -73,7 +77,7 @@ function molde:init(x,y,w,h,bala_enemigo,bullet_control)
 	self.presa_id=0
 	self.presas={}
 
-	self.estados={moviendo=false,congelado=false,quemadura=false,paralisis=false,protegido=false,atacando=false,atacado=false,no_moverse_atacando=false}
+	self.estados={moviendo=false,congelado=false,quemadura=false,paralisis=false,protegido=false,atacando=false,atacado=false,no_moverse_atacando=false,dañado_melee=false}
 
 	self.vivo=true
 	self.velocidad_media=self.velocidad/4
@@ -81,6 +85,37 @@ function molde:init(x,y,w,h,bala_enemigo,bullet_control)
 
 	self.atacante=false
 	self.radio_atacante=0
+
+	
+
+	self.point_shape=py.newCircleShape(self.points_data[1].x,self.points_data[1].y,4)
+	self.point_fixture=py.newFixture(self.collider,self.point_shape)
+	self.point_fixture:setSensor( true )
+	self.point_fixture:setGroupIndex( -self.creador )
+	self.point_fixture:setUserData( {data="postura_enemigo",obj=self, pos=12}  )
+	self.point_fixture:setDensity(0)
+
+	self.melee_point={}
+
+
+	if self.melee_points then
+
+		for _,p in ipairs(self.melee_points) do
+			local t={}
+
+			t.shape=py.newCircleShape(p.x,p.y,p.r)
+			t.fixture=py.newFixture(self.collider,t.shape)
+			t.fixture:setSensor( true )
+			t.fixture:setGroupIndex( -self.creador )
+			t.fixture:setUserData( {data="melee_enemigo",obj=self, pos=13}  )
+			t.fixture:setDensity(0)
+
+			table.insert(self.melee_point,t)
+		end
+
+	end
+
+	self.len=0
 
 
 end
@@ -95,7 +130,9 @@ function molde:reset_mass(mass)
 end
 
 function molde:drawing()
-	lg.print(self.control:check_bullet_cantidad(),self.ox,self.oy-100)
+	lg.print(self.hp,self.ox,self.oy-100)
+	lg.print(tostring(self.estados.atacando),self.ox,self.oy-150)
+	lg.print(tostring(self.sensor_activado),self.ox,self.oy-150)
 end
 
 function molde:updating(dt)
@@ -104,17 +141,18 @@ function molde:updating(dt)
 	self.estados.atacando=false
 
 	--seguir
-	if self.sensor_activado and #self.presas>0 and not self.atacante then
-		local x,y=self:cazar()
+	if self.sensor_activado and #self.presas>0 then
+		local x,y,len=self:cazar()
 
+		self.len = len
 
-		self:seguir(x,y)
+		self:seguir(x,y,dt)
 
 		self.estados.atacando=true
 
 	elseif self.atacante then
 		self.radio=self.radio_atacante-math.pi
-		self:set_vel(self.radio)
+		self:set_vel(self.radio,false,dt)
 
 		self.estados.atacando=true
 	end
@@ -139,21 +177,30 @@ function molde:remove()
 	self.entidades:remove_obj("enemigos",self)
 end
 
-function molde:seguir(x,y)
+function molde:seguir(x,y,dt)
 
 	self.radio=math.atan2(y-self.oy, x -self.ox)
 
-	self:set_vel(self.radio)
+	self:set_vel(self.radio,true,dt)
 
 end
 
-function molde:set_vel(radio)
+function molde:set_vel(radio,val,dt)
 	local rx,ry=math.cos(radio),math.sin(radio)
 
 	self.collider:setAngle(radio-math.pi/2)
 
 
-	self.collider:setLinearVelocity(rx*self.velocidad,ry*self.velocidad)
+	if self.len>self.max_distancia or not val then
+		if not self.estados.atacado then
+			local x,y=rx*self.mass*self.velocidad*dt,ry*self.mass*self.velocidad*dt
+			local vx,vy=self.collider:getLinearVelocity()
+
+			if vx<self.velocidad or vy<self.velocidad then
+				self.collider:applyLinearImpulse(x,y)
+			end
+		end
+	end
 end
 
 function molde:cazar()
@@ -172,11 +219,11 @@ function molde:cazar()
 
 	end
 
-	return self.presas[it].obj.ox,self.presas[it].obj.oy
+	return self.presas[it].obj.ox,self.presas[it].obj.oy, len
 end
 
 function molde:detener_caza()
-	self.timer:after(0.5, function() self.atacante=false  end)
+	self.timer:after(self.tiempo_seguir, function() self.atacante=false  end)
 end
 
 function molde:attack(daño)
@@ -238,6 +285,10 @@ function molde:efecto(tipo,rapidez)
 			self.timer:during(time, function(dt) self.hp=self.hp-dt*2.5 end)
 		end
 	end
+end
+
+function molde:obj_atacado()
+	self.timer:after(0.5, function () self.estados.atacado=false end)
 end
 
 

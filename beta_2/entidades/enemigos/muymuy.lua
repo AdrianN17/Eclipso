@@ -14,11 +14,11 @@ function muymuy:init(entidades,x,y)
 
 	self.hp=200
 
-	self.velocidad=100
+	self.velocidad=380
 
 	self.max_ira=100
 
-	self.tiempo_seguir=2
+	self.tiempo_seguir=1
 
 	self.tiempo_disparo=0.5
 
@@ -28,14 +28,15 @@ function muymuy:init(entidades,x,y)
 	self.municion=10
 	self.tiempo_recarga=0.5
 
-	Molde.init(self,x,y,30,60,bala_enemigo,bullet_control)
+	self.max_distancia=120
 
-	
+	self.points_data={
+		{x=0, y=0}
+	}
+
+	Molde.init(self,x,y,30,60,bala_enemigo,bullet_control,150)
 
 	self:reset_mass(20)
-
-
-
 end
 
 function muymuy:draw()

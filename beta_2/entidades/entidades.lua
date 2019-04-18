@@ -28,7 +28,9 @@ function entidades:init(cam,timer,signal,vector,eleccion,map)
 	}
 
 	enemigos={
-		require "entidades.enemigos.muymuy"
+		require "entidades.enemigos.muymuy",
+		require "entidades.enemigos.cangrejos"
+
 	}
 
 	self.gameobject={}
@@ -54,7 +56,7 @@ function entidades:init(cam,timer,signal,vector,eleccion,map)
 
 	self:init_servidor()
 
-	self:add_obj("enemigos",enemigos[1](self,500,500))
+	self:add_obj("enemigos",enemigos[2](self,500,500))
 
 end
 
@@ -212,7 +214,7 @@ function entidades:callbacks()
 
 		local o1,o2=a:getUserData(),b:getUserData()
 
-		print(o1.data,o2.data,o1.pos,o2.pos)
+		
 
 		if o1.pos<o2.pos then
 			obj1=o1
@@ -227,7 +229,7 @@ function entidades:callbacks()
  		local x,y=coll:getNormal()
 
 
-
+ 		print(obj1.data,obj2.data,obj1.pos,obj2.pos)
  		
 
  		if obj1.data=="personaje" and obj2.data=="bala" then
@@ -271,6 +273,9 @@ function entidades:callbacks()
 	 		elseif obj1.obj.name=="bala-fuego" then
 	 			obj2.obj:attack(obj1.obj.daño*2)
 	 			obj1.obj:remove()
+	 		else
+	 			obj2.obj:attack(obj1.obj.daño)
+	 			obj1.obj:remove()
 	 		end
 	 	elseif obj1.data=="bala" and obj2.data=="barrera_de_fuego" then
 	 		if obj1.obj.name=="bala-hielo" then
@@ -296,6 +301,9 @@ function entidades:callbacks()
 
  				obj2.obj:attack(obj1.obj.melee_attack)
  				obj1.obj.estados.atacando=false
+
+ 				obj2.obj.estados.atacado=true
+ 				obj2.obj:obj_atacado()
  			end
  		elseif obj1.data=="melee" and obj2.data=="escudo" then
  			if obj1.obj.estados.atacando and obj1.obj.estados.protegido then
@@ -307,12 +315,15 @@ function entidades:callbacks()
  			end
  		elseif obj1.data=="personaje" and obj2.data=="enemigo_vision" then
 
- 			if not obj2.obj.atacante then
+
+
 
 	 			obj2.obj.sensor_activado=true
 
+	 			obj2.obj.atacante=false
+
 	 			table.insert(obj2.obj.presas,{obj=obj1.obj, id = obj1.obj.creador})
-	 		end
+
 
  		--[[elseif obj1.data=="escudo" and obj2.data=="personaje" then
 	 		--agregado
@@ -332,7 +343,7 @@ function entidades:callbacks()
 				obj2.obj:efecto(obj1.obj.efecto)
 			end
 
-			if #obj2.obj.presas==0 and not obj2.obj.atacante then
+			if #obj2.obj.presas==0 then
 
 
 				obj2.obj.radio_atacante=obj1.obj.radio
@@ -343,6 +354,32 @@ function entidades:callbacks()
 			end
 
 	 		obj1.obj:remove()
+	 	elseif obj1.data=="personaje" and obj2.data=="melee_enemigo" then
+	 		local r=math.atan2(y,x)
+ 			local ix,iy=math.cos(r),math.sin(r)
+
+ 			obj1.obj.collider:applyLinearImpulse( 10000*-ix,10000*-iy )
+
+ 			obj1.obj:attack(obj2.obj.melee_attack)
+
+ 			obj1.obj.estados.atacado=true
+ 			obj1.obj:obj_atacado()
+
+ 		elseif obj1.data=="melee" and obj2.data=="enemigos" then
+ 			if obj1.obj.estados.atacando then
+
+ 				local r=math.atan2(y,x)
+ 				local ix,iy=math.cos(r),math.sin(r)
+
+ 				obj2.obj.collider:applyLinearImpulse( 10000*ix,10000*iy )
+ 				
+ 				obj2.obj:attack(obj1.obj.melee_attack)
+ 				obj1.obj.estados.atacando=false
+
+ 				obj2.obj.estados.atacado=true
+ 				obj2.obj:obj_atacado()
+ 			end
+
  		end
 	end
 
