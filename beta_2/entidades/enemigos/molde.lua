@@ -16,7 +16,7 @@ function molde:init(x,y,w,h,bala_enemigo,bullet_control,rad_rango)
 	self.timer=self.entidades.timer.new()
 
 
-	self.shape_vision=py.newCircleShape(rad_rango)
+	self.shape_vision=py.newCircleShape(0,80,rad_rango)
 	self.fixture_vision=py.newFixture(self.collider,self.shape_vision)
 	self.fixture_vision:setSensor( true )
 	self.fixture_vision:setGroupIndex( -self.creador )
@@ -57,19 +57,19 @@ function molde:init(x,y,w,h,bala_enemigo,bullet_control,rad_rango)
 
 	self.ox,self.oy=self.collider:getX(),self.collider:getY()
 
-	local data={{-50,0,20,60},{50,0,20,60},{0,-50,70,20},{0,50,70,20}}
+	--local data={{-50,0,20,60},{50,0,20,60},{0,-50,70,20},{0,50,70,20}}
 
-	self.fixtures_sensor={}
-	self.shapes_sensor={}
+	--self.fixtures_sensor={}
+	--self.shapes_sensor={}
 
-	for i, d in ipairs(data) do
+	--[[for i, d in ipairs(data) do
 		self.shapes_sensor[i]=py.newRectangleShape(d[1],d[2],d[3],d[4])
 		self.fixtures_sensor[i]=py.newFixture(self.collider,self.shapes_sensor[i])
 		self.fixtures_sensor[i]:setSensor( true )
 		self.fixtures_sensor[i]:setGroupIndex( -self.creador )
 		self.fixtures_sensor[i]:setUserData( {data="enemigo_sensor",obj=self, pos=11}  )
 		self.fixtures_sensor[i]:setDensity(0)
-	end
+	end]]
 
 
 	self.sensor_activado=false
@@ -77,7 +77,7 @@ function molde:init(x,y,w,h,bala_enemigo,bullet_control,rad_rango)
 	self.presa_id=0
 	self.presas={}
 
-	self.estados={moviendo=false,congelado=false,quemadura=false,paralisis=false,protegido=false,atacando=false,atacado=false,no_moverse_atacando=false,dañado_melee=false}
+	self.estados={moviendo=false,congelado=false,quemadura=false,paralisis=false,protegido=false,atacando=false,atacado=false,no_moverse_atacando=false}
 
 	self.vivo=true
 	self.velocidad_media=self.velocidad/4

@@ -389,6 +389,16 @@ function entidades:callbacks()
 
  				obj2.obj.estados.atacado=true
  				obj2.obj:obj_atacado()
+
+
+ 				if #obj2.obj.presas==0 then
+					obj2.obj.radio_atacante=obj1.obj.radio
+
+					obj2.obj.atacante=true
+
+					obj2.obj:detener_caza()
+				end
+				
  			end
 
  		end

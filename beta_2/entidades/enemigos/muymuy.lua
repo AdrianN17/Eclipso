@@ -34,7 +34,7 @@ function muymuy:init(entidades,x,y)
 		{x=0, y=0}
 	}
 
-	Molde.init(self,x,y,30,60,bala_enemigo,bullet_control,150)
+	Molde.init(self,x,y,30,60,bala_enemigo,bullet_control,100)
 
 	self:reset_mass(20)
 end

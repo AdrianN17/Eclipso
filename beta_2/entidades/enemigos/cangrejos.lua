@@ -42,7 +42,7 @@ function cangrejos:init(entidades,x,y)
 
 	self.melee_attack=85
 
-	Molde.init(self,x,y,60,40,bala_enemigo,bullet_control,200)
+	Molde.init(self,x,y,60,40,bala_enemigo,bullet_control,150)
 
 	
 
