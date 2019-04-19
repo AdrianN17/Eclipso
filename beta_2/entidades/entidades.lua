@@ -8,6 +8,7 @@ local entidades=Class{}
 
 local personajes={}
 local enemigos={}
+local objetos={}
 
 function entidades:init(cam,timer,signal,vector,eleccion,map)
 	self.cam=cam
@@ -33,12 +34,18 @@ function entidades:init(cam,timer,signal,vector,eleccion,map)
 
 	}
 
+	objetos={
+		Arbol= require "entidades.objetos.mapa.arbol",
+		Roca= require "entidades.objetos.mapa.roca"
+	}
+
 	self.gameobject={}
 
 	self.gameobject.players={}
 	self.gameobject.balas={}
 	self.gameobject.efectos={}
 	self.gameobject.enemigos={}
+	self.gameobject.objetos={}
 
 
 
@@ -58,17 +65,21 @@ function entidades:init(cam,timer,signal,vector,eleccion,map)
 
 	self:add_obj("enemigos",enemigos[2](self,500,500))
 
+
+	self:map_init()
 end
 
 function entidades:enter()
+
 	
 end
 
 function entidades:draw()
 	local cx,cy,cw,ch=self.cam:getVisible()
-	self.map:draw(-cx,-cy,1,1)
+	
 
 	self.cam:draw(function(l,t,w,h)
+		self.map:draw(-cx,-cy,1,1)
 		for i, obj in pairs(self.gameobject) do
 			for _, obj2 in pairs(obj) do
 				if obj2 then
@@ -601,6 +612,29 @@ end
 
 function entidades:quit()
     self.server:destroy()
+end
+
+function entidades:map_init()
+	for _, layer in ipairs(self.map.layers) do
+		if layer.type=="tilelayer" then
+			--self:get_tile(layer)
+		elseif layer.type=="objectgroup" then
+			self:get_objects(layer)
+		end
+	end
+
+	self.map:removeLayer("Objetos")
+end
+
+function entidades:get_objects(objectlayer)
+	if objectlayer.name=="Objetos" then
+		for _, obj in pairs(objectlayer.objects) do
+
+			objetos[obj.name](obj.x+obj.width/2,obj.y+obj.width/2,obj.width,obj.height,obj.properties.hp,obj.shape,self)
+		end
+	end
+
+
 end
 
 return entidades

@@ -9,11 +9,14 @@ local sti = require "libs.sti"
 local base = Class{}
 
 function base:init(game,eleccion)
+	local map= sti("assets/map/demo.lua")
 	--objetos principales
 
 	local scale=1
 	local x,y=lg.getDimensions( )
-	local cam = gamera.new(0,0,2000,2000)
+
+	map:resize(x,y)
+	local cam = gamera.new(0,0,map.width*map.tilewidth, map.height*map.tileheight)
 	cam:setWindow(0,0,x,y)
 
 	cam:setScale(1)
@@ -23,7 +26,7 @@ function base:init(game,eleccion)
 	local signal=signal
 	local vector=vector
 
-	local map= sti("assets/map/sinnombre.lua")
+	
 
 
 	game.entidades=entidades(cam,timer,signal,vector,eleccion,map)

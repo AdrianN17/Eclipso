@@ -23,4 +23,5 @@ function love.load()
     Gamestate.switch(Inicio)
 end
 
---ordenar con un numero las colisiones x>y
+--agregar deteccion de colisiones a los enemigos
+--agregar daño a los objetos como roca y pared
