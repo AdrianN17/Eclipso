@@ -51,6 +51,8 @@ function entidades:init(cam,timer,signal,vector,eleccion,map)
 
 	self.world = love.physics.newWorld(0, 0, false)
 
+
+
 	
     self.world:setCallbacks(self:callbacks())
 
@@ -63,7 +65,8 @@ function entidades:init(cam,timer,signal,vector,eleccion,map)
 
 	self:init_servidor()
 
-	self:add_obj("enemigos",enemigos[2](self,500,500))
+	--self:add_obj("enemigos",enemigos[2](self,500,500))
+	self:add_obj("enemigos",enemigos[2](self,300,400))
 
 
 	self:map_init()
@@ -260,7 +263,7 @@ function entidades:callbacks()
 
  			if obj1.obj.estados.protegido  then
 
- 				if obj1.obj.personaje=="Aegis" then
+ 				if obj1.obj.reflejo then
 
  					local r=math.atan2(y,x)
  					local ix,iy=math.cos(r),math.sin(r)
@@ -333,7 +336,8 @@ function entidades:callbacks()
 
 	 			obj2.obj.atacante=false
 
-	 			table.insert(obj2.obj.presas,{obj=obj1.obj, id = obj1.obj.creador})
+	 			obj2.obj:almacenar_enemigos(obj1.obj)
+
 
 
  		--[[elseif obj1.data=="escudo" and obj2.data=="personaje" then
@@ -400,7 +404,19 @@ function entidades:callbacks()
 				end
 				
  			end
+ 		elseif obj1.data=="escudo" and obj2.data=="melee_enemigo" then
+ 			if obj1.obj.estados.protegido then
 
+ 				local r=math.atan2(y,x)
+ 				local ix,iy=math.cos(r),math.sin(r)
+
+ 				obj2.obj.collider:applyLinearImpulse( 10000*ix,10000*iy )
+
+ 			end
+ 		elseif obj1.data=="enemigo_sensor" and (obj2.data=="roca" or obj2.data=="arbol")then
+ 			if not obj1.obj.atacante and not obj1.obj.sensor_activado then
+ 				obj1.obj.touch=true
+ 			end
  		end
 	end
 
@@ -412,15 +428,7 @@ function entidades:callbacks()
 
  		if obj1.data=="personaje" and obj2.data=="enemigo_vision" then
 
- 			obj2.obj.sensor_activado=false
-
- 			for i,data in ipairs(obj2.obj.presas) do
- 				if data.id == obj1.obj.creador then
- 					table.remove(obj2.obj.presas,i)
- 					break
- 				end
- 			end
-
+ 			obj2.obj:olvidar_enemigos(obj1.obj)
  		end
 	end
 

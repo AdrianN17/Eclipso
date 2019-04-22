@@ -18,12 +18,12 @@ function Solange:init(entidades,x,y,creador)
 
 	self.friccion=30
 
-	self.hp=100
+	self.hp=1000
 
 	self.max_ira=100
 
 
-	self.escudo_tiempo=0.6
+	self.escudo_tiempo=0.5
 
 	self.recargando_1=false
 
@@ -79,5 +79,12 @@ function Solange:wheelmoved(x,y)
 	self:wheel_moved(x,y)
 end
 
+function Solange:reflejo(obj,dx,dy) 
+	obj.z=obj.z+5
+
+	obj.delta_velocidad.x,obj.delta_velocidad.y=-dx,-dy
+
+	self.estados.protegido=false
+end
 
 return Solange

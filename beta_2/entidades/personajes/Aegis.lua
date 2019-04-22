@@ -22,7 +22,7 @@ function Aegis:init(entidades,x,y,creador)
 	self.recargando_1=false
 	self.recargando_2=false
 
-	self.escudo_tiempo=0.3
+	self.escudo_tiempo=0.5
 
 	self.friccion=30
 
@@ -89,15 +89,5 @@ function Aegis:reflejo(obj,dx,dy)
 
 	self.estados.protegido=false
 end
-
-
-function Aegis:touchpressed(id,x,y,dx,dy,pressure)
-	
-end
-
-function Aegis:touchreleased(id,x,y,dx,dy,pressure)
-	
-end
-
 
 return Aegis

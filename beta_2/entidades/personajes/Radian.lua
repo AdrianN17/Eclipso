@@ -23,7 +23,7 @@ function Radian:init(entidades,x,y,creador)
 
 	self.max_ira=250
 
-	self.escudo_tiempo=0.6
+	self.escudo_tiempo=0.35
 
 	self.points_data={
 		{x=25, y=-25}

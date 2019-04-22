@@ -28,7 +28,7 @@ function muymuy:init(entidades,x,y)
 	self.municion=10
 	self.tiempo_recarga=0.5
 
-	self.max_distancia=120
+	self.max_distancia=80
 
 	self.points_data={
 		{x=0, y=0}

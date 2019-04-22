@@ -1,4 +1,4 @@
-# Hypernova
+﻿# Hypernova
 
 Indice
 
@@ -86,8 +86,8 @@ Utiliza una pistola de color negro con amarillo
 
 * Pistola de habilidad electricidad.
 	* Electricidad genera un porcentaje de parálisis, ademas del daño. Daño bajo.
-* Escudo de plasma
-	* Puede usar un escudo de plasma para defenderse, ademas de generar un daño menor
+* Escudo magnetico
+	* Puede usar un escudo magnetico para defenderse.
 *  Armadura Plas-T1
 	* Armadura creada para generar mayor movilidad y recibir la mayoría de golpes.
 * A su máximo poder puede convocar un androide para que pelee en su lugar.

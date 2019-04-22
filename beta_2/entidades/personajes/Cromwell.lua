@@ -24,7 +24,7 @@ function Cromwell:init(entidades,x,y,creador)
 
 	self.max_ira=100
 
-	self.escudo_tiempo=0.6
+	self.escudo_tiempo=0.7
 
 	
 

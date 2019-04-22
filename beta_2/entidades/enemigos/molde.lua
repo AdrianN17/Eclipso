@@ -23,9 +23,8 @@ function molde:init(x,y,w,h,bala_enemigo,bullet_control,rad_rango)
 	self.fixture_vision:setUserData( {data="enemigo_vision",obj=self, pos=10}  )
 	self.fixture_vision:setDensity(0)
 
-	self.rad=self.shape:getRadius()
-
 	self.radio=0
+
 
 	self.ira=0
 
@@ -37,6 +36,22 @@ function molde:init(x,y,w,h,bala_enemigo,bullet_control,rad_rango)
 			self.ira=0
 		end
 	end)
+
+	self.mover_val=false
+	self.touch=false
+
+	self.timer:every(2.5, function()
+
+			self.radio=self.radio+math.rad(love.math.random(0,360))
+
+	end)
+
+	self.timer:every(0.5, function()
+		if  not self.sensor_activado and not self.atacante then
+			self.mover_val=not self.mover_val
+		end
+	end)
+
 
 	self.control=bullet_control(self.stock,self.municion,"infinito","infinito",self.timer,self.tiempo_recarga)
 
@@ -57,19 +72,14 @@ function molde:init(x,y,w,h,bala_enemigo,bullet_control,rad_rango)
 
 	self.ox,self.oy=self.collider:getX(),self.collider:getY()
 
-	--local data={{-50,0,20,60},{50,0,20,60},{0,-50,70,20},{0,50,70,20}}
+	self.shape_sensor=py.newCircleShape(0,50,20)
+	self.fixture_sensor=py.newFixture(self.collider,self.shape_sensor)
+	self.fixture_sensor:setSensor( true )
+	self.fixture_sensor:setGroupIndex( -self.creador )
+	self.fixture_sensor:setUserData( {data="enemigo_sensor",obj=self, pos=11}  )
+	self.fixture_sensor:setDensity(0)
 
-	--self.fixtures_sensor={}
-	--self.shapes_sensor={}
-
-	--[[for i, d in ipairs(data) do
-		self.shapes_sensor[i]=py.newRectangleShape(d[1],d[2],d[3],d[4])
-		self.fixtures_sensor[i]=py.newFixture(self.collider,self.shapes_sensor[i])
-		self.fixtures_sensor[i]:setSensor( true )
-		self.fixtures_sensor[i]:setGroupIndex( -self.creador )
-		self.fixtures_sensor[i]:setUserData( {data="enemigo_sensor",obj=self, pos=11}  )
-		self.fixtures_sensor[i]:setDensity(0)
-	end]]
+	
 
 
 	self.sensor_activado=false
@@ -117,6 +127,8 @@ function molde:init(x,y,w,h,bala_enemigo,bullet_control,rad_rango)
 
 	self.len=0
 
+	
+
 
 end
 
@@ -130,9 +142,11 @@ function molde:reset_mass(mass)
 end
 
 function molde:drawing()
-	lg.print(self.hp,self.ox,self.oy-100)
-	lg.print(tostring(self.estados.atacando),self.ox,self.oy-150)
-	lg.print(tostring(self.sensor_activado),self.ox,self.oy-150)
+	--lg.print(#self.presas .. " .. " .. self.len,self.ox,self.oy-100)
+	lg.print(tostring(self.touch),self.ox,self.oy-150)
+	--lg.print(tostring(self.sensor_activado),self.ox,self.oy-200)
+
+	
 end
 
 function molde:updating(dt)
@@ -149,18 +163,26 @@ function molde:updating(dt)
 		self:seguir(x,y,dt)
 
 		self.estados.atacando=true
-
+	--atacar
 	elseif self.atacante then
 		self.radio=self.radio_atacante-math.pi
 		self:set_vel(self.radio,false,dt)
 
 		self.estados.atacando=true
+	else 
+
+		--posiciones random
+		if self.mover_val and not self.touch then
+			self:set_vel(self.radio,false,dt)
+		end
 	end
 
 
 
 
 	self.ox,self.oy=self.collider:getX(),self.collider:getY()
+
+	self.rad=self.collider:getAngle()
 
 	if  not self.vivo then
 	 	self:remove()
@@ -202,6 +224,7 @@ function molde:set_vel(radio,val,dt)
 		end
 	end
 end
+
 
 function molde:cazar()
 	local it,len=0,0
@@ -290,6 +313,37 @@ end
 function molde:obj_atacado()
 	self.timer:after(0.5, function () self.estados.atacado=false end)
 end
+
+function molde:almacenar_enemigos(obj)
+	local val=false
+
+	for i,data in ipairs(self.presas) do
+		if data.id == obj.creador then
+	 		val=true
+	 		break
+	 	end
+	end
+
+	if not val then
+		table.insert(self.presas,{obj=obj, id = obj.creador})
+	end
+
+end
+
+function molde:olvidar_enemigos(obj)
+
+	self.sensor_activado=false
+
+ 	for i,data in ipairs(self.presas) do
+ 		if data.id == obj.creador then
+ 			table.remove(self.presas,i)
+ 			break
+ 		end
+ 	end
+
+end
+
+
 
 
 return molde

@@ -20,7 +20,7 @@ function roca:init(x,y,w,h,hp,tipo,entidades)
 
 	self.fixture=py.newFixture(self.collider,self.shape)
 
-	self.fixture:setUserData( {data="roca",obj=self, pos=1} )
+	self.fixture:setUserData( {data="roca",obj=self, pos=14} )
 
 	self.ox,self.oy=self.collider:getX(),self.collider:getY()
 end
