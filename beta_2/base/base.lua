@@ -15,7 +15,7 @@ function base:init(game,eleccion)
 	local scale=1
 	local x,y=lg.getDimensions( )
 
-	map:resize(x,y)
+	map:resize(x*2,y*2)
 	local cam = gamera.new(0,0,map.width*map.tilewidth, map.height*map.tileheight)
 	cam:setWindow(0,0,x,y)
 

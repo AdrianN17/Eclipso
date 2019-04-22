@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.3" orientation="orthogonal" renderorder="right-down" width="44" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="6">
- <layer id="4" name="Capa de Patrones 1" width="44" height="20">
+<map version="1.2" tiledversion="1.2.3" orientation="orthogonal" renderorder="right-down" width="44" height="34" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="10">
+ <layer id="5" name="Capa de Patrones 1" width="44" height="34">
   <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -25,33 +39,43 @@
 </data>
  </layer>
  <objectgroup id="2" name="Objetos">
-  <object id="1" name="Roca" x="214" y="113" width="66" height="70">
+  <object id="1" name="Roca" x="700" y="140" width="66" height="70">
    <properties>
     <property name="hp" type="int" value="10"/>
    </properties>
    <ellipse/>
   </object>
-  <object id="2" name="Roca" x="54" y="307" width="153" height="116">
-   <properties>
-    <property name="hp" type="int" value="15"/>
-   </properties>
-  </object>
-  <object id="3" name="Roca" x="476" y="304" width="133" height="113">
-   <properties>
-    <property name="hp" type="int" value="15"/>
-   </properties>
-  </object>
-  <object id="4" name="Arbol" x="386" y="160" width="39" height="40">
+  <object id="4" name="Arbol" x="845" y="197" width="39" height="40">
    <properties>
     <property name="hp" type="int" value="3"/>
    </properties>
    <ellipse/>
   </object>
-  <object id="5" name="Arbol" x="286" y="496" width="53" height="50">
+  <object id="5" name="Arbol" x="759" y="276" width="53" height="50">
    <properties>
     <property name="hp" type="int" value="3"/>
    </properties>
    <ellipse/>
+  </object>
+  <object id="6" name="Roca" x="173.5" y="813.5" width="393" height="113">
+   <properties>
+    <property name="hp" type="int" value="15"/>
+   </properties>
+  </object>
+  <object id="7" name="Roca" x="207.5" y="30.5" width="427" height="113">
+   <properties>
+    <property name="hp" type="int" value="15"/>
+   </properties>
+  </object>
+  <object id="8" name="Roca" x="12.5" y="348.5" width="109" height="435">
+   <properties>
+    <property name="hp" type="int" value="15"/>
+   </properties>
+  </object>
+  <object id="9" name="Roca" x="650.5" y="368.5" width="109" height="435">
+   <properties>
+    <property name="hp" type="int" value="15"/>
+   </properties>
   </object>
  </objectgroup>
 </map>

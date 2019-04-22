@@ -37,20 +37,12 @@ function molde:init(x,y,w,h,bala_enemigo,bullet_control,rad_rango)
 		end
 	end)
 
-	self.mover_val=false
+	self.mover_val=true
+
 	self.touch=false
 
-	self.timer:every(2.5, function()
 
-			self.radio=self.radio+math.rad(love.math.random(0,360))
-
-	end)
-
-	self.timer:every(0.5, function()
-		if  not self.sensor_activado and not self.atacante then
-			self.mover_val=not self.mover_val
-		end
-	end)
+	
 
 
 	self.control=bullet_control(self.stock,self.municion,"infinito","infinito",self.timer,self.tiempo_recarga)
@@ -127,8 +119,6 @@ function molde:init(x,y,w,h,bala_enemigo,bullet_control,rad_rango)
 
 	self.len=0
 
-	
-
 
 end
 
@@ -143,7 +133,7 @@ end
 
 function molde:drawing()
 	--lg.print(#self.presas .. " .. " .. self.len,self.ox,self.oy-100)
-	lg.print(tostring(self.touch),self.ox,self.oy-150)
+	
 	--lg.print(tostring(self.sensor_activado),self.ox,self.oy-200)
 
 	
@@ -172,9 +162,10 @@ function molde:updating(dt)
 	else 
 
 		--posiciones random
-		if self.mover_val and not self.touch then
+		if self.mover_val then
 			self:set_vel(self.radio,false,dt)
 		end
+
 	end
 
 
@@ -344,6 +335,12 @@ function molde:olvidar_enemigos(obj)
 end
 
 
+
+function molde:new_radio(obj)
+	local r= math.atan2(obj.oy-self.oy, obj.ox -self.ox)
+	self.radio=r+math.rad(love.math.random(-30,30))
+	self.radio=self.radio-math.pi
+end
 
 
 return molde

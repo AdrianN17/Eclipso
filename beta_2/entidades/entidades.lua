@@ -80,9 +80,10 @@ end
 function entidades:draw()
 	local cx,cy,cw,ch=self.cam:getVisible()
 	
+	self.map:draw(-cx,-cy,1,1)
 
 	self.cam:draw(function(l,t,w,h)
-		self.map:draw(-cx,-cy,1,1)
+		
 		for i, obj in pairs(self.gameobject) do
 			for _, obj2 in pairs(obj) do
 				if obj2 then
@@ -413,10 +414,19 @@ function entidades:callbacks()
  				obj2.obj.collider:applyLinearImpulse( 10000*ix,10000*iy )
 
  			end
- 		elseif obj1.data=="enemigo_sensor" and (obj2.data=="roca" or obj2.data=="arbol")then
- 			if not obj1.obj.atacante and not obj1.obj.sensor_activado then
- 				obj1.obj.touch=true
- 			end
+ 		elseif obj1.data=="enemigo_sensor" and (obj2.data=="roca" or obj2.data=="arbol") then
+ 	
+
+ 			
+ 			obj1.obj:new_radio(obj2.obj)
+
+ 			
+ 			obj1.obj.atacante=false
+ 			obj1.obj.sensor_activado=false
+
+ 			obj1.obj.touch=true
+ 		
+ 			
  		end
 	end
 
@@ -429,6 +439,12 @@ function entidades:callbacks()
  		if obj1.data=="personaje" and obj2.data=="enemigo_vision" then
 
  			obj2.obj:olvidar_enemigos(obj1.obj)
+ 		elseif obj1.data=="enemigo_sensor" and (obj2.data=="roca" or obj2.data=="arbol") then
+ 			
+
+ 			obj1.obj.touch=false
+ 		
+ 			
  		end
 	end
 
@@ -641,14 +657,15 @@ function entidades:map_init()
 		end
 	end
 
-	self.map:removeLayer("Objetos")
+	--self.map:removeLayer("Objetos")
 end
 
 function entidades:get_objects(objectlayer)
 	if objectlayer.name=="Objetos" then
 		for _, obj in pairs(objectlayer.objects) do
-
-			objetos[obj.name](obj.x+obj.width/2,obj.y+obj.width/2,obj.width,obj.height,obj.properties.hp,obj.shape,self)
+			
+			objetos[obj.name](obj.x+obj.width/2,obj.y+obj.height/2,obj.width,obj.height,obj.properties.hp,obj.shape,self)
+			
 		end
 	end
 
