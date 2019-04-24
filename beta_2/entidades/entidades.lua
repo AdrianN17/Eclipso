@@ -80,10 +80,12 @@ end
 function entidades:draw()
 	local cx,cy,cw,ch=self.cam:getVisible()
 	
-	self.map:draw(-cx,-cy,1,1)
+	
 
 	self.cam:draw(function(l,t,w,h)
 		
+		self.map:draw(-cx,-cy,1,1)
+
 		for i, obj in pairs(self.gameobject) do
 			for _, obj2 in pairs(obj) do
 				if obj2 then

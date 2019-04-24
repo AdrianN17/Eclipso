@@ -64,7 +64,7 @@ function molde:init(x,y,w,h,bala_enemigo,bullet_control,rad_rango)
 
 	self.ox,self.oy=self.collider:getX(),self.collider:getY()
 
-	self.shape_sensor=py.newCircleShape(0,50,20)
+	self.shape_sensor=py.newCircleShape(0,75,5)
 	self.fixture_sensor=py.newFixture(self.collider,self.shape_sensor)
 	self.fixture_sensor:setSensor( true )
 	self.fixture_sensor:setGroupIndex( -self.creador )

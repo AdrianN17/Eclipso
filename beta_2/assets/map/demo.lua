@@ -9,7 +9,7 @@ return {
   tilewidth = 32,
   tileheight = 32,
   nextlayerid = 6,
-  nextobjectid = 10,
+  nextobjectid = 14,
   properties = {},
   tilesets = {},
   layers = {
@@ -178,6 +178,66 @@ return {
           visible = true,
           properties = {
             ["hp"] = 15
+          }
+        },
+        {
+          id = 10,
+          name = "Roca",
+          type = "",
+          shape = "rectangle",
+          x = -0.5,
+          y = 1094.5,
+          width = 1413,
+          height = 44,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["hp"] = 100
+          }
+        },
+        {
+          id = 11,
+          name = "Roca",
+          type = "",
+          shape = "rectangle",
+          x = -2.5,
+          y = -54,
+          width = 1413,
+          height = 44,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["hp"] = 100
+          }
+        },
+        {
+          id = 12,
+          name = "Roca",
+          type = "",
+          shape = "rectangle",
+          x = 1417.5,
+          y = -19,
+          width = 39,
+          height = 1102,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["hp"] = 100
+          }
+        },
+        {
+          id = 13,
+          name = "Roca",
+          type = "",
+          shape = "rectangle",
+          x = -55.5,
+          y = -3,
+          width = 39,
+          height = 1102,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["hp"] = 100
           }
         }
       }

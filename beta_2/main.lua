@@ -25,3 +25,7 @@ end
 
 --agregar deteccion de colisiones a los enemigos
 --agregar daño a los objetos como roca y pared
+--utilizar raycast para la deteccion de los enemigos, deteccion de colisones, utilizando una posicion inicial de balas.
+--este lo seguira y si un objeto ingresa en la vision 
+
+--last entropy

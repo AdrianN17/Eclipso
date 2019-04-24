@@ -127,3 +127,5 @@ function Xeon:wheelmoved(x,y)
 end
 
 return Xeon
+
+--que dispare 5 flechas en vez de una
