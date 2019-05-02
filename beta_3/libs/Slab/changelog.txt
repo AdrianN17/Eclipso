@@ -1,0 +1,60 @@
+NEXT RELEASE
+==========
+CC0 - license for UI image.
+
+BUGS
+==========
+[List Box]: View transform pops while parent window is resizing when scroll is in non-zero position.
+[List Box]: Region size not reset when list items change.
+[List Box]: Window not properly auto-sized.
+[Tree]: View transform not correct with content size. Content size may be incorrect.
+[Window]: Auto size windows not being reset if contents are smaller in new frames.
+[Window]: Title exceeds width of window.
+[File Dialog]: Filter combo box sometimes renders below dialog.
+
+TODO
+==========
+Button: Expand to fit width of window.
+Color Picker: Initial implementation.
+Combo Box: Move all cursor updates on End call.
+Combo Box: Highlight input box when mouse is hovered.
+Combo Box: Check if same line functionality works.
+Combo Box: Easy API with table of possible values.
+Combo Box: User should be able to open by clicking input box.
+Combo Box: Convert text and box to use input control.
+Context Menu: Investigate checking hot item and last item of window.
+Controls: Convert all window bounds check to use region.
+Dialog: Function to close all dialog boxes.
+Dialog: Modal/Non-modal dialogs.
+Draw Commands: Rename tables to be Layers->Channels->Batches.
+Draw Commands: Deprecate 'Focused' layer.
+Draw Commands: Add rectangle rounding.
+Group: Initial implementation of grouping of controls. Controls with their options are stored
+	until grouping ends. Then position is calculated based on each control size.
+Input: Double click to select word.
+Input: Multi-line input control.
+Item: API for managing if an item is clicked, hovered, etc.
+License: Show license for Kenney.nl assets.
+Main Menu Bar: Assert if called within a window context.
+Radio Button: Initial implementation.
+Region: Clamp position check with owning window's size.
+Region: Only allow wheel move on the hovered region with child regions within a window.
+Scroll Bar: Scroll bar is moved when obstructed by other window.
+Scroll Bar: Interact with scroll bar on click instead of drag.
+Scroll Bar: Only render scroll bar in child region of window if one is active.
+SlabDebug: Show frame stats.
+SlabDebug: Show draw time.
+SlabDebug: Show update time.
+SlabDebug: Show image stats.
+Style: Light theme.
+Style: Push/Pop fonts.
+Style: Add documentation for each style property.
+Window: Cache obstructed window for all future calls.
+Window: Check sizers for window obstruction.
+Window: Menu support.
+Window: Ids should be used as keys.
+Window: Column support.
+Window: Lock mouse resize icon while resizing.
+Window: Deprecate window bounds values and use region directly.
+Widgets: Track owning window's alpha channel.
+Widgets: Forward Options parameter to sub widgets.
