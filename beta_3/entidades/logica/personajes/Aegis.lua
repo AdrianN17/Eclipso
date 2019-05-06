@@ -1,6 +1,6 @@
 local Class = require "libs.hump.class"
 local modelo = require "entidades.logica.modelos.modelo_player"
-local animacion = require "entidades.animacion.molde_animacion"
+local animacion = require "entidades.animacion.personajes.Aegis_anima"
 
 local Aegis = Class{
   __includes = {modelo,animacion}

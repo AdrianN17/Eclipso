@@ -10,7 +10,7 @@ spritesheet.aegis[4]=love.graphics.newQuad(761, 1, 145, 131, spritesheet.aegis["
 spritesheet.aegis[5]=love.graphics.newQuad(1142, 1, 144, 131, spritesheet.aegis["image"]:getDimensions())
 spritesheet.aegis[6]=love.graphics.newQuad(1349, 2, 145, 130, spritesheet.aegis["image"]:getDimensions())
 
-spritesheet.aegis.scale=1
+spritesheet.aegis.scale=0.7
 
 spritesheet.solange={}
 
@@ -23,6 +23,6 @@ spritesheet.solange[4]=love.graphics.newQuad(773, 3, 175, 123, spritesheet.solan
 spritesheet.solange[5]=love.graphics.newQuad(1012, 9, 176, 118, spritesheet.solange["image"]:getDimensions())
 spritesheet.solange[6]=love.graphics.newQuad(1289, 8, 175, 121, spritesheet.solange["image"]:getDimensions())
 
-spritesheet.solange.scale=0.75
+spritesheet.solange.scale=0.6
 
 return spritesheet
