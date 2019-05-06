@@ -1,25 +1,25 @@
 local Class = require "libs.hump.class"
 local Gamestate = require "libs.hump.gamestate"
-local Slab = require 'libs.Slab'
-
+local suit = require 'libs.suit'
+local game = require "escenas.game"
 
 local Menu= Class{}
+
 local x,y=0,0
+
 function Menu:init()
   x,y=lg.getDimensions( )
-  Slab.Initialize()
+
 end
 
 function Menu:draw()
-  Slab.Draw()
+  suit.draw()
 end
 
 function Menu:update(dt)
-  Slab.Update(dt)
-  
-	Slab.BeginWindow('MyFirstWindow', {Title = "My First Window"})
-	Slab.Text("Hello World")
-	Slab.EndWindow()
+  if suit.Button("Iniciar", 100,100, 300,30).hit then
+    Gamestate.switch(game)
+  end
   
 end
 

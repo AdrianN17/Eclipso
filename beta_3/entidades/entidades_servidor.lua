@@ -1,0 +1,137 @@
+local Class = require "libs.hump.class"
+local Gamestate = require "libs.hump.gamestate"
+local libe= require "self_libs.lib_entities"
+
+local entidades_servidor = Class{
+  __includes = {libe}
+}
+
+local personajes={}
+local enemigos={}
+local objetos={}
+
+
+
+function entidades_servidor:init(cam,vector,signal,eleccion,map)
+  
+  
+  --datos de base
+  self.cam=cam
+	self.signal=signal
+	self.vector=vector
+
+	self.map=map
+  
+  --gameobjects
+  
+  self.gameobject={}
+
+	self.gameobject.players={}
+	self.gameobject.balas={}
+	self.gameobject.efectos={}
+	self.gameobject.enemigos={}
+	self.gameobject.objetos={}
+  
+  --objetos auxiliares
+  
+  libe.init()
+  
+  --fisicas
+  
+  self.world = love.physics.newWorld(0, 0, false)
+  
+  --personajes
+  
+  personajes={
+		require "entidades.logica.personajes.Aegis"
+		--require "entidades.personajes.Solange",
+	}
+  
+  self:add_obj("players",personajes[eleccion](self,100,100,1))
+end
+
+function entidades_servidor:enter()
+  
+end
+
+function entidades_servidor:draw()
+  local cx,cy,cw,ch=self.cam:getVisible()
+  
+  self.cam:draw(function(l,t,w,h)
+		
+		self.gameobject.players[1]:draw()
+    
+    for _, body in pairs(self.world:getBodies()) do
+      for _, fixture in pairs(body:getFixtures()) do
+          local shape = fixture:getShape()
+   
+          if shape:typeOf("CircleShape") then
+              local cx, cy = body:getWorldPoints(shape:getPoint())
+              love.graphics.circle("line", cx, cy, shape:getRadius())
+          elseif shape:typeOf("PolygonShape") then
+              love.graphics.polygon("line", body:getWorldPoints(shape:getPoints()))
+          else
+              love.graphics.line(body:getWorldPoints(shape:getPoints()))
+          end
+      end
+    end
+    
+    
+    
+  end)
+
+  self.map:draw(-cx,-cy,1,1)
+end
+
+function entidades_servidor:update(dt)
+  
+  self.map:update(dt)
+	self.world:update(dt)
+
+  
+  for i, obj in pairs(self.gameobject) do
+    for _, obj2 in pairs(obj) do
+      if obj2 then
+        obj2:update(dt)
+      end
+    end
+  end
+  
+  if self.gameobject.players[1] then
+    self.cam:setPosition(self.gameobject.players[1].ox,self.gameobject.players[1].oy)
+    
+    self.gameobject.players[1].rx,self.gameobject.players[1].ry=self:getXY()
+      
+  else
+    
+  end
+end
+
+function entidades_servidor:keypressed(key)
+	if self.gameobject.players[1] then
+		self.gameobject.players[1]:keypressed(key)
+	end
+end
+
+function entidades_servidor:keyreleased(key)
+	if self.gameobject.players[1] then
+		self.gameobject.players[1]:keyreleased(key)
+	end
+end
+
+function entidades_servidor:mousepressed(x,y,button)
+	if self.gameobject.players[1] then
+
+		local cx,cy=self.cam:toWorld(x,y)
+		self.gameobject.players[1]:mousepressed(cx,cy,button)
+	end
+end
+
+function entidades_servidor:mousereleased(x,y,button)
+	if self.gameobject.players[1] then
+		local cx,cy=self.cam:toWorld(x,y)
+		self.gameobject.players[1]:mousereleased(cx,cy,button)
+	end
+end
+
+return entidades_servidor

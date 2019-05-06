@@ -1,5 +1,6 @@
 local Gamestate = require "libs.hump.gamestate"
 local Menu = require "escenas.menu"
+local img= require "assets.img.img"
 
 function love.load()
 
@@ -14,6 +15,7 @@ function love.load()
 	_G.lm=love.math
 	--_G.font = font
 	_G.py=love.physics
+  _G.img=img
 
 
 	Gamestate.registerEvents()
