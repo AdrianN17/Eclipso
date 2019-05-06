@@ -127,12 +127,12 @@ function modelo_player:update(dt)
   self:update_animation(dt)
 end
 
-function modelo_player:mousepressed()
-
+function modelo_player:mousepressed(x,y,button)
+  self.estados.atacando=true
 end
 
-function modelo_player:mousereleased()
-  
+function modelo_player:mousereleased(x,y,button)
+  self.estados.atacando=false
 end
 
 function modelo_player:keypressed(key)

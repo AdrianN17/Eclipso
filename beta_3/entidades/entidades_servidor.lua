@@ -43,8 +43,8 @@ function entidades_servidor:init(cam,vector,signal,eleccion,map)
   --personajes
   
   personajes={
-		require "entidades.logica.personajes.Aegis"
-		--require "entidades.personajes.Solange",
+		require "entidades.logica.personajes.Aegis",
+		require "entidades.logica.personajes.Solange"
 	}
   
   self:add_obj("players",personajes[eleccion](self,100,100,1))
