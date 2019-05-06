@@ -9,7 +9,7 @@ local sti = require "libs.sti"
 local base = Class{}
 
 function base:init(game,eleccion)
-	local map= sti("assets/map/demo.lua")
+	local map= sti("assets/map/sinnombre.lua")
 	--objetos principales
 
 	local scale=1

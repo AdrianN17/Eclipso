@@ -2,11 +2,12 @@ local Class = require "libs.hump.class"
 local molde_anima = require "entidades.animacion.molde_animacion"
 
 local Aegis_anima = Class{
-  __includes=molde_anima
+
 }
 
-function Aegis_anima:init(spritesheet)
+function Aegis_anima:init(spritesheet,escudos)
   self.spritesheet=spritesheet
+  self.spritesheet_escudos=escudos
   
   self.iterator=1
   self.iterator_2=1
@@ -15,7 +16,6 @@ function Aegis_anima:init(spritesheet)
   
   self.moviendo_array={{3,4},{5,6}}
   
-  molde_anima.init(self)
 end
 
 function Aegis_anima:update_animation(dt)
@@ -49,6 +49,27 @@ function Aegis_anima:update_animation(dt)
     
     self.timer_1=0
   end
+end
+
+function Aegis_anima:draw()
+  
+  if self.estados.vivo then
+  
+    local x,y,w,h = self.spritesheet[self.iterator]:getViewport( )
+    
+    lg.draw(self.spritesheet["image"],self.spritesheet[self.iterator],self.ox,self.oy,self.radio + math.pi/2,self.spritesheet.scale,self.spritesheet.scale,w/2,h/2)
+  end
+  
+  
+  if self.estados.protegido then
+    local x_s,y_s,w_s,h_s = self.spritesheet_escudos[1]:getViewport( )
+    lg.draw(self.spritesheet_escudos["image"],self.spritesheet_escudos[1],self.ox,self.oy,0,self.spritesheet_escudos.scale,self.spritesheet_escudos.scale,w_s/2,h_s/2)
+  end
+  
+  
+  
+  
+  
 end
 
 return Aegis_anima

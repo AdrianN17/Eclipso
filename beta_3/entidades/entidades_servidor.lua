@@ -57,7 +57,11 @@ end
 function entidades_servidor:draw()
   local cx,cy,cw,ch=self.cam:getVisible()
   
+  self.map:draw(-cx,-cy,1,1)
+  
   self.cam:draw(function(l,t,w,h)
+      
+    
 		
 		self.gameobject.players[1]:draw()
     
@@ -80,7 +84,7 @@ function entidades_servidor:draw()
     
   end)
 
-  self.map:draw(-cx,-cy,1,1)
+  
 end
 
 function entidades_servidor:update(dt)

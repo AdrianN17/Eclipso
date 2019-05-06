@@ -7,7 +7,7 @@ local game = Class{
 }
 
 function game:init()
-  Base:init(self,"demo",2)
+  Base:init(self,"demo",1)
 end
 
 function game:enter()

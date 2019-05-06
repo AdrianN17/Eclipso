@@ -4,7 +4,7 @@ local modelo_player = Class{}
 
 function modelo_player:init(entidades,x,y,creador,area,hp,velocidad,ira,tiempo_escudo,puntos_arma,puntos_melee,mass)
   --estados
-  self.estados={moviendo=false,congelado=false,quemadura=false,paralisis=false,protegido=false,atacando=false,atacado=false,dash=false}
+  self.estados={moviendo=false,congelado=false,quemadura=false,paralisis=false,protegido=false,atacando=false,atacado=false,dash=false,vivo=true}
   self.direccion={a=false,d=false,w=false,s=false}
   
   --ejes
@@ -147,6 +147,10 @@ function modelo_player:keypressed(key)
   elseif key=="s" then
     self.direccion.s=true
   end
+  
+  if key=="e" then
+    self.estados.protegido=true
+  end
 end
 
 function modelo_player:keyreleased(key)
@@ -160,6 +164,10 @@ function modelo_player:keyreleased(key)
     self.direccion.w=false
   elseif key=="s" then
     self.direccion.s=false
+  end
+  
+  if key=="e" then
+    self.estados.protegido=false
   end
 end
 

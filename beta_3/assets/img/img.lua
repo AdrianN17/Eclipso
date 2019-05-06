@@ -25,4 +25,23 @@ spritesheet.solange[6]=love.graphics.newQuad(1289, 8, 175, 121, spritesheet.sola
 
 spritesheet.solange.scale=0.6
 
+spritesheet.escudos={}
+
+spritesheet.escudos["image"]=love.graphics.newImage("assets/img/escudos.png")
+spritesheet.escudos[1]=love.graphics.newQuad(0, 342, 285, 285, spritesheet.escudos["image"]:getDimensions())
+spritesheet.escudos[2]=love.graphics.newQuad(0, 0, 285, 285, spritesheet.escudos["image"]:getDimensions())
+spritesheet.escudos.scale=0.6
+
+spritesheet.playa={}
+
+spritesheet.playa["image"]=love.graphics.newImage("assets/img/cosas_marinas.png")
+spritesheet.playa[1]=love.graphics.newQuad(0, 1, 244, 228, spritesheet.playa["image"]:getDimensions())
+spritesheet.playa[2]=love.graphics.newQuad(298, 86, 253, 270, spritesheet.playa["image"]:getDimensions())
+spritesheet.playa[3]=love.graphics.newQuad(43, 406, 357, 309, spritesheet.playa["image"]:getDimensions())
+spritesheet.playa[4]=love.graphics.newQuad(634, 50, 211, 186, spritesheet.playa["image"]:getDimensions())
+spritesheet.playa[5]=love.graphics.newQuad(649, 370, 208, 198, spritesheet.playa["image"]:getDimensions())
+
+spritesheet.playa.scale=0.6
+
+
 return spritesheet

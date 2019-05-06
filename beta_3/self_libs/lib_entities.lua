@@ -36,4 +36,24 @@ function lib_entities:getXY()
 	return cx,cy
 end
 
+function lib_entities:map_read(objects)
+  for _, layer in ipairs(self.map.layers) do
+		if layer.type=="tilelayer" then
+			--self:get_tile(layer)
+		elseif layer.type=="objectgroup" then
+			self:get_objects(layer,objects)
+		end
+	end
+end
+
+function lib_entities:get_objects(layer,objects)
+  if objectlayer.name=="Objetos" then
+		for _, obj in pairs(objectlayer.objects) do
+			
+			objetos[obj.name](obj.x,obj.y,self)
+			
+		end
+	end
+end
+
 return lib_entities
