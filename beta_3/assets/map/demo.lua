@@ -9,7 +9,7 @@ return {
   tilewidth = 32,
   tileheight = 32,
   nextlayerid = 4,
-  nextobjectid = 10,
+  nextobjectid = 11,
   properties = {},
   tilesets = {
     {
@@ -85,7 +85,7 @@ return {
         {
           id = 5,
           name = "Punto_inicio",
-          type = "4",
+          type = "5",
           shape = "point",
           x = 263,
           y = 132,
@@ -98,7 +98,7 @@ return {
         {
           id = 6,
           name = "Arbol",
-          type = "3",
+          type = "2",
           shape = "point",
           x = 189,
           y = 457,
@@ -111,7 +111,7 @@ return {
         {
           id = 7,
           name = "Roca",
-          type = "2",
+          type = "3",
           shape = "point",
           x = 388,
           y = 627,
@@ -128,6 +128,19 @@ return {
           shape = "point",
           x = 660,
           y = 234,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 10,
+          name = "Portal_enemigo",
+          type = "4",
+          shape = "point",
+          x = 93,
+          y = 714,
           width = 0,
           height = 0,
           rotation = 0,

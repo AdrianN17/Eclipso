@@ -2,6 +2,13 @@ local Class = require "libs.hump.class"
 local Gamestate = require "libs.hump.gamestate"
 local libe= require "self_libs.lib_entities"
 
+local objetos_mapa = {  Estrella = require "entidades.logica.objetos.estrella",
+                        Arbol = require "entidades.logica.objetos.arbol",
+                        Roca  = require "entidades.logica.objetos.roca",
+                        Punto_inicio = require "entidades.logica.objetos.punto_inicio",
+                        Portal_enemigo = require "entidades.logica.objetos.arbol"
+                      }
+
 local entidades_servidor = Class{
   __includes = {libe}
 }
@@ -34,7 +41,7 @@ function entidades_servidor:init(cam,vector,signal,eleccion,map)
   
   --objetos auxiliares
   
-  libe.init()
+  libe.init(self)
   
   --fisicas
   
@@ -48,6 +55,10 @@ function entidades_servidor:init(cam,vector,signal,eleccion,map)
 	}
   
   self:add_obj("players",personajes[eleccion](self,100,100,1))
+  
+  self:map_read(objetos_mapa)
+  
+  
 end
 
 function entidades_servidor:enter()
@@ -63,7 +74,15 @@ function entidades_servidor:draw()
       
     
 		
-		self.gameobject.players[1]:draw()
+		
+    
+    for i, obj in pairs(self.gameobject) do
+      for _, obj2 in pairs(obj) do
+        if obj2 then
+          obj2:draw()
+        end
+      end
+    end
     
     for _, body in pairs(self.world:getBodies()) do
       for _, fixture in pairs(body:getFixtures()) do
@@ -121,6 +140,8 @@ function entidades_servidor:keyreleased(key)
 	if self.gameobject.players[1] then
 		self.gameobject.players[1]:keyreleased(key)
 	end
+  
+  
 end
 
 function entidades_servidor:mousepressed(x,y,button)
@@ -136,6 +157,7 @@ function entidades_servidor:mousereleased(x,y,button)
 		local cx,cy=self.cam:toWorld(x,y)
 		self.gameobject.players[1]:mousereleased(cx,cy,button)
 	end
+  
 end
 
 return entidades_servidor

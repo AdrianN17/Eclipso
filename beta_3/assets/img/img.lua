@@ -32,16 +32,16 @@ spritesheet.escudos[1]=love.graphics.newQuad(0, 342, 285, 285, spritesheet.escud
 spritesheet.escudos[2]=love.graphics.newQuad(0, 0, 285, 285, spritesheet.escudos["image"]:getDimensions())
 spritesheet.escudos.scale=0.6
 
-spritesheet.playa={}
+spritesheet.objetos={}
 
-spritesheet.playa["image"]=love.graphics.newImage("assets/img/cosas_marinas.png")
-spritesheet.playa[1]=love.graphics.newQuad(0, 1, 244, 228, spritesheet.playa["image"]:getDimensions())
-spritesheet.playa[2]=love.graphics.newQuad(298, 86, 253, 270, spritesheet.playa["image"]:getDimensions())
-spritesheet.playa[3]=love.graphics.newQuad(43, 406, 357, 309, spritesheet.playa["image"]:getDimensions())
-spritesheet.playa[4]=love.graphics.newQuad(634, 50, 211, 186, spritesheet.playa["image"]:getDimensions())
-spritesheet.playa[5]=love.graphics.newQuad(649, 370, 208, 198, spritesheet.playa["image"]:getDimensions())
+spritesheet.objetos["image"]=love.graphics.newImage("assets/img/cosas_marinas.png")
+spritesheet.objetos[1]=love.graphics.newQuad(0, 1, 244, 228, spritesheet.objetos["image"]:getDimensions())
+spritesheet.objetos[2]=love.graphics.newQuad(43, 406, 357, 309, spritesheet.objetos["image"]:getDimensions())
+spritesheet.objetos[3]=love.graphics.newQuad(298, 86, 253, 270, spritesheet.objetos["image"]:getDimensions())
+spritesheet.objetos[4]=love.graphics.newQuad(634, 50, 211, 186, spritesheet.objetos["image"]:getDimensions())
+spritesheet.objetos[5]=love.graphics.newQuad(649, 370, 208, 198, spritesheet.objetos["image"]:getDimensions())
 
-spritesheet.playa.scale=0.6
+spritesheet.objetos.scale=0.6
 
 
 return spritesheet

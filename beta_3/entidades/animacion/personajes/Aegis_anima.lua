@@ -1,5 +1,5 @@
 local Class = require "libs.hump.class"
-local molde_anima = require "entidades.animacion.molde_animacion"
+
 
 local Aegis_anima = Class{
 
