@@ -11,12 +11,26 @@ function estrella:init(x,y,entidades)
 	self.entidades:add_obj("objetos",self)
   
   self.collider=py.newBody(self.entidades.world,x,y,"kinematic")
-	self.shape=py.newPolygonShape(-71 , -21,
-1 , -68,
-70 , -14,
-41 , 66,
--6 , 48,
--47 , 61)
+	self.shape=py.newChainShape(true,-72 , -21,
+-40 , -28,
+-25 , -36,
+-5 , -65,
+6 , -67,
+23 , -35,
+38 , -26,
+70 , -19,
+71 , -8,
+46 , 18,
+42 , 34,
+45 , 59,
+35 , 68,
+3 , 54,
+-10 , 51,
+-43 , 65,
+-53 , 58,
+-47 , 26,
+-50 , 12,
+-73 , -14)
 	self.fixture=py.newFixture(self.collider,self.shape)
 
 	--self.fixture:setUserData( {data="arbol",obj=self, pos=14} )
