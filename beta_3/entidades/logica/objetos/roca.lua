@@ -15,7 +15,7 @@ function roca:init(x,y,entidades)
 	self.shape=py.newChainShape(true,-62 , -50, -13 , -78, 38 , -67, 73 , -31, 43 , 41, -6 , 79, -58 , 51, -75 , 19)
 	self.fixture=py.newFixture(self.collider,self.shape)
 
-	--self.fixture:setUserData( {data="arbol",obj=self, pos=14} )
+	self.fixture:setUserData( {data="objeto",obj=self, pos=5} )
 
 	self.ox,self.oy=self.collider:getX(),self.collider:getY()
   

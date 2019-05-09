@@ -15,7 +15,7 @@ function modelo_balas:init(x,y,entidades,velocidad,radio,creador)
   self.collider=py.newBody(self.entidades.world,x,y,"dynamic")
 	self.shape=py.newCircleShape(5)
 	self.fixture=py.newFixture(self.collider,self.shape)
-	--self.fixture:setUserData( {data="bala",obj=self, pos=4} )
+	self.fixture:setUserData( {data="bala",obj=self, pos=4} )
 	
 	self.fixture:setGroupIndex( -self.creador )
 
@@ -47,6 +47,12 @@ function modelo_balas:update(dt)
 
 	self.ox,self.oy=self.collider:getX(),self.collider:getY()
   
+end
+
+function modelo_balas:remove()
+
+	self.collider:destroy( )
+	self.entidades:remove_obj("balas",self)
 end
 
 return modelo_balas

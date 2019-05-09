@@ -1,11 +1,20 @@
 local Class = require "libs.hump.class"
+local daño = require "entidades.logica.modelos.modelo_daño"
+local destruccion = require "entidades.logica.modelos.modelo_destruccion"
 
-local modelo_player = Class{}
+local modelo_player = Class{
+  __includes = {daño, destruccion}
+}
 
 function modelo_player:init(entidades,x,y,creador,area,hp,velocidad,ira,tiempo_escudo,puntos_arma,puntos_melee,mass,disparo_max_timer,recarga_timer,balas_data_1,balas_data_2)
   --estados
   self.estados={moviendo=false,congelado=false,quemadura=false,paralisis=false,protegido=false,atacando=false,atacado=false,dash=false,vivo=true,recargando=false}
   self.direccion={a=false,d=false,w=false,s=false}
+  
+  --inicializar
+  
+  daño.init(self)
+  destruccion.init(self)
   
   --ejes
   
@@ -34,7 +43,7 @@ function modelo_player:init(entidades,x,y,creador,area,hp,velocidad,ira,tiempo_e
 	self.shape=py.newCircleShape(area)
 	self.fixture=py.newFixture(self.collider,self.shape)
 	self.fixture:setGroupIndex( -self.creador )
-	--self.fixture:setUserData( {data="personaje",obj=self, pos=0} )
+	self.fixture:setUserData( {data="personaje",obj=self, pos=1} )
 	self.fixture:setDensity(0)
 	self.collider:setInertia( 0 )
 
@@ -46,7 +55,7 @@ function modelo_player:init(entidades,x,y,creador,area,hp,velocidad,ira,tiempo_e
 	self.fixture_escudo=py.newFixture(self.collider,self.shape_escudo)
 	self.fixture_escudo:setSensor( true )
 	self.fixture_escudo:setGroupIndex( -self.creador )
-	--self.fixture_escudo:setUserData( {data="escudo",obj=self, pos=1}  )
+	self.fixture_escudo:setUserData( {data="escudo",obj=self, pos=2}  )
 	self.fixture_escudo:setDensity(0)
   
   --arma_distancia
@@ -60,7 +69,7 @@ function modelo_player:init(entidades,x,y,creador,area,hp,velocidad,ira,tiempo_e
 		t.fixture=py.newFixture(self.collider,t.shape)
 		t.fixture:setSensor( true )
 		t.fixture:setGroupIndex( -self.creador )
-		--t.fixture:setUserData( {data="postura",obj=self, pos=2}  )
+		t.fixture:setUserData( {data="brazos",obj=self, pos=3}  )
 		t.fixture:setDensity(0)
 
 		table.insert(self.points,t)

@@ -33,7 +33,7 @@ function estrella:init(x,y,entidades)
 -73 , -14)
 	self.fixture=py.newFixture(self.collider,self.shape)
 
-	--self.fixture:setUserData( {data="arbol",obj=self, pos=14} )
+	self.fixture:setUserData( {data="objeto",obj=self, pos=5} )
 
 	self.ox,self.oy=self.collider:getX(),self.collider:getY()
   

@@ -38,14 +38,16 @@ function entidades_servidor:init(cam,vector,signal,eleccion,map)
 	self.gameobject.efectos={}
 	self.gameobject.enemigos={}
 	self.gameobject.objetos={}
+  self.gameobject.arboles={}
   
   --objetos auxiliares
   
-  libe.init(self)
+  
   
   --fisicas
   
   self.world = love.physics.newWorld(0, 0, false)
+  self.world:setCallbacks(self:callbacks())
   
   --personajes
   
@@ -56,7 +58,11 @@ function entidades_servidor:init(cam,vector,signal,eleccion,map)
   
   self:add_obj("players",personajes[eleccion](self,100,100,1))
   
+  libe.init(self)
+  
   self:map_read(objetos_mapa)
+  
+  self:custom_layers()
   
   
 end
@@ -72,18 +78,6 @@ function entidades_servidor:draw()
   
   self.cam:draw(function(l,t,w,h)
       
-    
-		
-		
-    
-    for i, obj in pairs(self.gameobject) do
-      for _, obj2 in pairs(obj) do
-        if obj2 then
-          obj2:draw()
-        end
-      end
-    end
-    
     for _, body in pairs(self.world:getBodies()) do
       for _, fixture in pairs(body:getFixtures()) do
           local shape = fixture:getShape()
@@ -99,11 +93,7 @@ function entidades_servidor:draw()
       end
     end
     
-    
-    
   end)
-
-  
 end
 
 function entidades_servidor:update(dt)

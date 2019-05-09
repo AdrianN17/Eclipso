@@ -4,7 +4,7 @@ local Class = require "libs.hump.class"
 local lib_entities= Class{}
 
 function lib_entities:init()
-
+  
 end
 
 function lib_entities:add_obj(name,obj)
@@ -46,13 +46,120 @@ function lib_entities:map_read(objects_map)
 			self:get_objects(layer,objects_map)
 		end
 	end
+  
+  self.map:removeLayer("Borrador")
+  
 end
+
+
 
 function lib_entities:get_objects(objectlayer,objects_map)
   
 		for _, obj in pairs(objectlayer.objects) do
 			objects_map[obj.name](obj.x,obj.y,self)
 		end
+end
+
+function lib_entities:callbacks()
+  
+  local beginContact =  function(a, b, coll)
+
+		local obj1=nil
+ 		local obj2=nil
+
+		local o1,o2=a:getUserData(),b:getUserData()
+
+		
+
+		if o1.pos<o2.pos then
+			obj1=o1
+			obj2=o2
+		else
+			obj1=o2
+			obj2=o1
+		end
+
+ 		local x,y=coll:getNormal()
+    
+    if obj1.data=="personaje" and obj2.data=="bala" then
+ 		
+    elseif obj1.data=="bala" and obj2.data=="objeto" then
+      obj1.obj:remove()
+    end
+    
+  end
+  
+  local endContact =  function(a, b, coll)
+ 		--local obj1=a:getUserData()
+ 		--local obj2=b:getUserData()
+ 		--local x,y=coll:getNormal()
+    
+  end
+  
+  local preSolve =  function(a, b, coll)
+
+		--aqui no va colisiones con fixture
+		--local obj1=a:getUserData()
+ 		--local obj2=b:getUserData()
+ 		--local x,y=coll:getNormal()
+    
+  end
+  
+  local postSolve =  function(a, b, coll, normalimpulse, tangentimpulse)
+ 		--local obj1=a:getUserData()
+ 		--local obj2=b:getUserData()
+
+	end
+
+	return beginContact,endContact,preSolve,postSolve
+  
+end
+
+function lib_entities:custom_layers()
+  
+  local Balas_layers = self.map.layers["Balas"]
+  
+  local Enemigos_layers = self.map.layers["Enemigos"] 
+  
+  local Personajes_layers = self.map.layers["Personajes"]
+  
+  local Objetos_layers = self.map.layers["Objetos"]
+  
+  local Arboles_layers = self.map.layers["Arboles"]
+  
+
+  Balas_layers.draw = function(obj)
+    for _, obj_data in ipairs(self.gameobject.balas) do
+      obj_data:draw()
+    end
+  end
+  
+  Enemigos_layers.draw = function(obj)
+    for _, obj_data in ipairs(self.gameobject.enemigos) do
+      obj_data:draw()
+    end
+  end
+  
+  Personajes_layers.draw = function(obj)
+    for _, obj_data in pairs(self.gameobject.players) do
+      if obj_data then
+        obj_data:draw()
+      end
+    end
+  end
+  
+  Objetos_layers.draw = function(obj)
+    for _, obj_data in ipairs(self.gameobject.objetos) do
+      obj_data:draw()
+    end
+  end
+  
+  Arboles_layers.draw = function(obj)
+    for _, obj_data in ipairs(self.gameobject.arboles) do
+      obj_data:draw()
+    end
+  end
+  
 end
 
 return lib_entities

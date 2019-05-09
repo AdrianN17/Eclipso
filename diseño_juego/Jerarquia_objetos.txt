@@ -1,0 +1,8 @@
+Player = 1
+Escudo = 2
+Brazos/Armas = 3
+Bala = 4
+Objetos = 5
+Enemigos = 6
+Armas Enemigos = 7
+

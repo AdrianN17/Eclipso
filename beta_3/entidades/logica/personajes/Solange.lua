@@ -1,5 +1,6 @@
 local Class = require "libs.hump.class"
 local modelo = require "entidades.logica.modelos.modelo_player"
+
 local animacion = require "entidades.animacion.personajes.Solange_anima"
 local bala_electrica = require "entidades.logica.balas.bala_electrica"
 

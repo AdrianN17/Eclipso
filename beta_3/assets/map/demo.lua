@@ -8,7 +8,7 @@ return {
   height = 100,
   tilewidth = 32,
   tileheight = 32,
-  nextlayerid = 4,
+  nextlayerid = 10,
   nextobjectid = 11,
   properties = {},
   tilesets = {
@@ -70,6 +70,35 @@ return {
       encoding = "base64",
       compression = "zlib",
       data = "eJzt2ctOwzAQQNEU1EX//4fZUCmyxuOhtkMW50gVENQNFz/7OI7j8fv6On2Nvn///J28mNN20ON/9XqcW7Q9Xoceu0Qd2vkrevbupMda1R7RmInGCnOy+SobF731hDnVDr0xo8dalf1U26jto8c6o7/5aG3RY63qvirrpMc6o/NHtr96Hva7q43momh9iTrosUZvz5T1cF+yT3Y/0mujxz563MvoHjFaW/TYp7K/ct9+nWoP89U1Kvvd7L5Kj7Wq5w89rtE7h2d37Xrsk50Hez18XrtPZX7KziNtR+ZU143e2Gm7MafymcdofJyfMae3jo/uFXvvYc6nPXq/Z07Uo3p/0rZhXmU86HGdyv1h5bkea0T7qsp+K1rbmZf1+Mv6wRq9eSqbv6L5ijWyOSg7k+uwh7X5Xvzf348OAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8JkfIWoEug=="
+    },
+    {
+      type = "tilelayer",
+      id = 4,
+      name = "Suelo2",
+      x = 0,
+      y = 0,
+      width = 100,
+      height = 100,
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      properties = {},
+      encoding = "base64",
+      compression = "zlib",
+      data = "eJztwTEBAAAAwqD1T+1lC6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAbnEAAAQ=="
+    },
+    {
+      type = "objectgroup",
+      id = 8,
+      name = "Objetos",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      draworder = "topdown",
+      properties = {},
+      objects = {}
     },
     {
       type = "objectgroup",
@@ -148,6 +177,54 @@ return {
           properties = {}
         }
       }
+    },
+    {
+      type = "objectgroup",
+      id = 5,
+      name = "Balas",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      draworder = "topdown",
+      properties = {},
+      objects = {}
+    },
+    {
+      type = "objectgroup",
+      id = 6,
+      name = "Enemigos",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      draworder = "topdown",
+      properties = {},
+      objects = {}
+    },
+    {
+      type = "objectgroup",
+      id = 7,
+      name = "Personajes",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      draworder = "topdown",
+      properties = {},
+      objects = {}
+    },
+    {
+      type = "objectgroup",
+      id = 9,
+      name = "Arboles",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      draworder = "topdown",
+      properties = {},
+      objects = {}
     }
   }
 }
