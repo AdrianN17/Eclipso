@@ -2,9 +2,9 @@ local Class = require "libs.hump.class"
 
 local modelo_player = Class{}
 
-function modelo_player:init(entidades,x,y,creador,area,hp,velocidad,ira,tiempo_escudo,puntos_arma,puntos_melee,mass)
+function modelo_player:init(entidades,x,y,creador,area,hp,velocidad,ira,tiempo_escudo,puntos_arma,puntos_melee,mass,disparo_max_timer,recarga_timer,balas_data_1,balas_data_2)
   --estados
-  self.estados={moviendo=false,congelado=false,quemadura=false,paralisis=false,protegido=false,atacando=false,atacado=false,dash=false,vivo=true}
+  self.estados={moviendo=false,congelado=false,quemadura=false,paralisis=false,protegido=false,atacando=false,atacado=false,dash=false,vivo=true,recargando=false}
   self.direccion={a=false,d=false,w=false,s=false}
   
   --ejes
@@ -34,7 +34,7 @@ function modelo_player:init(entidades,x,y,creador,area,hp,velocidad,ira,tiempo_e
 	self.shape=py.newCircleShape(area)
 	self.fixture=py.newFixture(self.collider,self.shape)
 	self.fixture:setGroupIndex( -self.creador )
-	self.fixture:setUserData( {data="personaje",obj=self, pos=0} )
+	--self.fixture:setUserData( {data="personaje",obj=self, pos=0} )
 	self.fixture:setDensity(0)
 	self.collider:setInertia( 0 )
 
@@ -46,7 +46,7 @@ function modelo_player:init(entidades,x,y,creador,area,hp,velocidad,ira,tiempo_e
 	self.fixture_escudo=py.newFixture(self.collider,self.shape_escudo)
 	self.fixture_escudo:setSensor( true )
 	self.fixture_escudo:setGroupIndex( -self.creador )
-	self.fixture_escudo:setUserData( {data="escudo",obj=self, pos=1}  )
+	--self.fixture_escudo:setUserData( {data="escudo",obj=self, pos=1}  )
 	self.fixture_escudo:setDensity(0)
   
   --arma_distancia
@@ -60,7 +60,7 @@ function modelo_player:init(entidades,x,y,creador,area,hp,velocidad,ira,tiempo_e
 		t.fixture=py.newFixture(self.collider,t.shape)
 		t.fixture:setSensor( true )
 		t.fixture:setGroupIndex( -self.creador )
-		t.fixture:setUserData( {data="postura",obj=self, pos=2}  )
+		--t.fixture:setUserData( {data="postura",obj=self, pos=2}  )
 		t.fixture:setDensity(0)
 
 		table.insert(self.points,t)
@@ -68,6 +68,43 @@ function modelo_player:init(entidades,x,y,creador,area,hp,velocidad,ira,tiempo_e
   
   
   self:reset_mass(mass)
+  
+  self.disparo_max_timer=disparo_max_timer
+  self.recarga_timer=recarga_timer
+  self.timer_recargando=0
+  
+  self.data_balas={}
+  
+  if balas_data_1 then
+    local bala1={}
+    bala1.balas=balas_data_1.bala
+    bala1.timer_disparo=0
+    bala1.max=balas_data_1.balas_max
+    bala1.stock=bala1.max
+    bala1.id=1
+    
+    table.insert(self.data_balas,bala1)
+  end
+  
+  if balas_data_2 then
+    local bala2={}
+    bala2.balas=balas_data_2.bala
+    bala2.timer_disparo=0
+    bala2.max=balas_data_2.balas_max
+    bala2.stock=bala2.max
+    bala2.id=2
+    
+    table.insert(self.data_balas,bala2)
+  end
+  
+  self.arma=0
+  
+  self.can_armas=#self.data_balas
+  
+  if self.can_armas then
+    self.arma=1
+  end
+  
 end
 
 function modelo_player:reset_mass(mass)
@@ -125,14 +162,63 @@ function modelo_player:update(dt)
   self.collider:setAngle(self.radio)
   
   self:update_animation(dt)
+  
+  if self.can_armas and self.estados.atacando and not self.estados.recargando then
+    
+      self:creacion_balas(dt,self.data_balas[self.arma])
+    
+  elseif self.can_armas and not self.estados.atacando and self.estados.recargando then
+    self.timer_recargando=self.timer_recargando+dt
+    
+    if self.timer_recargando>self.recarga_timer then
+      
+      self.data_balas[self.arma].stock=self.data_balas[self.arma].max
+      
+      self.timer_recargando=0
+      self.estados.recargando=false
+    end
+    
+  end
+  
+end
+
+function modelo_player:creacion_balas(dt,data)
+  data.timer_disparo=data.timer_disparo+dt
+  
+  if data.timer_disparo>self.disparo_max_timer then
+      
+      local s= self.points[data.id].fixture:getShape()
+      local px,py=self.collider:getWorldPoints(s:getPoint())
+      local rad=math.atan2( self.ry-py, self.rx -px)
+      
+      if data.stock>0 then
+        data.balas(px, py, self.entidades, rad,self.creador)
+        data.stock=data.stock-1
+      end
+      
+      data.timer_disparo=0
+  end
+end
+
+function modelo_player:reset_bullet_time()
+  for _,b in pairs(self.data_balas) do
+    b.timer_disparo=0
+  end
 end
 
 function modelo_player:mousepressed(x,y,button)
-  self.estados.atacando=true
+  if button==1 then
+    self.estados.atacando=true
+    self.estados.recargando=false
+  end
 end
 
 function modelo_player:mousereleased(x,y,button)
-  self.estados.atacando=false
+  if button==1 then
+    self.estados.atacando=false
+    self.estados.recargando=false
+    self:reset_bullet_time()
+  end
 end
 
 function modelo_player:keypressed(key)
@@ -150,6 +236,21 @@ function modelo_player:keypressed(key)
   
   if key=="e" then
     self.estados.protegido=true
+  end
+  
+  if key=="1" and self.data_balas[1] then
+    self:reset_bullet_time()
+    self.arma=1
+  end
+  
+  if key=="2" and self.data_balas[2] then
+    self:reset_bullet_time()
+    self.arma=2
+  end
+  
+  if key=="r" and self.can_armas then
+    self:reset_bullet_time()
+    self.estados.recargando=true
   end
 end
 

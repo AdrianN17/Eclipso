@@ -20,9 +20,6 @@ function roca:init(x,y,entidades)
 	self.ox,self.oy=self.collider:getX(),self.collider:getY()
   
   molde_objetos.init(self,img.objetos,3)
-  
-  
-  
 
 end
 

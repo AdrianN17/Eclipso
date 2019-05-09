@@ -43,5 +43,12 @@ spritesheet.objetos[5]=love.graphics.newQuad(649, 370, 208, 198, spritesheet.obj
 
 spritesheet.objetos.scale=0.6
 
+spritesheet.balas={}
+spritesheet.balas["image"]=love.graphics.newImage("assets/img/balas.png")
+spritesheet.balas[1]=love.graphics.newQuad(0, 1, 54, 54, spritesheet.balas["image"]:getDimensions())
+spritesheet.balas[2]=love.graphics.newQuad(64, 0, 54, 54, spritesheet.balas["image"]:getDimensions())
+spritesheet.balas[3]=love.graphics.newQuad(122, 0, 54, 54, spritesheet.balas["image"]:getDimensions())
+
+spritesheet.balas.scale=0.25
 
 return spritesheet
