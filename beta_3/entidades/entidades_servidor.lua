@@ -42,6 +42,8 @@ function entidades_servidor:init(cam,vector,signal,eleccion,map)
   
   --objetos auxiliares
   
+  self.respawn_points={}
+  
   
   
   --fisicas
@@ -56,13 +58,13 @@ function entidades_servidor:init(cam,vector,signal,eleccion,map)
 		require "entidades.logica.personajes.Solange"
 	}
   
-  self:add_obj("players",personajes[eleccion](self,100,100,1))
-  
   libe.init(self)
   
   self:map_read(objetos_mapa)
   
   self:custom_layers()
+  
+  self:add_obj("players",personajes[eleccion](self,self.respawn_points[1].x,self.respawn_points[1].y,1))
   
   
 end

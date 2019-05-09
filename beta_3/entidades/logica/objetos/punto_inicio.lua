@@ -9,6 +9,7 @@ function punto_inicio:init(x,y,entidades)
   self.entidades=entidades
 
 	self.entidades:add_obj("objetos",self)
+  table.insert(self.entidades.respawn_points,{x=x,y=y})
   
   self.ox,self.oy=x,y
   
