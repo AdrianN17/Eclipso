@@ -7,7 +7,7 @@ local bala_fuego = Class{
 }
 
 function bala_fuego:init(x,y,entidades,radio,creador)
-  molde_bala.init(self,x,y,entidades,1000,radio,creador)
+  molde_bala.init(self,x,y,entidades,1800,radio,creador)
   animacion.init(self,img.balas,1)
 end
 
