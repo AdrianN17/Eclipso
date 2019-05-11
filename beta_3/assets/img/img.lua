@@ -51,4 +51,13 @@ spritesheet.balas[3]=love.graphics.newQuad(122, 0, 54, 54, spritesheet.balas["im
 
 spritesheet.balas.scale=0.25
 
+spritesheet.enemigos_marinos={}
+spritesheet.enemigos_marinos["image"]=love.graphics.newImage("assets/img/animales_marinos.png")
+spritesheet.enemigos_marinos.muymuy={}
+spritesheet.enemigos_marinos.muymuy[1]=love.graphics.newQuad(0, 0, 142, 313, spritesheet.enemigos_marinos["image"]:getDimensions())
+
+spritesheet.enemigos_marinos.muymuy.scale=0.5
+
+
+
 return spritesheet

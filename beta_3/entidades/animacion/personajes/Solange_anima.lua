@@ -1,9 +1,7 @@
 local Class = require "libs.hump.class"
 
 
-local Solange_anima = Class{
-
-}
+local Solange_anima = Class{}
 
 function Solange_anima:init(spritesheet,escudos)
   self.spritesheet=spritesheet

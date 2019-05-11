@@ -7,6 +7,14 @@ local modelo_player = Class{
 }
 
 function modelo_player:init(entidades,x,y,creador,area,hp,velocidad,ira,tiempo_escudo,puntos_arma,puntos_melee,mass,disparo_max_timer,recarga_timer,balas_data_1,balas_data_2)
+  
+  --objetos maestros
+  self.entidades=entidades
+  self.creador=creador
+  
+  
+  self.entidades:add_obj("players",self)
+  
   --estados
   self.estados={moviendo=false,congelado=false,quemadura=false,paralisis=false,protegido=false,atacando=false,atacado=false,dash=false,vivo=true,recargando=false}
   self.direccion={a=false,d=false,w=false,s=false}
@@ -26,15 +34,13 @@ function modelo_player:init(entidades,x,y,creador,area,hp,velocidad,ira,tiempo_e
   
   self.hp=hp
   self.velocidad=velocidad
-  self.ira=ira
+  self.max_ira=ira
+  self.ira=0
   
   --timers
   self.tiempo_escudo=self.tiempo_escudo
   
-  --objetos maestros
-  self.entidades=entidades
-  self.creador=creador
-  
+
   --cuerpo
   
   self.collider=py.newBody(self.entidades.world,x,y,"dynamic")
@@ -245,6 +251,9 @@ function modelo_player:keypressed(key)
   
   if key=="e" then
     self.estados.protegido=true
+    self.estados.atacando=false
+    self.estados.recargando=false
+    self:reset_bullet_time()
   end
   
   if key=="1" and self.data_balas[1] then
@@ -278,6 +287,9 @@ function modelo_player:keyreleased(key)
   
   if key=="e" then
     self.estados.protegido=false
+    self.estados.atacando=false
+    self.estados.recargando=false
+    self:reset_bullet_time()
   end
 end
 

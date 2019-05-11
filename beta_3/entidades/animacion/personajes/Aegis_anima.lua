@@ -1,9 +1,7 @@
 local Class = require "libs.hump.class"
 
 
-local Aegis_anima = Class{
-
-}
+local Aegis_anima = Class{}
 
 function Aegis_anima:init(spritesheet,escudos)
   self.spritesheet=spritesheet

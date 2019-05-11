@@ -1,0 +1,99 @@
+local Class = require "libs.hump.class"
+
+local modelo_enemigo = Class{}
+
+function modelo_enemigo:init(entidades,x,y,creador,hp,velocidad,ira,polygon,mass,puntos_arma,puntos_melee,puntos_rango)
+  self.entidades=entidades
+  
+  self.entidades:add_obj("enemigos",self)
+  
+  
+  self.estados={libre=true,moviendo=false,congelado=false,quemadura=false,paralisis=false,protegido=false,atacando=false,atacado=false,dash=false,vivo=true,recargando=false}
+  
+  self.creador=creador
+  
+  --estadisticas
+  
+  self.hp=hp
+  self.velocidad=velocidad
+  self.max_ira=ira
+  self.ira=0
+  self.radio=0
+  
+  
+  --cuerpo
+  
+  self.collider=py.newBody(self.entidades.world,x,y,"dynamic")
+	self.collider:setFixedRotation(true)
+
+	self.shape=py.newPolygonShape(polygon)
+	self.fixture=py.newFixture(self.collider,self.shape)
+	self.fixture:setGroupIndex( -self.creador )
+	self.fixture:setUserData( {data="enemigos",obj=self, pos=6} )
+	self.fixture:setDensity(0)
+	self.collider:setInertia( 0 )
+
+	self.ox,self.oy=self.collider:getX(),self.collider:getY()
+  
+  self.collider:setAngle(self.radio)
+  
+  --armas
+  
+  self.points={}
+
+	for _,p in ipairs(puntos_arma) do
+		local t={}
+
+		t.shape=py.newCircleShape(p.x,p.y,4)
+		t.fixture=py.newFixture(self.collider,t.shape)
+		t.fixture:setSensor( true )
+		t.fixture:setGroupIndex( -self.creador )
+		t.fixture:setUserData( {data="brazos_enemigo",obj=self, pos=8}  )
+		t.fixture:setDensity(0)
+
+		table.insert(self.points,t)
+	end
+  
+  self.shape_vision=py.newCircleShape(puntos_rango.x,puntos_rango.y,puntos_rango.r)
+	self.fixture_vision=py.newFixture(self.collider,self.shape_vision)
+	self.fixture_vision:setSensor( true )
+	self.fixture_vision:setGroupIndex( -self.creador )
+	self.fixture_vision:setUserData( {data="vision_enemigo",obj=self, pos=7}  )
+	self.fixture_vision:setDensity(0)
+  
+  self:reset_mass(mass)
+  
+  self.max_acercamiento=puntos_rango.max_acercamiento
+  self.presas={}
+  
+  
+end
+
+function modelo_enemigo:reset_mass(mass)
+	self.collider:resetMassData()
+	self.collider:setMass(mass)
+	self.mass=self.collider:getMass()
+
+
+	self.collider:setLinearDamping(mass/20)
+end
+
+
+function modelo_enemigo:update(dt)
+  
+  self.ox,self.oy=self.collider:getX(),self.collider:getY()
+end
+
+function modelo_enemigo:rastrear()
+  
+end
+
+function modelo_enemigo:seguir()
+  
+end
+
+function modelo_enemigo:giro()
+  
+end
+
+return modelo_enemigo

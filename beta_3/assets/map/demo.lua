@@ -165,7 +165,7 @@ return {
         },
         {
           id = 10,
-          name = "Portal_enemigo",
+          name = "Punto_enemigo",
           type = "4",
           shape = "point",
           x = 93,

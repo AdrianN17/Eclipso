@@ -1,10 +1,10 @@
 
 function love.load()
 
-	image = love.graphics.newImage("cosas_marinas.png")
-	quad = love.graphics.newQuad(0, 1, 244, 228,image:getDimensions())
+	image = love.graphics.newImage("animales_marinos.png")
+	quad = love.graphics.newQuad(0, 0, 142, 313,image:getDimensions())
 
-	scale= 0.6
+	scale= 0.5
 
 	ox,oy=400,400
 

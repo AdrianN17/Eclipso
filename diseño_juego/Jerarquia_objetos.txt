@@ -4,5 +4,8 @@ Brazos/Armas = 3
 Bala = 4
 Objetos = 5
 Enemigos = 6
-Armas Enemigos = 7
+Vision Enemigo = 7
+Brazos/Armas enemigo = 8
+Balas Enemigos = 9
+
 

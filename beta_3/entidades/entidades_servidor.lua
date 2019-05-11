@@ -2,11 +2,14 @@ local Class = require "libs.hump.class"
 local Gamestate = require "libs.hump.gamestate"
 local libe= require "self_libs.lib_entities"
 
-local objetos_mapa = {  Estrella = require "entidades.logica.objetos.estrella",
+local objetos_mapa  = {  Estrella = require "entidades.logica.objetos.estrella",
                         Arbol = require "entidades.logica.objetos.arbol",
                         Roca  = require "entidades.logica.objetos.roca",
                         Punto_inicio = require "entidades.logica.objetos.punto_inicio",
-                        Portal_enemigo = require "entidades.logica.objetos.arbol"
+                        Punto_enemigo = require "entidades.logica.objetos.punto_enemigo"
+                      }
+                      
+local enemigos_mapa = { Muymuy = require "entidades.logica.enemigos.Muymuy"
                       }
 
 local entidades_servidor = Class{
@@ -43,6 +46,7 @@ function entidades_servidor:init(cam,vector,signal,eleccion,map)
   --objetos auxiliares
   
   self.respawn_points={}
+  self.respawn_points_enemigos={}
   
   
   
@@ -64,7 +68,9 @@ function entidades_servidor:init(cam,vector,signal,eleccion,map)
   
   self:custom_layers()
   
-  self:add_obj("players",personajes[eleccion](self,self.respawn_points[1].x,self.respawn_points[1].y,1))
+  personajes[eleccion](self,self.respawn_points[1].x,self.respawn_points[1].y,1)
+  
+  enemigos_mapa["Muymuy"](self,self.respawn_points_enemigos[1].x, self.respawn_points_enemigos[1].y)
   
   
 end
