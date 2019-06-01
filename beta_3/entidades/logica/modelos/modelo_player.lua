@@ -202,16 +202,20 @@ function modelo_player:creacion_balas(dt,data)
   
   if data.timer_disparo>self.disparo_max_timer then
       
-      local s= self.points[data.id].fixture:getShape()
-      local px,py=self.collider:getWorldPoints(s:getPoint())
-      local rad=math.atan2( self.ry-py, self.rx -px)
-      
-      if data.stock>0 then
-        data.balas(px, py, self.entidades, rad,self.creador)
-        data.stock=data.stock-1
-      end
+      self:bala_nueva(data)
       
       data.timer_disparo=0
+  end
+end
+
+function modelo_player:bala_nueva(data)
+  local s= self.points[data.id].fixture:getShape()
+  local px,py=self.collider:getWorldPoints(s:getPoint())
+  local rad=math.atan2( self.ry-py, self.rx -px)
+  
+  if data.stock>0 then
+    data.balas(px, py, self.entidades, rad,self.creador)
+    data.stock=data.stock-1
   end
 end
 
@@ -225,6 +229,8 @@ function modelo_player:mousepressed(x,y,button)
   if button==1 then
     self.estados.atacando=true
     self.estados.recargando=false
+    
+    self:bala_nueva(self.data_balas[self.arma])
   end
 end
 

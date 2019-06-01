@@ -14,7 +14,7 @@ function Muymuy:init(entidades,x,y)
 -28 , 13,
 -32 , -38}
   
-  modelo.init(self,entidades,x,y,10,200,380,100,polygon,50,{{x=0,y=-75}},nil,{x=0,y=-100,r=50,max_acercamiento=50})
+  modelo.init(self,entidades,x,y,10,200,380,100,polygon,50,{{x=0,y=-75}},nil,{x=0,y=-100,r=100,max_acercamiento=80})
   animacion.init(self,img.enemigos_marinos,"muymuy")
 end
 

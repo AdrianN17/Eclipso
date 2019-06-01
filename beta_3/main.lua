@@ -21,3 +21,9 @@ function love.load()
 	Gamestate.registerEvents()
   Gamestate.switch(Menu)
 end
+
+function love.keypressed(k)
+   if k == 'escape' then
+      love.event.quit()
+   end
+end

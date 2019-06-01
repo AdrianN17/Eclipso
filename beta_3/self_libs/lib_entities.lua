@@ -85,14 +85,35 @@ function lib_entities:callbacks()
  		
     elseif obj1.data=="bala" and obj2.data=="objeto" then
       obj1.obj:remove()
+    elseif obj1.data=="personaje" and obj2.data=="vision_enemigo" then
+      obj2.obj:nueva_presa(obj1.obj)
+    elseif obj1.data=="bala" and obj2.data=="enemigos" then
+      obj2.obj:dar_posicion(obj1.obj)
+      obj1.obj:remove()
+      
     end
     
   end
   
   local endContact =  function(a, b, coll)
- 		--local obj1=a:getUserData()
- 		--local obj2=b:getUserData()
- 		--local x,y=coll:getNormal()
+ 		local obj1=nil
+ 		local obj2=nil
+
+		local o1,o2=a:getUserData(),b:getUserData()
+    
+    if o1.pos<o2.pos then
+			obj1=o1
+			obj2=o2
+		else
+			obj1=o2
+			obj2=o1
+		end
+    
+    local x,y=coll:getNormal()
+    
+    if obj1.data=="personaje" and obj2.data=="vision_enemigo" then
+      obj2.obj:eliminar_presa(obj1.obj)
+    end
     
   end
   
