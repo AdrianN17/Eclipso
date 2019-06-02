@@ -92,12 +92,16 @@ function modelo_enemigo:update(dt)
     
     if #self.presas>0 then
       local el,ex,ey = self:caza() --busqueda al mas cercano
+      
+      local radio_seguir=math.atan2(self.oy-ey, self.ox-ex)
         --acercarse
         if el> self.max_acercamiento then
-          local radio_seguir=math.atan2(self.oy-ey, self.ox-ex)
+         
           self:perseguir(radio_seguir,dt)
           
         end
+        
+      self.radio=radio_seguir-math.pi/2
       
     elseif #self.presas==0 and self.d_x~=0 and self.d_y~=0 then
       
@@ -145,7 +149,12 @@ function modelo_enemigo:perseguir_hasta(dt)
   else
   
     local radio_seguir_hasta = math.atan2(self.oy-self.d_y,self.ox-self.d_x)
+    
+    self.radio=radio_seguir_hasta-math.pi/2
+    
     self:perseguir(radio_seguir_hasta,dt)
+    
+    
 
   end
 end
@@ -156,7 +165,7 @@ function modelo_enemigo:perseguir(radio,dt)
   local mx,my=x*self.mass*self.velocidad*dt,y*self.mass*self.velocidad*dt
   local vx,vy=self.collider:getLinearVelocity()
     
-  self.radio=radio-math.pi/2
+  
 
   if vx<self.velocidad or vy<self.velocidad then
     self.collider:applyLinearImpulse(-mx,-my)

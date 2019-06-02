@@ -1,0 +1,16 @@
+haciendo algo
+	si es por daño a distancia
+		seguir punto inicial por cierto tiempo 
+		sino volver a (sin hacer nada)
+
+	si es por vision
+		seguir al enemigo hasta que salga del rango (hasta unos segundos despues)
+		
+		si choca una roca buscar una manera de sortearla, sino volver a sin hacer nada
+	
+
+sin hacer nada
+
+	buscar enemigos
+		Caminar en forma aleatoria sin chocar con los objetos
+		si encuentra algo( hace hago)
