@@ -90,7 +90,6 @@ function lib_entities:callbacks()
     elseif obj1.data=="bala" and obj2.data=="enemigos" then
       obj2.obj:dar_posicion(obj1.obj)
       obj1.obj:remove()
-      
     end
     
   end

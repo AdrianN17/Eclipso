@@ -8,7 +8,7 @@ function modelo_enemigo:init(entidades,x,y,creador,hp,velocidad,ira,polygon,mass
   self.entidades:add_obj("enemigos",self)
   
   
-  self.estados={libre=true,moviendo=false,congelado=false,quemadura=false,paralisis=false,protegido=false,atacando=false,atacado=false,dash=false,vivo=true,recargando=false}
+  self.estados={libre=true,moviendo=false,congelado=false,quemadura=false,paralisis=false,protegido=false,atacando=false,atacado=false,dash=false,vivo=true,recargando=false,colision=false}
   
   self.creador=creador
   
@@ -19,7 +19,6 @@ function modelo_enemigo:init(entidades,x,y,creador,hp,velocidad,ira,polygon,mass
   self.max_ira=ira
   self.ira=0
   self.radio=0
-  
   
   --cuerpo
   
@@ -70,6 +69,36 @@ function modelo_enemigo:init(entidades,x,y,creador,hp,velocidad,ira,polygon,mass
   
   self.d_x,self.d_y=0,0
   
+  self.tiempo_nohacer=0
+  
+  self.raycast={
+    x=self.ox,
+    y=self.oy,
+    w=self.ox+math.cos(self.radio-math.pi/2)*self.max_acercamiento*2,
+    h=self.oy+math.sin(self.radio-math.pi/2)*self.max_acercamiento*2
+  }
+  
+  self.time_raycast=0
+    
+  self.funcion_raycast = function(fixture, x, y, xn, yn, fraction)
+    
+    local tipo_obj=fixture:getUserData().data
+    
+  
+    
+    if tipo_obj == "objeto" then
+      
+        self.estados.colision=true
+        
+        self.estados.libre=true
+        
+    end
+    
+    
+    return 1
+  end
+  
+  
   
   
 end
@@ -86,8 +115,21 @@ end
 
 function modelo_enemigo:update(dt)
   
+  self.time_raycast=self.time_raycast+dt
   
-  if not self.estados.libre then
+  if self.time_raycast>0.1 then
+    
+    self.estados.colision=false
+    
+    self:cambiar_raycast()
+    
+    
+    self.entidades.world:rayCast(self.raycast.x, self.raycast.y, self.raycast.w, self.raycast.h, self.funcion_raycast)
+    
+    self.time_raycast=0
+  end
+  
+  if not self.estados.libre and not self.estados.colision then
     --si hace algo
     
     if #self.presas>0 then
@@ -111,11 +153,19 @@ function modelo_enemigo:update(dt)
     end
     
     
-  else
+  elseif self.estados.libre then 
     --si no hace algo
+    self.tiempo_nohacer=self.tiempo_nohacer+dt
+    
+    if self.tiempo_nohacer>1.5 then
+      
+      self.radio=math.rad(lm.random( 0, 36 )*10)
+      
+      self.tiempo_nohacer=0
+    end
+    
     
   end
-  
   
   self.collider:setAngle(self.radio)
   self.ox,self.oy=self.collider:getX(),self.collider:getY()
@@ -153,8 +203,6 @@ function modelo_enemigo:perseguir_hasta(dt)
     self.radio=radio_seguir_hasta-math.pi/2
     
     self:perseguir(radio_seguir_hasta,dt)
-    
-    
 
   end
 end
@@ -177,30 +225,17 @@ function modelo_enemigo:dar_posicion(bala)
   self.estados.libre=false
 end
 
-
-
-function modelo_enemigo:rastrear()
-  
-end
-
-function modelo_enemigo:giro()
-  
-end
-
-function modelo_enemigo:mover()
-  
-end
-
 function modelo_enemigo:nueva_presa(obj)
   if #self.presas==0 then
     table.insert(self.presas,obj)
-    print("ingresado de 0")
+    
     self.estados.libre=false
+    self.tiempo_nohacer=0
   else
     for _, presa in ipairs(self.presas) do
       if presa~= obj then
         table.insert(self.presas,obj)
-        print("ingresado")
+        
       end
     end
   end
@@ -210,13 +245,21 @@ function modelo_enemigo:eliminar_presa(obj)
   for i, presa in ipairs(self.presas) do
     if presa== obj then
       table.remove(self.presas,i)
-      print("removido")
+      
     end
   end
   
   if #self.presas==0 then
     self.estados.libre=true
+    
   end
+end
+
+function modelo_enemigo:cambiar_raycast()
+  self.raycast.x=self.ox
+  self.raycast.y=self.oy
+  self.raycast.w=self.ox+math.cos(self.radio-math.pi/2)*self.max_acercamiento*2
+  self.raycast.h=self.oy+math.sin(self.radio-math.pi/2)*self.max_acercamiento*2
 end
 
 return modelo_enemigo
