@@ -98,9 +98,7 @@ function modelo_enemigo:init(entidades,x,y,creador,hp,velocidad,ira,polygon,mass
     return 1
   end
   
-  
-  
-  
+  self.tiempo_busqueda=0
 end
 
 function modelo_enemigo:reset_mass(mass)
@@ -155,6 +153,7 @@ function modelo_enemigo:update(dt)
     
   elseif self.estados.libre then 
     --si no hace algo
+    
     self.tiempo_nohacer=self.tiempo_nohacer+dt
     
     if self.tiempo_nohacer>1.5 then
@@ -163,6 +162,21 @@ function modelo_enemigo:update(dt)
       
       self.tiempo_nohacer=0
     end
+    
+    if not self.estados.colision then
+      
+      
+      self.tiempo_busqueda=self.tiempo_busqueda+dt
+      
+      if self.tiempo_busqueda > 1 and self.tiempo_busqueda < 4 then
+        self:mover_hasta_punto(dt)
+      elseif self.tiempo_busqueda > 4 then
+        self.tiempo_busqueda=0
+      end
+        
+      
+    end
+    
     
     
   end
@@ -231,6 +245,7 @@ function modelo_enemigo:nueva_presa(obj)
     
     self.estados.libre=false
     self.tiempo_nohacer=0
+    self.tiempo_busqueda=0
   else
     for _, presa in ipairs(self.presas) do
       if presa~= obj then
@@ -260,6 +275,16 @@ function modelo_enemigo:cambiar_raycast()
   self.raycast.y=self.oy
   self.raycast.w=self.ox+math.cos(self.radio-math.pi/2)*self.max_acercamiento*2
   self.raycast.h=self.oy+math.sin(self.radio-math.pi/2)*self.max_acercamiento*2
+end
+
+
+
+function modelo_enemigo:mover_hasta_punto(dt)
+    
+    
+  self:perseguir(self.radio+math.pi/2,dt)
+
+  
 end
 
 return modelo_enemigo

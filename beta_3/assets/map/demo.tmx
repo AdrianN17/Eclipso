@@ -25,7 +25,7 @@
   <object id="8" name="Estrella" type="1" x="660" y="234">
    <point/>
   </object>
-  <object id="10" name="Punto_enemigo" type="4" x="93" y="714">
+  <object id="10" name="Punto_enemigo" type="4" x="507" y="449">
    <point/>
   </object>
  </objectgroup>
