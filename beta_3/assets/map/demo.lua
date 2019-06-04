@@ -9,7 +9,7 @@ return {
   tilewidth = 32,
   tileheight = 32,
   nextlayerid = 10,
-  nextobjectid = 11,
+  nextobjectid = 15,
   properties = {},
   tilesets = {
     {
@@ -69,7 +69,7 @@ return {
       properties = {},
       encoding = "base64",
       compression = "zlib",
-      data = "eJzt2ctOwzAQQNEU1EX//4fZUCmyxuOhtkMW50gVENQNFz/7OI7j8fv6On2Nvn///J28mNN20ON/9XqcW7Q9Xoceu0Qd2vkrevbupMda1R7RmInGCnOy+SobF731hDnVDr0xo8dalf1U26jto8c6o7/5aG3RY63qvirrpMc6o/NHtr96Hva7q43momh9iTrosUZvz5T1cF+yT3Y/0mujxz563MvoHjFaW/TYp7K/ct9+nWoP89U1Kvvd7L5Kj7Wq5w89rtE7h2d37Xrsk50Hez18XrtPZX7KziNtR+ZU143e2Gm7MafymcdofJyfMae3jo/uFXvvYc6nPXq/Z07Uo3p/0rZhXmU86HGdyv1h5bkea0T7qsp+K1rbmZf1+Mv6wRq9eSqbv6L5ijWyOSg7k+uwh7X5Xvzf348OAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8JkfIWoEug=="
+      data = "eJzt2dlKBDEQQNEexQf//4d9mYGhSVUq6aQVPAfEdUD6mtXHcRyP59vH2/vWx6/PPwfeGHPuoMfvinq8tzj3+D702KXV4Tx/tb726qTHWtUerTFTGSuMyearbFxU1xPGVDtEY0aPtSr7qXOjcx891uk9897aosda1X1V1kmPdXrnj2x/9XXY767Wm4ta60ulgx5zoj1T1sN9yT7Z/UjURo999PhbeveIrbVFj30q+yv37fep9jBf3aOy3x25r9Ljmur5Q497ROfw7K5dj32y82DUw/9r96nMT9l5pHeuZ0x13YjGTtRNjzmV/3n0xkf284yJ1vHevWJ1X8aY2R7R9/W4ptWjen9SmccYUxkPetwne869Z63Heq31uLLfitZ2Pa7JeoyuI3pcFz3X3vPunUX0mJPNQa0zR7WXHnOitXn09Y/1v9q/FP3dj7xej7XMLwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADDnB3GaBh8="
     },
     {
       type = "tilelayer",

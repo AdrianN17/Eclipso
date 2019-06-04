@@ -56,7 +56,9 @@ end
 function lib_entities:get_objects(objectlayer,objects_map)
   
 		for _, obj in pairs(objectlayer.objects) do
-			objects_map[obj.name](obj.x,obj.y,self)
+      if obj.name  then
+        objects_map[obj.name](obj.x,obj.y,self)
+      end
 		end
 end
 
@@ -180,6 +182,18 @@ function lib_entities:custom_layers()
     end
   end
   
+end
+
+function lib_entities:close_map()
+  local w,h=self.map.width*self.map.tilewidth, self.map.height*self.map.tileheight
+  local fin_mapa={}
+  fin_mapa.collider=py.newBody(self.world,0,0,"static")
+	fin_mapa.shape=py.newChainShape(true,0,0,w,0,h,w,0,h)
+	fin_mapa.fixture=py.newFixture(fin_mapa.collider,fin_mapa.shape)
+  
+  fin_mapa.fixture:setUserData( {data="objeto",obj=self, pos=5} )
+  
+  return fin_mapa
 end
 
 return lib_entities

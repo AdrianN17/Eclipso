@@ -27,3 +27,5 @@ function love.keypressed(k)
       love.event.quit()
    end
 end
+
+--colocar muros en las paredes con un chainshape

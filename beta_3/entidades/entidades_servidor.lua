@@ -68,6 +68,8 @@ function entidades_servidor:init(cam,vector,signal,eleccion,map)
   
   self:custom_layers()
   
+  self:close_map()
+  
   personajes[eleccion](self,self.respawn_points[1].x,self.respawn_points[1].y,1)
   
   enemigos_mapa["Muymuy"](self,self.respawn_points_enemigos[1].x, self.respawn_points_enemigos[1].y)

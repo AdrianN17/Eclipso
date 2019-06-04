@@ -168,9 +168,9 @@ function modelo_enemigo:update(dt)
       
       self.tiempo_busqueda=self.tiempo_busqueda+dt
       
-      if self.tiempo_busqueda > 1 and self.tiempo_busqueda < 4 then
+      if self.tiempo_busqueda > 2 and self.tiempo_busqueda < 5 then
         self:mover_hasta_punto(dt)
-      elseif self.tiempo_busqueda > 4 then
+      elseif self.tiempo_busqueda > 5 then
         self.tiempo_busqueda=0
       end
         
@@ -308,3 +308,5 @@ sin hacer nada
 		si encuentra algo( hace hago)
 
 ]]
+
+--si es posible pasar a una maquina de estado finito 
