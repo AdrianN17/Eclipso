@@ -45,9 +45,16 @@ spritesheet.objetos.scale=0.6
 
 spritesheet.balas={}
 spritesheet.balas["image"]=love.graphics.newImage("assets/img/balas.png")
+
+--jugadores
 spritesheet.balas[1]=love.graphics.newQuad(0, 1, 54, 54, spritesheet.balas["image"]:getDimensions())
 spritesheet.balas[2]=love.graphics.newQuad(64, 0, 54, 54, spritesheet.balas["image"]:getDimensions())
 spritesheet.balas[3]=love.graphics.newQuad(122, 0, 54, 54, spritesheet.balas["image"]:getDimensions())
+spritesheet.balas[4]=love.graphics.newQuad(182, 0, 54, 54, spritesheet.balas["image"]:getDimensions())
+spritesheet.balas[5]=love.graphics.newQuad(239, 0, 53, 53, spritesheet.balas["image"]:getDimensions())
+
+--enemigos
+spritesheet.balas[6]=love.graphics.newQuad(4, 68, 53, 52, spritesheet.balas["image"]:getDimensions())
 
 spritesheet.balas.scale=0.25
 

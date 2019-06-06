@@ -84,7 +84,7 @@ function lib_entities:callbacks()
  		local x,y=coll:getNormal()
     
     if obj1.data=="personaje" and obj2.data=="bala" then
- 		
+      obj2.obj:remove()
     elseif obj1.data=="bala" and obj2.data=="objeto" then
       obj1.obj:remove()
     elseif obj1.data=="personaje" and obj2.data=="vision_enemigo" then

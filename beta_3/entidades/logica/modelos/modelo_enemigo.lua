@@ -2,7 +2,7 @@ local Class = require "libs.hump.class"
 
 local modelo_enemigo = Class{}
 
-function modelo_enemigo:init(entidades,x,y,creador,hp,velocidad,ira,polygon,mass,puntos_arma,puntos_melee,puntos_rango)
+function modelo_enemigo:init(entidades,x,y,creador,hp,velocidad,ira,polygon,mass,puntos_arma,puntos_melee,puntos_rango,objeto_balas,tiempo_max_recarga)
   self.entidades=entidades
   
   self.entidades:add_obj("enemigos",self)
@@ -99,6 +99,12 @@ function modelo_enemigo:init(entidades,x,y,creador,hp,velocidad,ira,polygon,mass
   end
   
   self.tiempo_busqueda=0
+  
+  self.objeto_balas=objeto_balas
+  self.tiempo_balas=100
+  
+  self.tiempo_max_recarga=tiempo_max_recarga
+  self.tiempo_recarga=0
 end
 
 function modelo_enemigo:reset_mass(mass)
@@ -131,9 +137,23 @@ function modelo_enemigo:update(dt)
     --si hace algo
     
     if #self.presas>0 then
+      self.estados.atacando=true
+      
+      self.tiempo_balas=self.tiempo_balas+dt
+      
+      if self.tiempo_balas>self.objeto_balas.tiempo then
+        self:crear_balas(self.objeto_balas)
+        
+        self.tiempo_balas=0
+      end
+      
+      
+      
       local el,ex,ey = self:caza() --busqueda al mas cercano
       
       local radio_seguir=math.atan2(self.oy-ey, self.ox-ex)
+      
+        self.len_debug=el
         --acercarse
         if el> self.max_acercamiento then
          
@@ -183,6 +203,12 @@ function modelo_enemigo:update(dt)
   
   self.collider:setAngle(self.radio)
   self.ox,self.oy=self.collider:getX(),self.collider:getY()
+  
+  --recargar
+  
+  if self.objeto_balas.stock < 1 then
+    self:recargar(dt)
+  end
 end
 
 function modelo_enemigo:caza()
@@ -266,6 +292,8 @@ function modelo_enemigo:eliminar_presa(obj)
   
   if #self.presas==0 then
     self.estados.libre=true
+    self.estados.atacando=false
+    self.tiempo_balas=0
     
   end
 end
@@ -285,6 +313,27 @@ function modelo_enemigo:mover_hasta_punto(dt)
   self:perseguir(self.radio+math.pi/2,dt)
 
   
+end
+
+function modelo_enemigo:crear_balas(data)
+  local s= self.points[1].fixture:getShape()
+  local px,py=self.collider:getWorldPoints(s:getPoint())
+  
+  
+  if data.stock>0 then
+    data.bala(px, py, self.entidades, self.radio-math.pi/2,self.creador)
+    data.stock=data.stock-1
+  end
+
+end
+
+function modelo_enemigo:recargar(dt)
+  self.tiempo_recarga=self.tiempo_recarga+dt
+  
+  if self.tiempo_recarga>self.tiempo_max_recarga then
+    self.objeto_balas.stock=self.objeto_balas.max_stock
+    self.tiempo_recarga=0
+  end
 end
 
 return modelo_enemigo
