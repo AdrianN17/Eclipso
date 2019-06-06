@@ -140,15 +140,9 @@ function modelo_enemigo:update(dt)
     if #self.presas>0 then
       self.estados.atacando=true
       
-      self.tiempo_balas=self.tiempo_balas+dt
-      
-      if self.tiempo_balas>self.objeto_balas.tiempo then
-        self:crear_balas(self.objeto_balas)
-        
-        self.tiempo_balas=0
+      if self.objeto_balas then
+        self:realizar_disparo(dt)
       end
-      
-      
       
       local el,ex,ey = self:caza() --busqueda al mas cercano
       
@@ -203,8 +197,10 @@ function modelo_enemigo:update(dt)
   
   --recargar
   
-  if self.objeto_balas.stock < 1 then
-    self:recargar(dt)
+  if self.objeto_balas then
+    if self.objeto_balas.stock < 1 then
+      self:recargar(dt)
+    end
   end
   
 end
@@ -311,6 +307,16 @@ function modelo_enemigo:mover_hasta_punto(dt)
   self:perseguir(self.radio+math.pi/2,dt)
 
   
+end
+
+function modelo_enemigo:realizar_disparo(dt)
+  self.tiempo_balas=self.tiempo_balas+dt
+      
+  if self.tiempo_balas>self.objeto_balas.tiempo then
+    self:crear_balas(self.objeto_balas)
+    
+    self.tiempo_balas=0
+  end
 end
 
 function modelo_enemigo:crear_balas(data)
