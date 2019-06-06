@@ -118,6 +118,7 @@ end
 
 
 function modelo_enemigo:update(dt)
+
   
   self.time_raycast=self.time_raycast+dt
   
@@ -194,11 +195,7 @@ function modelo_enemigo:update(dt)
         self.tiempo_busqueda=0
       end
         
-      
     end
-    
-    
-    
   end
   
   self.collider:setAngle(self.radio)
@@ -209,6 +206,7 @@ function modelo_enemigo:update(dt)
   if self.objeto_balas.stock < 1 then
     self:recargar(dt)
   end
+  
 end
 
 function modelo_enemigo:caza()
