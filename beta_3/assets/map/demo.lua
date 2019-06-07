@@ -1,7 +1,7 @@
 return {
   version = "1.2",
   luaversion = "5.1",
-  tiledversion = "1.2.3",
+  tiledversion = "1.2.4",
   orientation = "orthogonal",
   renderorder = "right-down",
   width = 100,
@@ -9,7 +9,7 @@ return {
   tilewidth = 32,
   tileheight = 32,
   nextlayerid = 10,
-  nextobjectid = 15,
+  nextobjectid = 16,
   properties = {},
   tilesets = {
     {
@@ -165,11 +165,24 @@ return {
         },
         {
           id = 10,
-          name = "Punto_enemigo",
+          name = "Punto_enemigo_agua",
           type = "4",
           shape = "point",
-          x = 507,
-          y = 449,
+          x = 520,
+          y = 452,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 15,
+          name = "Punto_enemigo_agua",
+          type = "4",
+          shape = "point",
+          x = 624,
+          y = 811,
           width = 0,
           height = 0,
           rotation = 0,

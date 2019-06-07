@@ -2,7 +2,7 @@
 function love.load()
 
 	image = love.graphics.newImage("animales_marinos.png")
-	quad = love.graphics.newQuad(0, 0, 142, 313,image:getDimensions())
+	quad = love.graphics.newQuad(525, 26, 350, 286,image:getDimensions())
 
 	scale= 0.5
 

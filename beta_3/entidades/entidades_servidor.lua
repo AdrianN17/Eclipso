@@ -6,11 +6,9 @@ local objetos_mapa  = {  Estrella = require "entidades.logica.objetos.estrella",
                         Arbol = require "entidades.logica.objetos.arbol",
                         Roca  = require "entidades.logica.objetos.roca",
                         Punto_inicio = require "entidades.logica.objetos.punto_inicio",
-                        Punto_enemigo = require "entidades.logica.objetos.punto_enemigo"
+                        Punto_enemigo_agua = require "entidades.logica.objetos.punto_enemigo_agua"
                       }
                       
-local enemigos_mapa = { Muymuy = require "entidades.logica.enemigos.Muymuy"
-                      }
 
 local entidades_servidor = Class{
   __includes = {libe}
@@ -64,7 +62,7 @@ function entidades_servidor:init(cam,vector,signal,eleccion,map)
   
   libe.init(self)
   
-  self:map_read(objetos_mapa)
+  self:map_read(objetos_mapa,enemigos_mapa)
   
   self:custom_layers()
   
@@ -72,9 +70,8 @@ function entidades_servidor:init(cam,vector,signal,eleccion,map)
   
   personajes[eleccion](self,self.respawn_points[1].x,self.respawn_points[1].y,1)
   
-  enemigos_mapa["Muymuy"](self,self.respawn_points_enemigos[1].x, self.respawn_points_enemigos[1].y)
-  
-  
+  self.cantidad_enemigos=0
+  self.max_cantidad_enemigos=2
 end
 
 function entidades_servidor:enter()

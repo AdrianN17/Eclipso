@@ -2,7 +2,7 @@ local Class = require "libs.hump.class"
 
 local modelo_enemigo = Class{}
 
-function modelo_enemigo:init(entidades,x,y,creador,hp,velocidad,ira,polygon,mass,puntos_arma,puntos_melee,puntos_rango,objeto_balas,tiempo_max_recarga)
+function modelo_enemigo:init(entidades,x,y,creador,hp,velocidad,ira,polygon,mass,puntos_arma,puntos_melee,puntos_rango,objeto_balas,tiempo_max_recarga,rastreo_paredes)
   self.entidades=entidades
   
   self.entidades:add_obj("enemigos",self)
@@ -40,18 +40,36 @@ function modelo_enemigo:init(entidades,x,y,creador,hp,velocidad,ira,polygon,mass
   
   self.points={}
 
-	for _,p in ipairs(puntos_arma) do
-		local t={}
+  if puntos_arma then
+    for _,p in ipairs(puntos_arma) do
+      local t={}
 
-		t.shape=py.newCircleShape(p.x,p.y,4)
-		t.fixture=py.newFixture(self.collider,t.shape)
-		t.fixture:setSensor( true )
-		t.fixture:setGroupIndex( -self.creador )
-		t.fixture:setUserData( {data="brazos_enemigo",obj=self, pos=8}  )
-		t.fixture:setDensity(0)
+      t.shape=py.newCircleShape(p.x,p.y,4)
+      t.fixture=py.newFixture(self.collider,t.shape)
+      t.fixture:setSensor( true )
+      t.fixture:setGroupIndex( -self.creador )
+      t.fixture:setUserData( {data="brazos_enemigo",obj=self, pos=8}  )
+      t.fixture:setDensity(0)
 
-		table.insert(self.points,t)
-	end
+      table.insert(self.points,t)
+    end
+  end
+  
+  self.melee={}
+  
+  if puntos_melee then
+    for _,p in ipairs(puntos_melee) do
+      local t={}
+      t.shape=py.newCircleShape(p.x,p.y,p.r)
+      t.fixture=py.newFixture(self.collider,t.shape)
+      t.fixture:setSensor( true )
+      t.fixture:setGroupIndex( -self.creador )
+      t.fixture:setUserData( {data="melee",obj=self, pos=8}  )
+      t.fixture:setDensity(0)
+
+      table.insert(self.melee,t)
+    end
+  end
   
   self.shape_vision=py.newCircleShape(puntos_rango.x,puntos_rango.y,puntos_rango.r)
 	self.fixture_vision=py.newFixture(self.collider,self.shape_vision)
@@ -84,8 +102,6 @@ function modelo_enemigo:init(entidades,x,y,creador,hp,velocidad,ira,polygon,mass
     
     local tipo_obj=fixture:getUserData().data
     
-  
-    
     if tipo_obj == "objeto" then
       
         self.estados.colision=true
@@ -94,8 +110,8 @@ function modelo_enemigo:init(entidades,x,y,creador,hp,velocidad,ira,polygon,mass
         
     end
     
-    
     return 1
+    
   end
   
   self.tiempo_busqueda=0
@@ -105,6 +121,11 @@ function modelo_enemigo:init(entidades,x,y,creador,hp,velocidad,ira,polygon,mass
   
   self.tiempo_max_recarga=tiempo_max_recarga
   self.tiempo_recarga=0
+  
+  self.distancia_permitida=self.max_acercamiento*2.5
+  
+  self.rastreo_paredes=rastreo_paredes
+  
 end
 
 function modelo_enemigo:reset_mass(mass)
@@ -144,14 +165,15 @@ function modelo_enemigo:update(dt)
         self:realizar_disparo(dt)
       end
       
-      local el,ex,ey = self:caza() --busqueda al mas cercano
+      local erx,ery,ex,ey = self:caza() --busqueda al mas cercano
       
       local radio_seguir=math.atan2(self.oy-ey, self.ox-ex)
       
-        self.len_debug=el
+      self.rx_len,self.ry_len=erx,ery
         --acercarse
-        if el> self.max_acercamiento then
-         
+        if erx > self.distancia_permitida or ery > self.distancia_permitida then
+          
+          
           self:perseguir(radio_seguir,dt)
           
         end
@@ -203,25 +225,30 @@ function modelo_enemigo:update(dt)
     end
   end
   
+  self:update_animation(dt)
+  
+  
+  
 end
 
 function modelo_enemigo:caza()
-  local longitud_buscada= 999999
+  local rx_len,ry_len=9000,9000
   local x_buscado, y_buscado= 0,0
   for i, presa in ipairs(self.presas) do
     local dx,dy=presa.ox,presa.oy
     
     local rx,ry = dx-self.ox,dy-self.oy
     
-    local longitud = math.sqrt(rx*rx,ry*ry)
+    rx,ry=math.abs(rx),math.abs(ry)
     
-    if longitud < longitud_buscada then
-      longitud_buscada = longitud
+    
+    if rx < rx_len or ry < ry_len then
+      rx_len,ry_len=rx,ry
       x_buscado, y_buscado= dx,dy
     end
   end
   
-  return longitud_buscada,x_buscado,y_buscado
+  return rx_len,ry_len,x_buscado,y_buscado
 end
 
 function modelo_enemigo:perseguir_hasta(dt)
@@ -295,8 +322,8 @@ end
 function modelo_enemigo:cambiar_raycast()
   self.raycast.x=self.ox
   self.raycast.y=self.oy
-  self.raycast.w=self.ox+math.cos(self.radio-math.pi/2)*self.max_acercamiento*2
-  self.raycast.h=self.oy+math.sin(self.radio-math.pi/2)*self.max_acercamiento*2
+  self.raycast.w=self.ox+math.cos(self.radio-math.pi/2)*self.rastreo_paredes
+  self.raycast.h=self.oy+math.sin(self.radio-math.pi/2)*self.rastreo_paredes
 end
 
 
@@ -363,3 +390,4 @@ sin hacer nada
 ]]
 
 --si es posible pasar a una maquina de estado finito 
+--mejorar distancia, en vez de math.sqrt hacer una resta de x y y, que el mayor de cualquiera de los 2 decida

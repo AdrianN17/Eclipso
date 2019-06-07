@@ -92,8 +92,20 @@ function lib_entities:callbacks()
     elseif obj1.data=="bala" and obj2.data=="enemigos" then
       obj2.obj:dar_posicion(obj1.obj)
       obj1.obj:remove()
+    elseif obj1.data=="personaje" and obj2.data=="melee" then
+
+      
+      local r = obj2.obj.radio-math.pi/2
+      local ix,iy=math.cos(r),math.sin(r)
+      
+
+
+      obj1.obj.collider:applyLinearImpulse( 10000*ix,10000*iy )
+      
+
+      
     end
-    
+     
   end
   
   local endContact =  function(a, b, coll)

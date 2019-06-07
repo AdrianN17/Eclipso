@@ -63,6 +63,12 @@ spritesheet.enemigos_marinos["image"]=love.graphics.newImage("assets/img/animale
 spritesheet.enemigos_marinos.muymuy={}
 spritesheet.enemigos_marinos.muymuy[1]=love.graphics.newQuad(0, 0, 142, 313, spritesheet.enemigos_marinos["image"]:getDimensions())
 
+spritesheet.enemigos_marinos.cangrejo={}
+spritesheet.enemigos_marinos.cangrejo[1]=love.graphics.newQuad(525, 26, 350, 286, spritesheet.enemigos_marinos["image"]:getDimensions())
+spritesheet.enemigos_marinos.cangrejo[2]=love.graphics.newQuad(1079, 0, 349, 291, spritesheet.enemigos_marinos["image"]:getDimensions())
+
+spritesheet.enemigos_marinos.cangrejo.scale=0.5
+
 spritesheet.enemigos_marinos.muymuy.scale=0.5
 
 

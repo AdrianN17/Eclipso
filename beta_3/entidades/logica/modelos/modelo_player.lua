@@ -120,6 +120,8 @@ function modelo_player:init(entidades,x,y,creador,area,hp,velocidad,ira,tiempo_e
     self.arma=1
   end
   
+  self.tiempo_atacado=0
+  
 end
 
 function modelo_player:reset_mass(mass)
@@ -191,6 +193,17 @@ function modelo_player:update(dt)
       
       self.timer_recargando=0
       self.estados.recargando=false
+    end
+    
+  end
+  
+  if self.estados.atacado then
+  
+    self.tiempo_atacado=self.tiempo_atacado+dt
+    
+    if self.tiempo_atacado>0.5 then
+      self.estados.atacado=false
+      self.tiempo_atacado=0
     end
     
   end
