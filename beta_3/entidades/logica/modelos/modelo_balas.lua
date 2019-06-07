@@ -1,8 +1,11 @@
 local Class = require "libs.hump.class"
+local modelo_destruccion_otros  = require "entidades.logica.modelos.modelo_destruccion_otros"
 
-local modelo_balas = Class{}
+local modelo_balas = Class{
+  __includes = {modelo_destruccion_otros}
+}
 
-function modelo_balas:init(x,y,entidades,velocidad,radio,creador)
+function modelo_balas:init(x,y,entidades,velocidad,radio,creador,daño)
   self.inicial_x,self.inicial_y=x,y
   self.entidades=entidades
   self.velocidad=velocidad
@@ -23,7 +26,11 @@ function modelo_balas:init(x,y,entidades,velocidad,radio,creador)
 
   self.z=0
   
+  self.daño=daño
+  
   self:reset_mass(5)
+  
+  modelo_destruccion_otros.init(self,"balas")
 end
 
 function modelo_balas:reset_mass(mass)
@@ -49,10 +56,8 @@ function modelo_balas:update(dt)
   
 end
 
-function modelo_balas:remove()
-
-	self.collider:destroy( )
-	self.entidades:remove_obj("balas",self)
+function modelo_balas:dañado(objeto)
+	objeto.hp=objeto.hp-self.daño
 end
 
 return modelo_balas

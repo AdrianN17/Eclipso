@@ -1,8 +1,11 @@
 local Class = require "libs.hump.class"
+local modelo_destruccion_otros  = require "entidades.logica.modelos.modelo_destruccion_otros"
 
-local modelo_enemigo = Class{}
+local modelo_enemigo = Class{
+  __includes = {modelo_destruccion_otros}
+}
 
-function modelo_enemigo:init(entidades,x,y,creador,hp,velocidad,ira,polygon,mass,puntos_arma,puntos_melee,puntos_rango,objeto_balas,tiempo_max_recarga,rastreo_paredes)
+function modelo_enemigo:init(entidades,x,y,creador,hp,velocidad,ira,polygon,mass,puntos_arma,puntos_melee,puntos_rango,objeto_balas,tiempo_max_recarga,rastreo_paredes,daño_melee)
   self.entidades=entidades
   
   self.entidades:add_obj("enemigos",self)
@@ -126,6 +129,10 @@ function modelo_enemigo:init(entidades,x,y,creador,hp,velocidad,ira,polygon,mass
   
   self.rastreo_paredes=rastreo_paredes
   
+  self.daño_melee=daño_melee
+  
+  modelo_destruccion_otros.init(self,"enemigos")
+  
 end
 
 function modelo_enemigo:reset_mass(mass)
@@ -227,7 +234,11 @@ function modelo_enemigo:update(dt)
   
   self:update_animation(dt)
   
+  --eliminar
   
+  if self.hp<1 then
+    self:remove()
+  end
   
 end
 
@@ -365,6 +376,10 @@ function modelo_enemigo:recargar(dt)
     self.objeto_balas.stock=self.objeto_balas.max_stock
     self.tiempo_recarga=0
   end
+end
+
+function modelo_enemigo:ataque_melee(objeto)
+  objeto.hp=objeto.hp-self.daño_melee
 end
 
 return modelo_enemigo

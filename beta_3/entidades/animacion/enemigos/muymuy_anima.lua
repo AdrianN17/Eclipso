@@ -16,7 +16,7 @@ function muymuy_anima:draw()
     
     lg.draw(self.spritesheet["image"],self.spritesheet[self.tipo][self.iterator],self.ox,self.oy,self.radio,self.spritesheet[self.tipo].scale,self.spritesheet[self.tipo].scale,w/2,h/2)
     
-    lg.print(self.rx_len .. " , " .. self.ry_len,self.ox,self.oy-100)
+    lg.print(self.hp,self.ox,self.oy-100)
     
     lg.line(self.raycast.x,self.raycast.y,self.raycast.w,self.raycast.h)
 end

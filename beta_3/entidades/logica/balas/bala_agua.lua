@@ -7,7 +7,7 @@ local bala_agua = Class{
 }
 
 function bala_agua:init(x,y,entidades,radio,creador)
-  molde_bala.init(self,x,y,entidades,1200,radio,creador)
+  molde_bala.init(self,x,y,entidades,1200,radio,creador,25)
   animacion.init(self,img.balas,6)
 end
 

@@ -63,7 +63,7 @@ function Solange_anima:draw()
     lg.draw(self.spritesheet_escudos["image"],self.spritesheet_escudos[2],self.ox,self.oy,0,self.spritesheet_escudos.scale,self.spritesheet_escudos.scale,w_s/2,h_s/2)
   end
   
-  
+  lg.print(self.hp,self.ox,self.oy-100)
   
   
 end

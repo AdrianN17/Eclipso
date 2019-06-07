@@ -7,7 +7,7 @@ local bala_hielo = Class{
 }
 
 function bala_hielo:init(x,y,entidades,radio,creador)
-  molde_bala.init(self,x,y,entidades,1500,radio,creador)
+  molde_bala.init(self,x,y,entidades,1500,radio,creador,45)
   animacion.init(self,img.balas,2)
 end
 

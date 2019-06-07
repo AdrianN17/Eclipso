@@ -84,6 +84,7 @@ function lib_entities:callbacks()
  		local x,y=coll:getNormal()
     
     if obj1.data=="personaje" and obj2.data=="bala" then
+      obj2.obj:dañado(obj1.obj)
       obj2.obj:remove()
     elseif obj1.data=="bala" and obj2.data=="objeto" then
       obj1.obj:remove()
@@ -91,9 +92,10 @@ function lib_entities:callbacks()
       obj2.obj:nueva_presa(obj1.obj)
     elseif obj1.data=="bala" and obj2.data=="enemigos" then
       obj2.obj:dar_posicion(obj1.obj)
+      obj1.obj:dañado(obj2.obj)
       obj1.obj:remove()
     elseif obj1.data=="personaje" and obj2.data=="melee" then
-
+      obj2.obj:ataque_melee(obj1.obj)
       
       local r = obj2.obj.radio-math.pi/2
       local ix,iy=math.cos(r),math.sin(r)
@@ -102,7 +104,7 @@ function lib_entities:callbacks()
 
       obj1.obj.collider:applyLinearImpulse( 10000*ix,10000*iy )
       
-
+      
       
     end
      

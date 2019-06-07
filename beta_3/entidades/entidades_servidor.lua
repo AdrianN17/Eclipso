@@ -71,7 +71,7 @@ function entidades_servidor:init(cam,vector,signal,eleccion,map)
   personajes[eleccion](self,self.respawn_points[1].x,self.respawn_points[1].y,1)
   
   self.cantidad_enemigos=0
-  self.max_cantidad_enemigos=2
+  self.max_cantidad_enemigos=25
 end
 
 function entidades_servidor:enter()
