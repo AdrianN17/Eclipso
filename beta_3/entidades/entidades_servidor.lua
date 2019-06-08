@@ -81,6 +81,8 @@ end
 function entidades_servidor:draw()
   local cx,cy,cw,ch=self.cam:getVisible()
   
+  
+  
   self.map:draw(-cx,-cy,1,1)
   
   self.cam:draw(function(l,t,w,h)
@@ -101,6 +103,8 @@ function entidades_servidor:draw()
     end
     
   end)
+
+  lg.print("Current FPS: "..tostring(love.timer.getFPS( )), 10, 10)
 end
 
 function entidades_servidor:update(dt)
