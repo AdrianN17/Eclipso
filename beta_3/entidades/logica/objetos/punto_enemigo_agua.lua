@@ -30,7 +30,7 @@ end
 function punto_enemigo_agua:update(dt)
   self.timer=self.timer+dt
   
-  if self.timer>5 and self.entidades.cantidad_enemigos<self.entidades.max_cantidad_enemigos then
+  if self.timer>5 and self.entidades.cantidad_enemigos<self.entidades.max_cantidad_enemigos and #self.entidades.gameobject.players>0 then
     enemigos[lm.random(self.min_random,self.max_random)](self.entidades,self.ox,self.oy)
     
     self.entidades.cantidad_enemigos=self.entidades.cantidad_enemigos+1

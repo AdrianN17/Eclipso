@@ -1,6 +1,7 @@
 local Class = require "libs.hump.class"
 local Gamestate = require "libs.hump.gamestate"
 local libe= require "self_libs.lib_entities"
+local servidor = require "gamestates.servidor"
 
 local objetos_mapa  = {  Estrella = require "entidades.logica.objetos.estrella",
                         Arbol = require "entidades.logica.objetos.arbol",
@@ -11,7 +12,7 @@ local objetos_mapa  = {  Estrella = require "entidades.logica.objetos.estrella",
                       
 
 local entidades_servidor = Class{
-  __includes = {libe}
+  __includes = {libe,servidor}
 }
 
 local personajes={}
@@ -22,6 +23,7 @@ local objetos={}
 
 function entidades_servidor:init(cam,vector,signal,eleccion,map)
   
+  servidor.init(self)
   
   --datos de base
   self.cam=cam

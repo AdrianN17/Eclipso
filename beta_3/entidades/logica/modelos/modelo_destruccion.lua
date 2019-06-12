@@ -11,7 +11,7 @@ function modelo_destruccion:remove()
     self.collider:destroy()
   end
 
-	self.entidades:remove_to_nill(table,self)
+	self.entidades:remove_to_nill(self.name_table,self)
 end
 
 return modelo_destruccion

@@ -1,5 +1,5 @@
-local Gamestate = require "libs.hump.gamestate"
-local Inicio = require "gamestates.inicio"
+--local Gamestate = require "libs.hump.gamestate"
+--local Inicio = require "gamestates.inicio"
 
 
 
@@ -7,7 +7,7 @@ function love.load()
 
 	--inicio
 
-	local font=love.graphics.newImageFont("assets/font/Imagefont.png",
+	--[[local font=love.graphics.newImageFont("assets/font/Imagefont.png",
     " abcdefghijklmnopqrstuvwxyz" ..
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ0" ..
     "123456789.,!?-+/():;%&`'*#=[]\"")
@@ -20,7 +20,17 @@ function love.load()
 
 
 	Gamestate.registerEvents()
-    Gamestate.switch(Inicio)
+    Gamestate.switch(Inicio)]]
+
+    objects={"a","b","c","d","e","f"}
+
+    for i = 1, #objects - 1 do
+	  local object1 = objects[i]
+	  for j = i + 1, #objects do
+	    local object2 = objects[j]
+	    print(object1,object2)
+	  end
+	end
 end
 
 --agregar deteccion de colisiones a los enemigos

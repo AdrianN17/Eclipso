@@ -22,7 +22,7 @@ function modelo_player:init(entidades,x,y,creador,area,hp,velocidad,ira,tiempo_e
   --inicializar
   
   daño.init(self)
-  destruccion.init(self)
+  destruccion.init(self,"players")
   
   --ejes
   
@@ -206,6 +206,12 @@ function modelo_player:update(dt)
       self.tiempo_atacado=0
     end
     
+  end
+  
+  --eliminar
+  
+  if self.hp<1 then
+    self:remove()
   end
   
 end

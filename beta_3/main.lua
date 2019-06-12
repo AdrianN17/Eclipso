@@ -1,5 +1,6 @@
 local Gamestate = require "libs.hump.gamestate"
-local Menu = require "escenas.menu"
+--local Menu = require "escenas.menu"
+local Game = require "escenas.game"
 local img= require "assets.img.img"
 
 function love.load()
@@ -18,8 +19,10 @@ function love.load()
   _G.img=img
 
 
+  
+
 	Gamestate.registerEvents()
-  Gamestate.switch(Menu)
+  Gamestate.switch(Game)
 end
 
 function love.keypressed(k)

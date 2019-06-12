@@ -1,6 +1,7 @@
 local Class = require "libs.hump.class"
 local Gamestate = require "libs.hump.gamestate"
 local Base = require "base.base"
+--local Base_cliente = require "base.base_cliente"
 
 local game = Class{
   __includes = Base
@@ -8,7 +9,16 @@ local game = Class{
 
 function game:init()
   
-  Base:init(self,"demo",personaje_elegido)
+  --coger data de filesystem
+  
+  local data=nil
+	if love.filesystem.getInfo("Game_data.lua") then
+    data =love.filesystem.load("Game_data.lua")()
+    --print(data.personaje,data.mapa,data.tipo)
+  end
+  
+  
+  Base:init(self,data.mapa,data.personaje)
 end
 
 function game:enter()

@@ -4,7 +4,9 @@ function love.conf(t)
   	t.window.width = 600
   	t.window.height = 640
   
-  	t.title="Hypernova"
+  	t.title="Last_Eclipse"
+    t.identity = "Last_Eclipse"
+    t.release = true
   	t.window.fullscreen = true 
   	t.window.fullscreentype = "desktop"
   	t.window.vsync = 1 
