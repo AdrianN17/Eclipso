@@ -88,7 +88,7 @@ public:
         lb_img1->setGeometry(QRect(20, 30, 241, 91));
         lb_personaje = new QLabel(group_personajes);
         lb_personaje->setObjectName(QString::fromUtf8("lb_personaje"));
-        lb_personaje->setGeometry(QRect(200, 140, 55, 16));
+        lb_personaje->setGeometry(QRect(160, 140, 141, 20));
         combo_personaje = new QComboBox(group_personajes);
         combo_personaje->setObjectName(QString::fromUtf8("combo_personaje"));
         combo_personaje->setGeometry(QRect(350, 60, 73, 22));
@@ -100,7 +100,7 @@ public:
         lb_img2->setGeometry(QRect(200, 30, 241, 91));
         lb_mapa = new QLabel(group_mapas);
         lb_mapa->setObjectName(QString::fromUtf8("lb_mapa"));
-        lb_mapa->setGeometry(QRect(200, 140, 55, 16));
+        lb_mapa->setGeometry(QRect(170, 140, 111, 20));
         combo_mapa = new QComboBox(group_mapas);
         combo_mapa->setObjectName(QString::fromUtf8("combo_mapa"));
         combo_mapa->setGeometry(QRect(30, 70, 73, 22));
@@ -145,10 +145,10 @@ public:
         checkBox->setText(QApplication::translate("Launcher", "Habilitar opciones avanzadas", nullptr));
         group_personajes->setTitle(QApplication::translate("Launcher", "Personajes", nullptr));
         lb_img1->setText(QString());
-        lb_personaje->setText(QApplication::translate("Launcher", "TextLabel", nullptr));
+        lb_personaje->setText(QApplication::translate("Launcher", "Seleccion de personaje", nullptr));
         group_mapas->setTitle(QApplication::translate("Launcher", "Mapas", nullptr));
         lb_img2->setText(QString());
-        lb_mapa->setText(QApplication::translate("Launcher", "TextLabel", nullptr));
+        lb_mapa->setText(QApplication::translate("Launcher", "Seleccion de mapa", nullptr));
         group_ip->setTitle(QApplication::translate("Launcher", "Direccion ", nullptr));
         label->setText(QApplication::translate("Launcher", "IP :", nullptr));
         group_socket->setTitle(QApplication::translate("Launcher", "Socket", nullptr));

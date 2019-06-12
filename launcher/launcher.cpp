@@ -36,6 +36,11 @@ Launcher::Launcher(QWidget *parent) :
 
 
     ui->txt_puerto->setValidator( new QIntValidator(0, 99999, this) );
+
+    QFile stylesheet_file(":/css/diseño.css");
+    stylesheet_file.open(QFile::ReadOnly);
+    QString stylesheet = QLatin1String(stylesheet_file.readAll());
+    this->setStyleSheet(stylesheet);
 }
 
 Launcher::~Launcher()
