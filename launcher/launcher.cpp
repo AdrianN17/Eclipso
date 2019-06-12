@@ -10,14 +10,32 @@ Launcher::Launcher(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->txt_ip->setText("192.168.0.7");
-
     ui->combo_personaje->addItem("Aegis",1);
     ui->combo_personaje->addItem("Solange",2);
 
     ui->combo_mapa->addItem("Acuaris","demo");
 
     ui->group_socket->setVisible(false);
+
+    QTcpSocket socket;
+    socket.connectToHost("8.8.8.8", 53);
+    if (socket.waitForConnected()) {
+       ui->txt_ip->setText(socket.localAddress().toString());
+    }
+    else {
+        ui->txt_ip->setText("0.0.0.0");
+    }
+
+    QString IpRange = "(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])";
+    QRegularExpression IpRegex ("^" + IpRange
+                                   + "(\\." + IpRange + ")"
+                                   + "(\\." + IpRange + ")"
+                                   + "(\\." + IpRange + ")$");
+    QRegularExpressionValidator *ipValidator = new QRegularExpressionValidator(IpRegex, this);
+    ui->txt_ip->setValidator(ipValidator);
+
+
+    ui->txt_puerto->setValidator( new QIntValidator(0, 99999, this) );
 }
 
 Launcher::~Launcher()

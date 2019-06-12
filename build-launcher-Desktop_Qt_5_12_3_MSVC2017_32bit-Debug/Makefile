@@ -265,6 +265,7 @@ Makefile: ..\launcher\launcher.pro ..\..\..\Programas\QT\5.12.3\msvc2017\mkspecs
 		..\launcher\launcher.pro \
 		..\..\..\Programas\QT\5.12.3\msvc2017\lib\Qt5Widgets.prl \
 		..\..\..\Programas\QT\5.12.3\msvc2017\lib\Qt5Gui.prl \
+		..\..\..\Programas\QT\5.12.3\msvc2017\lib\Qt5Network.prl \
 		..\..\..\Programas\QT\5.12.3\msvc2017\lib\Qt5Core.prl \
 		..\..\..\Programas\QT\5.12.3\msvc2017\lib\qtmaind.prl
 	$(QMAKE) -o Makefile ..\launcher\launcher.pro -spec win32-msvc "CONFIG+=debug" "CONFIG+=qml_debug"
@@ -456,6 +457,7 @@ Makefile: ..\launcher\launcher.pro ..\..\..\Programas\QT\5.12.3\msvc2017\mkspecs
 ..\launcher\launcher.pro:
 ..\..\..\Programas\QT\5.12.3\msvc2017\lib\Qt5Widgets.prl:
 ..\..\..\Programas\QT\5.12.3\msvc2017\lib\Qt5Gui.prl:
+..\..\..\Programas\QT\5.12.3\msvc2017\lib\Qt5Network.prl:
 ..\..\..\Programas\QT\5.12.3\msvc2017\lib\Qt5Core.prl:
 ..\..\..\Programas\QT\5.12.3\msvc2017\lib\qtmaind.prl:
 qmake: FORCE

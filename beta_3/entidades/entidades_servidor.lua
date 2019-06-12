@@ -23,7 +23,7 @@ local objetos={}
 
 function entidades_servidor:init(cam,vector,signal,eleccion,map)
   
-  servidor.init(self)
+  servidor.init(self,ip,puerto,nombre)
   
   --datos de base
   self.cam=cam

@@ -18,7 +18,7 @@ function game:init()
   end
   
   
-  Base:init(self,data.mapa,data.personaje)
+  Base:init(self,data.mapa,data.personaje,data.ip,data.puerto,data.nombre)
 end
 
 function game:enter()
@@ -47,6 +47,10 @@ end
 
 function game:mousereleased(x,y,button)
   self.entidades:mousereleased(x,y,button)
+end
+
+function game:quit()
+  self.entidades:quit()
 end
 
 return game

@@ -5,6 +5,9 @@
 #include <QFile>
 #include <QTextStream>
 #include <QDataStream>
+#include <QTcpSocket>
+#include <QHostAddress>
+
 
 #include "usuario.h"
 
