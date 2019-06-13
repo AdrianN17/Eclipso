@@ -28,3 +28,6 @@ function collides_object(obj,x,y,w,h)
 		return true
 	end
 end
+
+
+

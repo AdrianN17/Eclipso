@@ -122,6 +122,8 @@ function modelo_player:init(entidades,x,y,creador,area,hp,velocidad,ira,tiempo_e
   
   self.tiempo_atacado=0
   
+  self.cam_x,self.cam_y,self.cam_w,self.cam_h=0,0,0,0
+  
 end
 
 function modelo_player:reset_mass(mass)

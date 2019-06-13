@@ -21,9 +21,9 @@ local objetos={}
 
 
 
-function entidades_servidor:init(cam,vector,signal,eleccion,map)
+function entidades_servidor:init(cam,vector,signal,eleccion,map,ip,puerto,nombre)
   
-  servidor.init(self,ip,puerto,nombre)
+  
   
   --datos de base
   self.cam=cam
@@ -57,7 +57,7 @@ function entidades_servidor:init(cam,vector,signal,eleccion,map)
   
   --personajes
   
-  personajes={
+  self.personajes={
 		require "entidades.logica.personajes.Aegis",
 		require "entidades.logica.personajes.Solange"
 	}
@@ -70,10 +70,12 @@ function entidades_servidor:init(cam,vector,signal,eleccion,map)
   
   self:close_map()
   
-  personajes[eleccion](self,self.respawn_points[1].x,self.respawn_points[1].y,1)
+  self.personajes[eleccion](self,self.respawn_points[1].x,self.respawn_points[1].y,1)
   
   self.cantidad_enemigos=0
   self.max_cantidad_enemigos=25
+  
+  servidor.init(self,ip,puerto,nombre)
 end
 
 function entidades_servidor:enter()
@@ -107,30 +109,11 @@ function entidades_servidor:draw()
   end)
 
   lg.print("Current FPS: "..tostring(love.timer.getFPS( )), 10, 10)
+  self:servidor_draw()
 end
 
 function entidades_servidor:update(dt)
-  
-  self.map:update(dt)
-	self.world:update(dt)
-
-  
-  for i, obj in pairs(self.gameobject) do
-    for _, obj2 in pairs(obj) do
-      if obj2 then
-        obj2:update(dt)
-      end
-    end
-  end
-  
-  if self.gameobject.players[1] then
-    self.cam:setPosition(self.gameobject.players[1].ox,self.gameobject.players[1].oy)
-    
-    self.gameobject.players[1].rx,self.gameobject.players[1].ry=self:getXY()
-      
-  else
-    
-  end
+  self:update_server(dt)
 end
 
 function entidades_servidor:keypressed(key)

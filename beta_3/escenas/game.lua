@@ -1,10 +1,10 @@
 local Class = require "libs.hump.class"
 local Gamestate = require "libs.hump.gamestate"
 local Base = require "base.base"
---local Base_cliente = require "base.base_cliente"
+local Base_cliente = require "base.base_cliente"
 
 local game = Class{
-  __includes = Base
+  __includes = {Base,Base_cliente}
 }
 
 function game:init()
@@ -19,8 +19,11 @@ function game:init()
     love.event.quit()
   end
   
-  
-  Base:init(self,data.mapa,data.personaje,data.ip,data.puerto,data.nombre)
+  if data.tipo == "server" then
+    Base:init(self,data.mapa,data.personaje,data.ip,data.puerto,data.nombre)
+  else
+    Base_cliente:init(self,"demo",data.personaje,data.ip,data.puerto,data.nombre)
+  end
 end
 
 function game:enter()

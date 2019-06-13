@@ -6,8 +6,8 @@ function love.conf(t)
   
   	t.title="Last_Eclipse"
     t.identity = "Last_Eclipse"
-    t.release = true
-  	t.window.fullscreen = true 
+    --t.release = true
+  	t.window.fullscreen = false 
   	t.window.fullscreentype = "desktop"
   	t.window.vsync = 1 
     t.modules.audio = true              -- Enable the audio module (boolean)
