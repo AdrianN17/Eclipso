@@ -8,6 +8,9 @@ local Muymuy = Class {
 }
 
 function Muymuy:init(entidades,x,y)
+  self.tipo_indice="muymuy"
+  self.tipo_area="enemigos_marinos"
+  
   local polygon={-1 , -68,
 31 , -38,
 26 , 15,

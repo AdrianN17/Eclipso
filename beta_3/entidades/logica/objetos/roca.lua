@@ -6,6 +6,7 @@ local roca = Class{
 }
 
 function roca:init(x,y,entidades)
+  self.tipo_indice=3
   
   self.entidades=entidades
 

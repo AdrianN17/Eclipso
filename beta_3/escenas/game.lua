@@ -12,8 +12,8 @@ function game:init()
   --coger data de filesystem
   
   local data=nil
-	if love.filesystem.getInfo("Game_data.lua") then
-    data =love.filesystem.load("Game_data.lua")()
+	if love.filesystem.getInfo("Game_datas.lua") then
+    data =love.filesystem.load("Game_datas.lua")()
     --print(data.personaje,data.mapa,data.tipo)
   else
     love.event.quit()

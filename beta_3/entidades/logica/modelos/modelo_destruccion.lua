@@ -10,6 +10,10 @@ function modelo_destruccion:remove()
   if self.collider then
     self.collider:destroy()
   end
+  
+  if not self.vivo then
+		self.entidades.server:sendToAll("remover", self.creador)
+	end
 
 	self.entidades:remove_to_nill(self.name_table,self)
 end

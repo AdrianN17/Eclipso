@@ -6,6 +6,8 @@ local arbol = Class{
 }
 
 function arbol:init(x,y,entidades)
+  self.tipo_indice=2
+  
   self.entidades=entidades
 
 	self.entidades:add_obj("arboles",self)

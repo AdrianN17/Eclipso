@@ -10,6 +10,8 @@ local punto_enemigo_agua = Class{
 }
 
 function punto_enemigo_agua:init(x,y,entidades)
+  self.tipo_indice=4
+  
   self.entidades=entidades
 
 	self.entidades:add_obj("objetos",self)

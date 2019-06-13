@@ -120,8 +120,10 @@ function servidor:update_server(dt)
         --enviar
         
         local player_data=enviar_data_jugador(player,"ox","oy","radio","hp","ira","tipo_indice","iterator","iterator_2")
+        
+        local balas_data,enemigos_data,objetos_data=extra_data(self,player.cam_x,player.cam_y,player.cam_w,player.cam_h)
 
-          self.server:sendToAll("jugadores", {i,player_data})
+          self.server:sendToAll("jugadores", {i,player_data,balas_data,enemigos_data,objetos_data})
           --las balas deben ir aca para limitarla segun su camara
       end
     end

@@ -7,6 +7,9 @@ local Cangrejo = Class {
 }
 
 function Cangrejo:init(entidades,x,y)
+  self.tipo_indice="cangrejo"
+  self.tipo_area="enemigos_marinos"
+  
   local polygon={-65 , 12,
 -25 , 56,
 26 , 56,

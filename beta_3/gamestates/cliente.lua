@@ -20,8 +20,10 @@ function cliente:init(ip,puerto,nombre,eleccion)
   
   self.client:setSchema("jugadores", {
         "index",
-        "player_data"
-        --"extra_data"
+        "player_data",
+        "balas_data",
+        "enemigos_data",
+        "objetos_data"
     })
 
     self.client:on("player_id", function(num)
@@ -44,8 +46,9 @@ function cliente:init(ip,puerto,nombre,eleccion)
     self.client:on("jugadores", function(data)
         local index = data.index
         local player = data.player_data
-        --local extra = data.extra_data
-        
+        local balas = data.balas_data
+        local enemigos = data.enemigos_data
+        local objetos = data.objetos_data
 
         if self.id_player and index  then
             
@@ -56,6 +59,10 @@ function cliente:init(ip,puerto,nombre,eleccion)
             local pl=self.players[index]
 
             recibir_data_jugador(player,pl)
+            
+            self.enemigos=enemigos
+            self.balas=balas
+            self.objetos=objetos
             
         end
     end)
@@ -100,8 +107,35 @@ function cliente:client_draw()
   
   self.cam:draw(function(l,t,w,h)
         if self.id_player then
+          
+            for _,objeto in ipairs(self.objetos) do
+              local indice_objetos=self.spritesheet.objetos
+              local x,y,w,h = indice_objetos[objeto.tipo_indice]:getViewport( )
+  
+              lg.draw(indice_objetos["image"],indice_objetos[objeto.tipo_indice],objeto.ox,objeto.oy,0,indice_objetos.scale,indice_objetos.scale,w/2,h/2)
+            end
+            
+            for _,enemigo in ipairs(self.enemigos) do
+              local area = self.spritesheet[enemigo.tipo_area]
+              
+              local x,y,w,h = area[enemigo.tipo_indice][enemigo.iterator]:getViewport( )
+    
+              lg.draw(area["image"],area[enemigo.tipo_indice][enemigo.iterator],enemigo.ox,enemigo.oy,enemigo.radio,area[enemigo.tipo_indice].scale,area[enemigo.tipo_indice].scale,w/2,h/2)
+            end
 
 
+            
+            
+            
+            
+            for _,bala in ipairs(self.balas) do
+              local indice_balas = self.spritesheet.balas
+              
+              local x,y,w,h = indice_balas[bala.tipo_indice]:getViewport( )
+              
+              lg.draw(indice_balas["image"],indice_balas[bala.tipo_indice],bala.ox,bala.oy,0,indice_balas.scale,indice_balas.scale,w/2,h/2)
+            end
+            
             for _, player in pairs(self.players) do
                 if player then
                   local indice = self.spritesheet[player.tipo_indice]
@@ -109,6 +143,9 @@ function cliente:client_draw()
                   lg.draw(indice["image"],indice[player.iterator],player.ox,player.oy,player.radio + math.pi/2,indice.scale,indice.scale,w/2,h/2)
                 end
             end 
+            
+            
+          
         end
     end)
   

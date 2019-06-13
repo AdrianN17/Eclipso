@@ -6,6 +6,8 @@ local punto_inicio = Class{
 }
 
 function punto_inicio:init(x,y,entidades)
+  self.tipo_indice=5
+  
   self.entidades=entidades
 
 	self.entidades:add_obj("objetos",self)

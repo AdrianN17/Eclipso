@@ -7,6 +7,7 @@ local bala_fuego = Class{
 }
 
 function bala_fuego:init(x,y,entidades,radio,creador)
+  self.tipo_indice=1
   molde_bala.init(self,x,y,entidades,1800,radio,creador,35)
   animacion.init(self,img.balas,1)
 end

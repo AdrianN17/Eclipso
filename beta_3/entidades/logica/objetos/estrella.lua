@@ -6,6 +6,8 @@ local estrella = Class{
 }
 
 function estrella:init(x,y,entidades)
+  self.tipo_indice=1
+  
   self.entidades=entidades
 
 	self.entidades:add_obj("objetos",self)
