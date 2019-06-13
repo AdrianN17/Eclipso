@@ -24,6 +24,7 @@ function entidades_cliente:init(cam,vector,signal,eleccion,map,ip,puerto,nombre)
   self.enemigos={}
   self.balas={}
   self.objetos={}
+  self.arboles={}
   
   
 end

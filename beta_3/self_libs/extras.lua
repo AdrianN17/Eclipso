@@ -35,6 +35,7 @@ function extra_data(obj,x,y,w,h)
 	local data_bala={}
   local data_enemigo={}
   local data_objetos={}
+  local data_arboles={}
   
 	for i,bala in ipairs(obj.gameobject.balas) do 
 		if collides_object(bala,cx-100,cy-100,cw+100,ch+100) then
@@ -57,9 +58,16 @@ function extra_data(obj,x,y,w,h)
 		end
 	end
   
+  for i,arbol in ipairs(obj.gameobject.arboles) do 
+		if collides_object(arbol,cx-100,cy-100,cw+100,ch+100) then
+			local t=enviar_data_jugador(arbol,"tipo_indice","ox","oy")
+			table.insert(data_arboles,t)
+		end
+	end
+  
   
 
-	return data_bala,data_enemigo,data_objetos
+	return data_bala,data_enemigo,data_objetos,data_arboles
 end
 
 

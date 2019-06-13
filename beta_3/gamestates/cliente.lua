@@ -23,7 +23,8 @@ function cliente:init(ip,puerto,nombre,eleccion)
         "player_data",
         "balas_data",
         "enemigos_data",
-        "objetos_data"
+        "objetos_data",
+        "arboles_data"
     })
 
     self.client:on("player_id", function(num)
@@ -49,11 +50,12 @@ function cliente:init(ip,puerto,nombre,eleccion)
         local balas = data.balas_data
         local enemigos = data.enemigos_data
         local objetos = data.objetos_data
+        local arboles = data.arboles_data
 
         if self.id_player and index  then
             
             if not self.players[index] then
-                self.players[index]={ox=0,oy=0,hp=0,ira=0,radio=0,tipo_indice=0,iterator=0,iterator_2=0}
+              self.players[index]={ox=0,oy=0,hp=0,ira=0,radio=0,tipo_indice=0,iterator=0,iterator_2=0}
             end
 
             local pl=self.players[index]
@@ -63,6 +65,7 @@ function cliente:init(ip,puerto,nombre,eleccion)
             self.enemigos=enemigos
             self.balas=balas
             self.objetos=objetos
+            self.arboles=arboles
             
         end
     end)
@@ -144,8 +147,13 @@ function cliente:client_draw()
                 end
             end 
             
+            for _,arbol in ipairs(self.arboles) do
+              local indice_arboles=self.spritesheet.objetos
+              local x,y,w,h = indice_arboles[arbol.tipo_indice]:getViewport( )
+  
+              lg.draw(indice_arboles["image"],indice_arboles[arbol.tipo_indice],arbol.ox,arbol.oy,0,indice_arboles.scale,indice_arboles.scale,w/2,h/2)
+            end
             
-          
         end
     end)
   
