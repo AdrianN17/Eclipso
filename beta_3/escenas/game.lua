@@ -15,6 +15,8 @@ function game:init()
 	if love.filesystem.getInfo("Game_data.lua") then
     data =love.filesystem.load("Game_data.lua")()
     --print(data.personaje,data.mapa,data.tipo)
+  else
+    love.event.quit()
   end
   
   

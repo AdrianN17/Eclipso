@@ -25,10 +25,4 @@ function love.load()
   Gamestate.switch(Game)
 end
 
-function love.keypressed(k)
-   if k == 'escape' then
-      love.event.quit()
-   end
-end
-
 --colocar muros en las paredes con un chainshape

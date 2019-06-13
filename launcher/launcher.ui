@@ -7,11 +7,23 @@
     <x>0</x>
     <y>0</y>
     <width>600</width>
-    <height>636</height>
+    <height>640</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>600</width>
+    <height>640</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>600</width>
+    <height>640</height>
+   </size>
+  </property>
   <property name="windowTitle">
-   <string>Launcher Last Eclipse</string>
+   <string>Last Eclipse-Launcher</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QPushButton" name="btn_iniciar">
@@ -36,6 +48,12 @@
       <height>171</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
     <property name="title">
      <string>Configuracion de usuario</string>
     </property>
@@ -44,9 +62,15 @@
       <rect>
        <x>150</x>
        <y>40</y>
-       <width>111</width>
+       <width>101</width>
        <height>20</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
      </property>
      <property name="text">
       <string>Jugar Cliente</string>
@@ -57,9 +81,15 @@
       <rect>
        <x>20</x>
        <y>40</y>
-       <width>121</width>
+       <width>111</width>
        <height>20</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
      </property>
      <property name="text">
       <string>Jugar Servidor</string>
@@ -77,6 +107,12 @@
        <height>16</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
      <property name="text">
       <string>Nombre :</string>
      </property>
@@ -90,6 +126,12 @@
        <height>22</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
     </widget>
     <widget class="QCheckBox" name="checkBox">
      <property name="geometry">
@@ -99,6 +141,12 @@
        <width>191</width>
        <height>20</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
      </property>
      <property name="text">
       <string>Habilitar opciones avanzadas</string>
@@ -114,6 +162,12 @@
       <height>171</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
     <property name="title">
      <string>Personajes</string>
     </property>
@@ -126,6 +180,12 @@
        <height>91</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
      <property name="text">
       <string/>
      </property>
@@ -133,24 +193,36 @@
     <widget class="QLabel" name="lb_personaje">
      <property name="geometry">
       <rect>
-       <x>160</x>
-       <y>140</y>
-       <width>141</width>
-       <height>20</height>
+       <x>30</x>
+       <y>119</y>
+       <width>391</width>
+       <height>41</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
      <property name="text">
-      <string>Seleccion de personaje</string>
+      <string>Armas : </string>
      </property>
     </widget>
     <widget class="QComboBox" name="combo_personaje">
      <property name="geometry">
       <rect>
-       <x>350</x>
+       <x>302</x>
        <y>60</y>
-       <width>73</width>
+       <width>120</width>
        <height>22</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
      </property>
     </widget>
    </widget>
@@ -162,6 +234,12 @@
       <width>461</width>
       <height>171</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="title">
      <string>Mapas</string>
@@ -175,21 +253,33 @@
        <height>91</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
      <property name="text">
       <string/>
      </property>
     </widget>
-    <widget class="QLabel" name="lb_mapa">
+    <widget class="QLabel" name="lb_mapa_detalles">
      <property name="geometry">
       <rect>
-       <x>170</x>
-       <y>140</y>
-       <width>111</width>
-       <height>20</height>
+       <x>40</x>
+       <y>129</y>
+       <width>391</width>
+       <height>31</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
      <property name="text">
-      <string>Seleccion de mapa</string>
+      <string>Detalles :</string>
      </property>
     </widget>
     <widget class="QComboBox" name="combo_mapa">
@@ -197,9 +287,15 @@
       <rect>
        <x>30</x>
        <y>70</y>
-       <width>73</width>
+       <width>120</width>
        <height>22</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
      </property>
     </widget>
    </widget>
@@ -212,6 +308,12 @@
       <height>91</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
     <property name="title">
      <string>Direccion </string>
     </property>
@@ -223,6 +325,12 @@
        <width>31</width>
        <height>16</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
      </property>
      <property name="text">
       <string>IP :</string>
@@ -240,6 +348,12 @@
        <height>22</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
     </widget>
    </widget>
    <widget class="QGroupBox" name="group_socket">
@@ -254,6 +368,12 @@
       <height>81</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
     <property name="title">
      <string>Socket</string>
     </property>
@@ -266,11 +386,20 @@
        <height>16</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
+     </property>
      <property name="text">
       <string>Puerto :</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="txt_puerto">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>70</x>
@@ -278,6 +407,12 @@
        <width>113</width>
        <height>22</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <weight>50</weight>
+       <bold>false</bold>
+      </font>
      </property>
      <property name="text">
       <string>22122</string>

@@ -2,8 +2,6 @@
 #include <qprocess.h>
 #include "ui_launcher.h"
 
-#include <iostream>
-
 Launcher::Launcher(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::Launcher)
@@ -15,12 +13,11 @@ Launcher::Launcher(QWidget *parent) :
 
     ui->combo_mapa->addItem("Acuaris","demo");
 
-    ui->group_socket->setVisible(false);
-
     QTcpSocket socket;
     socket.connectToHost("8.8.8.8", 53);
     if (socket.waitForConnected()) {
        ui->txt_ip->setText(socket.localAddress().toString());
+       ip_guardada=socket.localAddress().toString();
     }
     else {
         ui->txt_ip->setText("0.0.0.0");
@@ -45,6 +42,10 @@ Launcher::Launcher(QWidget *parent) :
 
 Launcher::~Launcher()
 {
+    QFile file (file_name);
+    file.remove();
+
+
     delete ui;
 }
 
@@ -79,6 +80,7 @@ void Launcher::on_radioButton_clicked()
 {
     ui->group_mapas->setVisible(true);
     ui->txt_ip->setDisabled(true);
+    ui->txt_ip->setText(ip_guardada);
 }
 
 void Launcher::on_radioButton_2_clicked()
@@ -96,8 +98,7 @@ void Launcher::abrir_exe()
 
 void Launcher::crear_file(usuario usu)
 {
-    QString fileName = "C:/Users/Adrian/AppData/Roaming/LOVE/Last_Eclipse/Game_data.lua";
-    QFile file(fileName);
+    QFile file(file_name);
     bool openOk = file.open(QFile::WriteOnly|QFile::Truncate);
 
     if(openOk)
@@ -109,19 +110,19 @@ void Launcher::crear_file(usuario usu)
     }
 }
 
-void Launcher::borrar_file()
-{
-
-}
-
 void Launcher::on_checkBox_stateChanged(int arg1)
 {
     if(arg1==2)
     {
-       ui->group_socket->setVisible(true);
+       ui->txt_puerto->setDisabled(false);
     }
     else
     {
-        ui->group_socket->setVisible(false);
+        ui->txt_puerto->setDisabled(true);
     }
+}
+
+void Launcher::on_combo_personaje_currentIndexChanged(int index)
+{
+    qDebug()<<index;
 }

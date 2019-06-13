@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_Launcher_t {
-    QByteArrayData data[12];
-    char stringdata0[156];
+    QByteArrayData data[13];
+    char stringdata0[189];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -40,16 +40,18 @@ QT_MOC_LITERAL(5, 81, 9), // "abrir_exe"
 QT_MOC_LITERAL(6, 91, 10), // "crear_file"
 QT_MOC_LITERAL(7, 102, 7), // "usuario"
 QT_MOC_LITERAL(8, 110, 3), // "usu"
-QT_MOC_LITERAL(9, 114, 11), // "borrar_file"
-QT_MOC_LITERAL(10, 126, 24), // "on_checkBox_stateChanged"
-QT_MOC_LITERAL(11, 151, 4) // "arg1"
+QT_MOC_LITERAL(9, 114, 24), // "on_checkBox_stateChanged"
+QT_MOC_LITERAL(10, 139, 4), // "arg1"
+QT_MOC_LITERAL(11, 144, 38), // "on_combo_personaje_currentInd..."
+QT_MOC_LITERAL(12, 183, 5) // "index"
 
     },
     "Launcher\0on_btn_iniciar_clicked\0\0"
     "on_radioButton_clicked\0on_radioButton_2_clicked\0"
     "abrir_exe\0crear_file\0usuario\0usu\0"
-    "borrar_file\0on_checkBox_stateChanged\0"
-    "arg1"
+    "on_checkBox_stateChanged\0arg1\0"
+    "on_combo_personaje_currentIndexChanged\0"
+    "index"
 };
 #undef QT_MOC_LITERAL
 
@@ -72,8 +74,8 @@ static const uint qt_meta_data_Launcher[] = {
        4,    0,   51,    2, 0x08 /* Private */,
        5,    0,   52,    2, 0x08 /* Private */,
        6,    1,   53,    2, 0x08 /* Private */,
-       9,    0,   56,    2, 0x08 /* Private */,
-      10,    1,   57,    2, 0x08 /* Private */,
+       9,    1,   56,    2, 0x08 /* Private */,
+      11,    1,   59,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -81,8 +83,8 @@ static const uint qt_meta_data_Launcher[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, 0x80000000 | 7,    8,
-    QMetaType::Void,
-    QMetaType::Void, QMetaType::Int,   11,
+    QMetaType::Void, QMetaType::Int,   10,
+    QMetaType::Void, QMetaType::Int,   12,
 
        0        // eod
 };
@@ -98,8 +100,8 @@ void Launcher::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         case 2: _t->on_radioButton_2_clicked(); break;
         case 3: _t->abrir_exe(); break;
         case 4: _t->crear_file((*reinterpret_cast< usuario(*)>(_a[1]))); break;
-        case 5: _t->borrar_file(); break;
-        case 6: _t->on_checkBox_stateChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 5: _t->on_checkBox_stateChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 6: _t->on_combo_personaje_currentIndexChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         default: ;
         }
     }
