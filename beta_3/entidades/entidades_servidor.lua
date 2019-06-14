@@ -91,7 +91,7 @@ function entidades_servidor:draw()
   
   self.cam:draw(function(l,t,w,h)
       
-    for _, body in pairs(self.world:getBodies()) do
+    --[[for _, body in pairs(self.world:getBodies()) do
       for _, fixture in pairs(body:getFixtures()) do
           local shape = fixture:getShape()
    
@@ -104,7 +104,7 @@ function entidades_servidor:draw()
               love.graphics.line(body:getWorldPoints(shape:getPoints()))
           end
       end
-    end
+    end]]
     
   end)
 

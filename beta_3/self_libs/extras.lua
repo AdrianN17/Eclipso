@@ -6,9 +6,14 @@ function collides(table,x,y)
 	end
 end
 
+
 function enviar_data_jugador(obj,...)
 	local args={...}
 	local data={}
+  
+  if obj==nil then
+    return nil
+  end
 
 	for _,arg in ipairs(args) do
 		data[arg]=obj[arg]

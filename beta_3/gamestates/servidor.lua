@@ -116,10 +116,12 @@ function servidor:update_server(dt)
 
     local player_data={}
     
-    for _, player in pairs(self.gameobject.players) do
-      if player then
-        local data=enviar_data_jugador(player,"ox","oy","radio","hp","ira","tipo_indice","iterator","iterator_2")
-        table.insert(player_data,data)
+    
+    for i=1,#self.gameobject.players,1 do 
+      if self.gameobject.players[i] ==nil then
+        player_data[i]=nil
+      else
+        player_data[i]=enviar_data_jugador(self.gameobject.players[i],"ox","oy","radio","hp","ira","tipo_indice","iterator","iterator_2")
       end
     end
 
@@ -131,8 +133,6 @@ end
 
 function servidor:servidor_draw()
   lg.print("Jugadores : " .. (self.server:getClientCount()+1) ,10,30)
-  
-  
 end
 
 function servidor:quit()

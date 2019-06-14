@@ -24,7 +24,7 @@ function cangrejo_anima:draw()
     
     lg.print(self.hp,self.ox,self.oy-100)
     
-    lg.line(self.raycast.x,self.raycast.y,self.raycast.w,self.raycast.h)
+    --lg.line(self.raycast.x,self.raycast.y,self.raycast.w,self.raycast.h)
 end
 
 function cangrejo_anima:update_animation(dt)

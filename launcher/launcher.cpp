@@ -92,8 +92,8 @@ void Launcher::on_radioButton_2_clicked()
 void Launcher::abrir_exe()
 {
     QProcess process;
-    process.start("D:/Programas/Love/love.exe D:/Proyectos/Last_Eclipse/beta_3");
-    process.waitForFinished(-1);
+    process.startDetached("D:/Programas/Love/love.exe D:/Proyectos/Last_Eclipse/beta_3");
+    process.close();
 }
 
 void Launcher::crear_file(usuario usu)
