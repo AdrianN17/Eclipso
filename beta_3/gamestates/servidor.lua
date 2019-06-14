@@ -114,22 +114,19 @@ function servidor:update_server(dt)
 
 		end
 
-
-    for i, player in pairs(self.gameobject.players) do
+    local player_data={}
+    
+    for _, player in pairs(self.gameobject.players) do
       if player then
-        --enviar
-        
-        local player_data=enviar_data_jugador(player,"ox","oy","radio","hp","ira","tipo_indice","iterator","iterator_2")
-        
-        local balas_data,enemigos_data,objetos_data,arboles_data=extra_data(self,player.cam_x,player.cam_y,player.cam_w,player.cam_h)
-
-          self.server:sendToAll("jugadores", {i,player_data,balas_data,enemigos_data,objetos_data,arboles_data})
-          --las balas deben ir aca para limitarla segun su camara
+        local data=enviar_data_jugador(player,"ox","oy","radio","hp","ira","tipo_indice","iterator","iterator_2")
+        table.insert(player_data,data)
       end
     end
-    
-    
-  end
+
+    local balas_data,enemigos_data,objetos_data,arboles_data=extra_data(self)
+
+    self.server:sendToAll("jugadores", {player_data,balas_data,enemigos_data,objetos_data,arboles_data})
+ end
 end
 
 function servidor:servidor_draw()

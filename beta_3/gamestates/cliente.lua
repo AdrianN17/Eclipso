@@ -19,7 +19,6 @@ function cliente:init(ip,puerto,nombre,eleccion)
   
   
   self.client:setSchema("jugadores", {
-        "index",
         "player_data",
         "balas_data",
         "enemigos_data",
@@ -45,23 +44,16 @@ function cliente:init(ip,puerto,nombre,eleccion)
     end)
 
     self.client:on("jugadores", function(data)
-        local index = data.index
-        local player = data.player_data
+        local players = data.player_data
         local balas = data.balas_data
         local enemigos = data.enemigos_data
         local objetos = data.objetos_data
         local arboles = data.arboles_data
 
-        if self.id_player and index  then
+        if self.id_player then
             
-            if not self.players[index] then
-              self.players[index]={ox=0,oy=0,hp=0,ira=0,radio=0,tipo_indice=0,iterator=0,iterator_2=0}
-            end
-
-            local pl=self.players[index]
-
-            recibir_data_jugador(player,pl)
             
+            self.players=players
             self.enemigos=enemigos
             self.balas=balas
             self.objetos=objetos
