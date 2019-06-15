@@ -14,15 +14,17 @@ function game:init()
   local data=nil
 	if love.filesystem.getInfo("Game_data.lua") then
     data =love.filesystem.load("Game_data.lua")()
+    
+    if data.tipo == "server" then
+      Base:init(self,data.mapa,data.personaje,data.ip,data.puerto,data.cantidad,data.nombre,data.cantidad_enemigos)
+    else
+      Base_cliente:init(self,data.personaje,data.ip,data.puerto,data.nombre)
+    end
+    
   else
     love.event.quit()
   end
   
-  if data.tipo == "server" then
-    Base:init(self,data.mapa,data.personaje,data.ip,data.puerto,data.cantidad,data.nombre)
-  else
-    Base_cliente:init(self,data.personaje,data.ip,data.puerto,data.nombre)
-  end
 end
 
 function game:enter()

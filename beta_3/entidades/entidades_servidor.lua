@@ -21,7 +21,7 @@ local objetos={}
 
 
 
-function entidades_servidor:init(cam,vector,signal,eleccion,map,ip,puerto,cantidad,nombre,map_name)
+function entidades_servidor:init(cam,vector,signal,eleccion,map,ip,puerto,cantidad,nombre,map_name,cantidad_enemigos)
   
   --datos de base
   self.cam=cam
@@ -71,7 +71,7 @@ function entidades_servidor:init(cam,vector,signal,eleccion,map,ip,puerto,cantid
   self.personajes[eleccion](self,self.respawn_points[1].x,self.respawn_points[1].y,1,nombre)
   
   self.cantidad_enemigos=0
-  self.max_cantidad_enemigos=25
+  self.max_cantidad_enemigos=cantidad_enemigos
   
   servidor.init(self,ip,puerto,cantidad,nombre,map_name)
 end

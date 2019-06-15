@@ -5,7 +5,7 @@ usuario::usuario()
 
 }
 
-void usuario::nuevo_servidor(int personaje,QString mapa,QString nombre,QString ip,QString puerto,int cantidad)
+void usuario::nuevo_servidor(int personaje,QString mapa,QString nombre,QString ip,QString puerto,int cantidad,int cantidad_enemigos)
 {
     this->personaje=personaje;
     this->mapa=mapa;
@@ -13,6 +13,7 @@ void usuario::nuevo_servidor(int personaje,QString mapa,QString nombre,QString i
     this->ip=ip;
     this->puerto=puerto;
     this->cantidad=cantidad;
+    this->cantidad_enemigos=cantidad_enemigos;
 
     this->tipo=1;
 }
@@ -33,8 +34,8 @@ QString usuario::lua_conf()
 
     if(this->tipo==1)
     {
-       QString server_data="return {personaje = %1, mapa = '%2' , nombre = '%3', ip = '%4', puerto = '%5', tipo = '%6', cantidad = '%7'}";
-       data = QString(server_data).arg(this->personaje).arg(this->mapa).arg(this->nombre).arg(this->ip).arg(this->puerto).arg("server").arg(this->cantidad);
+       QString server_data="return {personaje = %1, mapa = '%2' , nombre = '%3', ip = '%4', puerto = '%5', tipo = '%6', cantidad = '%7' , cantidad_enemigos= %8 }";
+       data = QString(server_data).arg(this->personaje).arg(this->mapa).arg(this->nombre).arg(this->ip).arg(this->puerto).arg("server").arg(this->cantidad).arg(this->cantidad_enemigos);
 
     }
     else

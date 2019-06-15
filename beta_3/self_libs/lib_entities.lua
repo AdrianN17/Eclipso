@@ -103,8 +103,17 @@ function lib_entities:callbacks()
 
 
       obj1.obj.collider:applyLinearImpulse( 10000*ix,10000*iy )
+    elseif obj1.data=="personaje" and obj2.data=="enemigos" then
+      --hacer girar
       
       
+    elseif obj1.data=="escudo" and obj2.data=="balas" then
+      
+    elseif obj1.data=="escudo" and obj2.data=="enemigos" then
+      
+    elseif obj1.data=="escudo" and obj2.data=="melee" then
+      
+    elseif obj1.data=="escudo" and obj2.data=="personaje" then
       
     end
      

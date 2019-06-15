@@ -8,7 +8,7 @@ local sti = require "libs.sti"
 
 local base = Class{}
 
-function base:init(game,map_name,eleccion,ip,puerto,cantidad,nombre)
+function base:init(game,map_name,eleccion,ip,puerto,cantidad,nombre,cantidad_enemigos)
 	local map= sti("assets/map/" .. map_name .. ".lua")
 	--objetos principales
 	local scale=1
@@ -24,7 +24,7 @@ function base:init(game,map_name,eleccion,ip,puerto,cantidad,nombre)
 	local signal=signal
 	local vector=vector
 
-	game.entidades=entidades(cam,vector,signal,eleccion,map,ip,puerto,cantidad,nombre,map_name)
+	game.entidades=entidades(cam,vector,signal,eleccion,map,ip,puerto,cantidad,nombre,map_name,cantidad_enemigos)
 
 end
 

@@ -60,8 +60,8 @@ function Aegis_anima:draw()
   
   
   if self.estados.protegido then
-    local x_s,y_s,w_s,h_s = self.spritesheet_escudos[1]:getViewport( )
-    lg.draw(self.spritesheet_escudos["image"],self.spritesheet_escudos[1],self.ox,self.oy,0,self.spritesheet_escudos.scale,self.spritesheet_escudos.scale,w_s/2,h_s/2)
+    local x_s,y_s,w_s,h_s = self.spritesheet_escudos[self.tipo_escudo]:getViewport( )
+    lg.draw(self.spritesheet_escudos["image"],self.spritesheet_escudos[self.tipo_escudo],self.ox,self.oy,0,self.spritesheet_escudos.scale,self.spritesheet_escudos.scale,w_s/2,h_s/2)
   end
   
   lg.print(self.nombre,self.ox,self.oy-100)

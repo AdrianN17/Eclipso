@@ -125,7 +125,7 @@ function servidor:update_server(dt)
       if self.gameobject.players[i] ==nil then
         player_data[i]=nil
       else
-        player_data[i]=enviar_data_jugador(self.gameobject.players[i],"ox","oy","radio","hp","ira","tipo_indice","iterator","iterator_2","nombre")
+        player_data[i]=enviar_data_jugador(self.gameobject.players[i],"ox","oy","radio","hp","ira","tipo_indice","iterator","iterator_2","nombre","estados","tipo_escudo")
       end
     end
 

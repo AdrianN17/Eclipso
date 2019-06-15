@@ -13,6 +13,9 @@ Launcher::Launcher(QWidget *parent) :
 
     ui->spin_cantidad->setRange(1,8);
 
+    ui->spin_can_enemigos->setRange(0,100);
+    ui->spin_can_enemigos->setValue(25);
+
     ui->combo_mapa->addItem("Acuaris","demo");
 
     QTcpSocket socket;
@@ -61,12 +64,17 @@ void Launcher::on_btn_iniciar_clicked()
     QString nombre = ui->txt_nombre->text();
     QString puerto = ui->txt_puerto->text();
     int cantidad = ui->spin_cantidad->value();
+    int cantidad_enemigos= ui->spin_can_enemigos->value();
 
+    if(nombre.isEmpty())
+    {
+        nombre="player";
+    }
 
     if(ui->radioButton->isChecked())
     {
         //servidor
-        usu.nuevo_servidor(personaje,mapa,nombre,ip,puerto,cantidad);
+        usu.nuevo_servidor(personaje,mapa,nombre,ip,puerto,cantidad,cantidad_enemigos);
     }
     else
     {
@@ -77,6 +85,7 @@ void Launcher::on_btn_iniciar_clicked()
     crear_file(usu);
     abrir_exe();
 
+
 }
 
 void Launcher::on_radioButton_clicked()
@@ -85,14 +94,17 @@ void Launcher::on_radioButton_clicked()
     ui->txt_ip->setDisabled(true);
     ui->txt_ip->setText(ip_guardada);
 
-    ui->spin_cantidad->setVisible(true);
+    ui->spin_cantidad->setDisabled(false);
+    ui->spin_can_enemigos->setDisabled(false);
 }
 
 void Launcher::on_radioButton_2_clicked()
 {
     ui->group_mapas->setVisible(false);
     ui->txt_ip->setDisabled(false);
-    ui->spin_cantidad->setVisible(false);
+
+    ui->spin_cantidad->setDisabled(true);
+    ui->spin_can_enemigos->setDisabled(true);
 }
 
 void Launcher::abrir_exe()
@@ -131,4 +143,6 @@ void Launcher::on_checkBox_stateChanged(int arg1)
 void Launcher::on_combo_personaje_currentIndexChanged(int index)
 {
     //qDebug()<<index;
+
+    //podria llamarse eclipso
 }

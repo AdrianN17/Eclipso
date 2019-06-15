@@ -108,6 +108,15 @@ function entidades_cliente:custom_layers()
           lg.draw(indice["image"],indice[player.iterator],player.ox,player.oy,player.radio + math.pi/2,indice.scale,indice.scale,w/2,h/2)
           
           lg.print(player.nombre,player.ox,player.oy-100)
+          
+          if player.estados.protegido then
+            
+            local indice_escudo = self.spritesheet.escudos
+            
+            
+            local x_s,y_s,w_s,h_s = indice_escudo[player.tipo_escudo]:getViewport( )
+            lg.draw(indice_escudo["image"],indice_escudo[player.tipo_escudo],player.ox,player.oy,0,indice_escudo.scale,indice_escudo.scale,w_s/2,h_s/2)
+          end
         end
       end 
     end
