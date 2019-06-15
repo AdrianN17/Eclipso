@@ -64,7 +64,7 @@ function Aegis_anima:draw()
     lg.draw(self.spritesheet_escudos["image"],self.spritesheet_escudos[1],self.ox,self.oy,0,self.spritesheet_escudos.scale,self.spritesheet_escudos.scale,w_s/2,h_s/2)
   end
   
-  lg.print(self.hp,self.ox,self.oy-100)
+  lg.print(self.nombre,self.ox,self.oy-100)
   
   
   

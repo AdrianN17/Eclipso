@@ -6,22 +6,26 @@ local extras = require "self_libs.extras"
 
 local servidor = Class{}
 
-function servidor:init(ip,puerto,nombre)
+function servidor:init(ip,puerto,cantidad,nombre,name_mapa)
   self.tickRate = 1/60
   self.tick = 0
   
-  self.server = Sock.newServer(ip,puerto,4)
+  self.server = Sock.newServer(ip,puerto,cantidad)
   self.server:setSerialization(bitser.dumps, bitser.loads)
 
 	self.server:enableCompression()
   
   self.server:on("connect", function(data, client)
 		local index=client:getIndex()
-        client:send("player_id", index+1)
-        --table.insert(self.gameobject.players, personajes[data](self,100,100,index+1))
-        self.gameobject.players[index+1] = self.personajes[data](self,100,100,index+1)
-        
-    end)
+    client:send("player_init_data", {id=index+1,mapa=name_mapa})
+  end)
+  
+  self.server:on("informacion_primaria", function(data, client)
+    local index=client:getIndex()
+    
+    self.gameobject.players[index+1] = self.personajes[data.eleccion](self,self.respawn_points[1].x,self.respawn_points[1].y,index+1,data.nombre)
+      
+  end)
 
 
     self.server:on("disconnect", function(data, client)
@@ -30,7 +34,7 @@ function servidor:init(ip,puerto,nombre)
     	if self.gameobject.players[index+1] then
 
 	    	self.gameobject.players[index+1]:remove()
-	    	--table.remove(self.gameobject.players,index+1)
+	    	
 	    	self.gameobject.players[index+1]=nil
 
 	    end
@@ -40,50 +44,50 @@ function servidor:init(ip,puerto,nombre)
 
 
     self.server:on("datos", function(datos, client)
-        local index = client:getIndex()
-        local pl=self.gameobject.players[index+1]
+      local index = client:getIndex()
+      local pl=self.gameobject.players[index+1]
 
-        if pl then
-        	recibir_data_jugador(datos,pl)
-        end
+      if pl then
+        recibir_data_jugador(datos,pl)
+      end
     end)
 
     --callbacks
 
     self.server:on("mouse_pressed" , function(datos, client)
     	local index = client:getIndex()
-        local pl=self.gameobject.players[index+1]
+      local pl=self.gameobject.players[index+1]
 
-        if pl then
-        	pl:mousepressed(datos.x,datos.y,datos.button)
-        end
+      if pl then
+        pl:mousepressed(datos.x,datos.y,datos.button)
+      end
     end)
 
     self.server:on("mouse_released" , function(datos, client)
     	local index = client:getIndex()
-        local pl=self.gameobject.players[index+1]
+      local pl=self.gameobject.players[index+1]
 
-        if pl then
-        	pl:mousereleased(datos.x,datos.y,datos.button)
-        end
+      if pl then
+        pl:mousereleased(datos.x,datos.y,datos.button)
+      end
     end)
 
     self.server:on("key_pressed" , function(datos, client)
     	local index = client:getIndex()
-        local pl=self.gameobject.players[index+1]
+      local pl=self.gameobject.players[index+1]
 
-        if pl then
-        	pl:keypressed(datos.key)
-        end
+      if pl then
+        pl:keypressed(datos.key)
+      end
     end)
 
     self.server:on("key_released" , function(datos, client)
     	local index = client:getIndex()
-        local pl=self.gameobject.players[index+1]
+      local pl=self.gameobject.players[index+1]
 
-         if pl then
-        	pl:keyreleased(datos.key)
-        end
+       if pl then
+        pl:keyreleased(datos.key)
+      end
     end)
 end
 
@@ -121,7 +125,7 @@ function servidor:update_server(dt)
       if self.gameobject.players[i] ==nil then
         player_data[i]=nil
       else
-        player_data[i]=enviar_data_jugador(self.gameobject.players[i],"ox","oy","radio","hp","ira","tipo_indice","iterator","iterator_2")
+        player_data[i]=enviar_data_jugador(self.gameobject.players[i],"ox","oy","radio","hp","ira","tipo_indice","iterator","iterator_2","nombre")
       end
     end
 

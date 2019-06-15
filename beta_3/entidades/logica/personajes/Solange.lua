@@ -8,8 +8,9 @@ local Solange = Class{
   __includes = {modelo,animacion}
 }
 
-function Solange:init(entidades,x,y,creador)
+function Solange:init(entidades,x,y,creador,nombre)
   self.tipo_indice="solange"
+  self.nombre=nombre
   
   modelo.init(self,entidades,x,y,creador,35,1000,700,120,0.7,{{x=30, y=-40}},nil,30,0.2 , 1.5, {bala=bala_electrica,balas_max=10} )
   animacion.init(self,img.solange,img.escudos)

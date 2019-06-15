@@ -11,6 +11,8 @@ Launcher::Launcher(QWidget *parent) :
     ui->combo_personaje->addItem("Aegis",1);
     ui->combo_personaje->addItem("Solange",2);
 
+    ui->spin_cantidad->setRange(1,8);
+
     ui->combo_mapa->addItem("Acuaris","demo");
 
     QTcpSocket socket;
@@ -58,12 +60,13 @@ void Launcher::on_btn_iniciar_clicked()
     QString ip = ui->txt_ip->text();
     QString nombre = ui->txt_nombre->text();
     QString puerto = ui->txt_puerto->text();
+    int cantidad = ui->spin_cantidad->value();
 
 
     if(ui->radioButton->isChecked())
     {
         //servidor
-        usu.nuevo_servidor(personaje,mapa,nombre,ip,puerto);
+        usu.nuevo_servidor(personaje,mapa,nombre,ip,puerto,cantidad);
     }
     else
     {
@@ -81,12 +84,15 @@ void Launcher::on_radioButton_clicked()
     ui->group_mapas->setVisible(true);
     ui->txt_ip->setDisabled(true);
     ui->txt_ip->setText(ip_guardada);
+
+    ui->spin_cantidad->setVisible(true);
 }
 
 void Launcher::on_radioButton_2_clicked()
 {
     ui->group_mapas->setVisible(false);
     ui->txt_ip->setDisabled(false);
+    ui->spin_cantidad->setVisible(false);
 }
 
 void Launcher::abrir_exe()
@@ -124,5 +130,5 @@ void Launcher::on_checkBox_stateChanged(int arg1)
 
 void Launcher::on_combo_personaje_currentIndexChanged(int index)
 {
-    qDebug()<<index;
+    //qDebug()<<index;
 }

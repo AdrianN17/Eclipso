@@ -26,8 +26,14 @@ function cliente:init(ip,puerto,nombre,eleccion)
         "arboles_data"
     })
 
-    self.client:on("player_id", function(num)
-        self.id_player=num  
+    self.client:on("player_init_data", function(data)
+        self.id_player=data.id  
+      
+        
+        
+        self:create_map(data.mapa)
+        
+        self.client:send("informacion_primaria", {eleccion=eleccion,nombre=nombre})
         
     end)
 
@@ -61,13 +67,19 @@ function cliente:init(ip,puerto,nombre,eleccion)
         end
     end)
   
-  self.client:connect(eleccion)
+  self.client:connect()
+  
+  
   
   self.spritesheet=img
 end
 
 function cliente:client_update(dt)
   self.client:update()
+  
+  if self.map then
+    self.map:update(dt)
+  end
   
   if self.client:getState() == "connected" then
         self.tick = self.tick + dt
@@ -94,7 +106,9 @@ end
 function cliente:client_draw()
   local cx,cy,cw,ch=self.cam:getVisible()
   
-  self.map:draw(-cx,-cy,1,1)
+  if self.map then
+    self.map:draw(-cx,-cy,1,1)
+  end
   
   lg.print(self.client:getState(), 5, 70)
   lg.print("Ping : " .. self.client:getRoundTripTime(), 200,10)

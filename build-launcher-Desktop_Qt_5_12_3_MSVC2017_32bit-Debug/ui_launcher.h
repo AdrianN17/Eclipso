@@ -19,6 +19,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QRadioButton>
+#include <QtWidgets/QSpinBox>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QWidget>
 
@@ -35,6 +36,8 @@ public:
     QLabel *label_2;
     QLineEdit *txt_nombre;
     QCheckBox *checkBox;
+    QLabel *label_4;
+    QSpinBox *spin_cantidad;
     QGroupBox *group_personajes;
     QLabel *lb_img1;
     QLabel *lb_personaje;
@@ -55,17 +58,17 @@ public:
     {
         if (Launcher->objectName().isEmpty())
             Launcher->setObjectName(QString::fromUtf8("Launcher"));
-        Launcher->resize(600, 640);
-        Launcher->setMinimumSize(QSize(600, 640));
-        Launcher->setMaximumSize(QSize(600, 640));
+        Launcher->resize(600, 660);
+        Launcher->setMinimumSize(QSize(600, 660));
+        Launcher->setMaximumSize(QSize(600, 660));
         centralWidget = new QWidget(Launcher);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         btn_iniciar = new QPushButton(centralWidget);
         btn_iniciar->setObjectName(QString::fromUtf8("btn_iniciar"));
-        btn_iniciar->setGeometry(QRect(260, 570, 93, 28));
+        btn_iniciar->setGeometry(QRect(260, 590, 93, 28));
         groupBox = new QGroupBox(centralWidget);
         groupBox->setObjectName(QString::fromUtf8("groupBox"));
-        groupBox->setGeometry(QRect(70, 20, 261, 171));
+        groupBox->setGeometry(QRect(70, 20, 261, 191));
         QFont font;
         font.setBold(true);
         font.setWeight(75);
@@ -84,19 +87,27 @@ public:
         radioButton->setChecked(true);
         label_2 = new QLabel(groupBox);
         label_2->setObjectName(QString::fromUtf8("label_2"));
-        label_2->setGeometry(QRect(20, 90, 55, 16));
+        label_2->setGeometry(QRect(40, 80, 55, 16));
         label_2->setFont(font1);
         txt_nombre = new QLineEdit(groupBox);
         txt_nombre->setObjectName(QString::fromUtf8("txt_nombre"));
-        txt_nombre->setGeometry(QRect(90, 90, 113, 22));
+        txt_nombre->setGeometry(QRect(120, 80, 113, 22));
         txt_nombre->setFont(font1);
         checkBox = new QCheckBox(groupBox);
         checkBox->setObjectName(QString::fromUtf8("checkBox"));
-        checkBox->setGeometry(QRect(50, 130, 191, 20));
+        checkBox->setGeometry(QRect(50, 150, 191, 20));
         checkBox->setFont(font1);
+        label_4 = new QLabel(groupBox);
+        label_4->setObjectName(QString::fromUtf8("label_4"));
+        label_4->setGeometry(QRect(20, 120, 81, 16));
+        label_4->setFont(font1);
+        spin_cantidad = new QSpinBox(groupBox);
+        spin_cantidad->setObjectName(QString::fromUtf8("spin_cantidad"));
+        spin_cantidad->setGeometry(QRect(140, 120, 51, 22));
+        spin_cantidad->setFont(font1);
         group_personajes = new QGroupBox(centralWidget);
         group_personajes->setObjectName(QString::fromUtf8("group_personajes"));
-        group_personajes->setGeometry(QRect(70, 200, 461, 171));
+        group_personajes->setGeometry(QRect(70, 220, 461, 171));
         group_personajes->setFont(font);
         lb_img1 = new QLabel(group_personajes);
         lb_img1->setObjectName(QString::fromUtf8("lb_img1"));
@@ -112,7 +123,7 @@ public:
         combo_personaje->setFont(font1);
         group_mapas = new QGroupBox(centralWidget);
         group_mapas->setObjectName(QString::fromUtf8("group_mapas"));
-        group_mapas->setGeometry(QRect(70, 380, 461, 171));
+        group_mapas->setGeometry(QRect(70, 400, 461, 171));
         group_mapas->setFont(font);
         lb_img2 = new QLabel(group_mapas);
         lb_img2->setObjectName(QString::fromUtf8("lb_img2"));
@@ -142,7 +153,7 @@ public:
         group_socket = new QGroupBox(centralWidget);
         group_socket->setObjectName(QString::fromUtf8("group_socket"));
         group_socket->setEnabled(true);
-        group_socket->setGeometry(QRect(340, 110, 191, 81));
+        group_socket->setGeometry(QRect(340, 130, 191, 81));
         group_socket->setFont(font);
         label_3 = new QLabel(group_socket);
         label_3->setObjectName(QString::fromUtf8("label_3"));
@@ -172,6 +183,7 @@ public:
         radioButton->setText(QApplication::translate("Launcher", "Jugar Servidor", nullptr));
         label_2->setText(QApplication::translate("Launcher", "Nombre :", nullptr));
         checkBox->setText(QApplication::translate("Launcher", "Habilitar opciones avanzadas", nullptr));
+        label_4->setText(QApplication::translate("Launcher", "Max players :", nullptr));
         group_personajes->setTitle(QApplication::translate("Launcher", "Personajes", nullptr));
         lb_img1->setText(QString());
         lb_personaje->setText(QApplication::translate("Launcher", "Armas : ", nullptr));

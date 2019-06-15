@@ -1,5 +1,6 @@
 local Class = require "libs.hump.class"
 local Gamestate = require "libs.hump.gamestate"
+local sti = require "libs.sti"
 
 local cliente = require "gamestates.cliente"
 
@@ -7,16 +8,16 @@ local entidades_cliente = Class{
   __includes = {cliente}
 }
 
-function entidades_cliente:init(cam,vector,signal,eleccion,map,ip,puerto,nombre)
+function entidades_cliente:init(cam,vector,signal,eleccion,ip,puerto,nombre)
   self.id_player=nil
+  self.name=nombre
   
   cliente.init(self,ip,puerto,nombre,eleccion)
   
   self.cam=cam
 	self.signal=signal
 	self.vector=vector
-
-	self.map=map
+  self.map=nil
   
   
   
@@ -26,8 +27,6 @@ function entidades_cliente:init(cam,vector,signal,eleccion,map,ip,puerto,nombre)
   self.objetos={}
   self.arboles={}
   
-  
-  self:custom_layers()
 end
 
 function entidades_cliente:enter()
@@ -39,8 +38,24 @@ function entidades_cliente:draw()
 end
 
 function entidades_cliente:update(dt)
-  self.map:update(dt)
   self:client_update(dt)
+end
+
+function entidades_cliente:create_map(mapa)
+  local map= sti("assets/map/" .. mapa .. ".lua")
+	--objetos principales
+	local scale=1
+	local x,y=lg.getDimensions( )
+
+	map:resize(x*2,y*2)
+	self.cam:setWorld(0,0,map.width*map.tilewidth, map.height*map.tileheight)
+	self.cam:setWindow(0,0,x,y)
+
+	self.cam:setScale(1)
+  
+  self.map=map
+  
+  self:custom_layers()
 end
 
 function entidades_cliente:getXY()
@@ -49,6 +64,8 @@ function entidades_cliente:getXY()
 end
 
 function entidades_cliente:custom_layers()
+  self.map:removeLayer("Borrador")
+  
   local Balas_layers = self.map.layers["Balas"]
   
   local Enemigos_layers = self.map.layers["Enemigos"] 
@@ -89,6 +106,8 @@ function entidades_cliente:custom_layers()
           local x,y,w,h = indice[player.iterator]:getViewport( )
           
           lg.draw(indice["image"],indice[player.iterator],player.ox,player.oy,player.radio + math.pi/2,indice.scale,indice.scale,w/2,h/2)
+          
+          lg.print(player.nombre,player.ox,player.oy-100)
         end
       end 
     end
