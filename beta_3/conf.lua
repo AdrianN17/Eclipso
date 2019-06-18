@@ -4,8 +4,8 @@ function love.conf(t)
   	t.window.width = 600
   	t.window.height = 640
   
-  	t.title="Last_Eclipse"
-    t.identity = "Last_Eclipse"
+  	t.title="Eclipso"
+    t.identity = "Eclipso"
     --t.release = true
   	t.window.fullscreen = false 
   	t.window.fullscreentype = "desktop"

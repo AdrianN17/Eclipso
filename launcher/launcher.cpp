@@ -47,9 +47,6 @@ Launcher::Launcher(QWidget *parent) :
 
 Launcher::~Launcher()
 {
-    QFile file (file_name);
-    file.remove();
-
 
     delete ui;
 }
@@ -82,8 +79,7 @@ void Launcher::on_btn_iniciar_clicked()
         usu.nuevo_cliente(personaje,nombre,ip,puerto);
     }
 
-    crear_file(usu);
-    abrir_exe();
+    abrir_exe(usu);
 
 
 }
@@ -107,25 +103,14 @@ void Launcher::on_radioButton_2_clicked()
     ui->spin_can_enemigos->setDisabled(true);
 }
 
-void Launcher::abrir_exe()
+void Launcher::abrir_exe(usuario usu)
 {
     QProcess process;
-    process.startDetached("D:/Programas/Love/love.exe D:/Proyectos/Last_Eclipse/beta_3");
+    QString comand="D:/Programas/Love/love.exe D:/Proyectos/Eclipso/beta_3 ";
+    QString table = usu.lua_conf().toUtf8().toBase64();
+    QString query = QString("%1 %2").arg(comand).arg(table);
+    process.startDetached(query);
     process.close();
-}
-
-void Launcher::crear_file(usuario usu)
-{
-    QFile file(file_name);
-    bool openOk = file.open(QFile::WriteOnly|QFile::Truncate);
-
-    if(openOk)
-    {
-        QTextStream out(&file);
-        out << usu.lua_conf();
-
-       file.close();
-    }
 }
 
 void Launcher::on_checkBox_stateChanged(int arg1)

@@ -2,8 +2,11 @@ local Gamestate = require "libs.hump.gamestate"
 --local Menu = require "escenas.menu"
 local Game = require "escenas.game"
 local img= require "assets.img.img"
+local mime = require "mime"
 
-function love.load()
+function love.load(arg)
+  --transformar de base 64 a string
+  _G.configuracion = mime.unb64(arg[1])
 
 	--inicio
 

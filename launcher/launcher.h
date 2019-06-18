@@ -23,7 +23,6 @@ public:
     explicit Launcher(QWidget *parent = nullptr);
     ~Launcher();
     QString ip_guardada="0.0.0.0";
-    QString file_name="C:/Users/Adrian/AppData/Roaming/LOVE/Last_Eclipse/Game_data.lua";
 
     QList<QImage> personaje_lista;
     QList<QImage> mapa_lista;
@@ -38,8 +37,7 @@ private slots:
 
     //funciones principales
 
-    void abrir_exe();
-    void crear_file(usuario usu);
+    void abrir_exe(usuario usu);
 
     void on_checkBox_stateChanged(int arg1);
 

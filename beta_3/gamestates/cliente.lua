@@ -69,8 +69,6 @@ function cliente:init(ip,puerto,nombre,eleccion)
   
   self.client:connect()
   
-  
-  
   self.spritesheet=img
 end
 

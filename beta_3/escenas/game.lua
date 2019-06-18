@@ -9,11 +9,15 @@ local game = Class{
 
 function game:init()
   
-  --coger data de filesystem
+  --transformar data de string a table
   
-  local data=nil
-	if love.filesystem.getInfo("Game_data.lua") then
-    data =love.filesystem.load("Game_data.lua")()
+  local data=(loadstring)(_G.configuracion)()
+  
+  --print(1,type(_G.configuracion),_G.configuracion)
+
+  if data==nil then
+    love.event.quit()
+  else
     
     if data.tipo == "server" then
       Base:init(self,data.mapa,data.personaje,data.ip,data.puerto,data.cantidad,data.nombre,data.cantidad_enemigos)
@@ -21,8 +25,6 @@ function game:init()
       Base_cliente:init(self,data.personaje,data.ip,data.puerto,data.nombre)
     end
     
-  else
-    love.event.quit()
   end
   
 end

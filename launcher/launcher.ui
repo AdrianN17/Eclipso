@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Last Eclipse-Launcher</string>
+   <string>Eclipso-Launcher</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QPushButton" name="btn_iniciar">
