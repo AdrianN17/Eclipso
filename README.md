@@ -33,6 +33,7 @@ The multiplayer work in local (LAN)
 * Destructive terrain in-game
 * Create a boss for each map
 * Create a server to multiplayer
+* Linux executable
 
 ## Framework :
 
