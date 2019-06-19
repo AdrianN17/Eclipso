@@ -34,6 +34,8 @@ The multiplayer work in local (LAN)
 * Create a boss for each map
 * Create a server to multiplayer
 * Linux executable
+* Create or search a Finite State Machine for enemies (module enemy AI)
+* Better structure of code
 
 ## Framework :
 
