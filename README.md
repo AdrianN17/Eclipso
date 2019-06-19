@@ -7,7 +7,7 @@ A original Multiplayer Top Down Shooter made with Love2d Framework
 ## Controls
 
 * ASDW : move (All)
-* E : shield (ALL)
+* E : shield (ALL, not work)
 * R : reload bullets (only if you have LD weapons)
 * 1,2 change weapons (at the moment only Aegis have two arms)
 
