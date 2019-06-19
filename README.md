@@ -23,6 +23,7 @@ The multiplayer work in local (LAN)
 
 ## Future implementations
 
+* Create a game UI (health, rage, bullets and more)
 * Add more character (I have them created, but I have to make the sprites)
 * Better AI enemies
 * Create more maps and complete actual map
