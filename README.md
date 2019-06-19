@@ -14,7 +14,7 @@ The multiplayer work in local (LAN)
 
 ## Images
 
-![alt text](https://i.imgur.com/gMGxAls.png)
+![alt text](https://i.imgur.com/N5g1VdC.png)
 
 ## Questions
   ### Why QT for the UI?
