@@ -24,6 +24,7 @@ A original Multiplayer Top Down Shooter made with Love2d Framework
 * Create sound
 * Create a chat in-game
 * Better ui design in the launcher
+* Destructive terrain in-game
 
 ## Framework :
 
