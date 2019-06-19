@@ -36,6 +36,7 @@ The multiplayer work in local (LAN)
 * Linux executable
 * Create or search a Finite State Machine for enemies (module enemy AI)
 * Better structure of code
+* Create APK
 
 ## Framework :
 
