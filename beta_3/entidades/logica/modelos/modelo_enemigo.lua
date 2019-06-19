@@ -5,7 +5,7 @@ local modelo_enemigo = Class{
   __includes = {modelo_destruccion_otros}
 }
 
-function modelo_enemigo:init(entidades,x,y,creador,hp,velocidad,ira,polygon,mass,puntos_arma,puntos_melee,puntos_rango,objeto_balas,tiempo_max_recarga,rastreo_paredes,daño_melee)
+function modelo_enemigo:init(entidades,x,y,creador,hp,velocidad,ira,polygon,mass,puntos_arma,puntos_melee,puntos_rango,objeto_balas,tiempo_max_recarga,rastreo_paredes,dano_melee)
   self.entidades=entidades
   
   self.entidades:add_obj("enemigos",self)
@@ -129,7 +129,7 @@ function modelo_enemigo:init(entidades,x,y,creador,hp,velocidad,ira,polygon,mass
   
   self.rastreo_paredes=rastreo_paredes
   
-  self.daño_melee=daño_melee
+  self.dano_melee=dano_melee
   
   modelo_destruccion_otros.init(self,"enemigos")
   
@@ -379,14 +379,14 @@ function modelo_enemigo:recargar(dt)
 end
 
 function modelo_enemigo:ataque_melee(objeto)
-  objeto.hp=objeto.hp-self.daño_melee
+  objeto.hp=objeto.hp-self.dano_melee
 end
 
 return modelo_enemigo
 
 --[[
 haciendo algo
-	si es por daño a distancia
+	si es por dano a distancia
 		seguir punto inicial por cierto tiempo 
 		sino volver a (sin hacer nada)
 

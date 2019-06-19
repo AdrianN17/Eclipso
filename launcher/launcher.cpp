@@ -106,9 +106,19 @@ void Launcher::on_radioButton_2_clicked()
 void Launcher::abrir_exe(usuario usu)
 {
     QProcess process;
-    QString comand="D:/Programas/Love/love.exe D:/Proyectos/Eclipso/beta_3 ";
+   // QString comand="D:/Programas/Love/love.exe D:/Proyectos/Eclipso/beta_3 ";
+
+    QString dir = QCoreApplication::applicationDirPath();
+
+    qDebug()<<dir;
+
+
+    //QString comand="D:/Proyectos/Eclipso/launcher/exe/Eclipso.exe";
+    QString comand = QString("%1%2").arg(dir).arg("/exe/Eclipso.exe");
+    qDebug()<<comand;
+
     QString table = usu.lua_conf().toUtf8().toBase64();
-    QString query = QString("%1 %2").arg(comand).arg(table);
+    QString query = QString("%1  %2").arg(comand).arg(table);
     process.startDetached(query);
     process.close();
 }

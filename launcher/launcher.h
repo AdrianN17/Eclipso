@@ -7,6 +7,7 @@
 #include <QDataStream>
 #include <QTcpSocket>
 #include <QHostAddress>
+#include <QDir>
 
 
 #include "usuario.h"

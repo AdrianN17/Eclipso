@@ -1,9 +1,9 @@
 local Class = require "libs.hump.class"
-local daño = require "entidades.logica.modelos.modelo_daño"
+local dano = require "entidades.logica.modelos.modelo_dano"
 local destruccion = require "entidades.logica.modelos.modelo_destruccion"
 
 local modelo_player = Class{
-  __includes = {daño, destruccion}
+  __includes = {dano, destruccion}
 }
 
 function modelo_player:init(entidades,x,y,creador,area,hp,velocidad,ira,tiempo_escudo,puntos_arma,puntos_melee,mass,disparo_max_timer,recarga_timer,balas_data_1,balas_data_2)
@@ -21,7 +21,7 @@ function modelo_player:init(entidades,x,y,creador,area,hp,velocidad,ira,tiempo_e
   
   --inicializar
   
-  daño.init(self)
+  dano.init(self)
   destruccion.init(self,"players")
   
   --ejes

@@ -5,7 +5,7 @@ local modelo_balas = Class{
   __includes = {modelo_destruccion_otros}
 }
 
-function modelo_balas:init(x,y,entidades,velocidad,radio,creador,daño)
+function modelo_balas:init(x,y,entidades,velocidad,radio,creador,dano)
   self.inicial_x,self.inicial_y=x,y
   self.entidades=entidades
   self.velocidad=velocidad
@@ -26,7 +26,7 @@ function modelo_balas:init(x,y,entidades,velocidad,radio,creador,daño)
 
   self.z=0
   
-  self.daño=daño
+  self.dano=dano
   
   self:reset_mass(5)
   
@@ -56,8 +56,8 @@ function modelo_balas:update(dt)
   
 end
 
-function modelo_balas:dañado(objeto)
-	objeto.hp=objeto.hp-self.daño
+function modelo_balas:danado(objeto)
+	objeto.hp=objeto.hp-self.dano
 end
 
 return modelo_balas

@@ -1,0 +1,1 @@
+copy /b love.exe+game.love Eclipso.exe
