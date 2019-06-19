@@ -15,6 +15,11 @@ A original Multiplayer Top Down Shooter made with Love2d Framework
 
 ![alt text](https://i.imgur.com/gMGxAls.png)
 
+## Questions
+  ### Why QT for the UI?
+
+  When I created the gui for my game in Love, I had the problem of sorting my code, Libs like Slab or SUIT worked, but they were not  complete in my opinion, QT was more flexible for me, besides That I had already used it a while ago.
+
 ## Future implementations
 
 * Add more character (I have them created, but I have to make the sprites)
