@@ -1,6 +1,7 @@
 # Eclipso
 
 A original Multiplayer Top Down Shooter made with Love2d Framework
+The multiplayer work in local (LAN)
 
 ![alt text](https://img.shields.io/badge/Love-11.2-ff69b4.svg) ![alt text](https://img.shields.io/badge/Qt-5.12.3-brightgreen.svg) ![alt text](https://img.shields.io/badge/Status-Beta%203.0-orange.svg)
 
@@ -30,6 +31,8 @@ A original Multiplayer Top Down Shooter made with Love2d Framework
 * Create a chat in-game
 * Better ui design in the launcher
 * Destructive terrain in-game
+* Create a boss for each map
+* Create a server to multiplayer
 
 ## Framework :
 
