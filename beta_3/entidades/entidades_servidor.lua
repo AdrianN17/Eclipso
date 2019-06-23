@@ -59,7 +59,7 @@ function entidades_servidor:init(cam,vector,signal,eleccion,map,ip,puerto,cantid
 		require "entidades.logica.personajes.Aegis",
 		require "entidades.logica.personajes.Solange",
     require "entidades.logica.personajes.Xeon",
-    --require "entidades.logica.personajes.Radian
+    require "entidades.logica.personajes.Radian"
 	}
   
   libe.init(self)

@@ -16,7 +16,7 @@ function modelo_player:init(entidades,x,y,creador,area,hp,velocidad,ira,tiempo_e
   self.entidades:add_obj("players",self)
   
   --estados
-  self.estados={moviendo=false,congelado=false,quemadura=false,paralisis=false,protegido=false,atacando=false,atacado=false,dash=false,vivo=true,recargando=false}
+  self.estados={moviendo=false,congelado=false,quemadura=false,paralisis=false,protegido=false,atacando=false,atacado=false,dash=false,vivo=true,recargando=false,atacando_melee=false}
   self.direccion={a=false,d=false,w=false,s=false}
   
   --inicializar

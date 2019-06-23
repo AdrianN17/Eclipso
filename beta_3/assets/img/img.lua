@@ -82,7 +82,7 @@ spritesheet.radian[3][1]=love.graphics.newQuad(3726,0,390,551, spritesheet.radia
 spritesheet.radian[3][2]=love.graphics.newQuad(4301,0,390,551, spritesheet.radian["image"]:getDimensions())
 spritesheet.radian[3][3]=love.graphics.newQuad(4904,0,390,551, spritesheet.radian["image"]:getDimensions())
 
-spritesheet.radian.scale=0.6
+spritesheet.radian.scale=0.3
 
 spritesheet.escudos={}
 

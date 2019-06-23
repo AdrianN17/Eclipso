@@ -1,9 +1,8 @@
 local Class = require "libs.hump.class"
 
+local Radian_anima=Class{}
 
-local Aegis_anima = Class{}
-
-function Aegis_anima:init(spritesheet,escudos)
+function Radian_anima:init(spritesheet,escudos)
   self.spritesheet=spritesheet
   self.spritesheet_escudos=escudos
   
@@ -14,11 +13,13 @@ function Aegis_anima:init(spritesheet,escudos)
   
 end
 
-function Aegis_anima:update_animation(dt)
+function Radian_anima:update_animation(dt)
   if self.estados.moviendo then
     
     if self.estados.atacando then
       self.iterator=2
+    elseif self.estados.atacando_melee then
+      self.iterator=3
     else
       self.iterator=1
     end
@@ -36,11 +37,11 @@ function Aegis_anima:update_animation(dt)
       self.timer_1=0
     end
     
-    
-    
   else
     if self.estados.atacando then
       self.iterator=2
+    elseif self.estados.atacando_melee then
+      self.iterator=3
     else
       self.iterator=1
     end
@@ -51,13 +52,12 @@ function Aegis_anima:update_animation(dt)
   
 end
 
-function Aegis_anima:draw()
+function Radian_anima:draw()
   
   if self.estados.vivo then
-  
     local x,y,w,h = self.spritesheet[self.iterator][self.iterator_2]:getViewport( )
-    
-    lg.draw(self.spritesheet["image"],self.spritesheet[self.iterator][self.iterator_2],self.ox,self.oy,self.radio + math.pi/2,self.spritesheet.scale,self.spritesheet.scale,w/2,h/2)
+  
+  lg.draw(self.spritesheet["image"],self.spritesheet[self.iterator][self.iterator_2],self.ox,self.oy,self.radio + math.pi/2,self.spritesheet.scale,self.spritesheet.scale,w/2,h/2)
   end
   
   
@@ -66,8 +66,9 @@ function Aegis_anima:draw()
     lg.draw(self.spritesheet_escudos["image"],self.spritesheet_escudos[self.tipo_escudo],self.ox,self.oy,0,self.spritesheet_escudos.scale,self.spritesheet_escudos.scale,w_s/2,h_s/2)
   end
   
-  lg.print(self.nombre,self.ox,self.oy-100)
+  lg.print(self.hp,self.ox,self.oy-100)
+  
   
 end
 
-return Aegis_anima
+return Radian_anima

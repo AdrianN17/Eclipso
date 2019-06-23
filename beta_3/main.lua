@@ -6,8 +6,11 @@ local mime = require "mime"
 
 function love.load(arg)
   --transformar de base 64 a string
+  local base="cmV0dXJuIHtwZXJzb25hamUgPSA0LCBtYXBhID0gJ2RlbW8nICwgbm9tYnJlID0gJ3BsYXllcicsIGlwID0gJzE5Mi4xNjguMC41JywgcHVlcnRvID0gJzIyMTIyJywgdGlwbyA9ICdzZXJ2ZXInLCBjYW50aWRhZCA9ICcxJyAsIGNhbnRpZGFkX2VuZW1pZ29zPSAyNSB9"
   
-  _G.configuracion = mime.unb64("cmV0dXJuIHtwZXJzb25hamUgPSAzLCBtYXBhID0gJ2RlbW8nICwgbm9tYnJlID0gJ3BsYXllcicsIGlwID0gJzE5Mi4xNjguMC41JywgcHVlcnRvID0gJzIyMTIyJywgdGlwbyA9ICdzZXJ2ZXInLCBjYW50aWRhZCA9ICcxJyAsIGNhbnRpZGFkX2VuZW1pZ29zPSAyNSB9")--arg[1])
+  _G.configuracion = mime.unb64(base)
+  
+  --arg[1])
   
 
 
