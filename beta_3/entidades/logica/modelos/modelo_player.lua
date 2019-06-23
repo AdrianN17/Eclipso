@@ -38,8 +38,8 @@ function modelo_player:init(entidades,x,y,creador,area,hp,velocidad,ira,tiempo_e
   self.ira=0
   
   --timers
-  self.tiempo_escudo=self.tiempo_escudo
-  
+  self.max_tiempo_escudo=tiempo_escudo
+  self.escudo_time=0
 
   --cuerpo
   
@@ -210,6 +210,17 @@ function modelo_player:update(dt)
     
   end
   
+  
+
+  --escudo
+  if self.estados.protegido then
+    self.escudo_time=self.escudo_time+dt
+    if self.escudo_time>self.max_tiempo_escudo then
+      self.estados.protegido=false
+      self.escudo_time=0
+    end
+  end
+  
   --eliminar
   
   if self.hp<1 then
@@ -317,6 +328,7 @@ function modelo_player:keyreleased(key)
     self.estados.atacando=false
     self.estados.recargando=false
     self:reset_bullet_time()
+    self.escudo_time=0
   end
 end
 

@@ -10,6 +10,8 @@ Launcher::Launcher(QWidget *parent) :
 
     ui->combo_personaje->addItem("Aegis",1);
     ui->combo_personaje->addItem("Solange",2);
+    ui->combo_personaje->addItem("Xeon",3);
+     ui->combo_personaje->addItem("Radian",4);
 
     ui->spin_cantidad->setRange(1,8);
 
@@ -118,6 +120,9 @@ void Launcher::abrir_exe(usuario usu)
     qDebug()<<comand;*/
 
     QString table = usu.lua_conf().toUtf8().toBase64();
+
+    qDebug()<<table;
+
     QString query = QString("%1  %2").arg(comand).arg(table);
     process.startDetached(query);
     process.close();

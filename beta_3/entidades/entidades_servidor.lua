@@ -57,7 +57,9 @@ function entidades_servidor:init(cam,vector,signal,eleccion,map,ip,puerto,cantid
   
   self.personajes={
 		require "entidades.logica.personajes.Aegis",
-		require "entidades.logica.personajes.Solange"
+		require "entidades.logica.personajes.Solange",
+    require "entidades.logica.personajes.Xeon",
+    --require "entidades.logica.personajes.Radian
 	}
   
   libe.init(self)
@@ -89,7 +91,7 @@ function entidades_servidor:draw()
   
   self.cam:draw(function(l,t,w,h)
       
-    --[[for _, body in pairs(self.world:getBodies()) do
+    for _, body in pairs(self.world:getBodies()) do
       for _, fixture in pairs(body:getFixtures()) do
           local shape = fixture:getShape()
    
@@ -102,7 +104,7 @@ function entidades_servidor:draw()
               love.graphics.line(body:getWorldPoints(shape:getPoints()))
           end
       end
-    end]]
+    end
     
   end)
 

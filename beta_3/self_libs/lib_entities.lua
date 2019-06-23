@@ -105,17 +105,17 @@ function lib_entities:callbacks()
       obj1.obj.collider:applyLinearImpulse( 10000*ix,10000*iy )
     elseif obj1.data=="personaje" and obj2.data=="enemigos" then
       --hacer girar
-      
-      
-    elseif obj1.data=="escudo" and obj2.data=="balas" then
-      
     elseif obj1.data=="escudo" and obj2.data=="enemigos" then
       
     elseif obj1.data=="escudo" and obj2.data=="melee" then
       
     elseif obj1.data=="escudo" and obj2.data=="personaje" then
       
+    elseif obj1.data=="escudo" and obj2.data=="bala" and obj1.obj.estados.protegido then
+      obj2.obj:remove()
     end
+    
+
      
   end
   
@@ -142,17 +142,10 @@ function lib_entities:callbacks()
   end
   
   local preSolve =  function(a, b, coll)
-
-		--aqui no va colisiones con fixture
-		--local obj1=a:getUserData()
- 		--local obj2=b:getUserData()
- 		--local x,y=coll:getNormal()
     
   end
   
   local postSolve =  function(a, b, coll, normalimpulse, tangentimpulse)
- 		--local obj1=a:getUserData()
- 		--local obj2=b:getUserData()
 
 	end
 
