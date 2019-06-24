@@ -67,7 +67,7 @@ function modelo_enemigo:init(entidades,x,y,creador,hp,velocidad,ira,polygon,mass
       t.fixture=py.newFixture(self.collider,t.shape)
       t.fixture:setSensor( true )
       t.fixture:setGroupIndex( -self.creador )
-      t.fixture:setUserData( {data="melee",obj=self, pos=8}  )
+      t.fixture:setUserData( {data="melee_enemigo",obj=self, pos=8}  )
       t.fixture:setDensity(0)
 
       table.insert(self.melee,t)

@@ -94,15 +94,28 @@ function lib_entities:callbacks()
       obj2.obj:dar_posicion(obj1.obj)
       obj1.obj:danado(obj2.obj)
       obj1.obj:remove()
-    elseif obj1.data=="personaje" and obj2.data=="melee" then
+    elseif obj1.data=="personaje" and obj2.data=="melee_enemigo" then
       obj2.obj:ataque_melee(obj1.obj)
       
       local r = obj2.obj.radio-math.pi/2
       local ix,iy=math.cos(r),math.sin(r)
-      
-
-
+    
       obj1.obj.collider:applyLinearImpulse( 10000*ix,10000*iy )
+      
+    elseif obj1.data=="personaje" and obj2.data=="melee" and obj2.obj.estados.atacando_melee then
+      obj2.obj:ataque_melee(obj1.obj)
+      
+      local r = obj2.obj.radio-math.pi/2
+      local ix,iy=math.cos(r),math.sin(r)
+      obj1.obj.collider:applyLinearImpulse( 10000*ix,10000*iy )
+      
+    elseif obj1.data=="enemigos" and obj2.data=="melee" and obj2.obj.estados.atacando_melee then
+      obj2.obj:ataque_melee(obj1.obj)
+      
+      local r = obj2.obj.radio-math.pi/2
+      local ix,iy=math.cos(r),math.sin(r)
+      obj1.obj.collider:applyLinearImpulse( 10000*ix,10000*iy )
+      
     elseif obj1.data=="personaje" and obj2.data=="enemigos" then
       --hacer girar
     elseif obj1.data=="escudo" and obj2.data=="enemigos" then

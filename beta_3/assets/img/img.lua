@@ -45,23 +45,24 @@ spritesheet.xeon={}
 spritesheet.xeon["image"]=love.graphics.newImage("assets/img/Xeon.png")
 
 spritesheet.xeon[1]={}
-spritesheet.xeon[1][1]=love.graphics.newQuad(0,176,441,246, spritesheet.xeon["image"]:getDimensions())
-spritesheet.xeon[1][2]=love.graphics.newQuad(624,199,441,246, spritesheet.xeon["image"]:getDimensions())
-spritesheet.xeon[1][3]=love.graphics.newQuad(1161,195,441,245, spritesheet.xeon["image"]:getDimensions())
+spritesheet.xeon[1][1]=love.graphics.newQuad(0,130,441,224, spritesheet.xeon["image"]:getDimensions())
+spritesheet.xeon[1][2]=love.graphics.newQuad(624,130,441,224, spritesheet.xeon["image"]:getDimensions())
+spritesheet.xeon[1][3]=love.graphics.newQuad(1161,119,441,229, spritesheet.xeon["image"]:getDimensions())
 
 spritesheet.xeon[2]={}
-spritesheet.xeon[2][1]=love.graphics.newQuad(3051,0,445,420, spritesheet.xeon["image"]:getDimensions())
-spritesheet.xeon[2][2]=love.graphics.newQuad(1805,52,445,421, spritesheet.xeon["image"]:getDimensions())
-spritesheet.xeon[2][3]=love.graphics.newQuad(2404,52,451,425, spritesheet.xeon["image"]:getDimensions())
+spritesheet.xeon[2][1]=love.graphics.newQuad(1815,0,445,347, spritesheet.xeon["image"]:getDimensions())
+spritesheet.xeon[2][2]=love.graphics.newQuad(2473,0,445,344, spritesheet.xeon["image"]:getDimensions())
+spritesheet.xeon[2][3]=love.graphics.newQuad(3084,0,452,344, spritesheet.xeon["image"]:getDimensions())
+
 
 
 spritesheet.xeon[3]={}
-spritesheet.xeon[3][1]=love.graphics.newQuad(4911,178,445,292, spritesheet.xeon["image"]:getDimensions())
-spritesheet.xeon[3][2]=love.graphics.newQuad(3709,105,445,292, spritesheet.xeon["image"]:getDimensions())
-spritesheet.xeon[3][3]=love.graphics.newQuad(4319,105,451,292, spritesheet.xeon["image"]:getDimensions())
+spritesheet.xeon[3][1]=love.graphics.newQuad(3735,61,445,281, spritesheet.xeon["image"]:getDimensions())
+spritesheet.xeon[3][2]=love.graphics.newQuad(4329,50,446,280, spritesheet.xeon["image"]:getDimensions())
+spritesheet.xeon[3][3]=love.graphics.newQuad(4939,50,452,280, spritesheet.xeon["image"]:getDimensions())
 
 
-spritesheet.xeon.scale=0.3
+spritesheet.xeon.scale=0.25
 
 spritesheet.radian={}
 

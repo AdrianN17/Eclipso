@@ -103,9 +103,9 @@ function entidades_cliente:custom_layers()
       for _, player in pairs(self.players) do
         if player then
           local indice = self.spritesheet[player.tipo_indice]
-          local x,y,w,h = indice[player.iterator]:getViewport( )
+          local x,y,w,h = indice[player.iterator][player.iterator_2]:getViewport( )
           
-          lg.draw(indice["image"],indice[player.iterator],player.ox,player.oy,player.radio + math.pi/2,indice.scale,indice.scale,w/2,h/2)
+          lg.draw(indice["image"],indice[player.iterator][player.iterator_2],player.ox,player.oy,player.radio + math.pi/2,indice.scale,indice.scale,w/2,h/2)
           
           lg.print(player.nombre,player.ox,player.oy-100)
           

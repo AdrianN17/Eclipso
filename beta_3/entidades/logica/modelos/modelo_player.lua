@@ -82,7 +82,7 @@ function modelo_player:init(entidades,x,y,creador,area,hp,velocidad,ira,tiempo_e
 	end
   
   
-  self:reset_mass(mass)
+  
   
   self.disparo_max_timer=disparo_max_timer
   self.recarga_timer=recarga_timer
@@ -123,6 +123,25 @@ function modelo_player:init(entidades,x,y,creador,area,hp,velocidad,ira,tiempo_e
   self.tiempo_atacado=0
   
   self.cam_x,self.cam_y,self.cam_w,self.cam_h=0,0,0,0
+  
+  
+  
+  if puntos_melee then
+    self.melee_weapon={}
+    self.melee_weapon.shape=py.newRectangleShape(puntos_melee.x,puntos_melee.y,puntos_melee.w,puntos_melee.h)
+		self.melee_weapon.fixture=py.newFixture(self.collider,self.melee_weapon.shape)
+		self.melee_weapon.fixture:setSensor( true )
+		self.melee_weapon.fixture:setGroupIndex( -self.creador )
+		self.melee_weapon.fixture:setUserData( {data="melee",obj=self, pos=8}  )
+		self.melee_weapon.fixture:setDensity(0)
+    
+    self.dano_melee=puntos_melee.dano
+    
+    self.time_melee=puntos_melee.tiempo
+    self.time_melee_contador=0
+  end
+  
+  self:reset_mass(mass)
   
 end
 
@@ -221,6 +240,20 @@ function modelo_player:update(dt)
     end
   end
   
+
+  
+  if self.melee_weapon then
+    if self.estados.atacando_melee then
+      self.time_melee_contador=self.time_melee_contador+dt
+      
+      if self.time_melee_contador>self.time_melee then
+        
+        self.time_melee_contador=0
+        self.estados.atacando_melee=false
+      end
+    end
+  end
+  
   --eliminar
   
   if self.hp<1 then
@@ -261,6 +294,9 @@ function modelo_player:mousepressed(x,y,button)
   if button==1 then
     self.estados.atacando=true
     self.estados.recargando=false
+    self.estados.protegido=false
+    self.estados.atacando_melee=false
+    self.time_melee_contador=0
     
     self:bala_nueva(self.data_balas[self.arma])
   end
@@ -270,7 +306,12 @@ function modelo_player:mousereleased(x,y,button)
   if button==1 then
     self.estados.atacando=false
     self.estados.recargando=false
+    self.estados.protegido=false
+    self.estados.atacando_melee=false
+    self.time_melee_contador=0
     self:reset_bullet_time()
+    
+    
   end
 end
 
@@ -291,7 +332,9 @@ function modelo_player:keypressed(key)
     self.estados.protegido=true
     self.estados.atacando=false
     self.estados.recargando=false
+    self.estados.atacando_melee=false
     self:reset_bullet_time()
+    self.time_melee_contador=0
   end
   
   if key=="1" and self.data_balas[1] then
@@ -307,6 +350,23 @@ function modelo_player:keypressed(key)
   if key=="r" and self.can_armas then
     self:reset_bullet_time()
     self.estados.recargando=true
+    
+    self.estados.protegido=false
+    self.estados.atacando=false
+    self:reset_bullet_time()
+    self.escudo_time=0
+    self.time_melee_contador=0
+  end
+  
+  if key=="q" then
+    self.estados.atacando_melee=true
+    
+    self.estados.protegido=false
+    self.estados.atacando=false
+    self.estados.recargando=false
+    self:reset_bullet_time()
+    self.escudo_time=0
+    self.time_melee_contador=0
   end
 end
 
@@ -327,13 +387,32 @@ function modelo_player:keyreleased(key)
     self.estados.protegido=false
     self.estados.atacando=false
     self.estados.recargando=false
+    self.estados.atacando_melee=false
     self:reset_bullet_time()
     self.escudo_time=0
+    self.time_melee_contador=0
+  end
+  
+  if key=="q" then
+    
+    self.estados.protegido=false
+    self.estados.atacando=false
+    self.estados.recargando=false
+    self.estados.atacando_melee=false
+    self:reset_bullet_time()
+    self.escudo_time=0
+    self.time_melee_contador=0
   end
 end
 
 function modelo_player:get_radio(rx,ry)
   return math.atan2( ry-self.oy, rx -self.ox)
+end
+
+function modelo_player:ataque_melee(objeto)
+  if self.melee_weapon then
+    objeto.hp=objeto.hp-self.dano_melee
+  end
 end
 
 return modelo_player

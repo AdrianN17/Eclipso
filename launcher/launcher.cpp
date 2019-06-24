@@ -18,7 +18,7 @@ Launcher::Launcher(QWidget *parent) :
     ui->spin_can_enemigos->setRange(0,100);
     ui->spin_can_enemigos->setValue(25);
 
-    ui->combo_mapa->addItem("Acuaris","demo");
+    ui->combo_mapa->addItem("Acuaris","acuaris");
 
     QTcpSocket socket;
     socket.connectToHost("8.8.8.8", 53);

@@ -30,6 +30,9 @@ function modelo_balas:init(x,y,entidades,velocidad,radio,creador,dano)
   
   self:reset_mass(5)
   
+  
+  
+  
   modelo_destruccion_otros.init(self,"balas")
 end
 
@@ -58,6 +61,16 @@ end
 
 function modelo_balas:danado(objeto)
 	objeto.hp=objeto.hp-self.dano
+end
+
+function modelo_balas:poligono_recorte()
+  
+  return {-5+self.ox,-8.66+self.oy,
+  5+self.ox,-8.66+self.oy,
+  10+self.ox,0+self.oy,
+  5+self.ox,8.66+self.oy,
+  -5+self.ox,8.66+self.oy,
+  -10+self.ox,0+self.oy}
 end
 
 return modelo_balas
