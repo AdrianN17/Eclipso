@@ -57,7 +57,11 @@ function lib_entities:get_objects(objectlayer,objects_map)
   
 		for _, obj in pairs(objectlayer.objects) do
       if obj.name  then
-        objects_map[obj.name](obj.x,obj.y,self)
+        if obj.properties.destruible then
+          objects_map[obj.name](obj.x,obj.y,obj.polygon,self)
+        else
+          objects_map[obj.name](obj.x,obj.y,self)
+        end
       end
 		end
 end
@@ -174,6 +178,8 @@ function lib_entities:custom_layers()
   
   local Personajes_layers = self.map.layers["Personajes"]
   
+  local Destruible_layers = self.map.layers["Destruible"]
+  
   local Objetos_layers = self.map.layers["Objetos"]
   
   local Arboles_layers = self.map.layers["Arboles"]
@@ -193,6 +199,14 @@ function lib_entities:custom_layers()
   
   Personajes_layers.draw = function(obj)
     for _, obj_data in pairs(self.gameobject.players) do
+      if obj_data then
+        obj_data:draw()
+      end
+    end
+  end
+  
+  Destruible_layers.draw = function(obj)
+    for _, obj_data in pairs(self.gameobject.destruible) do
       if obj_data then
         obj_data:draw()
       end

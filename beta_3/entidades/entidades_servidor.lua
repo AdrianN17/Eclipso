@@ -7,7 +7,8 @@ local objetos_mapa  = {  Estrella = require "entidades.logica.objetos.estrella",
                         Arbol = require "entidades.logica.objetos.arbol",
                         Roca  = require "entidades.logica.objetos.roca",
                         Punto_inicio = require "entidades.logica.objetos.punto_inicio",
-                        Punto_enemigo_agua = require "entidades.logica.objetos.punto_enemigo_agua"
+                        Punto_enemigo_agua = require "entidades.logica.objetos.punto_enemigo_agua",
+                        Arrecife = require "entidades.logica.objetos.arrecife"
                       }
                       
 
@@ -37,6 +38,7 @@ function entidades_servidor:init(cam,vector,signal,eleccion,map,ip,puerto,cantid
 	self.gameobject.players={}
 	self.gameobject.balas={}
 	self.gameobject.efectos={}
+  self.gameobject.destruible={}
 	self.gameobject.enemigos={}
 	self.gameobject.objetos={}
   self.gameobject.arboles={}

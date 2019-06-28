@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="10" nextobjectid="63">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="65">
  <tileset firstgid="1" source="tiled_playa.tsx"/>
  <layer id="3" name="Suelo" width="100" height="100">
   <data encoding="base64" compression="zlib">
@@ -12,6 +12,14 @@
   </data>
  </layer>
  <objectgroup id="8" name="Objetos"/>
+ <objectgroup id="10" name="Destruible">
+  <object id="63" name="Arrecife" type="6" x="1218" y="862">
+   <properties>
+    <property name="destruible" type="bool" value="true"/>
+   </properties>
+   <polygon points="0,0 132,-27 202,116 274,304 191,448 -40,378 -182,295 -160,73"/>
+  </object>
+ </objectgroup>
  <objectgroup id="2" name="Borrador">
   <object id="5" name="Punto_inicio" type="5" x="263" y="132">
    <point/>
@@ -85,16 +93,16 @@
   <object id="33" name="Roca" type="3" x="2848" y="144">
    <point/>
   </object>
-  <object id="34" name="Roca" type="3" x="3140" y="508">
+  <object id="34" name="Roca" type="3" x="2979" y="578">
    <point/>
   </object>
-  <object id="35" name="Roca" type="3" x="2980" y="1308">
+  <object id="35" name="Roca" type="3" x="2908" y="1309">
    <point/>
   </object>
   <object id="36" name="Roca" type="3" x="3004" y="2452">
    <point/>
   </object>
-  <object id="37" name="Roca" type="3" x="2988" y="3084">
+  <object id="37" name="Roca" type="3" x="2972" y="3036">
    <point/>
   </object>
   <object id="38" name="Estrella" type="1" x="2656" y="232">
@@ -139,7 +147,7 @@
   <object id="51" name="Estrella" type="1" x="2496" y="2708">
    <point/>
   </object>
-  <object id="52" name="Roca" type="3" x="132" y="1300">
+  <object id="52" name="Roca" type="3" x="280" y="1291">
    <point/>
   </object>
   <object id="53" name="Roca" type="3" x="808" y="1540">

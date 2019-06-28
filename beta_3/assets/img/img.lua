@@ -102,6 +102,7 @@ spritesheet.objetos[2]=love.graphics.newQuad(43, 406, 357, 309, spritesheet.obje
 spritesheet.objetos[3]=love.graphics.newQuad(298, 86, 253, 270, spritesheet.objetos["image"]:getDimensions())
 spritesheet.objetos[4]=love.graphics.newQuad(634, 50, 211, 186, spritesheet.objetos["image"]:getDimensions())
 spritesheet.objetos[5]=love.graphics.newQuad(649, 370, 208, 198, spritesheet.objetos["image"]:getDimensions())
+spritesheet.objetos[6]=love.graphics.newQuad(920,203,151,152, spritesheet.objetos["image"]:getDimensions())
 
 spritesheet.objetos.scale=0.6
 

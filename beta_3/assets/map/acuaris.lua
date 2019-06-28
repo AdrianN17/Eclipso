@@ -8,8 +8,8 @@ return {
   height = 100,
   tilewidth = 32,
   tileheight = 32,
-  nextlayerid = 10,
-  nextobjectid = 63,
+  nextlayerid = 11,
+  nextobjectid = 65,
   properties = {},
   tilesets = {
     {
@@ -99,6 +99,44 @@ return {
       draworder = "topdown",
       properties = {},
       objects = {}
+    },
+    {
+      type = "objectgroup",
+      id = 10,
+      name = "Destruible",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      draworder = "topdown",
+      properties = {},
+      objects = {
+        {
+          id = 63,
+          name = "Arrecife",
+          type = "6",
+          shape = "polygon",
+          x = 1218,
+          y = 862,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          polygon = {
+            { x = 0, y = 0 },
+            { x = 132, y = -27 },
+            { x = 202, y = 116 },
+            { x = 274, y = 304 },
+            { x = 191, y = 448 },
+            { x = -40, y = 378 },
+            { x = -182, y = 295 },
+            { x = -160, y = 73 }
+          },
+          properties = {
+            ["destruible"] = true
+          }
+        }
+      }
     },
     {
       type = "objectgroup",
@@ -428,8 +466,8 @@ return {
           name = "Roca",
           type = "3",
           shape = "point",
-          x = 3140,
-          y = 508,
+          x = 2979,
+          y = 578,
           width = 0,
           height = 0,
           rotation = 0,
@@ -441,8 +479,8 @@ return {
           name = "Roca",
           type = "3",
           shape = "point",
-          x = 2980,
-          y = 1308,
+          x = 2908,
+          y = 1309,
           width = 0,
           height = 0,
           rotation = 0,
@@ -467,8 +505,8 @@ return {
           name = "Roca",
           type = "3",
           shape = "point",
-          x = 2988,
-          y = 3084,
+          x = 2972,
+          y = 3036,
           width = 0,
           height = 0,
           rotation = 0,
@@ -662,8 +700,8 @@ return {
           name = "Roca",
           type = "3",
           shape = "point",
-          x = 132,
-          y = 1300,
+          x = 280,
+          y = 1291,
           width = 0,
           height = 0,
           rotation = 0,
