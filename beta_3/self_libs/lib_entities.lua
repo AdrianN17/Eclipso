@@ -58,7 +58,7 @@ function lib_entities:get_objects(objectlayer,objects_map)
 		for _, obj in pairs(objectlayer.objects) do
       if obj.name  then
         if obj.properties.destruible then
-          objects_map[obj.name](obj.x,obj.y,obj.polygon,self)
+          objects_map[obj.name](obj.polygon,self)
         else
           objects_map[obj.name](obj.x,obj.y,self)
         end
@@ -130,8 +130,14 @@ function lib_entities:callbacks()
       
     elseif obj1.data=="escudo" and obj2.data=="bala" and obj1.obj.estados.protegido then
       obj2.obj:remove()
+    elseif obj1.data=="bala" and obj2.data=="destruible" then
+      local x1, y1, x2, y2 = coll:getPositions( )
+      if x1 and y1 then
+        local poly = obj2.obj:poligono_recorte(x1,y1)
+      end
+      
+      obj1.obj:remove()
     end
-    
 
      
   end
@@ -191,9 +197,23 @@ function lib_entities:custom_layers()
     end
   end
   
+  Balas_layers.update = function(obj,dt)
+    for _, obj_data in ipairs(self.gameobject.balas) do
+      obj_data:update(dt)
+    end
+  end
+  
+  
+  
   Enemigos_layers.draw = function(obj)
     for _, obj_data in ipairs(self.gameobject.enemigos) do
       obj_data:draw()
+    end
+  end
+  
+  Enemigos_layers.update = function(obj,dt)
+    for _, obj_data in ipairs(self.gameobject.enemigos) do
+      obj_data:update(dt)
     end
   end
   
@@ -201,6 +221,14 @@ function lib_entities:custom_layers()
     for _, obj_data in pairs(self.gameobject.players) do
       if obj_data then
         obj_data:draw()
+      end
+    end
+  end
+  
+  Personajes_layers.update = function(obj,dt)
+    for _, obj_data in pairs(self.gameobject.players) do
+      if obj_data then
+        obj_data:update(dt)
       end
     end
   end
@@ -213,15 +241,35 @@ function lib_entities:custom_layers()
     end
   end
   
+  Destruible_layers.update = function(obj,dt)
+    for _, obj_data in pairs(self.gameobject.destruible) do
+      if obj_data then
+        obj_data:update(dt)
+      end
+    end
+  end
+  
   Objetos_layers.draw = function(obj)
     for _, obj_data in ipairs(self.gameobject.objetos) do
       obj_data:draw()
     end
   end
   
+  Objetos_layers.update = function(obj,dt)
+    for _, obj_data in ipairs(self.gameobject.objetos) do
+      obj_data:update(dt)
+    end
+  end
+  
   Arboles_layers.draw = function(obj)
     for _, obj_data in ipairs(self.gameobject.arboles) do
       obj_data:draw()
+    end
+  end
+  
+  Arboles_layers.update = function(obj,dt)
+    for _, obj_data in ipairs(self.gameobject.arboles) do
+      obj_data:update(dt)
     end
   end
   

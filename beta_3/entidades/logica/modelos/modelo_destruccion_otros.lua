@@ -7,9 +7,11 @@ function modelo_destruccion_otros:init(table)
 end
 
 function modelo_destruccion_otros:remove()
-  if self.collider then
+
     self.collider:destroy()
-  end
+    
+    
+
 
 	self.entidades:remove_obj(self.name_table,self)
 end

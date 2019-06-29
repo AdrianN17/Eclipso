@@ -63,14 +63,6 @@ function modelo_balas:danado(objeto)
 	objeto.hp=objeto.hp-self.dano
 end
 
-function modelo_balas:poligono_recorte()
-  
-  return {-5+self.ox,-8.66+self.oy,
-  5+self.ox,-8.66+self.oy,
-  10+self.ox,0+self.oy,
-  5+self.ox,8.66+self.oy,
-  -5+self.ox,8.66+self.oy,
-  -10+self.ox,0+self.oy}
-end
+
 
 return modelo_balas

@@ -92,28 +92,24 @@ function servidor:init(ip,puerto,cantidad,nombre,name_mapa)
 end
 
 function servidor:update_server(dt)
-  self.server:update(dt)
-	self.map:update(dt)
-	self.world:update(dt)
+  
   
   self.tick = self.tick + dt
 
 	if self.tick >= self.tickRate then
         self.tick = 0
         
-    for i, obj in pairs(self.gameobject) do
-      for _, obj2 in pairs(obj) do
-        if obj2 then
-          obj2:update(dt)
-        end
-      end
-    end
+    self.server:update(dt)
+    
+    self.world:update(dt) 
+    self.map:update(dt)    
+    local player = self.gameobject.players[1]
     
     --camara-muerte del usuario
-    if self.gameobject.players[1] then
-			self.cam:setPosition(self.gameobject.players[1].ox,self.gameobject.players[1].oy)
+    if  player then
+			self.cam:setPosition(player.ox,player.oy)
     
-      self.gameobject.players[1].rx,self.gameobject.players[1].ry=self:getXY()
+      player.rx,player.ry=self:getXY()
 		else
 
 		end

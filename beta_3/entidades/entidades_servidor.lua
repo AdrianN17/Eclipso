@@ -78,6 +78,7 @@ function entidades_servidor:init(cam,vector,signal,eleccion,map,ip,puerto,cantid
   self.max_cantidad_enemigos=cantidad_enemigos
   
   servidor.init(self,ip,puerto,cantidad,nombre,map_name)
+  
 end
 
 function entidades_servidor:enter()
@@ -87,9 +88,9 @@ end
 function entidades_servidor:draw()
   local cx,cy,cw,ch=self.cam:getVisible()
   
-  
-  
   self.map:draw(-cx,-cy,1,1)
+  
+  
   
   self.cam:draw(function(l,t,w,h)
       
@@ -147,5 +148,7 @@ function entidades_servidor:mousereleased(x,y,button)
 	end
   
 end
+
+
 
 return entidades_servidor

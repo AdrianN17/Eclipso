@@ -105,7 +105,7 @@ function modelo_enemigo:init(entidades,x,y,creador,hp,velocidad,ira,polygon,mass
     
     local tipo_obj=fixture:getUserData().data
     
-    if tipo_obj == "objeto" then
+    if tipo_obj == "objeto" or  tipo_obj =="destruible" then
       
         self.estados.colision=true
         
