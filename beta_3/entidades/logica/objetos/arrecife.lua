@@ -15,19 +15,17 @@ function arrecife:init(polygon,entidades)
   self.poligono ={}
   local vertices = {}
   
+  
+  
   if type(polygon[1]) == "table" then
     for _,data in ipairs(polygon) do
       --polygon
       table.insert(self.poligono,data.x)
       table.insert(self.poligono,data.y)
-      
-      --mesh
-      --table.insert(vertices,{data.x,data.y-y,0,1,255, 255, 255})
     end
   else
     self.poligono = polygon
   end
-  
   
   
 	self.entidades:add_obj("destruible",self)
@@ -38,8 +36,38 @@ function arrecife:init(polygon,entidades)
   
   self.fixture:setUserData( {data="destruible",obj=self, pos=10} )
   
-  --self.mesh= lg.newMesh(vertices, "fan")
-  --self.mesh:setTexture(img.objetos["image"])
+  
+  self.ox,self.oy=self.collider:getX(),self.collider:getY()
+  
+  --mesh
+  for i=1,#self.poligono,2 do
+    
+    local u,v=1,1
+    local x,y=self.poligono[i],self.poligono[i+1]
+    
+    if x>self.ox then
+      u=1
+    end
+    
+    
+    if y<self.oy then
+      v=1
+    end
+    
+    table.insert(vertices,{x,y,u,v})
+  end
+  
+  
+  self.img=lg.newImage("assets/img/textura_1.png")
+  
+  self.mesh = self:poly2mesh(self.poligono)
+  self.img:setWrap("repeat")
+  self.mesh:setTexture(self.img)
+  
+  
+  --self.mesh= lg.newMesh(vertices, "triangles", "static")
+
+  --elf.mesh:setTexture(self.img)
   
   
   modelo_destruccion_otros.init(self,"destruible")
@@ -51,55 +79,25 @@ function arrecife:update(dt)
   if self.otro_poligono then
     self:nuevo_poligono(self.otro_poligono)
   end
-  
-  --[[local lista = self.collider:getContacts( )
-
-  for i, contact in ipairs(lista) do
-    local fix1,fix2=contact:getFixtures()
-    
-    if fix1 and fix2 then
-      if fix1:getUserData().data == "destruible" and fix2:getUserData().data == "bala" then
-        local x1, y1, x2, y2 = contact:getPositions( )
-        
-        if x1 and y1 then
-          local poly = self:poligono_recorte(x1,y1)
-          
-          local obj = fix2:getUserData()
-          
-          
-          obj.obj:remove()
-          
-          self:nuevo_poligono(poly)
-        end
-      end
-    end
-    
-  end]]
 end
 
 function arrecife:draw()
-  --lg.draw(self.mesh, self.ox,self.oy)
+  lg.draw(self.mesh)
 end
 
 function arrecife:nuevo_poligono(poligono_enemigo)
-  
-  
   
   local nuevo_poligono = polybool(self.poligono, poligono_enemigo, "not")
   
   if #nuevo_poligono<4 then
     for i=1, #nuevo_poligono ,1 do
-      
         arrecife(nuevo_poligono[i],self.entidades)
-      
-      
       
     end
   end
     
   self:remove() 
 
-  
 end
 
 function arrecife:poligono_recorte(x,y)
@@ -110,6 +108,49 @@ function arrecife:poligono_recorte(x,y)
   5*dis+x,8.66*dis+y,
   -5*dis+x,8.66*dis+y,
   -10*dis+x,0*dis+y}
+end
+
+function arrecife:poly2mesh(points)
+  local polypts = love.math.triangulate(points)
+  local tlist
+
+  local vnums = {}
+  local vcoords = {}
+  do
+    local verthash = {}
+    local n = 0
+    local v
+    -- use unique vertices by using a coordinate hash table
+    for i = 1, #polypts do
+      for j = 1, 3 do
+        local px = polypts[i][j * 2 - 1]
+        local py = polypts[i][j * 2]
+        if not verthash[px] then
+          verthash[px] = {}
+        end
+        if not verthash[px][py] then
+          n = n + 1
+          verthash[px][py] = n
+          vcoords[n * 2 - 1] = px
+          vcoords[n * 2] = py
+          v = n
+        else
+          v = verthash[px][py]
+        end
+        vnums[(i - 1) * 3 + j] = v
+      end
+    end
+  end
+
+  local mesh = love.graphics.newMesh(#vcoords, "triangles", "static")
+  for i = 1, #vcoords / 2 do
+    local x, y = vcoords[i * 2 - 1], vcoords[i * 2]
+
+    -- Here's where the UVs are assigned
+    mesh:setVertex(i, x, y, x / 50, y / 50)
+  end
+  mesh:setVertexMap(vnums)
+  return mesh
 end
 
 return arrecife
