@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="65">
+ <tileset firstgid="1" source="tiled_playa.tsx"/>
+ <layer id="3" name="Suelo" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJzt2ctu6zAMhOGk6Ps/c7spkAZOogvJGUn/YuDdORQ/k7bT++12+/rN/YDrX76DE12juk+VHhkWeOCxw9V5T53kkTkbeOy5p07yiLbAw2cu8MBj9WuFRWbt6v4xF3t7rOiwo0fmbODhsaeqe+TQR9c99ThzeGj3lKo3Dv1kT+GBBx6neERbXD3Pq3rl0E9XD4WPQz9X8Wjxme2pQz9naldZZM2RQ1938+iZo2cDh76utqeyzdR9xeO/i7qvI3sKD5/rrhareexuofZ4lci5ePf/OPqqPd71b2YueoydXFru109nytj/M30aqdnJ41M90S6ZZx+t0cVj1G7meVFRY29t6t5G2vQ8t6vq2nkuWkw+pbomh1kl8e9TPffcbNS9y/R4dhk9d8T7y4m7s+W+Hv038PAIHl7BwytVHlh4eGDh4YGBhwcOcSY8r71y9T3TG/UZCCHktLCjfcL3lUdm3jNxybHg+8sj0d/F6vOsnozfKdRnWjl4eCXag70VZ4KHT/DwzKwLFrkuvT54aHyuoq6REEIIiQzPO31a3g3VNZ6Qnnd0da27p/dbSV3vbhn9ZsUj14Lf2LT9j/rtU32mVeP8N5qW35Fao+6zymHU41UfI/+26mqV6TDiUVGP437NuO9mz1dVj5NHpcOqHlUmqvO614eHV30KjxX2MR544PHZQ+2Ch9ec4IEHHjoP9flWu3/w8Kq7Ylet6PFYe9VcVMyGyiHyfqtwqZqNHTwyXSocdvW4shndS9UWu3tczUxLKvsfcf+s5rFK8PBJxnMPjzkLtcPpHs/PLbXDyR6ODid6ODv8XX8AGSpv1w==
+  </data>
+ </layer>
+ <layer id="4" name="Suelo2" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T+1lC6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAbnEAAAQ==
+  </data>
+ </layer>
+ <objectgroup id="8" name="Objetos"/>
+ <objectgroup id="10" name="Destruible">
+  <object id="63" name="Arrecife" type="6" x="1218" y="862">
+   <properties>
+    <property name="destruible" type="bool" value="true"/>
+   </properties>
+   <polygon points="0,0 132,-27 202,116 274,304 191,448 -40,378 -182,295 -160,73"/>
+  </object>
+ </objectgroup>
+ <objectgroup id="2" name="Borrador">
+  <object id="5" name="Punto_inicio" type="5" x="263" y="132">
+   <point/>
+  </object>
+  <object id="6" name="Arbol" type="2" x="989" y="533">
+   <point/>
+  </object>
+  <object id="7" name="Roca" type="3" x="388" y="627">
+   <point/>
+  </object>
+  <object id="8" name="Estrella" type="1" x="660" y="234">
+   <point/>
+  </object>
+  <object id="10" name="Punto_enemigo_agua" type="4" x="520" y="452">
+   <point/>
+  </object>
+  <object id="15" name="Punto_enemigo_agua" type="4" x="624" y="811">
+   <point/>
+  </object>
+  <object id="16" name="Arbol" type="2" x="173" y="533">
+   <point/>
+  </object>
+  <object id="17" name="Arbol" type="2" x="989" y="533">
+   <point/>
+  </object>
+  <object id="18" name="Arbol" type="2" x="1037" y="713">
+   <point/>
+  </object>
+  <object id="19" name="Arbol" type="2" x="1044" y="252">
+   <point/>
+  </object>
+  <object id="20" name="Arbol" type="2" x="1200" y="460">
+   <point/>
+  </object>
+  <object id="21" name="Arbol" type="2" x="1412" y="228">
+   <point/>
+  </object>
+  <object id="22" name="Punto_enemigo_agua" type="4" x="2752" y="412">
+   <point/>
+  </object>
+  <object id="23" name="Punto_enemigo_agua" type="4" x="2572" y="1296">
+   <point/>
+  </object>
+  <object id="24" name="Punto_enemigo_agua" type="4" x="2676" y="2924">
+   <point/>
+  </object>
+  <object id="25" name="Punto_enemigo_agua" type="4" x="864" y="2800">
+   <point/>
+  </object>
+  <object id="26" name="Arbol" type="2" x="1468" y="1728">
+   <point/>
+  </object>
+  <object id="27" name="Arbol" type="2" x="1624" y="1856">
+   <point/>
+  </object>
+  <object id="28" name="Arbol" type="2" x="1408" y="1864">
+   <point/>
+  </object>
+  <object id="29" name="Arbol" type="2" x="1852" y="1180">
+   <point/>
+  </object>
+  <object id="30" name="Roca" type="3" x="1680" y="164">
+   <point/>
+  </object>
+  <object id="31" name="Roca" type="3" x="1384" y="640">
+   <point/>
+  </object>
+  <object id="32" name="Roca" type="3" x="2628" y="552">
+   <point/>
+  </object>
+  <object id="33" name="Roca" type="3" x="2848" y="144">
+   <point/>
+  </object>
+  <object id="34" name="Roca" type="3" x="2979" y="578">
+   <point/>
+  </object>
+  <object id="35" name="Roca" type="3" x="2908" y="1309">
+   <point/>
+  </object>
+  <object id="36" name="Roca" type="3" x="3004" y="2452">
+   <point/>
+  </object>
+  <object id="37" name="Roca" type="3" x="2972" y="3036">
+   <point/>
+  </object>
+  <object id="38" name="Estrella" type="1" x="2656" y="232">
+   <point/>
+  </object>
+  <object id="39" name="Estrella" type="1" x="2076" y="652">
+   <point/>
+  </object>
+  <object id="40" name="Estrella" type="1" x="1236" y="1392">
+   <point/>
+  </object>
+  <object id="41" name="Estrella" type="1" x="456" y="1716">
+   <point/>
+  </object>
+  <object id="42" name="Estrella" type="1" x="1492" y="2172">
+   <point/>
+  </object>
+  <object id="43" name="Estrella" type="1" x="1712" y="2476">
+   <point/>
+  </object>
+  <object id="44" name="Estrella" type="1" x="1208" y="2632">
+   <point/>
+  </object>
+  <object id="45" name="Estrella" type="1" x="672" y="2532">
+   <point/>
+  </object>
+  <object id="46" name="Estrella" type="1" x="552" y="2640">
+   <point/>
+  </object>
+  <object id="47" name="Estrella" type="1" x="1372" y="2960">
+   <point/>
+  </object>
+  <object id="48" name="Estrella" type="1" x="184" y="2116">
+   <point/>
+  </object>
+  <object id="49" name="Estrella" type="1" x="2352" y="2008">
+   <point/>
+  </object>
+  <object id="50" name="Estrella" type="1" x="1928" y="2908">
+   <point/>
+  </object>
+  <object id="51" name="Estrella" type="1" x="2496" y="2708">
+   <point/>
+  </object>
+  <object id="52" name="Roca" type="3" x="280" y="1291">
+   <point/>
+  </object>
+  <object id="53" name="Roca" type="3" x="808" y="1540">
+   <point/>
+  </object>
+  <object id="54" name="Roca" type="3" x="2280" y="3056">
+   <point/>
+  </object>
+  <object id="55" name="Roca" type="3" x="3024" y="2768">
+   <point/>
+  </object>
+  <object id="56" name="Roca" type="3" x="2772" y="2496">
+   <point/>
+  </object>
+  <object id="57" name="Roca" type="3" x="2920" y="1920">
+   <point/>
+  </object>
+  <object id="58" name="Roca" type="3" x="2844" y="1040">
+   <point/>
+  </object>
+  <object id="59" name="Roca" type="3" x="2136" y="148">
+   <point/>
+  </object>
+  <object id="60" name="Roca" type="3" x="2100" y="1376">
+   <point/>
+  </object>
+  <object id="61" name="Roca" type="3" x="1768" y="712">
+   <point/>
+  </object>
+  <object id="62" name="Roca" type="3" x="1972" y="980">
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="5" name="Balas"/>
+ <objectgroup id="6" name="Enemigos"/>
+ <objectgroup id="7" name="Personajes"/>
+ <objectgroup id="9" name="Arboles"/>
+</map>
