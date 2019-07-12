@@ -1,5 +1,5 @@
 Gamestate = require "libs.hump.gamestate"
-local Menu = require "escenas.menu"
+Menu = require "escenas.menu"
 
 function love.load()
 	_G.lg=love.graphics

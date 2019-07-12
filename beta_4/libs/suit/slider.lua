@@ -30,8 +30,15 @@ return function(core, info, ...)
 		end
 
 		-- keyboard update
-		local key_up = opt.vertical and 'up' or 'right'
-		local key_down = opt.vertical and 'down' or 'left'
+
+		local key_up = 'right'
+		local key_down ='left'
+
+		if opt.vertical then
+			local key_up = 'up' 
+			local key_down ='down' 
+		end
+
 		if core:getPressedKey() == key_up then
 			info.value = math.min(info.max, info.value + info.step)
 			value_changed = true
