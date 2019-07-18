@@ -15,13 +15,13 @@ return {
     {
       name = "tiled_playa",
       firstgid = 1,
-      filename = "tiled_playa.tsx",
+      filename = "../../../beta_4/assets/map/acuaris/tiled_playa.tsx",
       tilewidth = 32,
       tileheight = 32,
       spacing = 0,
       margin = 0,
       columns = 4,
-      image = "tiled_playa.png",
+      image = "../../../beta_4/assets/map/acuaris/tiled_playa.png",
       imagewidth = 128,
       imageheight = 96,
       tileoffset = {
