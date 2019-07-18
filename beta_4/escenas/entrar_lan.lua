@@ -1,6 +1,6 @@
 local Class= require "libs.hump.class"
 local suit=require "libs.suit"
-
+local Cliente=require "entidades.cliente"
 
 local entrar_lan = Class{}
 
@@ -19,6 +19,14 @@ function entrar_lan:enter( )
 	--self.input_ip_server={text = ""}
 
 	self.slider_server={value=10,min=0,max=10}
+
+	self.max_personajes=4
+	self.max_mapas=1
+
+	self.personajes=1
+	self.mapas=1
+
+	self.ip="1234"
 end
 
 function entrar_lan:draw( )
@@ -37,11 +45,19 @@ function entrar_lan:update(dt)
 	self.gui:Label("Personajes", self.center.x-200-50,self.center.y-285,100,30)
 
 	if self.gui:Button("Atras" ,{id=3}, self.center.x-300-50,self.center.y-50,100,30).hit then
+		self.personajes=self.personajes-1
 
+		if self.personajes < 1 then
+			self.personajes=self.max_personajes
+		end
 	end
 
 	if self.gui:Button("Adelante" ,{id=4}, self.center.x-100-50,self.center.y-50,100,30).hit then
+		self.personajes=self.personajes+1
 
+		if self.personajes > self.max_personajes then
+			self.personajes=1
+		end
 	end
 
 	if self.gui:Button("Volver" ,{id=5}, self.center.x-(100/2)-350,self.center.y+180,100,50).hit then
@@ -53,7 +69,11 @@ function entrar_lan:update(dt)
 	end
 
 	if self.gui:Button("Unirse" ,{id=7}, self.center.x-(100/2)+250,self.center.y+200,100,50).hit then
+		if self.input_nickname.text=="" then
+			self.input_nickname.text="player"
+		end
 		
+		Gamestate.switch(Cliente(self.input_nickname.text,self.personajes.text,self.ip))
 	end
 
 	--slider

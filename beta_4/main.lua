@@ -9,5 +9,4 @@ function love.load()
 
   	Gamestate.registerEvents()
   	Gamestate.switch(Menu)
-
 end
