@@ -15,9 +15,11 @@ function entidad_servidor:init(personaje)
 	self.img_personajes=require "assets.img.personajes.img_personajes"
 	self.img_balas=require "assets.img.balas.img_balas"
 	self.img_escudos=require "assets.img.escudos.img_escudos"
+  self.img_objetos=self.mapa_files.objetos
+  self.img_texturas=self.mapa_files.texturas
 
 	self.world = love.physics.newWorld(0, 0, false)
-  	self.world:setCallbacks(self:callbacks())
+  self.world:setCallbacks(self:callbacks())
 
 	self.gameobject={}
 
@@ -27,13 +29,14 @@ function entidad_servidor:init(personaje)
 	self.gameobject.players[0]=personajes[personaje](self,100,100,1)
 	self.gameobject.balas={}
 	self.gameobject.efectos={}
-  	self.gameobject.destruible={}
+  self.gameobject.destruible={}
 	self.gameobject.enemigos={}
 	self.gameobject.objetos={}
-  	self.gameobject.arboles={}
+  self.gameobject.arboles={}
+  self.gameobject.inicios={}
 
-
-  	self:custom_layers()
+  self:map_read(self.map)
+  self:custom_layers()
 end
 
 function entidad_servidor:draw_entidad()
@@ -118,7 +121,8 @@ function entidad_servidor:custom_layers()
   local Objetos_layers = self.map.layers["Objetos"]
   
   local Arboles_layers = self.map.layers["Arboles"]
-  
+
+  local Inicios_layers = self.map.layers["Inicios"]
 
   Balas_layers.draw = function(obj)
     for _, obj_data in ipairs(self.gameobject.balas) do
@@ -203,6 +207,20 @@ function entidad_servidor:custom_layers()
       obj_data:update(dt)
     end
   end
+
+  Inicios_layers.draw = function(obj)
+    for _, obj_data in ipairs(self.gameobject.inicios) do
+      obj_data:draw()
+    end
+  end
+
+  Inicios_layers.update = function(obj,dt)
+    for _, obj_data in ipairs(self.gameobject.inicios) do
+      obj_data:update(dt)
+    end
+  end
+
+
   
 end
 
@@ -243,6 +261,42 @@ function entidad_servidor:remove_obj(name,obj)
 			return
 		end
 	end
+end
+
+function entidad_servidor:map_read(objects_map)
+
+  for _, layer in ipairs(self.map.layers) do
+    if layer.type=="tilelayer" then
+      --self:get_tile(layer)
+    elseif layer.type=="objectgroup" then
+      self:get_objects(layer,self.mapa_files.objetos_data)
+    end
+  end
+  
+  self.map:removeLayer("Borrador")
+  
+end
+
+function entidad_servidor:get_objects(objectlayer,objects_map)
+  
+    for _, obj in pairs(objectlayer.objects) do
+      if obj.name then
+        if obj.properties.destruible then
+
+          local polygon = {}
+
+          for _,data in ipairs(obj.polygon) do
+     
+            table.insert(polygon,data.x)
+            table.insert(polygon,data.y)
+          end
+
+          objects_map[obj.name](self,polygon)
+        else
+          objects_map[obj.name](self,obj.x,obj.y)
+        end
+      end
+    end
 end
 
 
