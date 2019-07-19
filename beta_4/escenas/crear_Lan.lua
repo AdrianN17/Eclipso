@@ -25,7 +25,7 @@ function crear_lan:enter()
 	self.personajes=1
 	self.mapas=1
 
-	self.tabla_personajes={"aegis","solange","radian","xeon"}
+	self.tabla_personajes={"aegis","solange","xeon","radian"}
 	self.tabla_mapas={"acuaris"}
 end
 

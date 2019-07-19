@@ -40,20 +40,22 @@ img_personajes.xeon={}
 img_personajes.xeon["image"]=love.graphics.newImage("assets/img/personajes/Xeon.png")
 
 img_personajes.xeon[1]={}
-img_personajes.xeon[1][1]=love.graphics.newQuad(0,130,441,224, img_personajes.xeon["image"]:getDimensions())
-img_personajes.xeon[1][2]=love.graphics.newQuad(624,130,441,224, img_personajes.xeon["image"]:getDimensions())
-img_personajes.xeon[1][3]=love.graphics.newQuad(1161,119,441,229, img_personajes.xeon["image"]:getDimensions())
+img_personajes.xeon[1][1]=love.graphics.newQuad(0,244,441,224, img_personajes.xeon["image"]:getDimensions())
+img_personajes.xeon[1][2]=love.graphics.newQuad(624,244,441,224, img_personajes.xeon["image"]:getDimensions())
+img_personajes.xeon[1][3]=love.graphics.newQuad(1161,233,441,229, img_personajes.xeon["image"]:getDimensions())
 
 img_personajes.xeon[2]={}
-img_personajes.xeon[2][1]=love.graphics.newQuad(1815,0,445,347, img_personajes.xeon["image"]:getDimensions())
-img_personajes.xeon[2][2]=love.graphics.newQuad(2473,0,445,344, img_personajes.xeon["image"]:getDimensions())
-img_personajes.xeon[2][3]=love.graphics.newQuad(3084,0,452,344, img_personajes.xeon["image"]:getDimensions())
+img_personajes.xeon[2][1]=love.graphics.newQuad(1815,196,445,265, img_personajes.xeon["image"]:getDimensions())
+img_personajes.xeon[2][2]=love.graphics.newQuad(2473,194,445,264, img_personajes.xeon["image"]:getDimensions())
+img_personajes.xeon[2][3]=love.graphics.newQuad(3085,194,451,264, img_personajes.xeon["image"]:getDimensions())
 
 
 img_personajes.xeon[3]={}
-img_personajes.xeon[3][1]=love.graphics.newQuad(3735,61,445,281, img_personajes.xeon["image"]:getDimensions())
-img_personajes.xeon[3][2]=love.graphics.newQuad(4329,50,446,280, img_personajes.xeon["image"]:getDimensions())
-img_personajes.xeon[3][3]=love.graphics.newQuad(4939,50,452,280, img_personajes.xeon["image"]:getDimensions())
+img_personajes.xeon[3][1]=love.graphics.newQuad(3735,175,445,281, img_personajes.xeon["image"]:getDimensions())
+img_personajes.xeon[3][2]=love.graphics.newQuad(4329,164,446,280, img_personajes.xeon["image"]:getDimensions())
+img_personajes.xeon[3][3]=love.graphics.newQuad(4939,164,452,280, img_personajes.xeon["image"]:getDimensions())
+
+img_personajes.xeon["melee"]=love.graphics.newQuad(5722,0,55,439, img_personajes.xeon["image"]:getDimensions())
 
 
 img_personajes.xeon.scale=0.25
@@ -63,19 +65,21 @@ img_personajes.radian={}
 img_personajes.radian["image"]=love.graphics.newImage("assets/img/personajes/Radian.png")
 
 img_personajes.radian[1]={}
-img_personajes.radian[1][1]=love.graphics.newQuad(0,232,390,375, img_personajes.radian["image"]:getDimensions())
-img_personajes.radian[1][2]=love.graphics.newQuad(661,232,390,375, img_personajes.radian["image"]:getDimensions())
-img_personajes.radian[1][3]=love.graphics.newQuad(1258,232,390,375, img_personajes.radian["image"]:getDimensions())
+img_personajes.radian[1][1]=love.graphics.newQuad(0,192,390,375, img_personajes.radian["image"]:getDimensions())
+img_personajes.radian[1][2]=love.graphics.newQuad(661,195,390,375, img_personajes.radian["image"]:getDimensions())
+img_personajes.radian[1][3]=love.graphics.newQuad(1258,195,390,375, img_personajes.radian["image"]:getDimensions())
 
 img_personajes.radian[2]={}
-img_personajes.radian[2][1]=love.graphics.newQuad(1902,200,391,376, img_personajes.radian["image"]:getDimensions())
-img_personajes.radian[2][2]=love.graphics.newQuad(2467,200,390,376, img_personajes.radian["image"]:getDimensions())
-img_personajes.radian[2][3]=love.graphics.newQuad(3041,200,390,376, img_personajes.radian["image"]:getDimensions())
+img_personajes.radian[2][1]=love.graphics.newQuad(1902,163,391,376, img_personajes.radian["image"]:getDimensions())
+img_personajes.radian[2][2]=love.graphics.newQuad(2467,163,390,376, img_personajes.radian["image"]:getDimensions())
+img_personajes.radian[2][3]=love.graphics.newQuad(3041,163,390,376, img_personajes.radian["image"]:getDimensions())
 
 img_personajes.radian[3]={}
-img_personajes.radian[3][1]=love.graphics.newQuad(3726,0,390,551, img_personajes.radian["image"]:getDimensions())
-img_personajes.radian[3][2]=love.graphics.newQuad(4301,0,390,551, img_personajes.radian["image"]:getDimensions())
-img_personajes.radian[3][3]=love.graphics.newQuad(4904,0,390,551, img_personajes.radian["image"]:getDimensions())
+img_personajes.radian[3][1]=love.graphics.newQuad(3726,138,390,376, img_personajes.radian["image"]:getDimensions())
+img_personajes.radian[3][2]=love.graphics.newQuad(4301,138,390,376, img_personajes.radian["image"]:getDimensions())
+img_personajes.radian[3][3]=love.graphics.newQuad(4904,138,390,376, img_personajes.radian["image"]:getDimensions())
+
+img_personajes.radian["melee"]=love.graphics.newQuad(5588,1,89,336, img_personajes.radian["image"]:getDimensions())
 
 img_personajes.radian.scale=0.3
 

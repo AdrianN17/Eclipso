@@ -73,26 +73,11 @@ function servidor:update(dt)
         self.tick = 0
         
 	    self.server:update(dt)
+	    self:update_entidad(dt)
 	    
 	    self.world:update(dt) 
 	    self.map:update(dt)    
 	end
-end
-
-function servidor:keypressed(key)
-	
-end
-
-function servidor:keyreleased(key)
-	
-end
-
-function servidor:mousepressed(x,y,button)
-	
-end
-
-function servidor:mousereleased(x,y,button)
-	
 end
 
 function servidor:quit()
