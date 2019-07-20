@@ -2,18 +2,20 @@ local funciones_destruible={}
 
 function funciones_destruible:crear_destruible(obj,poligono)
 	obj.collider=py.newBody(obj.entidades.world,0,0,"kinematic")
-  	obj.shape=py.newChainShape( true,poligono  )
+  obj.shape=py.newChainShape( true,poligono  )
 	obj.fixture=py.newFixture(obj.collider,obj.shape)
+
+  obj.poligono=poligono
   
-  	obj.fixture:setUserData( {data="destruible",obj=obj, pos=10} )
+  obj.fixture:setUserData( {data="destruible",obj=obj, pos=10} )
   
-  	obj.ox,obj.oy=obj.collider:getX(),obj.collider:getY()
+  obj.ox,obj.oy=obj.collider:getX(),obj.collider:getY()
 end
 
 function funciones_destruible:crear_mesh(obj,poligono)
-	obj.mesh = self:poly2mesh(poligono)
+	  obj.mesh = self:poly2mesh(poligono)
   	obj.texturas[obj.tipo]:setWrap("repeat")
-  	obj.mesh:setTexture(self.texturas[obj.tipo])
+  	obj.mesh:setTexture(obj.texturas[obj.tipo])
 end
 
 function funciones_destruible:poly2mesh(points)

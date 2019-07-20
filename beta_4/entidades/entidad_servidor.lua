@@ -71,32 +71,43 @@ function entidad_servidor:callbacks()
 		end
 
  		local x,y=coll:getNormal()
-    	
-  	end
-  
-  	local endContact =  function(a, b, coll)
- 		local obj1=nil
- 		local obj2=nil
 
-		local o1,o2=a:getUserData(),b:getUserData()
-    
-    	if o1.pos<o2.pos then
-			obj1=o1
-			obj2=o2
-		else
-			obj1=o2
-			obj2=o1
-		end
-    
-    	local x,y=coll:getNormal()
-    
-  	end
+    if obj1.data=="bala" and obj2.data=="objeto" then
+      obj1.obj:remove()
+    elseif obj1.data=="bala" and obj2.data=="destruible" then
+      local x1, y1, x2, y2 = coll:getPositions( )
+      if x1 and y1 then
+        local poly = obj2.obj:poligono_recorte(x1,y1)
+      end
+      
+      obj1.obj:remove()
+    end
+    	
+  end
   
-  	local preSolve =  function(a, b, coll)
+  local endContact =  function(a, b, coll)
+   	local obj1=nil
+   	local obj2=nil
+
+  	local o1,o2=a:getUserData(),b:getUserData()
+      
+    if o1.pos<o2.pos then
+  		obj1=o1
+  		obj2=o2
+  	else
+  		obj1=o2
+  		obj2=o1
+  	end
+    
+    local x,y=coll:getNormal()
+    
+  end
+  
+  local preSolve =  function(a, b, coll)
 	    
-  	end
+  end
   
-  	local postSolve =  function(a, b, coll, normalimpulse, tangentimpulse)
+  local postSolve =  function(a, b, coll, normalimpulse, tangentimpulse)
 
 	end
 

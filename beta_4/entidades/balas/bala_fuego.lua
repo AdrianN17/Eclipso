@@ -1,8 +1,10 @@
 local Class= require "libs.hump.class"
-
+local delete = require "entidades.funciones.delete"
 local funciones =  require "entidades.balas.funciones_balas"
 
-local bala_fuego=Class{}
+local bala_fuego=Class{
+	__includes = {delete}
+}
 
 function bala_fuego:init(entidades,x,y,radio,creador)
 	self.tipo="bala_fuego"
@@ -25,6 +27,8 @@ function bala_fuego:init(entidades,x,y,radio,creador)
 	funciones:masa_bala(self,mass)
 
 	self.entidades:add_obj("balas",self)
+
+	delete.init(self,"balas")
 end
 
 function bala_fuego:draw()
