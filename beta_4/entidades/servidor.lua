@@ -3,6 +3,7 @@ local Sock = require "libs.sock.sock"
 local bitser = require "libs.bitser.bitser"
 local gamera = require "libs.gamera.gamera"
 local sti = require "libs.sti"
+
 local extra = require "entidades.funciones.extra"
 
 local entidad_servidor = require "entidades.entidad_servidor"
@@ -186,9 +187,10 @@ function servidor:update(dt)
 
 
 
-		    --local balas_data,enemigos_data,objetos_data,arboles_data=extra_data(self)
+		    local balas_data,objetos_data,arboles_data,inicios_data = extra:extra_data(self)--,enemigos_data,objetos_data,arboles_data=
 
-		    self.server:sendToAll("jugadores", {player_data})--,balas_data,enemigos_data,objetos_data,arboles_data})
+
+		    self.server:sendToAll("jugadores", {player_data,balas_data,objetos_data,arboles_data,inicios_data})--,,enemigos_data,})
 		end
 end
 

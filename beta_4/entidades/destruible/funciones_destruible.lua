@@ -14,7 +14,6 @@ end
 
 function funciones_destruible:crear_mesh(obj,poligono)
 	  obj.mesh = self:poly2mesh(poligono)
-  	obj.texturas[obj.tipo]:setWrap("repeat")
   	obj.mesh:setTexture(obj.texturas[obj.tipo])
 end
 

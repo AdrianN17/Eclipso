@@ -1,7 +1,8 @@
 local Class= require "libs.hump.class"
 local sti = require "libs.sti"
 local img_personajes_cliente = require "entidades.solo_cliente.img_personajes_cliente"
-
+local img_balas_cliente = require "entidades.solo_cliente.img_balas_cliente"
+local img_objetos_cliente = require "entidades.solo_cliente.img_objetos_cliente"
 
 local entidad_cliente = Class{}
 
@@ -122,7 +123,7 @@ function entidad_cliente:custom_layers()
 
   Balas_layers.draw = function(obj)
     for _, obj_data in ipairs(self.gameobject.balas) do
-      --obj_data:draw()
+      img_balas_cliente:dibujar_bala(obj_data,self.img_balas)
     end
   end
   
@@ -142,8 +143,8 @@ function entidad_cliente:custom_layers()
         local spritesheet=self.img_personajes[tipo]
         local spritesheet_escudo=self.img_escudos
 
-        print(obj_data,spritesheet,spritesheet_escudo,obj_data.iterator)
-        img_personajes_cliente[tipo](objeto_nulo,obj_data,spritesheet,spritesheet_escudo)
+
+        img_personajes_cliente:tipos(tipo,obj_data,spritesheet,spritesheet_escudo)
       end
 
     end
@@ -159,19 +160,19 @@ function entidad_cliente:custom_layers()
   
   Objetos_layers.draw = function(obj)
     for _, obj_data in ipairs(self.gameobject.objetos) do
-      --obj_data:draw()
+      img_objetos_cliente:dibujar_objetos(obj_data,self.mapa_files.objetos)
     end
   end
   
   Arboles_layers.draw = function(obj)
     for _, obj_data in ipairs(self.gameobject.arboles) do
-      --obj_data:draw()
+      img_objetos_cliente:dibujar_objetos(obj_data,self.mapa_files.objetos)
     end
   end
   
   Inicios_layers.draw = function(obj)
     for _, obj_data in ipairs(self.gameobject.inicios) do
-      --obj_data:draw()
+      img_objetos_cliente:dibujar_objetos(obj_data,self.mapa_files.objetos)
     end
   end
 

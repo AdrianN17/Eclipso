@@ -9,7 +9,6 @@ function arbol:init(entidades,x,y)
 
 	self.spritesheet=self.entidades.img_objetos
 
-	self.radio=0
 	self.ox,self.oy=x,y
 
 	self.entidades:add_obj("arboles",self)

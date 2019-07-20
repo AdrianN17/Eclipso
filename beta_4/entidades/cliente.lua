@@ -42,11 +42,13 @@ function cliente:enter(gamestate,nickname,personaje,ip)
   
   
   	self.client:setSchema("jugadores", {
-        "player_data"
-        --"balas_data",
+        "player_data",
+        "balas_data",
+        "objetos_data",
+        "arboles_data",
+        "inicios_data"
         --"enemigos_data",
-       -- "objetos_data",
-       -- "arboles_data"
+       -- 
     })
 
     self.client:on("player_init_data", function(data)
@@ -74,18 +76,24 @@ function cliente:enter(gamestate,nickname,personaje,ip)
 
     self.client:on("jugadores", function(data)
         local players = data.player_data
-        --local balas = data.balas_data
+        local balas = data.balas_data
+        local objetos = data.objetos_data
+        local arboles = data.arboles_data
+        local inicios = data.inicios_data
+
+
+
         --local enemigos = data.enemigos_data
-        --local objetos = data.objetos_data
-        --local arboles = data.arboles_data
 
         if self.id_player then
 
             self.gameobject.players=players
-            --self.enemigos=enemigos
-            --self.balas=balas
-            --self.objetos=objetos
-            --self.arboles=arboles
+            self.gameobject.balas=balas
+            self.gameobject.objetos=objetos
+            self.gameobject.arboles=arboles
+            self.gameobject.inicios=inicios
+            
+            --self.gameobject.enemigos=enemigos
             
         end
     end)
