@@ -2,12 +2,18 @@ local Class= require "libs.hump.class"
 local bala_plasma = require "entidades.balas.bala_plasma"
 
 local funciones = require "entidades.personajes.funciones_jugadores"
+local delete = require "entidades.funciones.delete_nil"
 
-local radian = Class{}
+local radian = Class{
+    __includes={delete}
+}
 
-function radian:init(entidades,x,y,creador)
+function radian:init(entidades,x,y,creador,nombre)
     self.tipo="radian"
     self.tipo_escudo="solar"
+
+    self.nombre=nombre
+
 
     self.entidades=entidades
     self.creador=creador
@@ -35,6 +41,9 @@ function radian:init(entidades,x,y,creador)
     funciones:masa_personaje(self,mass)
 
     --asignar variables
+    self.hp=hp 
+    self.ira=ira
+
     self.velocidad=velocidad
     self.radio=0
     self.rx,self.ry=0,0
@@ -50,6 +59,8 @@ function radian:init(entidades,x,y,creador)
     self.recarga_timer=recarga_timer
     self.timer_recargando=0
 
+    self.melee_x,self.melee_y=0,0
+
 
     --dibujo
 
@@ -60,6 +71,10 @@ function radian:init(entidades,x,y,creador)
     self.iterator_2=1
   
     self.timer_1=0
+
+    self.entidades:add_players(self)
+
+    delete.init(self)
 end
 
 function radian:draw()
@@ -114,6 +129,10 @@ function radian:mousereleased(x,y,button)
     elseif button==2 then
         funciones:desactivar_melee(self)
     end
+end
+
+function radian:pack()
+    return funciones:empaquetado_2(self)
 end
 
 return radian

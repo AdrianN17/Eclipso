@@ -15,8 +15,10 @@ function entrar_lan:enter( )
 	self.center.x=lg.getWidth()/2
 	self.center.y=lg.getHeight()/2
 
+	self.tabla_personajes={"aegis","solange","xeon","radian"}
+
 	self.input_nickname={text = ""}
-	--self.input_ip_server={text = ""}
+	self.input_ip_server={text = ""}
 
 	self.slider_server={value=10,min=0,max=10}
 
@@ -26,7 +28,6 @@ function entrar_lan:enter( )
 	self.personajes=1
 	self.mapas=1
 
-	self.ip="1234"
 end
 
 function entrar_lan:draw( )
@@ -38,8 +39,8 @@ function entrar_lan:update(dt)
 	self.gui:Label("Nickname : " ,{id=1}, self.center.x-50-150-200,self.center.y+60,100,30)
 	self.gui:Input(self.input_nickname, self.center.x-50-200,self.center.y+60,200,30)
 
-	--self.gui:Label("IP Servidor LAN : " ,{id=2}, self.center.x-45-150-200,self.center.y+90,120,30)
-	--self.gui:Input(self.input_ip_server, self.center.x-50-200,self.center.y+90,200,30)
+	self.gui:Label("IP Servidor LAN : " ,{id=2}, self.center.x-45-150-200,self.center.y+90,120,30)
+	self.gui:Input(self.input_ip_server, self.center.x-50-200,self.center.y+90,200,30)
 
 
 	self.gui:Label("Personajes", self.center.x-200-50,self.center.y-285,100,30)
@@ -72,15 +73,19 @@ function entrar_lan:update(dt)
 		if self.input_nickname.text=="" then
 			self.input_nickname.text="player"
 		end
+
+		local nickname=self.input_nickname.text
+		local personaje=self.tabla_personajes[self.personajes]
+		local ip=self.input_ip_server.text
 		
-		Gamestate.switch(Cliente(self.input_nickname.text,self.personajes.text,self.ip))
+		Gamestate.switch(Cliente,nickname,personaje,ip)
 	end
 
 	--slider
 	if self.gui:Slider(self.slider_server, {id=8,vertical = true}, self.center.x,self.center.y-200 ,30,500) then
 		self.slider_server.value=math.floor(self.slider_server.value)
 	end
-    self.gui:Label(tostring(self.slider_server.value), {align = "left"}, 300,100, 200,30)
+    --self.gui:Label(tostring(self.slider_server.value), {align = "left"}, 300,100, 200,30)
 end
 
 function entrar_lan:textinput(t)

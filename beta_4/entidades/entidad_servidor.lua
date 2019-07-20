@@ -1,16 +1,16 @@
 local Class= require "libs.hump.class"
-local personajes = {}
 
-personajes.aegis = require "entidades.personajes.aegis"
-personajes.solange = require "entidades.personajes.solange"
-personajes.xeon = require "entidades.personajes.xeon"
-personajes.radian = require "entidades.personajes.radian"
+
 
 local entidad_servidor = Class{}
 
 
 
-function entidad_servidor:init(personaje)
+function entidad_servidor:init()
+
+  self.id_creador=1
+  self.enemigos_id_creador=100
+
 
 	self.img_personajes=require "assets.img.personajes.img_personajes"
 	self.img_balas=require "assets.img.balas.img_balas"
@@ -24,9 +24,6 @@ function entidad_servidor:init(personaje)
 	self.gameobject={}
 
 	self.gameobject.players={}
-
-
-	self.gameobject.players[0]=personajes[personaje](self,100,100,1)
 	self.gameobject.balas={}
 	self.gameobject.efectos={}
   self.gameobject.destruible={}
@@ -37,6 +34,7 @@ function entidad_servidor:init(personaje)
 
   self:map_read(self.map)
   self:custom_layers()
+
 end
 
 function entidad_servidor:draw_entidad()
@@ -48,10 +46,9 @@ function entidad_servidor:update_entidad(dt)
     
     --camara-muerte del usuario
     if  player then
-		self.cam:setPosition(player.ox,player.oy)
-    
-      	player.rx,player.ry=self:getXY()
-	end
+		  self.cam:setPosition(player.ox,player.oy)
+      player.rx,player.ry=self:getXY()
+	 end
 end
 
 function entidad_servidor:callbacks()
@@ -162,21 +159,24 @@ function entidad_servidor:custom_layers()
   end
   
   Personajes_layers.draw = function(obj)
-  	for i=0,#self.gameobject.players,1  do
-  		local obj_data=self.gameobject.players[i]
- 		if obj_data then
-        	obj_data:draw()
-      	end
-	end
+    for i=0,#self.gameobject.players,1 do
+      local obj_data = self.gameobject.players[i]
+
+      if obj_data then
+        obj_data:draw()
+      end
+
+    end
   end
   
   Personajes_layers.update = function(obj,dt)
-    for i=0,#self.gameobject.players,1  do
-  		local obj_data=self.gameobject.players[i]
- 		if obj_data then
-        	obj_data:update(dt)
-      	end
-	end
+    for i=0,#self.gameobject.players,1 do
+      local obj_data = self.gameobject.players[i]
+
+      if obj_data then
+        obj_data:update(dt)
+      end
+    end
   end
   
   Destruible_layers.draw = function(obj)
@@ -265,6 +265,15 @@ function entidad_servidor:add_obj(name,obj)
 	table.insert(self.gameobject[name],obj)
 end
 
+function entidad_servidor:add_players(obj)
+    if #self.gameobject.players==0 and  self.gameobject.players[0] == nil then
+
+      self.gameobject.players[0]=obj
+    else
+      self.gameobject.players[#self.gameobject.players+1]=obj
+    end
+end
+
 function entidad_servidor:remove_obj(name,obj)
 	for i, e in ipairs(self.gameobject[name]) do
 		if e==obj then
@@ -272,6 +281,25 @@ function entidad_servidor:remove_obj(name,obj)
 			return
 		end
 	end
+end
+
+function entidad_servidor:remove_to_nill(obj)
+  --[[for i, e in pairs(self.gameobject[name]) do
+    if e and e==obj  then
+      self.gameobject[name][i]=nil
+      return
+    end
+  end]]
+
+  for i=0,#self.gameobject.players,1 do
+    local obj_data = self.gameobject.players[i]
+
+    if obj_data and obj == obj_data then
+      self.gameobject.players[i]=nil
+
+      return i
+    end
+  end
 end
 
 function entidad_servidor:map_read(objects_map)
@@ -310,6 +338,9 @@ function entidad_servidor:get_objects(objectlayer,objects_map)
     end
 end
 
+function entidad_servidor:aumentar_id_creador()
+  self.id_creador=self.id_creador+1
+end
 
 
 return entidad_servidor

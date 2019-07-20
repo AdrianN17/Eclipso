@@ -2,12 +2,20 @@ local Class= require "libs.hump.class"
 local bala_electricidad = require "entidades.balas.bala_electricidad"
 
 local funciones = require "entidades.personajes.funciones_jugadores"
+local delete = require "entidades.funciones.delete_nil"
 
-local solange = Class{}
 
-function solange:init(entidades,x,y,creador)
+local solange = Class{
+    __includes={delete}
+}
+
+
+function solange:init(entidades,x,y,creador,nombre)
 	self.tipo="solange"
 	self.tipo_escudo="plasma"
+
+	self.nombre=nombre
+
 
 	self.entidades=entidades
 	self.creador=creador
@@ -33,6 +41,9 @@ function solange:init(entidades,x,y,creador)
 	funciones:masa_personaje(self,mass)
 
 	--asignar variables
+	self.hp=hp 
+	self.ira=ira
+
 	self.velocidad=velocidad
 	self.radio=0
 	self.rx,self.ry=0,0
@@ -57,6 +68,10 @@ function solange:init(entidades,x,y,creador)
   	self.iterator_2=1
   
   	self.timer_1=0
+
+  	self.entidades:add_players(self)
+
+  	delete.init(self)
 end
 
 function solange:draw()
@@ -101,6 +116,10 @@ end
 
 function solange:mousereleased(x,y,button)
 	funciones:soltar_arma_de_fuego(self)
+end
+
+function solange:pack()
+    return funciones:empaquetado_1(self)
 end
 
 return solange

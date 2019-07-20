@@ -1,3 +1,5 @@
+local extra = require "entidades.funciones.extra"
+
 local funciones_jugadores ={}
 
 function funciones_jugadores:crear_cuerpo(obj,x,y,area)
@@ -283,6 +285,8 @@ function funciones_jugadores:dibujar_melee(obj)
 
     local ox,oy=(x1+x2+x3+x4)/4,(y1+y2+y3+y4)/4
 
+    obj.melee_x,obj.melee_y=ox,oy
+
     
    lg.draw(obj.spritesheet["image"],obj.spritesheet["melee"],ox,oy,obj.radio + math.pi/2,
       obj.spritesheet.scale,obj.spritesheet.scale,w/2,h/2)
@@ -364,11 +368,8 @@ end
 function funciones_jugadores:muerte(obj)
   if obj.hp<1 then
     obj.collider:destroy()
-  
-    --obj.entidades.server:sendToAll("remover", self.creador)
-
-
-    --obj.entidades:remove_to_nill(obj.name_table,obj)
+    obj.entidades.server:sendToAll("remover", self.creador)
+    obj.entidades:remove_to_nill(obj.name_table,obj)
   end
 end
 
@@ -382,6 +383,24 @@ end
 
 function funciones_jugadores:desactivar_melee(obj)
   obj.estados.atacando_melee=false
+end
+
+--empaquetado
+
+function funciones_jugadores:empaquetado_1(obj)
+    local pack = {}
+
+    pack=extra:enviar_data_jugador(obj,"ox","oy","radio","hp","ira","tipo","tipo_escudo","iterator","iterator_2","nombre","estados")
+
+    return pack
+end
+
+function funciones_jugadores:empaquetado_2(obj)
+    local pack = {}
+
+    pack=extra:enviar_data_jugador(obj,"ox","oy","radio","hp","ira","tipo","tipo_escudo","iterator","iterator_2","nombre","estados","melee_x","melee_y")
+
+    return pack
 end
 
 

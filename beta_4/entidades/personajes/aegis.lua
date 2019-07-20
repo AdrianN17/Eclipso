@@ -3,12 +3,19 @@ local bala_hielo = require "entidades.balas.bala_hielo"
 local bala_fuego = require "entidades.balas.bala_fuego"
 
 local funciones = require "entidades.personajes.funciones_jugadores"
+local delete = require "entidades.funciones.delete_nil"
 
-local aegis = Class{}
 
-function aegis:init(entidades,x,y,creador)
+local aegis = Class{
+    __includes={delete}
+}
+
+
+function aegis:init(entidades,x,y,creador,nombre)
 	self.tipo="aegis"
 	self.tipo_escudo="magnetico"
+
+	self.nombre=nombre
 
 	self.entidades=entidades
 	self.creador=creador
@@ -33,6 +40,9 @@ function aegis:init(entidades,x,y,creador)
 	funciones:masa_personaje(self,mass)
 
 	--asignar variables
+	self.hp=hp 
+	self.ira=ira
+
 	self.velocidad=velocidad
 	self.radio=0
 	self.rx,self.ry=0,0
@@ -57,6 +67,10 @@ function aegis:init(entidades,x,y,creador)
   	self.iterator_2=1
   
   	self.timer_1=0
+
+  	self.entidades:add_players(self)
+
+  	delete.init(self)
 end
 
 function aegis:draw()
@@ -101,6 +115,10 @@ end
 
 function aegis:mousereleased(x,y,button)
 	funciones:soltar_arma_de_fuego(self)
+end
+
+function aegis:pack()
+    return funciones:empaquetado_1(self)
 end
 
 return aegis
