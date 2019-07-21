@@ -2,6 +2,7 @@ Gamestate = require "libs.hump.gamestate"
 Menu = require "escenas.menu"
 
 function love.load()
+	
 	_G.lg=love.graphics
 	_G.lm=love.math
 	--_G.font = font

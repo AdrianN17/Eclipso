@@ -30,7 +30,7 @@ function cliente:enter(gamestate,nickname,personaje,ip)
 
 
 
-	self.client = Sock.newClient("192.168.0.3", 22122)
+	self.client = Sock.newClient(ip, 22122)
 	self.client:setSerialization(bitser.dumps, bitser.loads)
 
 	
@@ -43,22 +43,31 @@ function cliente:enter(gamestate,nickname,personaje,ip)
   
   	self.client:setSchema("jugadores", {
         "player_data",
-        "balas_data",
-        "objetos_data",
-        "arboles_data",
-        "inicios_data"
-        --"enemigos_data",
-       -- 
+        "balas_data"
+    })
+
+    self.client:setSchema("player_init_data",
+    {
+        "id",
+        "mapa",
+        "objetos",
+        "arboles",
+        "inicios"
     })
 
     self.client:on("player_init_data", function(data)
+
         self.id_player=data.id  
       
-        
-        
         self:crear_mapa(data.mapa)
+
+        self.gameobject.objetos=data.objetos
+        self.gameobject.arboles=data.arboles
+        self.gameobject.inicios=data.inicios
+
+
         
-        self.client:send("informacion_primaria", {personaje=personaje,nickname=nickname})
+        self.client:send("informacion_primaria", {personaje,nickname})
         
     end)
 
@@ -77,24 +86,11 @@ function cliente:enter(gamestate,nickname,personaje,ip)
     self.client:on("jugadores", function(data)
         local players = data.player_data
         local balas = data.balas_data
-        local objetos = data.objetos_data
-        local arboles = data.arboles_data
-        local inicios = data.inicios_data
-
-
-
-        --local enemigos = data.enemigos_data
 
         if self.id_player then
 
             self.gameobject.players=players
             self.gameobject.balas=balas
-            self.gameobject.objetos=objetos
-            self.gameobject.arboles=arboles
-            self.gameobject.inicios=inicios
-            
-            --self.gameobject.enemigos=enemigos
-            
         end
     end)
    

@@ -39,13 +39,13 @@ end
 function img_personajes_cliente:aegis(obj_data,spritesheet,spritesheet_escudo)
 
 	self:dibujar_personaje(obj_data,spritesheet)
-	self:dibujar_escudo(obj_data,spritesheet,spritesheet_escudo)
+	self:dibujar_escudo(obj_data,spritesheet_escudo)
 end
 
 function img_personajes_cliente:solange(obj_data,spritesheet,spritesheet_escudo)
 
 	self:dibujar_personaje(obj_data,spritesheet)
-	self:dibujar_escudo(obj_data,spritesheet,spritesheet_escudo)
+	self:dibujar_escudo(obj_data,spritesheet_escudo)
 end
 
 function img_personajes_cliente:xeon(obj_data,spritesheet,spritesheet_escudo)
@@ -53,14 +53,14 @@ function img_personajes_cliente:xeon(obj_data,spritesheet,spritesheet_escudo)
 
 	self:dibujar_personaje(obj_data,spritesheet)
 	self:dibujar_melee(obj_data,spritesheet)
-	self:dibujar_escudo(obj_data,spritesheet,spritesheet_escudo)
+	self:dibujar_escudo(obj_data,spritesheet_escudo)
 end
 
 function img_personajes_cliente:radian(obj_data,spritesheet,spritesheet_escudo)
 
 	self:dibujar_melee(obj_data,spritesheet)
 	self:dibujar_personaje(obj_data,spritesheet)
-	self:dibujar_escudo(obj_data,spritesheet,spritesheet_escudo)
+	self:dibujar_escudo(obj_data,spritesheet_escudo)
 end
 
 

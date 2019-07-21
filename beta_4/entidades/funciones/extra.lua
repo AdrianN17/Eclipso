@@ -22,19 +22,12 @@ function extra:recibir_data_jugador(data,obj)
 end
 
 function extra:extra_data(obj)
-	--local cx,cy,cw,ch=x,y,x+w,y+h
 
   local balas_data={}
-  local objetos_data={}
-  local arboles_data={}
-  local inicios_data={}
-
-  
+ 
 	for i,bala in ipairs(obj.gameobject.balas) do 
-		--if collides_object(bala,cx-100,cy-100,cw+100,ch+100) then
-			local t=self:enviar_data_jugador(bala,"tipo","ox","oy","radio")
-			table.insert(balas_data,t)
-		--end
+		local t=self:enviar_data_jugador(bala,"tipo","ox","oy","radio")
+		table.insert(balas_data,t)
 	end
   
   --[[for i,enemigo in ipairs(obj.gameobject.enemigos) do 
@@ -44,19 +37,24 @@ function extra:extra_data(obj)
 		--end
 	end]]
   
-  	for i,objeto in ipairs(obj.gameobject.objetos) do 
-		--if collides_object(objeto,cx-100,cy-100,cw+100,ch+100) then
-			local t=self:enviar_data_jugador(objeto,"tipo","ox","oy","radio")
-			table.insert(objetos_data,t)
+	return balas_data
+end
 
-		--end
+function extra:extra_data_fija(obj)
+
+	local objetos_data={}
+  	local arboles_data={}
+  	local inicios_data={}
+
+
+	for i,objeto in ipairs(obj.gameobject.objetos) do 
+		local t=self:enviar_data_jugador(objeto,"tipo","ox","oy","radio")
+		table.insert(objetos_data,t)
 	end
   
   	for i,arbol in ipairs(obj.gameobject.arboles) do 
-		--if collides_object(arbol,cx-100,cy-100,cw+100,ch+100) then
-			local t=self:enviar_data_jugador(arbol,"tipo","ox","oy","radio")
-			table.insert(arboles_data,t)
-		--end
+		local t=self:enviar_data_jugador(arbol,"tipo","ox","oy","radio")
+		table.insert(arboles_data,t)
 	end
 
 	for i,pi in ipairs(obj.gameobject.inicios) do
@@ -64,7 +62,7 @@ function extra:extra_data(obj)
 		table.insert(inicios_data,t)
 	end
 
-	return balas_data,objetos_data,arboles_data,inicios_data
+	return objetos_data,arboles_data,inicios_data
 end
 
 return extra

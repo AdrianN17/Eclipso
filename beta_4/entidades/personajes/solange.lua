@@ -86,6 +86,7 @@ function solange:update(dt)
 	funciones:iterador_dibujo_ver1(self,dt)
 	funciones:recargando(self,dt)
 	funciones:coger_centro(self)
+	funciones:muerte(self)
 end
 
 function solange:keypressed(key)

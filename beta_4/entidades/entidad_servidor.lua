@@ -8,9 +8,10 @@ local entidad_servidor = Class{}
 
 function entidad_servidor:init()
 
+  self.id_player=0
+
   self.id_creador=1
   self.enemigos_id_creador=100
-
 
 	self.img_personajes=require "assets.img.personajes.img_personajes"
 	self.img_balas=require "assets.img.balas.img_balas"
@@ -283,14 +284,17 @@ function entidad_servidor:remove_obj(name,obj)
 	end
 end
 
-function entidad_servidor:remove_to_nill(obj)
-  --[[for i, e in pairs(self.gameobject[name]) do
-    if e and e==obj  then
-      self.gameobject[name][i]=nil
-      return
-    end
-  end]]
+function entidad_servidor:identificador(obj)
+  for i=0,#self.gameobject.players,1 do
+    local obj_data = self.gameobject.players[i]
 
+    if obj_data and obj == obj_data then
+      return i
+    end
+  end
+end
+
+function entidad_servidor:remove_to_nill(obj)
   for i=0,#self.gameobject.players,1 do
     local obj_data = self.gameobject.players[i]
 
@@ -299,6 +303,13 @@ function entidad_servidor:remove_to_nill(obj)
 
       return i
     end
+  end
+end
+
+function entidad_servidor:remove_personaje(i)
+  if self.gameobject.players[i] then
+    self.gameobject.players[i]:remove()   
+    self.gameobject.players[i]=nil
   end
 end
 
@@ -342,7 +353,4 @@ function entidad_servidor:aumentar_id_creador()
   self.id_creador=self.id_creador+1
 end
 
-
 return entidad_servidor
-
---el primer jugador, el usado por el dueño del servidor sera 0

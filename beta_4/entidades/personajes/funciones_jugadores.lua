@@ -367,9 +367,7 @@ end
 
 function funciones_jugadores:muerte(obj)
   if obj.hp<1 then
-    obj.collider:destroy()
-    obj.entidades.server:sendToAll("remover", self.creador)
-    obj.entidades:remove_to_nill(obj.name_table,obj)
+    obj:remove()
   end
 end
 

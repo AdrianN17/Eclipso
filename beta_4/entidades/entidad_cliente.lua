@@ -84,7 +84,8 @@ function entidad_cliente:mousereleased(x,y,button)
 end
 
 function entidad_cliente:quit()
-    self.client:disconnect()
+    self.client:disconnectNow()
+    
 end
 
 function entidad_cliente:crear_mapa(mapas)
@@ -95,6 +96,8 @@ function entidad_cliente:crear_mapa(mapas)
 	self.map:resize(x,y)
 	self.cam:setWorld(0,0,self.map.width*self.map.tilewidth, self.map.height*self.map.tileheight)
 	self.cam:setWindow(0,0,x,y)
+
+  self.map:removeLayer("Borrador")
 
   self:custom_layers()
 

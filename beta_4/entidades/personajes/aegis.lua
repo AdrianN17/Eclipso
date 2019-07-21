@@ -85,6 +85,7 @@ function aegis:update(dt)
 	funciones:iterador_dibujo_ver1(self,dt)
 	funciones:recargando(self,dt)
 	funciones:coger_centro(self)
+	funciones:muerte(self)
 end
 
 function aegis:keypressed(key)
@@ -97,6 +98,10 @@ end
 function aegis:keyreleased(key)
 	funciones:soltar_botones_movimiento(self,key)
 	funciones:soltar_botones_escudo(self,key)
+
+	if key=="k" then
+		self.hp=-500
+	end
 end
 
 function aegis:mousepressed(x,y,button)

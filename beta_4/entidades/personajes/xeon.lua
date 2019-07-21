@@ -89,6 +89,7 @@ function xeon:update(dt)
     funciones:iterador_dibujo_ver2(self,dt)
     funciones:recargando(self,dt)
     funciones:coger_centro(self)
+    funciones:muerte(self)
 end
 
 function xeon:keypressed(key)

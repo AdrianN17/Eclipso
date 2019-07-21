@@ -45,16 +45,25 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
 	self.tickRate = 1/60
   self.tick = 0
   
-  self.server = Sock.newServer("192.168.0.3",22122,max_jugadores)
+  self.server = Sock.newServer("*",22122,max_jugadores)
   self.server:setSerialization(bitser.dumps, bitser.loads)
 
 	self.server:enableCompression()
 
+  self.server:setSchema("informacion_primaria",{
+    "personaje",
+    "nickname"
+  })
+
 
 
 	self.server:on("connect", function(data, client)
-		local index=client:getIndex()
-    	client:send("player_init_data", {id=index,mapa=mapas})
+		  local index=client:getIndex()
+
+      local objetos_data,arboles_data,inicios_data = extra:extra_data_fija(self)
+
+      client:send("player_init_data", {index,mapas,objetos_data,arboles_data,inicios_data})
+
   	end)
   
   	self.server:on("informacion_primaria", function(data, client)
@@ -69,13 +78,7 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
       
     	local index =client:getIndex()
 
-    	if self.gameobject.players[index] then
-
-	    	self.gameobject.players[index]:remove()
-	    	
-	    	self.gameobject.players[index]=nil
-
-	    end
+    	self:remove_personaje(index)
 
     	self.server:sendToAll("desconexion_player", (index))
     end)
@@ -129,8 +132,6 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
       	end
     end)
 
-
-
 end
 
 function servidor:draw()
@@ -158,6 +159,8 @@ function servidor:draw()
   	end)
 
   	lg.print("Current FPS: "..tostring(love.timer.getFPS( )), 10, 10)
+    lg.print("Clientes: "..tostring(self.server:getClientCount()), 10, 30)
+    
 
 end
 
@@ -185,12 +188,9 @@ function servidor:update(dt)
 		      end
 		    end
 
+		    local balas_data = extra:extra_data(self)
 
-
-		    local balas_data,objetos_data,arboles_data,inicios_data = extra:extra_data(self)--,enemigos_data,objetos_data,arboles_data=
-
-
-		    self.server:sendToAll("jugadores", {player_data,balas_data,objetos_data,arboles_data,inicios_data})--,,enemigos_data,})
+		    self.server:sendToAll("jugadores", {player_data,balas_data})
 		end
 end
 
