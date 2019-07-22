@@ -3,6 +3,7 @@ local Sock = require "libs.sock.sock"
 local bitser = require "libs.bitser.bitser"
 local gamera = require "libs.gamera.gamera"
 local sti = require "libs.sti"
+local socket = require "socket"
 
 local extra = require "entidades.funciones.extra"
 
@@ -45,7 +46,7 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
 	self.tickRate = 1/60
   self.tick = 0
   
-  self.server = Sock.newServer("*",22122,max_jugadores)
+  self.server = Sock.newServer(self:getIP(),22122,max_jugadores)
   self.server:setSerialization(bitser.dumps, bitser.loads)
 
 	self.server:enableCompression()
@@ -196,6 +197,13 @@ end
 
 function servidor:quit()
 	self.server:destroy()
+end
+
+function servidor:getIP()
+  local s = socket.udp()
+  s:setpeername("74.125.115.104",80)
+  local ip, _ = s:getsockname()
+  return ip
 end
 
 return servidor
