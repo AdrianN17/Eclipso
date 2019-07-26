@@ -22,11 +22,8 @@ function entrar_lan:enter( )
 
 	self.slider_server={value=10,min=0,max=10}
 
-	self.max_personajes=4
-	self.max_mapas=1
-
+	self.max_personajes=#self.tabla_personajes
 	self.personajes=1
-	self.mapas=1
 
 end
 
@@ -36,16 +33,19 @@ end
 
 function entrar_lan:update(dt)
 
-	self.gui:Label("Nickname : " ,{id=1}, self.center.x-50-150-200,self.center.y+60,100,30)
-	self.gui:Input(self.input_nickname, self.center.x-50-200,self.center.y+60,200,30)
+	self.gui.layout:reset(self.center.x-250,self.center.y-285)
+	self.gui.layout:padding(300,20)
 
-	self.gui:Label("IP Servidor LAN : " ,{id=2}, self.center.x-45-150-200,self.center.y+90,120,30)
-	self.gui:Input(self.input_ip_server, self.center.x-50-200,self.center.y+90,200,30)
+	self.gui:Label("Personajes", self.gui.layout:col(120,30))
 
+	if self.gui:Button("Actualizar" ,{id=1}, self.gui.layout:col()).hit then
+		
+	end
 
-	self.gui:Label("Personajes", self.center.x-200-50,self.center.y-285,100,30)
+	self.gui.layout:reset(self.center.x-350,self.center.y-50)
+	self.gui.layout:padding(100,20)
 
-	if self.gui:Button("Atras" ,{id=3}, self.center.x-300-50,self.center.y-50,100,30).hit then
+	if self.gui:Button("Atras" ,{id=2}, self.gui.layout:col(100,30)).hit then
 		self.personajes=self.personajes-1
 
 		if self.personajes < 1 then
@@ -53,7 +53,7 @@ function entrar_lan:update(dt)
 		end
 	end
 
-	if self.gui:Button("Adelante" ,{id=4}, self.center.x-100-50,self.center.y-50,100,30).hit then
+	if self.gui:Button("Adelante" ,{id=3}, self.gui.layout:col(100,30)).hit then
 		self.personajes=self.personajes+1
 
 		if self.personajes > self.max_personajes then
@@ -61,15 +61,29 @@ function entrar_lan:update(dt)
 		end
 	end
 
-	if self.gui:Button("Volver" ,{id=5}, self.center.x-(100/2)-350,self.center.y+180,100,50).hit then
+
+	self.gui.layout:reset(self.center.x-350,self.center.y+60)
+	self.gui.layout:padding(20,20)
+
+	self.gui:Label("Nickname : " ,{align="left"}, self.gui.layout:row(120,30))
+	self.gui:Label("IP Servidor LAN : " ,{align="left"}, self.gui.layout:row())
+
+
+	self.gui.layout:reset(self.center.x-200,self.center.y+60)
+	self.gui.layout:padding(20,20)
+
+	self.gui:Input(self.input_nickname, self.gui.layout:row(175,30))
+	self.gui:Input(self.input_ip_server, self.gui.layout:row())
+
+	self.gui.layout:reset(self.center.x-300,self.center.y+180)
+	self.gui.layout:padding(350,20)
+
+
+	if self.gui:Button("Volver" ,{id=4}, self.gui.layout:col(120,30)).hit then
 		Gamestate.switch(Menu)
 	end
 
-	if self.gui:Button("Actualizar" ,{id=6}, self.center.x-(100/2)+250,self.center.y-300,100,50).hit then
-		
-	end
-
-	if self.gui:Button("Unirse" ,{id=7}, self.center.x-(100/2)+250,self.center.y+200,100,50).hit then
+	if self.gui:Button("Unirse" ,{id=5}, self.gui.layout:col()).hit then
 		if self.input_nickname.text=="" then
 			self.input_nickname.text="player"
 		end
@@ -81,11 +95,10 @@ function entrar_lan:update(dt)
 		Gamestate.switch(Cliente,nickname,personaje,ip)
 	end
 
-	--slider
 	if self.gui:Slider(self.slider_server, {id=8,vertical = true}, self.center.x,self.center.y-200 ,30,500) then
 		self.slider_server.value=math.floor(self.slider_server.value)
 	end
-    --self.gui:Label(tostring(self.slider_server.value), {align = "left"}, 300,100, 200,30)
+
 end
 
 function entrar_lan:textinput(t)

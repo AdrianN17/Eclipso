@@ -10,8 +10,7 @@ local entrar_online= require "escenas.entrar_online"
 local menu = Class{}
 
 function menu:init()
-	--suit.theme.color.normal.fg = {255,255,255}
-    --suit.theme.color.hovered = {bg = {200,230,255}, fg = {0,0,0}}
+
 end
 
 function menu:enter()
@@ -28,29 +27,34 @@ end
 
 function menu:update(dt)
 
-	if self.gui:Button("Crear Local multiplayer" , {id=1}, self.center.x-200,self.center.y-10
-		, 190,60).hit then
+	self.gui.layout:reset(self.center.x-200, self.center.y+50)
+    self.gui.layout:padding(20,20)
+
+
+	if self.gui:Button("Crear Local multiplayer" , {id=1}, self.gui.layout:col(190,50)).hit then
 		--crear a multiplayer local
 		Gamestate.switch(crear_lan)
 	end
 
-	if self.gui:Button("Entrar Local multiplayer", {id=2}, self.center.x+10,self.center.y-10
-		, 190,60).hit then
+	if self.gui:Button("Entrar Local multiplayer", {id=2}, self.gui.layout:col()).hit then
 		--entrar a multiplayer local
 		Gamestate.switch(entrar_lan)
 	end
 
+	local _,y=self.gui.layout:row()
 
-	if self.gui:Button("Online multiplayer", {id=3}, self.center.x-200,self.center.y+75
-		, 400,50).hit then
+
+	self.gui.layout:reset(self.center.x-200, y)
+	self.gui.layout:padding(20,20)
+
+	if self.gui:Button("Online multiplayer", {id=3}, self.gui.layout:row(400,50)).hit then
 		--mandar a multiplaer online
 		Gamestate.switch(entrar_online)
 
 	end
 
 
-	if self.gui:Button("Configuracion", {id=4}, self.center.x-200,self.center.y+75*2
-		, 400,50).hit then
+	if self.gui:Button("Configuracion", {id=4}, self.gui.layout:row()).hit then
 		--mandar a configuracion
 		Gamestate.switch(configuracion)
 

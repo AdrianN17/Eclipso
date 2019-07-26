@@ -19,14 +19,14 @@ function crear_lan:enter()
 	self.input_jugadores={text = "8"}
 	self.input_enemigos={text = "25"}
 
-	self.max_personajes=4
-	self.max_mapas=1
-
 	self.personajes=1
 	self.mapas=1
 
 	self.tabla_personajes={"aegis","solange","xeon","radian"}
 	self.tabla_mapas={"acuaris"}
+
+	self.max_personajes=#self.tabla_personajes
+	self.max_mapas=#self.tabla_mapas
 end
 
 function crear_lan:draw()
@@ -34,22 +34,19 @@ function crear_lan:draw()
 end
 
 function crear_lan:update(dt)
-	self.gui:Label("Nickname : " ,{id=1}, self.center.x-50-150,self.center.y+45,100,30)
-	self.gui:Input(self.input_nickname, self.center.x-50,self.center.y+45,200,30)
 
-	self.gui:Label("Max Jugadores : " ,{id=2}, self.center.x-50-150,self.center.y+90,100,30)
-	self.gui:Input(self.input_jugadores, self.center.x-50,self.center.y+90,50,30)
 
-	self.gui:Label("Max Enemigos : " ,{id=3}, self.center.x-50-150,self.center.y+135,100,30)
-	self.gui:Input(self.input_enemigos, self.center.x-50,self.center.y+135,50,30)
+	self.gui.layout:reset(self.center.x-200,self.center.y-285)
+	self.gui.layout:padding(250,20)
 
-	self.gui:Label("Personajes", self.center.x-200,self.center.y-285,100,30)
+	self.gui:Label("Personajes", self.gui.layout:col(100,30))
+	self.gui:Label("Mapas", self.gui.layout:col(100,30))
 
-	self.gui:Label("Mapas", self.center.x+150,self.center.y-285,100,30)
 
-	--botones
+	self.gui.layout:reset(self.center.x-300,self.center.y-50)
+    self.gui.layout:padding(75,20)
 
-	if self.gui:Button("Atras" ,{id=4}, self.center.x-300,self.center.y-50,100,30).hit then
+	if self.gui:Button("Atras" ,{id=1},  self.gui.layout:col(100,30)).hit then
 		self.personajes=self.personajes-1
 
 		if self.personajes < 1 then
@@ -57,7 +54,7 @@ function crear_lan:update(dt)
 		end
 	end
 
-	if self.gui:Button("Adelante" ,{id=5}, self.center.x-100,self.center.y-50,100,30).hit then
+	if self.gui:Button("Adelante" ,{id=2},  self.gui.layout:col()).hit then
 		self.personajes=self.personajes+1
 
 		if self.personajes > self.max_personajes then
@@ -65,8 +62,7 @@ function crear_lan:update(dt)
 		end
 	end
 
-
-	if self.gui:Button("Adelante" ,{id=6}, self.center.x+250,self.center.y-50,100,30).hit then
+	if self.gui:Button("Adelante" ,{id=3}, self.gui.layout:col()).hit then
 		self.mapas=self.mapas+1
 
 		if self.mapas > self.max_mapas then
@@ -74,7 +70,7 @@ function crear_lan:update(dt)
 		end
 	end
 
-	if self.gui:Button("Atras" ,{id=7}, self.center.x+50,self.center.y-50,100,30).hit then
+	if self.gui:Button("Atras" ,{id=4}, self.gui.layout:col()).hit then
 		self.mapas=self.mapas-1
 
 		if self.mapas < 1 then
@@ -83,12 +79,31 @@ function crear_lan:update(dt)
 	end
 
 
-	self.gui:Label(tostring(self.personajes), self.center.x-200,self.center.y-150,30,30)
+	self.gui.layout:reset(self.center.x-250,self.center.y+45)
+    self.gui.layout:padding(25,25)
 
-	self.gui:Label(tostring(self.mapas), self.center.x+150,self.center.y-150,30,30)
+
+    self.gui:Label("Nickname : ", {align="left"} , self.gui.layout:row(100,30))
+    self.gui:Label("Max Jugadores : ", {align="left"} , self.gui.layout:row())
+    self.gui:Label("Max Enemigos : ", {align="left"} , self.gui.layout:row())
 
 
-	if self.gui:Button("Jugar" ,{id=8}, self.center.x-150/2,self.center.y+225,150,50).hit then
+    self.gui.layout:reset(self.center.x-120,self.center.y+45)
+    self.gui.layout:padding(25,25)
+
+
+	self.gui:Input(self.input_nickname, self.gui.layout:row(175,30))
+	self.gui:Input(self.input_jugadores, self.gui.layout:row(50,30))
+	self.gui:Input(self.input_enemigos, self.gui.layout:row())
+
+
+	
+
+	self.gui.layout:reset(self.center.x-200,self.center.y+225)
+    self.gui.layout:padding(150,25)
+
+
+	if self.gui:Button("Jugar" ,{id=5}, self.gui.layout:col(150,50)).hit then
 		if self.input_nickname.text=="" then
 			self.input_nickname.text="player"
 		end
@@ -102,7 +117,7 @@ function crear_lan:update(dt)
 		Gamestate.switch(Servidor,nickname,max_jugadores,max_enemigos,personaje,mapa)
 	end
 
-	if self.gui:Button("Volver" ,{id=9}, self.center.x-(100/2)+200,self.center.y+225,100,50).hit then
+	if self.gui:Button("Volver" ,{id=6}, self.gui.layout:col()).hit then
 		Gamestate.switch(Menu)
 	end
 	
