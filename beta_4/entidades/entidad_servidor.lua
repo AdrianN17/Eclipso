@@ -1,10 +1,8 @@
 local Class= require "libs.hump.class"
-
-
+local teclas = require "entidades.funciones.teclas"
+local utf8 = require("utf8")
 
 local entidad_servidor = Class{}
-
-
 
 function entidad_servidor:init()
 
@@ -36,10 +34,38 @@ function entidad_servidor:init()
   self:map_read(self.map)
   self:custom_layers()
 
+  self.chat={}
+  self.texto_escrito=""
+  self.escribiendo=false
+
+  self.tiempo_chat=0
+  self.max_tiempo_chat=3
+
 end
 
 function entidad_servidor:draw_entidad()
+  if self.escribiendo then
+    lg.setColor( 46/255, 49/255, 49/255, 0.5 )
+    lg.rectangle("fill", 0, lg.getHeight()-50, 280, 20 )
+    lg.setColor( 1, 1, 1, 1 )
 
+    lg.printf(self.texto_escrito, 0, lg.getHeight()-50, lg.getWidth())
+  end
+
+  if #self.chat>0 then
+
+    local w = lg.getWidth()-(40*7)
+
+    lg.setColor( 46/255, 49/255, 49/255, 0.5 )
+    lg.rectangle("fill", w, 0, 280, 20*#self.chat )
+    lg.setColor( 1, 1, 1, 1 )
+
+    local h=0
+    for i,texto in ipairs(self.chat) do
+      lg.print(texto, w, h)
+      h=i*20
+    end
+  end
 end
 
 function entidad_servidor:update_entidad(dt)
@@ -231,35 +257,77 @@ function entidad_servidor:custom_layers()
       obj_data:update(dt)
     end
   end
-
-
-  
 end
 
 function entidad_servidor:keypressed(key)
-	if self.gameobject.players[0] then
-		self.gameobject.players[0]:keypressed(key)
-	end
+  if key=="return" then
+    self.escribiendo=not self.escribiendo
+
+    if not self.escribiendo and #self.texto_escrito>0 then
+        table.insert(self.chat,self.texto_escrito)
+        self.server:sendToAll("chat_total",self.texto_escrito)
+        self.texto_escrito=""
+        self:control_chat()
+    end
+  end
+
+
+  if self.escribiendo then
+    if key == "backspace" then
+        local byteoffset = utf8.offset(self.texto_escrito, -1)
+ 
+        if byteoffset then
+            self.texto_escrito = string.sub(self.texto_escrito, 1, byteoffset - 1)
+        end
+    end
+  else
+
+    local p1 = self.gameobject.players[0]
+    if  p1 and teclas:validar(key) then
+  		p1:keypressed(key)
+  	end
+  end
 end
 
 function entidad_servidor:keyreleased(key)
-	if self.gameobject.players[0] then
-		self.gameobject.players[0]:keyreleased(key)
-	end
+  if not self.escribiendo then
+    local p1 = self.gameobject.players[0]
+  	if p1 and teclas:validar(key) then
+  		p1:keyreleased(key)
+  	end
+  end
 end
 
 function entidad_servidor:mousepressed(x,y,button)
-	if self.gameobject.players[0] then
-		local cx,cy=self.cam:toWorld(x,y)
-		self.gameobject.players[0]:mousepressed(cx,cy,button)
-	end
+  if not self.escribiendo then
+    local p1 = self.gameobject.players[0]
+  	if p1 then
+  		local cx,cy=self.cam:toWorld(x,y)
+  		p1:mousepressed(cx,cy,button)
+  	end
+  else
+    if button==1 then
+      self.escribiendo=false
+    end
+  end
 end
 
 function entidad_servidor:mousereleased(x,y,button)
-	if self.gameobject.players[0] then
-		local cx,cy=self.cam:toWorld(x,y)
-		self.gameobject.players[0]:mousereleased(cx,cy,button)
-	end
+  if not self.escribiendo then
+    local p1 = self.gameobject.players[0]
+  	if p1 then
+  		local cx,cy=self.cam:toWorld(x,y)
+  		p1:mousereleased(cx,cy,button)
+  	end
+  end
+end
+
+function entidad_servidor:textinput(t)
+    if self.escribiendo then
+      if #self.texto_escrito<40 then
+        self.texto_escrito = self.texto_escrito .. t
+      end
+    end
 end
 
 function entidad_servidor:add_obj(name,obj)
@@ -347,6 +415,12 @@ function entidad_servidor:get_objects(objectlayer,objects_map)
         end
       end
     end
+end
+
+function entidad_servidor:control_chat()
+  if #self.chat> 11 then
+      table.remove(self.chat,1)
+  end
 end
 
 function entidad_servidor:aumentar_id_creador()

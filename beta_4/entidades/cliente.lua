@@ -93,6 +93,11 @@ function cliente:enter(gamestate,nickname,personaje,ip)
             self.gameobject.balas=balas
         end
     end)
+
+    self.client:on("chat_total", function(chat)
+        table.insert(self.chat,chat)
+        self:control_chat()
+    end)
    
 
   	self.client:connect()
@@ -121,6 +126,17 @@ function cliente:update(dt)
 
     if self.tick >= self.tickRate then
         self.tick = 0
+
+        if #self.chat>0 then
+
+            self.tiempo_chat=self.tiempo_chat+dt   
+
+            if self.tiempo_chat>self.max_tiempo_chat then
+              table.remove(self.chat,1)
+              self.tiempo_chat=0
+            end
+
+        end
 
         local pl = self.gameobject.players[self.id_player] 
 

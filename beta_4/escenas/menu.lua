@@ -41,10 +41,9 @@ function menu:update(dt)
 		Gamestate.switch(entrar_lan)
 	end
 
-	local _,y=self.gui.layout:row()
 
 
-	self.gui.layout:reset(self.center.x-200, y)
+	self.gui.layout:reset(self.center.x-200, self.center.y+120)
 	self.gui.layout:padding(20,20)
 
 	if self.gui:Button("Online multiplayer", {id=3}, self.gui.layout:row(400,50)).hit then

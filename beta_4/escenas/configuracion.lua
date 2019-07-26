@@ -1,4 +1,5 @@
 local Class= require "libs.hump.class"
+local suit=require "libs.suit"
 
 local configuracion=Class{}
 

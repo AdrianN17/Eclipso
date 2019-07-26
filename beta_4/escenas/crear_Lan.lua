@@ -110,11 +110,15 @@ function crear_lan:update(dt)
 
 		local nickname=self.input_nickname.text
 		local max_jugadores=tonumber(self.input_jugadores.text)
-		local max_enemigos=self.input_enemigos.text
+		local max_enemigos=tonumber(self.input_enemigos.text)
 		local personaje=self.tabla_personajes[self.personajes]
 		local mapa = self.tabla_mapas[self.mapas]
 
-		Gamestate.switch(Servidor,nickname,max_jugadores,max_enemigos,personaje,mapa)
+
+		if max_jugadores~= nil and max_enemigos~= nil then
+			Gamestate.switch(Servidor,nickname,max_jugadores,max_enemigos,personaje,mapa)
+		end
+		
 	end
 
 	if self.gui:Button("Volver" ,{id=6}, self.gui.layout:col()).hit then

@@ -81,7 +81,7 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
 
     	self:remove_personaje(index)
 
-    	self.server:sendToAll("desconexion_player", (index))
+    	self.server:sendToAll("desconexion_player", index)
     end)
 
 
@@ -93,6 +93,16 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
       	if pl then
         	extra:recibir_data_jugador(datos,pl)
       	end
+    end)
+
+    self.server:on("chat", function(chat,client)
+
+      table.insert(self.chat,chat)
+
+      self:control_chat()
+
+      self.server:sendToAllBut(client,"chat_total",chat)
+
     end)
 
     --callbacks
@@ -140,7 +150,7 @@ function servidor:draw()
 
   	self.map:draw(-cx,-cy,1,1)
 
-  	self.cam:draw(function(l,t,w,h)
+  	--[[self.cam:draw(function(l,t,w,h)
       
 	    for _, body in pairs(self.world:getBodies()) do
 	      for _, fixture in pairs(body:getFixtures()) do
@@ -157,12 +167,12 @@ function servidor:draw()
 	      end
 	    end
     
-  	end)
+  	end)]]
+
+    self:draw_entidad()
 
   	lg.print("Current FPS: "..tostring(love.timer.getFPS( )), 10, 10)
     lg.print("Clientes: "..tostring(self.server:getClientCount()), 10, 30)
-    
-
 end
 
 function servidor:update(dt)
@@ -175,11 +185,20 @@ function servidor:update(dt)
 	    self:update_entidad(dt)
 	    
 	    self.world:update(dt) 
-	    self.map:update(dt)    
+	    self.map:update(dt) 
 
+      if #self.chat>0 then
+
+        self.tiempo_chat=self.tiempo_chat+dt   
+
+        if self.tiempo_chat>self.max_tiempo_chat then
+          table.remove(self.chat,1)
+          self.tiempo_chat=0
+        end
+
+      end
 
 	    local player_data={}
-    
     
 		    for i=0,#self.gameobject.players,1 do 
 		      if self.gameobject.players[i] == nil then
