@@ -41,6 +41,10 @@ The multiplayer work in local (LAN)
 * [Sock](https://github.com/camchenry/sock.lua)
 * [Bitser](https://github.com/gvx/bitser)
 * [STI](https://github.com/karai17/Simple-Tiled-Implementation)
+* [SUIT](https://github.com/vrld/SUIT)
+* [Polygon](https://github.com/AlexarJING/polygon)
+* [JSON](http://regex.info/blog/lua/json)
+* [Lua State Machine](https://github.com/kyleconroy/lua-state-machine)
 
 ## Tools used in this game :
 
