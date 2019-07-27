@@ -15,35 +15,24 @@ The multiplayer work in local (LAN)
 
 ## Images
 
-![alt text](https://i.imgur.com/N5g1VdC.png)
 
-## Questions
-  ### Why QT for the UI?
-
-  When I created the gui for my game in Love, I had the problem of sorting my code, Libs like Slab or SUIT worked, but they were not  complete in my opinion, QT was more flexible for me, besides That I had already used it a while ago.
 
 ## Future implementations
 
-* Create a game UI (health, rage, bullets and more)
 * Add more character (I have them created, but I have to make the sprites)
 * Better AI enemies
-* Create more maps and complete actual map
 * Better sprites (I know, it's ugly)
 * Create sound
-* Create a chat in-game
 * Better ui design in the launcher
-* Destructive terrain in-game
 * Create a boss for each map
 * Create a server to multiplayer
 * Linux executable
 * Create or search a Finite State Machine lib for enemies (module enemy AI)
-* Better structure of code
 * Create APK
 
 ## Framework :
 
 * [Love2d](https://love2d.org/)
-* [QT](https://www.qt.io/)
 
 ## Libraries used in this game :
 
