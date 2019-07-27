@@ -7,10 +7,11 @@ The multiplayer work in local (LAN)
 
 ## Controls
 
-* ASDW : move (All)
+* ASDW : move 
 * E : shield (ALL, not work)
 * R : reload bullets (only if you have LD weapons)
-* 1,2 change weapons (at the moment only Aegis have two weapons)
+* 1,2 : change weapons 
+* Enter : Chat
 
 ## Images
 
