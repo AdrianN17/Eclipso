@@ -1,6 +1,0 @@
-<RCC>
-    <qresource prefix="/css">
-        <file>diseño.css</file>
-    </qresource>
-    <qresource prefix="/img"/>
-</RCC>
