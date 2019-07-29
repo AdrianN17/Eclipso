@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="12" nextobjectid="65">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="12" nextobjectid="71">
  <tileset firstgid="1" source="tiled_playa.tsx"/>
  <layer id="3" name="Suelo" width="100" height="100">
   <data encoding="base64" compression="zlib">
@@ -176,6 +176,30 @@
     <property name="destruible" type="bool" value="true"/>
    </properties>
    <polygon points="0,0 132,-27 202,116 274,304 191,448 -40,378 -182,295 -160,73"/>
+  </object>
+  <object id="67" name="arrecife" x="289.333" y="2129.33">
+   <properties>
+    <property name="destruible" type="bool" value="true"/>
+   </properties>
+   <polygon points="0,0 56,-73.3333 184,-180 365.333,-104 473.333,-18.6667 428,73.3333 317.333,197.333 154.667,176 -9.33333,186.667"/>
+  </object>
+  <object id="68" name="arrecife" x="1053.33" y="1933.33">
+   <properties>
+    <property name="destruible" type="bool" value="true"/>
+   </properties>
+   <polygon points="0,0 -157.333,-20 -157.333,-164 -109.333,-302.667 84,-330.667 237.333,-346.667 294.667,-236 258.667,-81.3333 168,0"/>
+  </object>
+  <object id="69" name="arrecife" x="880" y="2265.33">
+   <properties>
+    <property name="destruible" type="bool" value="true"/>
+   </properties>
+   <polygon points="0,0 89.3333,-82.6667 246.667,-189.333 388,-101.333 476,65.3333 380,137.333 310.667,222.667 102.667,213.333 -5.33333,104"/>
+  </object>
+  <object id="70" name="arrecife" x="1903.03" y="2318.18">
+   <properties>
+    <property name="destruible" type="bool" value="true"/>
+   </properties>
+   <polygon points="0,0 63.6364,-133.333 300,-112.121 527.273,-106.061 454.545,60.6061 403.03,212.121 293.939,233.333 81.8182,293.939 -12.1212,139.394"/>
   </object>
  </objectgroup>
  <objectgroup id="11" name="Inicios"/>

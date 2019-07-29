@@ -9,7 +9,7 @@ return {
   tilewidth = 32,
   tileheight = 32,
   nextlayerid = 12,
-  nextobjectid = 65,
+  nextobjectid = 71,
   properties = {},
   tilesets = {
     {
@@ -808,6 +808,110 @@ return {
             { x = -40, y = 378 },
             { x = -182, y = 295 },
             { x = -160, y = 73 }
+          },
+          properties = {
+            ["destruible"] = true
+          }
+        },
+        {
+          id = 67,
+          name = "arrecife",
+          type = "",
+          shape = "polygon",
+          x = 289.333,
+          y = 2129.33,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          polygon = {
+            { x = 0, y = 0 },
+            { x = 56, y = -73.3333 },
+            { x = 184, y = -180 },
+            { x = 365.333, y = -104 },
+            { x = 473.333, y = -18.6667 },
+            { x = 428, y = 73.3333 },
+            { x = 317.333, y = 197.333 },
+            { x = 154.667, y = 176 },
+            { x = -9.33333, y = 186.667 }
+          },
+          properties = {
+            ["destruible"] = true
+          }
+        },
+        {
+          id = 68,
+          name = "arrecife",
+          type = "",
+          shape = "polygon",
+          x = 1053.33,
+          y = 1933.33,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          polygon = {
+            { x = 0, y = 0 },
+            { x = -157.333, y = -20 },
+            { x = -157.333, y = -164 },
+            { x = -109.333, y = -302.667 },
+            { x = 84, y = -330.667 },
+            { x = 237.333, y = -346.667 },
+            { x = 294.667, y = -236 },
+            { x = 258.667, y = -81.3333 },
+            { x = 168, y = 0 }
+          },
+          properties = {
+            ["destruible"] = true
+          }
+        },
+        {
+          id = 69,
+          name = "arrecife",
+          type = "",
+          shape = "polygon",
+          x = 880,
+          y = 2265.33,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          polygon = {
+            { x = 0, y = 0 },
+            { x = 89.3333, y = -82.6667 },
+            { x = 246.667, y = -189.333 },
+            { x = 388, y = -101.333 },
+            { x = 476, y = 65.3333 },
+            { x = 380, y = 137.333 },
+            { x = 310.667, y = 222.667 },
+            { x = 102.667, y = 213.333 },
+            { x = -5.33333, y = 104 }
+          },
+          properties = {
+            ["destruible"] = true
+          }
+        },
+        {
+          id = 70,
+          name = "arrecife",
+          type = "",
+          shape = "polygon",
+          x = 1903.03,
+          y = 2318.18,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          polygon = {
+            { x = 0, y = 0 },
+            { x = 63.6364, y = -133.333 },
+            { x = 300, y = -112.121 },
+            { x = 527.273, y = -106.061 },
+            { x = 454.545, y = 60.6061 },
+            { x = 403.03, y = 212.121 },
+            { x = 293.939, y = 233.333 },
+            { x = 81.8182, y = 293.939 },
+            { x = -12.1212, y = 139.394 }
           },
           properties = {
             ["destruible"] = true

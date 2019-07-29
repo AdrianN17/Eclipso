@@ -11,11 +11,13 @@ function arrecife:init(entidades,poligono)
 	self.tipo="arrecife"
 	self.entidades=entidades
 
+
 	local ok, res = pcall(function () funciones:crear_destruible(self,poligono) end)
+
 
 	self.texturas = self.entidades.img_texturas
 
-	funciones:crear_mesh(self,poligono)
+	local ok2,res2 = pcall(function () funciones:crear_mesh(self,poligono) end)
 	
 	self.entidades:add_obj("destruible",self)
 
@@ -24,8 +26,14 @@ function arrecife:init(entidades,poligono)
 	delete.init(self,"destruible")
 
 	if not ok  then
+		print(res)
 		self:remove()
 	end
+
+	if not ok2 then
+		print(res2)
+	end
+
 
 	
 end

@@ -2,8 +2,17 @@ local funciones_destruible={}
 
 function funciones_destruible:crear_destruible(obj,poligono)
 
+  local val_cierra = true
+
+  local x1,y1=poligono[1],poligono[2]
+  local x2,y2=poligono[#poligono-1],poligono[#poligono]
+
+  if x1==x2 and y1==y2 then
+    val_cierra = false
+  end
+
 	obj.collider=py.newBody(obj.entidades.world,0,0,"kinematic")
-  obj.shape=py.newChainShape( true,poligono  )
+  obj.shape=py.newChainShape( val_cierra,poligono  )
 	obj.fixture=py.newFixture(obj.collider,obj.shape)
 
   obj.poligono=poligono
@@ -64,7 +73,9 @@ function funciones_destruible:poly2mesh(points)
 end
 
 function funciones_destruible:dibujar_texturas(obj)
-	lg.draw(obj.mesh)
+  if obj.mesh then
+	 lg.draw(obj.mesh)
+  end
 end
 
 
