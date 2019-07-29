@@ -1,6 +1,7 @@
 local funciones_destruible={}
 
 function funciones_destruible:crear_destruible(obj,poligono)
+
 	obj.collider=py.newBody(obj.entidades.world,0,0,"kinematic")
   obj.shape=py.newChainShape( true,poligono  )
 	obj.fixture=py.newFixture(obj.collider,obj.shape)
@@ -18,7 +19,7 @@ function funciones_destruible:crear_mesh(obj,poligono)
 end
 
 function funciones_destruible:poly2mesh(points)
-  local polypts = love.math.triangulate(points)
+  local polypts = lm.triangulate(points)
   local tlist
 
   local vnums = {}
@@ -49,6 +50,8 @@ function funciones_destruible:poly2mesh(points)
     end
   end
 
+
+
   local mesh = love.graphics.newMesh(#vcoords, "triangles", "static")
   for i = 1, #vcoords / 2 do
     local x, y = vcoords[i * 2 - 1], vcoords[i * 2]
@@ -62,6 +65,74 @@ end
 
 function funciones_destruible:dibujar_texturas(obj)
 	lg.draw(obj.mesh)
+end
+
+
+function funciones_destruible:validar_distancia_poligono(poligono_maestro)
+
+  local poligono = poligono_maestro
+  
+  local x1=poligono[1]
+  local y1=poligono[2]
+
+  local destruibles_tabla={}
+
+
+  for i=3,#poligono,2 do
+
+    x2,y2 = poligono[i],poligono[i+1]
+    
+    local d1 = math.pow(x2-x1,2)
+    local d2 = math.pow(y2-y1,2)
+    local distance = math.sqrt(d1+d2)
+
+    x1,y1=x2,y2
+    
+    if distance <= 10 then
+      table.insert(destruibles_tabla,i)
+      table.insert(destruibles_tabla,i+1)
+    end
+  end
+
+  for i=#destruibles_tabla,1,-1 do
+    table.remove(poligono,destruibles_tabla[i])
+  end
+
+  if #poligono >=6 then
+
+    return poligono
+  else 
+    return nil
+  end
+ 
+end
+
+function funciones_destruible:get_area_poligono(poligono)
+  local area = 0
+
+  local x1=poligono[1]
+  local y1=poligono[2]
+    
+  for i=3,#poligono,2 do
+
+      x2,y2 = poligono[i],poligono[i+1]
+
+      local d1 = math.pow(x2-x1,2)
+      local d2 = math.pow(y2-y1,2)
+      local distance = math.sqrt(d1+d2)
+      area = area+distance
+  end
+
+  return area
+end
+
+function funciones_destruible:poligono_floor(poligono_decimal)
+  local poligono = poligono_decimal
+  for i=1,#poligono,1 do
+    poligono[i] = math.floor(poligono[i])
+  end
+
+  return poligono
 end
 
 return funciones_destruible

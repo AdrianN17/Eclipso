@@ -7,8 +7,11 @@ function delete:init(table)
 end
 
 function delete:remove()
+	if self.collider then
 
-    self.collider:destroy()
+    	self.collider:destroy()
+
+    end
 
 	self.entidades:remove_obj(self.name_table,self)
 end
