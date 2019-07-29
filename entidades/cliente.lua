@@ -6,6 +6,8 @@ local extra = require "entidades.funciones.extra"
 
 local entidad_cliente = require "entidades.entidad_cliente"
 
+local mesh_destruible = require "entidades.solo_cliente.mesh_destruible"
+
 local cliente = Class{
     __includes={entidad_cliente}
 }
@@ -52,7 +54,8 @@ function cliente:enter(gamestate,nickname,personaje,ip)
         "mapa",
         "objetos",
         "arboles",
-        "inicios"
+        "inicios",
+        "destruible"
         --"img_personajes",
         --"img_balas",
         --"img_escudos"
@@ -68,6 +71,10 @@ function cliente:enter(gamestate,nickname,personaje,ip)
         self.gameobject.arboles=data.arboles
         self.gameobject.inicios=data.inicios
 
+
+
+        self.gameobject.destruible = mesh_destruible:generar_mesh(data.destruible,self.img_texturas)
+
         --self.img_personajes= data.img_personajes
         --self.img_balas= data.img_balas
         --self.img_escudos= data.img_escudos
@@ -75,6 +82,10 @@ function cliente:enter(gamestate,nickname,personaje,ip)
         
         self.client:send("informacion_primaria", {personaje,nickname})
         
+    end)
+
+    self.client:on("nuevos_destruibles", function(data)
+        self.gameobject.destruible = mesh_destruible:generar_mesh(data,self.img_texturas)
     end)
 
     self.client:on("desconexion_player",function(data)

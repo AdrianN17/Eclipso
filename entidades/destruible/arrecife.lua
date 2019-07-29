@@ -11,9 +11,7 @@ function arrecife:init(entidades,poligono)
 	self.tipo="arrecife"
 	self.entidades=entidades
 
-
 	local ok, res = pcall(function () funciones:crear_destruible(self,poligono) end)
-
 
 	self.texturas = self.entidades.img_texturas
 
@@ -33,9 +31,6 @@ function arrecife:init(entidades,poligono)
 	if not ok2 then
 		print(res2)
 	end
-
-
-	
 end
 
 function arrecife:draw()
@@ -68,7 +63,7 @@ function arrecife:recorte_figura(poligono_enemigo)
 	    end
   end
 	    
-
+  self.entidades.envio_destruible=true
   self:remove() 
 
 end

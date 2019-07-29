@@ -61,7 +61,7 @@ function funciones_destruible:poly2mesh(points)
 
 
 
-  local mesh = love.graphics.newMesh(#vcoords, "triangles", "static")
+  local mesh = lg.newMesh(#vcoords, "triangles", "static")
   for i = 1, #vcoords / 2 do
     local x, y = vcoords[i * 2 - 1], vcoords[i * 2]
 

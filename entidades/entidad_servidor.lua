@@ -41,6 +41,8 @@ function entidad_servidor:init()
   self.tiempo_chat=0
   self.max_tiempo_chat=3
 
+  self.envio_destruible=false
+
 end
 
 function entidad_servidor:draw_entidad()

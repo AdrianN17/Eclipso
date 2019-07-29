@@ -62,8 +62,9 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
 		  local index=client:getIndex()
 
       local objetos_data,arboles_data,inicios_data = extra:extra_data_fija(self)
+      local destruible_data = extra:extra_destruibles(self)
 
-      client:send("player_init_data", {index,mapas,objetos_data,arboles_data,inicios_data}) --, self.img_personajes,self.img_balas,self.img_escudos})
+      client:send("player_init_data", {index,mapas,objetos_data,arboles_data,inicios_data,destruible_data}) --, self.img_personajes,self.img_balas,self.img_escudos})
   	end)
   
   	self.server:on("informacion_primaria", function(data, client)
@@ -208,6 +209,13 @@ function servidor:update(dt)
 		    end
 
 		    local balas_data = extra:extra_data(self)
+
+        if self.envio_destruible then
+          local destruible_data = extra:extra_destruibles(self)
+          self.server:sendToAll("nuevos_destruibles",destruible_data)
+
+          self.envio_destruible=false
+        end
 
 		    self.server:sendToAll("jugadores", {player_data,balas_data})
 		end

@@ -162,6 +162,8 @@ end
 
 function entidad_cliente:crear_mapa(mapas)
 	self.mapa_files=require ("entidades.mapas." .. mapas)
+
+  self.img_texturas = self.mapa_files.texturas
 	self.map=sti(self.mapa_files.mapa)
 
 	local x,y=lg.getDimensions( )
@@ -227,8 +229,8 @@ function entidad_cliente:custom_layers()
   
   Destruible_layers.draw = function(obj)
     for _, obj_data in pairs(self.gameobject.destruible) do
-      if obj_data then
-        --obj_data:draw()
+      if obj_data and obj_data.mesh then
+        lg.draw(obj_data.mesh)
       end
     end
   end

@@ -40,6 +40,17 @@ function extra:extra_data(obj)
 	return balas_data
 end
 
+function extra:extra_destruibles(obj)
+	local destruibles_data={}
+
+	for i,destruible in ipairs(obj.gameobject.destruible) do 
+		local t=self:enviar_data_jugador(destruible,"poligono","tipo")
+		table.insert(destruibles_data,t)
+	end
+
+	return destruibles_data
+end
+
 function extra:extra_data_fija(obj)
 
 	local objetos_data={}
