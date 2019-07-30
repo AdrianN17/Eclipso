@@ -16,9 +16,11 @@ personajes.solange = require "entidades.personajes.solange"
 personajes.xeon = require "entidades.personajes.xeon"
 personajes.radian = require "entidades.personajes.radian"
 
+local servidor_alterno = require "entidades.servidor_alterno"
+
 
 local servidor = Class{
-	__includes={entidad_servidor}
+	__includes={entidad_servidor,servidor_alterno}
 }
 
 function servidor:init()
@@ -45,8 +47,10 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
 	--informacion de servidor
 	self.tickRate = 1/60
   self.tick = 0
+
+  local ip_direccion = self:getIP()
   
-  self.server = Sock.newServer(self:getIP(),22122,max_jugadores)
+  self.server = Sock.newServer(ip_direccion,22122,max_jugadores)
   self.server:setSerialization(bitser.dumps, bitser.loads)
 
 	self.server:enableCompression()
@@ -143,6 +147,12 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
       	end
     end)
 
+    self.datos_servidor={
+      mapa = mapas,
+      max_jugadores = max_jugadores
+    }
+
+    servidor_alterno.init(self,ip_direccion)
 end
 
 function servidor:draw()
@@ -176,6 +186,8 @@ function servidor:draw()
 end
 
 function servidor:update(dt)
+  self:update_alterno(dt)
+
 	self.tick = self.tick + dt
 
 	if self.tick >= self.tickRate then
@@ -223,6 +235,7 @@ end
 
 function servidor:quit()
 	self.server:destroy()
+  self.udp_server:close()
 end
 
 function servidor:getIP()

@@ -42,7 +42,8 @@ function solange:init(entidades,x,y,creador,nombre)
 
 	--asignar variables
 	self.hp=hp 
-	self.ira=ira
+	self.ira=0
+	self.max_ira=ira
 
 	self.velocidad=velocidad
 	self.radio=0
@@ -87,6 +88,7 @@ function solange:update(dt)
 	funciones:recargando(self,dt)
 	funciones:coger_centro(self)
 	funciones:muerte(self)
+	funciones:regular_ira(self,dt)
 end
 
 function solange:keypressed(key)

@@ -76,4 +76,21 @@ function extra:extra_data_fija(obj)
 	return objetos_data,arboles_data,inicios_data
 end
 
+function extra:dano(objetivo,dano)
+
+
+	objetivo.hp=objetivo.hp-(dano+dano*(objetivo.ira/objetivo.max_ira))
+
+	objetivo.ira=objetivo.ira+dano*0.5
+
+	if objetivo.ira>objetivo.max_ira then
+		objetivo.ira=objetivo.max_ira
+	end
+
+	if objetivo.hp<1 then
+		objetivo.estados.vivo=false
+	end
+
+end
+
 return extra

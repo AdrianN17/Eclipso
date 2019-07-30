@@ -1,6 +1,7 @@
 local Class= require "libs.hump.class"
 local teclas = require "entidades.funciones.teclas"
-local utf8 = require("utf8")
+local utf8 = require "utf8"
+local extra = require "entidades.funciones.extra"
 
 local entidad_servidor = Class{}
 
@@ -98,15 +99,30 @@ function entidad_servidor:callbacks()
 
  		local x,y=coll:getNormal()
 
+
     if obj1.data=="bala" and obj2.data=="objeto" then
       obj1.obj:remove()
     elseif obj1.data=="bala" and obj2.data=="destruible" then
+
       local x1, y1, x2, y2 = coll:getPositions( )
       if x1 and y1 then
         local poly = obj2.obj:poligono_recorte(x1,y1)
       end
       
       obj1.obj:remove()
+    elseif obj1.data=="personaje" and obj2.data=="bala" then
+      extra:dano(obj1.obj,obj2.obj.dano)
+      obj2.obj:remove()
+    elseif obj1.data=="escudo" and obj2.data=="bala" and obj1.obj.estados.protegido then
+      obj2.obj:remove()
+    elseif obj1.data=="personaje" and obj2.data=="melee" and obj2.obj.estados.atacando_melee then
+      extra:dano(obj1.obj,obj2.obj.dano_melee)
+      
+      local r = obj2.obj.radio-math.pi/2
+      local ix,iy=math.cos(r),math.sin(r)
+      obj1.obj.collider:applyLinearImpulse( -10000*ix,-10000*iy )
+
+      obj2.obj.estados.atacando_melee=false
     end
     	
   end
@@ -193,6 +209,8 @@ function entidad_servidor:custom_layers()
 
       if obj_data then
         obj_data:draw()
+
+        lg.print(tostring(obj_data.hp) .. " , "  .. tostring(obj_data.ira) , obj_data.ox,obj_data.oy-100) 
       end
 
     end

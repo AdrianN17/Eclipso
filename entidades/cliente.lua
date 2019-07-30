@@ -135,7 +135,7 @@ end
 function cliente:update(dt)
     self.client:update()
   
-    self:update_entidad(dt)
+    
   
     if self.client:getState() == "connected" then
         self.tick = self.tick + dt
@@ -143,6 +143,9 @@ function cliente:update(dt)
 
     if self.tick >= self.tickRate then
         self.tick = 0
+
+
+        self:update_entidad(dt)
 
         if #self.chat>0 then
 

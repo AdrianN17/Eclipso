@@ -41,7 +41,8 @@ function aegis:init(entidades,x,y,creador,nombre)
 
 	--asignar variables
 	self.hp=hp 
-	self.ira=ira
+	self.ira=0
+	self.max_ira=ira
 
 	self.velocidad=velocidad
 	self.radio=0
@@ -86,6 +87,7 @@ function aegis:update(dt)
 	funciones:recargando(self,dt)
 	funciones:coger_centro(self)
 	funciones:muerte(self)
+	funciones:regular_ira(self,dt)
 end
 
 function aegis:keypressed(key)
@@ -99,9 +101,6 @@ function aegis:keyreleased(key)
 	funciones:soltar_botones_movimiento(self,key)
 	funciones:soltar_botones_escudo(self,key)
 
-	if key=="k" then
-		self.hp=-500
-	end
 end
 
 function aegis:mousepressed(x,y,button)

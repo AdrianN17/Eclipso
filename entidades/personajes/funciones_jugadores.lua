@@ -366,7 +366,7 @@ end
 --vida 
 
 function funciones_jugadores:muerte(obj)
-  if obj.hp<1 then
+  if not obj.estados.vivo then
     obj:remove()
   end
 end
@@ -399,6 +399,17 @@ function funciones_jugadores:empaquetado_2(obj)
     pack=extra:enviar_data_jugador(obj,"ox","oy","radio","hp","ira","tipo","tipo_escudo","iterator","iterator_2","nombre","estados","melee_x","melee_y")
 
     return pack
+end
+
+function funciones_jugadores:regular_ira(obj,dt)
+  if obj.ira>0 then
+    
+    obj.ira = obj.ira - dt*10
+
+    if obj.ira <0.1 then
+      obj.ira = 0
+    end
+  end
 end
 
 
