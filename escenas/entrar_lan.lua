@@ -103,10 +103,20 @@ function entrar_lan:update(dt)
 
 			end
 		end
+
+		self.gui.layout:reset(self.center.x+200,self.center.y)
+		self.gui.layout:padding(30,30)
+
+
+		self.gui:Label("Mapa : " .. self.registro_server[self.index][1] ,{align="left"}, self.gui.layout:row(100,30))
+		self.gui:Label("Cantidad : " .. self.registro_server[self.index][2] .. "/" .. self.registro_server[self.index][3] ,{align="left"}, self.gui.layout:row(100,30))
+
 	end
 
 	self.gui.layout:reset(self.center.x+100,self.center.y+120)
 	self.gui.layout:padding(100,20)
+
+
 
 
 	if self.gui:Button("Atras" ,{id=6}, self.gui.layout:col(100,30)).hit then
