@@ -15,3 +15,4 @@ end
 
 --enviar imagenes de personajes del servidor al cliente
 
+--colocar contraseña

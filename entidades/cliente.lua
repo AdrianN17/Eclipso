@@ -174,5 +174,4 @@ function cliente:update(dt)
     end
 end
 
-
 return cliente

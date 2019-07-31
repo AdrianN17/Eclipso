@@ -79,6 +79,7 @@ function entrar_lan:update(dt)
 
 
 	if self.gui:Button("Volver" ,{id=4}, self.gui.layout:col(120,30)).hit then
+		self.udp_cliente:close()
 		Gamestate.switch(Menu)
 	end
 
