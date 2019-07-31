@@ -123,6 +123,9 @@ function entidad_servidor:callbacks()
       obj1.obj.collider:applyLinearImpulse( -10000*ix,-10000*iy )
 
       obj2.obj.estados.atacando_melee=false
+    elseif obj1.data=="bala" and obj2.data=="bala" then
+      obj1.obj:remove()
+      obj2.obj:remove()
     end
     	
   end
@@ -210,7 +213,7 @@ function entidad_servidor:custom_layers()
       if obj_data then
         obj_data:draw()
 
-        lg.print(tostring(obj_data.hp) .. " , "  .. tostring(obj_data.ira) , obj_data.ox,obj_data.oy-100) 
+        --lg.print(tostring(obj_data.hp) .. " , "  .. tostring(obj_data.ira) , obj_data.ox,obj_data.oy-100) 
       end
 
     end

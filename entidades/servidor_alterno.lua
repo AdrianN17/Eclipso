@@ -15,8 +15,11 @@ function servidor_alterno:init(ip)
 
 	self.ip_value = ip
 
-	self.updateRate = 0.5
+	self.updateRate = 1
 	self.updateTick = 0
+
+
+	self.broadcast_ip= self:get_broadcast(ip)
 
 end
 
@@ -29,10 +32,26 @@ function servidor_alterno:update_alterno(dt)
 		local datos = self.datos_servidor.mapa .. "," .. self.datos_servidor.max_jugadores .. "," .. self.server:getClientCount() .. "," .. self.ip_value
 	   	local data_encode = mime.b64(datos)
 
-		self.udp_server:sendto(data_encode, "192.168.0.255", clientPort)
+		self.udp_server:sendto(data_encode, self.broadcast_ip, clientPort)
 
 		self.updateTick = 0
 	end
+end
+
+function servidor_alterno:get_broadcast(ip_text)
+	local t = {}
+
+	local regxEverythingExceptComma = '([^.]+)'
+
+	for str in string.gmatch(ip_text, regxEverythingExceptComma) do
+		 table.insert(t,str)
+	end
+
+	t[4] = 255
+
+	local ip = t[1] .. "." .. t[2] .. "." .. t[3] .. "." .. t[4]
+
+	return ip
 end
 
 return servidor_alterno

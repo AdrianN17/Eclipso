@@ -105,12 +105,16 @@ function entrar_lan:update(dt)
 			end
 		end
 
-		self.gui.layout:reset(self.center.x+200,self.center.y)
+		self.gui.layout:reset(self.center.x+200,self.center.y-200)
 		self.gui.layout:padding(30,30)
 
 
-		self.gui:Label("Mapa : " .. self.registro_server[self.index][1] ,{align="left"}, self.gui.layout:row(100,30))
-		self.gui:Label("Cantidad : " .. self.registro_server[self.index][2] .. "/" .. self.registro_server[self.index][3] ,{align="left"}, self.gui.layout:row(100,30))
+		--self.gui:Label("Mapa : " .. self.registro_server[self.index][1] ,{align="left"}, self.gui.layout:row(100,30))
+		--self.gui:Label("Cantidad : " .. self.registro_server[self.index][2] .. "/" .. self.registro_server[self.index][3] ,{align="left"}, self.gui.layout:row(100,30))
+
+		for _,server in ipairs(self.registro_server) do
+			self.gui:Label("Mapa : " .. server[1] .. " , Cantidad " .. server[2] .. "/" ..server[3] , self.gui.layout:row(200,30))
+		end
 
 	end
 

@@ -16,7 +16,7 @@ function cliente_alterno:init()
 
 	self.registro_server={}
 
-	self.updateRate = 0.5
+	self.updateRate = 1
 	self.updateTick = 0
 
 end
