@@ -2,8 +2,11 @@ local Class= require "libs.hump.class"
 local socket = require "socket"
 local mime = require "mime"
 
-local serverPort = 16161
-local clientPort = 61616
+local serverPort = 59999
+local clientPort = 69999
+local max_clients = 16
+local max_servers = 201
+
 
 local servidor_alterno = Class{}
 
@@ -11,7 +14,7 @@ function servidor_alterno:init(ip)
 	self.broadcast_ip= self:get_broadcast(ip)
 
 	self.udp_server = socket.udp()
-	self.udp_server:setpeername("0.0.0.0", serverPort)
+	self.udp_server:setpeername("0.0.0.0", serverPort + lm.random(200,max_servers) )
 	
 	self.udp_server:setoption('broadcast',true)
 
@@ -19,7 +22,7 @@ function servidor_alterno:init(ip)
 
 	self.ip_value = ip
 
-	self.updateRate = 1
+	self.updateRate = 3
 	self.updateTick = 0
 end
 
@@ -32,7 +35,9 @@ function servidor_alterno:update_alterno(dt)
 		local datos = self.datos_servidor.mapa .. "," .. self.datos_servidor.max_jugadores .. "," .. self.server:getClientCount() .. "," .. self.ip_value
 	   	local data_encode = mime.b64(datos)
 
-		self.udp_server:sendto(data_encode, self.broadcast_ip, clientPort)
+	   	for i = 1, max_clients do
+			self.udp_server:sendto(data_encode, self.broadcast_ip, clientPort+i)
+		end
 
 		self.updateTick = 0
 	end

@@ -2,15 +2,17 @@ local Class= require "libs.hump.class"
 local socket = require "socket"
 local mime = require "mime"
 
-local serverPort = 16161
-local clientPort = 61616
+
+local clientPort = 69999
+local max_clients = 16
+
 
 local cliente_alterno = Class{}
 
 function cliente_alterno:init()
 	self.udp_cliente = socket.udp()
 
-	self.udp_cliente:setsockname("0.0.0.0", clientPort)
+	self.udp_cliente:setsockname("0.0.0.0", clientPort + lm.random(1,max_clients))
 	self.udp_cliente:setoption('broadcast',true)
 	self.udp_cliente:settimeout(0)
 
