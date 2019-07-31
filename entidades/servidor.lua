@@ -27,7 +27,7 @@ function servidor:init()
 	
 end
 
-function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,mapas)
+function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,mapas,ip_direccion)
 
 	self.mapa_files=require ("entidades.mapas." .. mapas)
 	self.map=sti(self.mapa_files.mapa)
@@ -47,8 +47,6 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
 	--informacion de servidor
 	self.tickRate = 1/60
   self.tick = 0
-
-  local ip_direccion = self:getIP()
   
   self.server = Sock.newServer(ip_direccion,22122,max_jugadores)
   self.server:setSerialization(bitser.dumps, bitser.loads)
@@ -238,11 +236,6 @@ function servidor:quit()
   self.udp_server:close()
 end
 
-function servidor:getIP()
-  local s = socket.udp()
-  s:setpeername("74.125.115.104",80)
-  local ip, _ = s:getsockname()
-  return ip
-end
+
 
 return servidor

@@ -1,5 +1,7 @@
 local Class= require "libs.hump.class"
 local suit=require "libs.suit"
+local socket = require "socket"
+
 local Servidor=require "entidades.servidor"
 
 local crear_lan= Class{}
@@ -117,7 +119,13 @@ function crear_lan:update(dt)
 
 		if max_jugadores~= nil and max_enemigos~= nil then
 			if max_jugadores<9 and max_enemigos<51 then
-				Gamestate.switch(Servidor,nickname,max_jugadores,max_enemigos,personaje,mapa)
+				
+				local ip = self:getIP()
+				local ok = self:validar_puerto(ip)
+
+				if ok then
+					Gamestate.switch(Servidor,nickname,max_jugadores,max_enemigos,personaje,mapa,ip)
+				end
 			end
 		end
 		
@@ -135,6 +143,24 @@ end
 
 function crear_lan:keypressed(key)
 	self.gui:keypressed(key)
+end
+
+function crear_lan:getIP()
+  local s = socket.udp()
+  s:setpeername("74.125.115.104",80)
+  local ip, _ = s:getsockname()
+  s:close()
+
+  return ip
+end
+
+function crear_lan:validar_puerto(ip)
+	local udp = socket.udp()
+	udp:setsockname(ip, 22122)
+	local ok = udp:getsockname()
+	udp:close()
+
+	return ok
 end
 
 return crear_lan
