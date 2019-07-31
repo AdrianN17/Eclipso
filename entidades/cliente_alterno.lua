@@ -12,7 +12,18 @@ local cliente_alterno = Class{}
 function cliente_alterno:init()
 	self.udp_cliente = socket.udp()
 
-	self.udp_cliente:setsockname("0.0.0.0", clientPort + lm.random(1,max_clients))
+	local ok = nil
+	local contador= 5
+
+	repeat 
+		self.udp_cliente:setsockname("0.0.0.0", clientPort + lm.random(1,max_clients))
+		ok = self.udp_cliente:getsockname()
+		contador=contador+1
+	until ok or contador > 5 
+
+
+	
+
 	self.udp_cliente:setoption('broadcast',true)
 	self.udp_cliente:settimeout(0)
 

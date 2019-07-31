@@ -118,6 +118,9 @@ function entrar_lan:update(dt)
 			end
 		end
 
+	else
+		--logo cargando
+		self.gui:Label("Cargando .... " , self.center.x+150,self.center.y,100,30)
 	end
 
 	self.gui.layout:reset(self.center.x+100,self.center.y+120)

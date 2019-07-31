@@ -13,8 +13,15 @@ local servidor_alterno = Class{}
 function servidor_alterno:init(ip)
 	self.broadcast_ip= self:get_broadcast(ip)
 
-	self.udp_server = socket.udp()
-	self.udp_server:setpeername("0.0.0.0", serverPort + lm.random(200,max_servers) )
+	local ok = nil
+	local contador= 5
+
+	repeat 
+		self.udp_server = socket.udp()
+		self.udp_server:setsockname("0.0.0.0", serverPort + lm.random(200,max_servers) )
+		ok = self.udp_server:getsockname()
+		contador=contador+1
+	until ok or contador > 5 
 	
 	self.udp_server:setoption('broadcast',true)
 
