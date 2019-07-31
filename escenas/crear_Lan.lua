@@ -116,7 +116,9 @@ function crear_lan:update(dt)
 
 
 		if max_jugadores~= nil and max_enemigos~= nil then
-			Gamestate.switch(Servidor,nickname,max_jugadores,max_enemigos,personaje,mapa)
+			if max_jugadores<9 and max_enemigos<51 then
+				Gamestate.switch(Servidor,nickname,max_jugadores,max_enemigos,personaje,mapa)
+			end
 		end
 		
 	end
