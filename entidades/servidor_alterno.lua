@@ -8,19 +8,19 @@ local clientPort = 61616
 local servidor_alterno = Class{}
 
 function servidor_alterno:init(ip)
+	self.broadcast_ip= self:get_broadcast(ip)
+
 	self.udp_server = socket.udp()
-	self.udp_server:setsockname("0.0.0.0", serverPort)
+	self.udp_server:setpeername("0.0.0.0", serverPort)
 	
 	self.udp_server:setoption('broadcast',true)
+
+	self.udp_server:settimeout(0)
 
 	self.ip_value = ip
 
 	self.updateRate = 1
 	self.updateTick = 0
-
-
-	self.broadcast_ip= self:get_broadcast(ip)
-
 end
 
 function servidor_alterno:update_alterno(dt)

@@ -31,7 +31,6 @@ function cliente_alterno:update_alterno(dt)
 		
 			datagram, msg_or_nil, port_or_nil = self.udp_cliente:receivefrom()
 			if datagram then
-				--print("client received: " .. datagram)
 
 				self:dar_forma_data(datagram)
 
@@ -45,22 +44,31 @@ function cliente_alterno:dar_forma_data(data)
 	local data_normal = mime.unb64(data)
 
 	local t = {}
+	local t_final = {}
 	local regxEverythingExceptComma = '([^,]+)'
 
 	for str in string.gmatch(data_normal, regxEverythingExceptComma) do
 		 table.insert(t,str)
 	end
 
-	self:validar_data(t)
+	
+	t_final.mapa = t[1]
+	t_final.max_jugadores = t[2]
+	t_final.can_jugadores = t[3]
+	t_final.ip = t[4]
+
+	self:validar_data(t_final)
 end
 
 function cliente_alterno:validar_data(data)
 
 	if #self.registro_server>0 then
 
-		for _,datos in ipairs(self.registro_server) do
+		for i,datos in ipairs(self.registro_server) do
 			if datos.ip ~= data.ip then
 				table.insert(self.registro_server,data)
+			else
+				self.registro_server[i].max_jugadores, self.registro_server[i].can_jugadores = data.max_jugadores , data.can_jugadores
 			end
 		end
 	else

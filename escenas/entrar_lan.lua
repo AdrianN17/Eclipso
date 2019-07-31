@@ -84,36 +84,38 @@ function entrar_lan:update(dt)
 	end
 
 	if #self.registro_server>0 then
-		if self.gui:Button("Unirse" ,{id=5}, self.gui.layout:col()).hit  then
-			if self.input_nickname.text=="" then
-				self.input_nickname.text="player"
-			end
 
-			local nickname=self.input_nickname.text
-			local personaje=self.tabla_personajes[self.personajes]
-			local ip=self.registro_server[self.index][4]
-
-			local max_players = tonumber(self.registro_server[self.index][2])
-			local max_players_now = tonumber(self.registro_server[self.index][3])
-
-			if max_players - max_players_now > 0 then
-
-				self.udp_cliente:close()
-				
-				Gamestate.switch(Cliente,nickname,personaje,ip)
-
-			end
-		end
-
-		self.gui.layout:reset(self.center.x+200,self.center.y-200)
+		self.gui.layout:reset(self.center.x+150,self.center.y-200)
 		self.gui.layout:padding(30,30)
 
 
-		--self.gui:Label("Mapa : " .. self.registro_server[self.index][1] ,{align="left"}, self.gui.layout:row(100,30))
-		--self.gui:Label("Cantidad : " .. self.registro_server[self.index][2] .. "/" .. self.registro_server[self.index][3] ,{align="left"}, self.gui.layout:row(100,30))
+		for i,dato in ipairs(self.registro_server) do
 
-		for _,server in ipairs(self.registro_server) do
-			self.gui:Label("Mapa : " .. server[1] .. " , Cantidad " .. server[2] .. "/" ..server[3] , self.gui.layout:row(200,30))
+			if i>(self.index-1)*5 and i<self.index*5 then
+
+				if self.gui:Button("Mapa : " .. dato.mapa .. " | Cantidad : " .. dato.max_jugadores .. "/" .. dato.can_jugadores ,{align="left" , id = 7+i},self.gui.layout:row(250,30)).hit then
+
+					if self.input_nickname.text=="" then
+						self.input_nickname.text="player"
+					end
+
+					local nickname=self.input_nickname.text
+					local personaje=self.tabla_personajes[self.personajes]
+					local ip=dato.ip
+
+					local max_players = tonumber(dato.max_jugadores)
+					local max_players_now = tonumber(dato.can_jugadores)
+
+					if max_players - max_players_now > 0 then
+
+						self.udp_cliente:close()
+						
+						Gamestate.switch(Cliente,nickname,personaje,ip)
+
+					end
+
+				end
+			end
 		end
 
 	end
@@ -122,14 +124,14 @@ function entrar_lan:update(dt)
 	self.gui.layout:padding(100,20)
 
 
-
+	local maximo_registro_server =math.floor( (#self.registro_server/5) + 0.9 ) 
 
 	if self.gui:Button("Atras" ,{id=6}, self.gui.layout:col(100,30)).hit then
 		if #self.registro_server>0 then
 			self.index=self.index-1
 
 			if self.index < 1 then
-				self.index=#self.registro_server
+				self.index=maximo_registro_server
 			end
 		end
 	end
@@ -138,7 +140,7 @@ function entrar_lan:update(dt)
 		if #self.registro_server>0 then
 			self.index=self.index+1
 
-			if self.index > #self.registro_server then
+			if self.index > maximo_registro_server then
 				self.index=1
 			end
 		end
