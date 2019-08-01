@@ -121,7 +121,7 @@ end
 function funciones_jugadores:coger_centro(obj)
 	obj.ox,obj.oy=obj.collider:getX(),obj.collider:getY()
 
-  	obj.collider:setAngle(obj.radio)
+  obj.collider:setAngle(obj.radio)
 end
 
 --controles

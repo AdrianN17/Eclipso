@@ -158,7 +158,7 @@ function servidor:draw()
 
   	self.map:draw(-cx,-cy,1,1)
 
-  	--[[self.cam:draw(function(l,t,w,h)
+  	self.cam:draw(function(l,t,w,h)
       
 	    for _, body in pairs(self.world:getBodies()) do
 	      for _, fixture in pairs(body:getFixtures()) do
@@ -175,7 +175,7 @@ function servidor:draw()
 	      end
 	    end
     
-  	end)]]
+  	end)
 
     self:draw_entidad()
 

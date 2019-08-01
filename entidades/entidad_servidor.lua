@@ -3,6 +3,8 @@ local teclas = require "entidades.funciones.teclas"
 local utf8 = require "utf8"
 local extra = require "entidades.funciones.extra"
 
+local enemigo = require "entidades.enemigos.muymuy"
+
 local entidad_servidor = Class{}
 
 function entidad_servidor:init()
@@ -17,9 +19,12 @@ function entidad_servidor:init()
 	self.img_escudos=require "assets.img.escudos.img_escudos"
   self.img_objetos=self.mapa_files.objetos
   self.img_texturas=self.mapa_files.texturas
+  self.img_enemigos=self.mapa_files.enemigos
 
 	self.world = love.physics.newWorld(0, 0, false)
   self.world:setCallbacks(self:callbacks())
+
+  self:close_map()
 
 	self.gameobject={}
 
@@ -44,6 +49,8 @@ function entidad_servidor:init()
 
   self.envio_destruible=false
 
+
+  enemigo(self,100,300)
 end
 
 function entidad_servidor:draw_entidad()
@@ -448,6 +455,18 @@ end
 
 function entidad_servidor:aumentar_id_creador()
   self.id_creador=self.id_creador+1
+end
+
+function entidad_servidor:close_map()
+  local w,h=self.map.width*self.map.tilewidth, self.map.height*self.map.tileheight
+  local fin_mapa={}
+  fin_mapa.collider=py.newBody(self.world,0,0,"static")
+  fin_mapa.shape=py.newChainShape(true,0,0,w,0,h,w,0,h)
+  fin_mapa.fixture=py.newFixture(fin_mapa.collider,fin_mapa.shape)
+  
+  fin_mapa.fixture:setUserData( {data="objeto",obj=self, pos=5} )
+  
+  return fin_mapa
 end
 
 return entidad_servidor

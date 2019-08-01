@@ -10,6 +10,8 @@
 
 	obj.ox,obj.oy=obj.collider:getX(),obj.collider:getY()
 
+	obj_inicial_x,obj_inicial_y=obj.ox,obj.oy
+
 end
 
 function funciones_balas:masa_bala(obj,mass)
