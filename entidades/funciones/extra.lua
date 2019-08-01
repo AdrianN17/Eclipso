@@ -93,4 +93,10 @@ function extra:dano(objetivo,dano)
 
 end
 
+function extra:empujon(realiza,recibe,direccion)
+	local r = realiza.radio-math.pi/2
+    local ix,iy=math.cos(r),math.sin(r)
+    recibe.collider:applyLinearImpulse( 10000*ix*direccion,10000*iy*direccion )
+end
+
 return extra

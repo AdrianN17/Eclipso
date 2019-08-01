@@ -3,8 +3,6 @@ local teclas = require "entidades.funciones.teclas"
 local utf8 = require "utf8"
 local extra = require "entidades.funciones.extra"
 
-local enemigo = require "entidades.enemigos.muymuy"
-
 local entidad_servidor = Class{}
 
 function entidad_servidor:init()
@@ -20,6 +18,8 @@ function entidad_servidor:init()
   self.img_objetos=self.mapa_files.objetos
   self.img_texturas=self.mapa_files.texturas
   self.img_enemigos=self.mapa_files.enemigos
+
+  self.objetos_enemigos=self.mapa_files.objetos_enemigos
 
 	self.world = love.physics.newWorld(0, 0, false)
   self.world:setCallbacks(self:callbacks())
@@ -49,8 +49,6 @@ function entidad_servidor:init()
 
   self.envio_destruible=false
 
-
-  enemigo(self,100,300)
 end
 
 function entidad_servidor:draw_entidad()
@@ -125,16 +123,32 @@ function entidad_servidor:callbacks()
     elseif obj1.data=="personaje" and obj2.data=="melee" and obj2.obj.estados.atacando_melee then
       extra:dano(obj1.obj,obj2.obj.dano_melee)
       
-      local r = obj2.obj.radio-math.pi/2
-      local ix,iy=math.cos(r),math.sin(r)
-      obj1.obj.collider:applyLinearImpulse( -10000*ix,-10000*iy )
+      extra:empujon(obj2.obj,obj1.obj,-1)
 
       obj2.obj.estados.atacando_melee=false
     elseif obj1.data=="bala" and obj2.data=="bala" then
       obj1.obj:remove()
       obj2.obj:remove()
+    --callback de enemigos
+    elseif obj1.data == "bala" and obj2.data == "enemigos" then
+      obj2.obj:validar_estado_bala(obj1.obj)
+      extra:dano(obj2.obj,obj1.obj.dano)
+      obj1.obj:remove()
+    elseif obj1.data=="personaje" and obj2.data=="vision_enemigo" then
+      obj2.obj:nueva_presas(obj1.obj)
+    elseif obj1.data=="personaje" and obj2.data=="melee_enemigo" then
+      extra:dano(obj1.obj,obj2.obj.dano_melee)
+      
+      extra:empujon(obj2.obj,obj1.obj,1)
+    elseif obj1.data=="enemigos" and obj2.data=="melee" and obj2.obj.estados.atacando_melee then
+      extra:dano(obj1.obj,obj2.obj.dano_melee)
+
+      extra:empujon(obj2.obj,obj1.obj,1)
+
+      obj2.obj.estados.atacando_melee=false
+
     end
-    	
+
   end
   
   local endContact =  function(a, b, coll)
@@ -152,6 +166,10 @@ function entidad_servidor:callbacks()
   	end
     
     local x,y=coll:getNormal()
+
+    if obj1.data=="personaje" and obj2.data=="vision_enemigo" then
+      obj2.obj:eliminar_presas(obj1.obj)
+    end
     
   end
   

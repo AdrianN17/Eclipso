@@ -4,7 +4,7 @@ local funciones =  require "entidades.balas.funciones_balas"
 
 local bala_espinas=Class{}
 
-function bala_espinas:init(entidades,x,y,radio,creador)
+function bala_espinas:init(entidades,x,y,radio,creador,ix,iy)
 	self.tipo="bala_espinas"
 	
 	self.entidades=entidades
@@ -21,7 +21,7 @@ function bala_espinas:init(entidades,x,y,radio,creador)
 
 	self.spritesheet=self.entidades.img_balas
 
-	funciones:crear_cuerpo(self,x,y,area)
+	funciones:crear_cuerpo(self,x,y,area,ix,iy)
 	funciones:masa_bala(self,mass)
 
 	self.entidades:add_obj("balas",self)

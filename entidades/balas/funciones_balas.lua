@@ -1,6 +1,6 @@
  local funciones_balas={}
 
- function funciones_balas:crear_cuerpo(obj,x,y,area)
+ function funciones_balas:crear_cuerpo(obj,x,y,area,ix,iy)
   	obj.collider=py.newBody(obj.entidades.world,x,y,"dynamic")
 	obj.shape=py.newCircleShape(area)
 	obj.fixture=py.newFixture(obj.collider,obj.shape)
@@ -10,8 +10,10 @@
 
 	obj.ox,obj.oy=obj.collider:getX(),obj.collider:getY()
 
-	obj_inicial_x,obj_inicial_y=obj.ox,obj.oy
 
+	if ix and iy then
+		obj.inicial_x,obj.inicial_y=ix,iy
+	end
 end
 
 function funciones_balas:masa_bala(obj,mass)

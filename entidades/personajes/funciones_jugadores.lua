@@ -305,7 +305,7 @@ function funciones_jugadores:nueva_bala(obj,bala,id_brazo)
     local px,py= obj.collider:getWorldPoints(shape:getPoint())
     local radio=math.atan2( obj.ry-py, obj.rx -px)
 
-    bala(obj.entidades,px,py,radio,obj.creador)
+    bala(obj.entidades,px,py,radio,obj.creador,obj.ox,obj.oy)
 end
 
 function funciones_jugadores:nuevas_balas(obj,bala,id_brazo)

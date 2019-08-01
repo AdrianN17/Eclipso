@@ -32,6 +32,9 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
 	self.mapa_files=require ("entidades.mapas." .. mapas)
 	self.map=sti(self.mapa_files.mapa)
 
+  self.max_enemigos=max_enemigos
+  self.cantidad_actual_enemigos=0
+
 	local x,y=lg.getDimensions( )
 	self.map:resize(x,y)
 	self.cam = gamera.new(0,0,self.map.width*self.map.tilewidth, self.map.height*self.map.tileheight)

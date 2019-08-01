@@ -14,5 +14,8 @@ acuaris.objetos_data.punto_inicio	= require "entidades.objetos.punto_inicio"
 
 acuaris.objetos_data.arrecife		= require "entidades.destruible.arrecife"
 
+acuaris.objetos_enemigos={}
+acuaris.objetos_enemigos[1]			= require "entidades.enemigos.muymuy"
+acuaris.objetos_enemigos[2]			= require "entidades.enemigos.cangrejo"
 
 return acuaris
