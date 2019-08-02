@@ -5,7 +5,7 @@ local efectos = Class{}
 
 function efectos:init()
 	self.max_velocidad=self.velocidad
-	self.min_velocidad=self.velocidad/2
+	self.min_velocidad=self.velocidad/3
 
 	self.efecto_tenidos=machine.create({
 		initial="ninguno",

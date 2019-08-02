@@ -231,6 +231,7 @@ function entidad_servidor:custom_layers()
   
   Enemigos_layers.update = function(obj,dt)
     for _, obj_data in ipairs(self.gameobject.enemigos) do
+      
       obj_data:update(dt)
     end
   end
@@ -240,7 +241,7 @@ function entidad_servidor:custom_layers()
       local obj_data = self.gameobject.players[i]
 
       if obj_data then
-        lg.print(obj_data.efecto_tenidos.current,obj_data.ox,obj_data.oy-100)
+        
         obj_data:draw()
       end
 
