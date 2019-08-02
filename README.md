@@ -3,7 +3,7 @@
 A original Multiplayer Top Down Shooter made with Love2d Framework
 The multiplayer work in local (LAN)
 
-![alt text](https://img.shields.io/badge/Love-11.2-ff69b4.svg) ![alt text](https://img.shields.io/badge/Status-Beta%204.0-orange.svg)
+![alt text](https://img.shields.io/badge/Love-11.2-ff69b4.svg) ![alt text](https://img.shields.io/badge/Status-Beta%204.8-orange.svg)
 
 ## Controls
 
@@ -23,11 +23,9 @@ The multiplayer work in local (LAN)
 * Better AI enemies
 * Better sprites (I know, it's ugly)
 * Create sound
-* Better ui design in the launcher
 * Create a boss for each map
 * Create a server to multiplayer
 * Linux executable
-* Create or search a Finite State Machine lib for enemies (module enemy AI)
 * Create APK
 
 ## Framework :
@@ -45,6 +43,7 @@ The multiplayer work in local (LAN)
 * [Polygon](https://github.com/AlexarJING/polygon)
 * [JSON](http://regex.info/blog/lua/json)
 * [Lua State Machine](https://github.com/kyleconroy/lua-state-machine)
+* [Slab](https://github.com/coding-jackalope/Slab)
 
 ## Tools used in this game :
 
