@@ -13,6 +13,12 @@ The multiplayer work in local (LAN)
 * 1,2 : change weapons 
 * Enter : Chat
 
+* Chat comand line Server : 
+  * INIT_GAME : Start game
+  * END_GAME  : Finish game and go to Menu
+* Chat comand line Client : 
+  * EXIT_GAME : Exit game and go to Menu
+
 ## Images
 
 
