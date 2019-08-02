@@ -320,6 +320,12 @@ function entidad_servidor:keypressed(key)
         if self.texto_escrito=="INIT_GAME" then
           self.texto_escrito="Iniciando partida"
 
+          self.timer_udp_lista:after(1,function() 
+            self.udp_server:close()
+            self.usar_puerto_udp=false
+
+          end)
+
           self:finalizar_busqueda()
 
           table.insert(self.chat,self.texto_escrito)
@@ -330,6 +336,7 @@ function entidad_servidor:keypressed(key)
         elseif self.texto_escrito=="END_GAME" then
           self.udp_server:close()
           self.server:destroy()
+          self.timer_udp_lista:clear()
           Gamestate.switch(Menu)
 
         else

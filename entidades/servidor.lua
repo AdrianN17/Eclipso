@@ -17,6 +17,7 @@ personajes.xeon = require "entidades.personajes.xeon"
 personajes.radian = require "entidades.personajes.radian"
 
 local servidor_alterno = require "entidades.servidor_alterno"
+local timer = require "libs.hump.timer"
 
 
 local servidor = Class{
@@ -28,6 +29,9 @@ function servidor:init()
 end
 
 function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,mapas,ip_direccion)
+  self.timer_udp_lista=timer.new()
+  self.usar_puerto_udp=true
+
   self.iniciar_partida=false
   
 	self.mapa_files=require ("entidades.mapas." .. mapas)
@@ -169,7 +173,12 @@ function servidor:draw()
 end
 
 function servidor:update(dt)
-  self:update_alterno(dt)
+
+  self.timer_udp_lista:update(dt)
+
+  if self.usar_puerto_udp then
+    self:update_alterno(dt)
+  end
 
 	self.tick = self.tick + dt
 
@@ -221,8 +230,10 @@ function servidor:update(dt)
 end
 
 function servidor:quit()
+  self.timer_udp_lista:clear()
 	self.server:destroy()
   self.udp_server:close()
+  
 end
 
 
