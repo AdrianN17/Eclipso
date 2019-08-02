@@ -317,12 +317,19 @@ function entidad_servidor:keypressed(key)
 
           self:finalizar_busqueda()
 
+        elseif self.texto_escrito=="END_GAME" then
+          self.udp_server:close()
+          self.server:destroy()
+          Gamestate.switch(Menu)
+
+        else
+           table.insert(self.chat,self.texto_escrito)
+          self.server:sendToAll("chat_total",self.texto_escrito)
+          self.texto_escrito=""
+          self:control_chat()
         end
 
-        table.insert(self.chat,self.texto_escrito)
-        self.server:sendToAll("chat_total",self.texto_escrito)
-        self.texto_escrito=""
-        self:control_chat()
+       
     end
   end
 
@@ -338,7 +345,7 @@ function entidad_servidor:keypressed(key)
   else
 
     local p1 = self.gameobject.players[0]
-    if  p1 and teclas:validar(key) then
+    if  p1 and teclas:validar(key) and self.iniciar_partida then
   		p1:keypressed(key)
   	end
   end
@@ -347,7 +354,7 @@ end
 function entidad_servidor:keyreleased(key)
   if not self.escribiendo then
     local p1 = self.gameobject.players[0]
-  	if p1 and teclas:validar(key) then
+  	if p1 and teclas:validar(key) and self.iniciar_partida then
   		p1:keyreleased(key)
   	end
   end
@@ -356,7 +363,7 @@ end
 function entidad_servidor:mousepressed(x,y,button)
   if not self.escribiendo then
     local p1 = self.gameobject.players[0]
-  	if p1 then
+  	if p1 and self.iniciar_partida then
   		local cx,cy=self.cam:toWorld(x,y)
   		p1:mousepressed(cx,cy,button)
   	end
@@ -370,7 +377,7 @@ end
 function entidad_servidor:mousereleased(x,y,button)
   if not self.escribiendo then
     local p1 = self.gameobject.players[0]
-  	if p1 then
+  	if p1 and self.iniciar_partida then
   		local cx,cy=self.cam:toWorld(x,y)
   		p1:mousereleased(cx,cy,button)
   	end

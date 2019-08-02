@@ -82,7 +82,7 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
 
 
     self.server:on("disconnect", function(data, client)
-      
+
     	local index =client:getIndex()
 
     	self:remove_personaje(index)
@@ -224,6 +224,7 @@ function servidor:quit()
 	self.server:destroy()
   self.udp_server:close()
 end
+
 
 
 
