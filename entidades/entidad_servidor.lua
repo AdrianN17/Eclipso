@@ -118,6 +118,7 @@ function entidad_servidor:callbacks()
       obj1.obj:remove()
     elseif obj1.data=="personaje" and obj2.data=="bala" then
       extra:dano(obj1.obj,obj2.obj.dano)
+      extra:efecto(obj1.obj,obj2.obj)
       obj2.obj:remove()
     elseif obj1.data=="escudo" and obj2.data=="bala" and obj1.obj.estados.protegido then
       obj2.obj:remove()
@@ -134,6 +135,7 @@ function entidad_servidor:callbacks()
     elseif obj1.data == "bala" and obj2.data == "enemigos" then
       obj2.obj:validar_estado_bala(obj1.obj)
       extra:dano(obj2.obj,obj1.obj.dano)
+      extra:efecto(obj2.obj,obj1.obj)
       obj1.obj:remove()
     elseif obj1.data=="personaje" and obj2.data=="vision_enemigo" then
       obj2.obj:nueva_presas(obj1.obj)
@@ -222,6 +224,7 @@ function entidad_servidor:custom_layers()
   
   Enemigos_layers.draw = function(obj)
     for _, obj_data in ipairs(self.gameobject.enemigos) do
+      
       obj_data:draw()
     end
   end
@@ -237,6 +240,7 @@ function entidad_servidor:custom_layers()
       local obj_data = self.gameobject.players[i]
 
       if obj_data then
+        lg.print(obj_data.efecto_tenidos.current,obj_data.ox,obj_data.oy-100)
         obj_data:draw()
       end
 
@@ -316,6 +320,11 @@ function entidad_servidor:keypressed(key)
           self.texto_escrito="Iniciando partida"
 
           self:finalizar_busqueda()
+
+          table.insert(self.chat,self.texto_escrito)
+          self.server:sendToAll("chat_total",self.texto_escrito)
+          self.texto_escrito=""
+          self:control_chat()
 
         elseif self.texto_escrito=="END_GAME" then
           self.udp_server:close()

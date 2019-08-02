@@ -3,10 +3,10 @@ local bala_electricidad = require "entidades.balas.bala_electricidad"
 
 local funciones = require "entidades.personajes.funciones_jugadores"
 local delete = require "entidades.funciones.delete_nil"
-
+local efectos = require "entidades.funciones.efectos"
 
 local solange = Class{
-    __includes={delete}
+    __includes={delete,efectos}
 }
 
 
@@ -75,6 +75,7 @@ function solange:init(entidades,creador,nombre)
 
   	self.entidades:add_players(self)
 
+  	efectos.init(self)
   	delete.init(self)
 end
 
@@ -84,11 +85,16 @@ function solange:draw()
 end
 
 function solange:update(dt)
-	funciones:angulo(self)
-	funciones:movimiento(self,dt)
-	funciones:limite_escudo(self,dt)
-	funciones:iterador_dibujo_ver1(self,dt)
-	funciones:recargando(self,dt)
+	self:update_efecto(dt)
+
+	if self.efecto_tenidos.current ~="congelado" then
+		funciones:angulo(self)
+		funciones:movimiento(self,dt)
+		funciones:limite_escudo(self,dt)
+		funciones:iterador_dibujo_ver1(self,dt)
+		funciones:recargando(self,dt)
+	end
+	
 	funciones:coger_centro(self)
 	funciones:muerte(self)
 	funciones:regular_ira(self,dt)

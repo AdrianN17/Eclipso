@@ -2,9 +2,10 @@ local Class= require "libs.hump.class"
 local delete = require "entidades.funciones.delete"
 local funcion = require "entidades.enemigos.funciones_enemigos"
 local machine = require "libs.statemachine.statemachine"
+local efectos = require "entidades.funciones.efectos"
 
 local cangrejo = Class{
-	__includes = {delete}
+	__includes = {delete,efectos}
 }
 
 function cangrejo:init(entidades,x,y)
@@ -71,6 +72,7 @@ function cangrejo:init(entidades,x,y)
 	self.entidades:add_obj("enemigos",self)
 
 	delete.init(self,"enemigos")
+	efectos.init(self)
 
 	self.fsm=machine.create({
 		initial="rastreo",
@@ -87,17 +89,21 @@ function cangrejo:draw()
 end
 
 function cangrejo:update(dt)
+	self:update_efecto(dt)
 	funcion:actualizar_raycast(self,dt)
-	if self.fsm.current == "rastreo" then
-		funcion:realizar_rastreo(self,dt)
-	elseif self.fsm.current == "alerta" then
-		funcion:funcion_realizar_busqueda(self,dt,self.fsm.current)
-		
-	elseif self.fsm.current == "ataca" then
-		funcion:funcion_realizar_busqueda(self,dt,self.fsm.current)
 
+	if self.efecto_tenidos.current ~="congelado" then
+		if self.fsm.current == "rastreo" then
+			funcion:realizar_rastreo(self,dt)
+		elseif self.fsm.current == "alerta" then
+			funcion:funcion_realizar_busqueda(self,dt,self.fsm.current)
+			
+		elseif self.fsm.current == "ataca" then
+			funcion:funcion_realizar_busqueda(self,dt,self.fsm.current)
+
+		end
 	end
-
+	
 	funcion:coger_centro(self)
 
 	funcion:muerte(self)

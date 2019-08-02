@@ -80,10 +80,17 @@ function entidad_cliente:keypressed(key)
       self.escribiendo=not self.escribiendo
 
       if not self.escribiendo and #self.texto_escrito>0 then
-          table.insert(self.chat,self.texto_escrito)
-          self.client:send("chat", self.texto_escrito )
-          self.texto_escrito=""
-          self:control_chat()
+          if self.texto_escrito == "EXIT_GAME" then
+            
+            self.client:disconnectNow()
+
+            Gamestate.switch(Menu)
+          else
+            table.insert(self.chat,self.texto_escrito)
+            self.client:send("chat", self.texto_escrito )
+            self.texto_escrito=""
+            self:control_chat()
+          end
       end
     end
 

@@ -2,11 +2,11 @@ local Class= require "libs.hump.class"
 local delete = require "entidades.funciones.delete"
 local bala_pulso = require "entidades.balas.bala_pulso"
 local funcion = require "entidades.enemigos.funciones_enemigos"
-
 local machine = require "libs.statemachine.statemachine"
+local efectos = require "entidades.funciones.efectos"
 
 local muymuy = Class{
-	__includes = {delete}
+	__includes = {delete,efectos}
 }
 
 function muymuy:init(entidades,x,y)
@@ -77,6 +77,7 @@ function muymuy:init(entidades,x,y)
   self.entidades:add_obj("enemigos",self)
 
   delete.init(self,"enemigos")
+  efectos.init(self)
 
   self.fsm=machine.create({
   	initial="rastreo",
@@ -94,20 +95,23 @@ function muymuy:draw()
 end
 
 function muymuy:update(dt)
-
+  self:update_efecto(dt)
 	funcion:actualizar_raycast(self,dt)
 
+  
 
+  if self.efecto_tenidos.current ~="congelado" then
 
-	if self.fsm.current == "rastreo" then
-		funcion:realizar_rastreo(self,dt)
-	elseif self.fsm.current == "alerta" then
-		funcion:funcion_realizar_busqueda(self,dt,self.fsm.current)
-		funcion:modulo_disparo(self,dt)
-	elseif self.fsm.current == "ataca" then
-		funcion:funcion_realizar_busqueda(self,dt,self.fsm.current)
-		funcion:modulo_disparo(self,dt)
-	end
+  	if self.fsm.current == "rastreo" then
+  		funcion:realizar_rastreo(self,dt)
+  	elseif self.fsm.current == "alerta" then
+  		funcion:funcion_realizar_busqueda(self,dt,self.fsm.current)
+  		funcion:modulo_disparo(self,dt)
+  	elseif self.fsm.current == "ataca" then
+  		funcion:funcion_realizar_busqueda(self,dt,self.fsm.current)
+  		funcion:modulo_disparo(self,dt)
+  	end
+  end
 	
 	funcion:coger_centro(self)
 

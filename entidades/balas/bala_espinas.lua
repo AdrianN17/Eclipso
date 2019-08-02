@@ -19,6 +19,8 @@ function bala_espinas:init(entidades,x,y,radio,creador,ix,iy)
 	self.velocidad=velocidad
 	self.radio=radio
 
+	self.efecto= "ninguno"
+
 	self.spritesheet=self.entidades.img_balas
 
 	funciones:crear_cuerpo(self,x,y,area,ix,iy)

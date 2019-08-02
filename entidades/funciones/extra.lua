@@ -92,6 +92,26 @@ function extra:dano(objetivo,dano)
 
 end
 
+function extra:efecto(objetivo,bala)
+	if objetivo.efecto_tenidos.current=="ninguno" then
+		local azar = lm.random(1,20)
+
+		if bala.efecto=="quemadura" then
+			if azar%3==0 then
+				objetivo.efecto_tenidos:esquemado()
+			end
+		elseif bala.efecto=="paralisis" then
+			if azar%5==0 then
+				objetivo.efecto_tenidos:eselectrocutado()
+			end
+		elseif bala.efecto=="congelamiento" then
+			if azar%10==0 then
+				objetivo.efecto_tenidos:escongelado()
+			end
+		end
+	end
+end
+
 function extra:empujon(realiza,recibe,direccion)
 	local r = realiza.radio-math.pi/2
     local ix,iy=math.cos(r),math.sin(r)
