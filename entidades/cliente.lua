@@ -3,6 +3,7 @@ local Sock = require "libs.sock.sock"
 local bitser = require "libs.bitser.bitser"
 local gamera = require "libs.gamera.gamera"
 local extra = require "entidades.funciones.extra"
+local slab = require "libs.slab"
 
 local entidad_cliente = require "entidades.entidad_cliente"
 
@@ -17,7 +18,11 @@ function cliente:init()
 end
 
 function cliente:enter(gamestate,nickname,personaje,ip)
+    self.center={}
+    self.center.x=lg.getWidth()/2
+    self.center.y=lg.getHeight()/2
 
+    self.contador_no_game=0
     self.id_player=nil
 
     local x,y=lg.getDimensions( )
@@ -45,7 +50,8 @@ function cliente:enter(gamestate,nickname,personaje,ip)
   
   	self.client:setSchema("jugadores", {
         "player_data",
-        "balas_data"
+        "balas_data",
+        "enemigo_data"
     })
 
     self.client:setSchema("player_init_data",
@@ -62,6 +68,8 @@ function cliente:enter(gamestate,nickname,personaje,ip)
     })
 
     self.client:on("player_init_data", function(data)
+
+        self.contador_no_game=0
 
         self.id_player=data.id  
       
@@ -103,11 +111,13 @@ function cliente:enter(gamestate,nickname,personaje,ip)
     self.client:on("jugadores", function(data)
         local players = data.player_data
         local balas = data.balas_data
+        local enemigos = data.enemigo_data
 
         if self.id_player then
 
             self.gameobject.players=players
             self.gameobject.balas=balas
+            self.gameobject.enemigos=enemigos
         end
     end)
 
@@ -123,6 +133,7 @@ function cliente:enter(gamestate,nickname,personaje,ip)
 end
 
 function cliente:draw()
+
     self:draw_entidad()
 
     lg.print(self.client:getState(), 5, 70)
@@ -130,12 +141,28 @@ function cliente:draw()
     lg.print("Numero :" .. tostring(self.id_player) ,20,30)
     
     lg.print("Current FPS: "..tostring(love.timer.getFPS( )), 10, 10)
+
+    slab.Draw()
 end
 
 function cliente:update(dt)
     self.client:update()
+    slab.Update(dt)
+
+    if not self.id_player then
   
-    
+        self.contador_no_game=self.contador_no_game+dt
+
+
+        if self.contador_no_game > 3 and self.client:getRoundTripTime()> 400 then
+
+          self:conexion_perdida()
+
+        end
+    elseif self.id_player and not self.client:isConnected() and self.client:getRoundTripTime()> 400 then
+        self:conexion_perdida()
+    end
+
   
     if self.client:getState() == "connected" then
         self.tick = self.tick + dt
@@ -172,6 +199,16 @@ function cliente:update(dt)
             self.client:send("datos", datos)
         end
     end
+end
+
+function cliente:conexion_perdida()
+    slab.BeginWindow('Excepcion', {Title = "Conexion fallida",X=self.center.x-25,Y=self.center.y-25})
+        if slab.Button("Ok") then
+            self.client:disconnectNow()
+
+            Gamestate.switch(Menu)
+        end 
+    slab.EndWindow()
 end
 
 return cliente

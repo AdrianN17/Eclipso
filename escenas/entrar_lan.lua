@@ -3,6 +3,8 @@ local suit=require "libs.suit"
 local Cliente=require "entidades.cliente"
 local cliente_alterno = require "entidades.cliente_alterno"
 
+local slab = require "libs.slab"
+
 local entrar_lan = Class{
 	__includes = {cliente_alterno}
 }
@@ -29,15 +31,22 @@ function entrar_lan:enter( )
 
 	cliente_alterno.init(self)
 
+	self.alerta_1=false
+	self.alerta_2=false
+
+	slab.Initialize()
+
 end
 
 function entrar_lan:draw( )
 	self.gui:draw()
+	slab.Draw()
 end
 
 function entrar_lan:update(dt)
 
 	self:update_alterno(dt)
+	slab.Update(dt)
 
 	self.gui.layout:reset(self.center.x-250,self.center.y-285)
 	self.gui.layout:padding(300,20)
@@ -106,12 +115,22 @@ function entrar_lan:update(dt)
 					local max_players = tonumber(dato.max_jugadores)
 					local max_players_now = tonumber(dato.can_jugadores)
 
+					local jugando = dato.jugando
+
 					if max_players - max_players_now > 0 then
 
-						self.udp_cliente:close()
-						
-						Gamestate.switch(Cliente,nickname,personaje,ip)
+						if jugando =="false" then
 
+							self.udp_cliente:close()
+							
+							Gamestate.switch(Cliente,nickname,personaje,ip)
+
+						else
+							self.alerta_2=true
+						end
+
+					else
+						self.alerta_1=true
 					end
 
 				end
@@ -147,6 +166,23 @@ function entrar_lan:update(dt)
 				self.index=1
 			end
 		end
+	end
+
+
+	if self.alerta_1 then
+		slab.BeginWindow('Excepcion_1', {Title = "Servidor Lleno",X=self.center.x-25,Y=self.center.y-25})
+			if slab.Button("Ok") then
+				self.alerta_1=false	
+			end	
+	    slab.EndWindow()
+	end
+
+	if self.alerta_2 then
+		slab.BeginWindow('Excepcion_2', {Title = "Juego Iniciado",X=self.center.x-25,Y=self.center.y-25})
+			if slab.Button("Ok") then
+				self.alerta_2=false	
+			end	
+	    slab.EndWindow()
 	end
 end
 

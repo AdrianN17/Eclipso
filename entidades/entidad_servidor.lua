@@ -38,6 +38,7 @@ function entidad_servidor:init()
   self.gameobject.inicios={}
 
   self:map_read(self.map)
+  self:inicios_random()
   self:custom_layers()
 
   self.chat={}
@@ -237,8 +238,6 @@ function entidad_servidor:custom_layers()
 
       if obj_data then
         obj_data:draw()
-
-        --lg.print(tostring(obj_data.hp) .. " , "  .. tostring(obj_data.ira) , obj_data.ox,obj_data.oy-100) 
       end
 
     end
@@ -312,6 +311,14 @@ function entidad_servidor:keypressed(key)
     self.escribiendo=not self.escribiendo
 
     if not self.escribiendo and #self.texto_escrito>0 then
+
+        if self.texto_escrito=="INIT_GAME" then
+          self.texto_escrito="Iniciando partida"
+
+          self:finalizar_busqueda()
+
+        end
+
         table.insert(self.chat,self.texto_escrito)
         self.server:sendToAll("chat_total",self.texto_escrito)
         self.texto_escrito=""
@@ -424,7 +431,7 @@ end
 
 function entidad_servidor:remove_personaje(i)
   if self.gameobject.players[i] then
-    self.gameobject.players[i]:remove()   
+    self.gameobject.players[i]:remove_final()   
     self.gameobject.players[i]=nil
   end
 end
@@ -485,6 +492,36 @@ function entidad_servidor:close_map()
   fin_mapa.fixture:setUserData( {data="objeto",obj=self, pos=5} )
   
   return fin_mapa
+end
+
+function entidad_servidor:dar_xy_personaje()
+  for i, ini in ipairs(self.gameobject.inicios) do
+    if not ini.creacion_players and ini.tipo=="punto_inicio" then
+      ini.creacion_players=true
+      return ini.ox,ini.oy,i
+    end
+  end
+end
+
+function entidad_servidor:inicios_random()
+
+    local tbl=self.gameobject.inicios
+    local len, random = #tbl, lm.random ;
+    for i = len, 2, -1 do
+        local j = random( 1, i );
+        tbl[i], tbl[j] = tbl[j], tbl[i];
+    end
+    return tbl;
+
+end
+
+
+function entidad_servidor:reiniciar_punto_resureccion(i)
+    self.gameobject.inicios[i].creacion_players=false
+end
+
+function entidad_servidor:finalizar_busqueda()
+  self.iniciar_partida=true
 end
 
 return entidad_servidor

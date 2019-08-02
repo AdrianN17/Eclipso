@@ -24,20 +24,19 @@ end
 function extra:extra_data(obj)
 
   local balas_data={}
+  local data_enemigo={}
  
 	for i,bala in ipairs(obj.gameobject.balas) do 
 		local t=self:enviar_data_jugador(bala,"tipo","ox","oy","radio")
 		table.insert(balas_data,t)
 	end
   
-  --[[for i,enemigo in ipairs(obj.gameobject.enemigos) do 
-		--if collides_object(enemigo,cx-100,cy-100,cw+100,ch+100) then
-			local t=enviar_data_jugador(enemigo,"tipo_indice","tipo_area","ox","oy","radio","hp","ira","iterator")
-			table.insert(data_enemigo,t)
-		--end
-	end]]
+  	for i,enemigo in ipairs(obj.gameobject.enemigos) do 
+		local t=self:enviar_data_jugador(enemigo,"tipo","clase","ox","oy","radio","hp","ira","iterator")
+		table.insert(data_enemigo,t)
+	end
   
-	return balas_data
+	return balas_data,data_enemigo
 end
 
 function extra:extra_destruibles(obj)

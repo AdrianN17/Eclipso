@@ -8,7 +8,10 @@ local radian = Class{
     __includes={delete}
 }
 
-function radian:init(entidades,x,y,creador,nombre)
+function radian:init(entidades,creador,nombre)
+    local x,y,identificador = entidades:dar_xy_personaje()
+    self.identificador_nacimiento_player=identificador
+
     self.tipo="radian"
     self.tipo_escudo="solar"
 

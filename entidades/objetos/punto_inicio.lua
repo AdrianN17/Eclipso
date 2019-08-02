@@ -13,6 +13,8 @@ function punto_inicio:init(entidades,x,y)
 	self.ox,self.oy=x,y
 
 	self.entidades:add_obj("inicios",self)
+
+	self.creacion_players=false
 end
 
 

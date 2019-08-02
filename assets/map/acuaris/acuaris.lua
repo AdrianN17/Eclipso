@@ -9,7 +9,7 @@ return {
   tilewidth = 32,
   tileheight = 32,
   nextlayerid = 12,
-  nextobjectid = 71,
+  nextobjectid = 78,
   properties = {},
   tilesets = {
     {
@@ -69,7 +69,7 @@ return {
       properties = {},
       encoding = "base64",
       compression = "zlib",
-      data = "eJzt2ctu6zAMhOGk6Ps/c7spkAZOogvJGUn/YuDdORQ/k7bT++12+/rN/YDrX76DE12juk+VHhkWeOCxw9V5T53kkTkbeOy5p07yiLbAw2cu8MBj9WuFRWbt6v4xF3t7rOiwo0fmbODhsaeqe+TQR9c99ThzeGj3lKo3Dv1kT+GBBx6neERbXD3Pq3rl0E9XD4WPQz9X8Wjxme2pQz9naldZZM2RQ1938+iZo2cDh76utqeyzdR9xeO/i7qvI3sKD5/rrhareexuofZ4lci5ePf/OPqqPd71b2YueoydXFru109nytj/M30aqdnJ41M90S6ZZx+t0cVj1G7meVFRY29t6t5G2vQ8t6vq2nkuWkw+pbomh1kl8e9TPffcbNS9y/R4dhk9d8T7y4m7s+W+Hv038PAIHl7BwytVHlh4eGDh4YGBhwcOcSY8r71y9T3TG/UZCCHktLCjfcL3lUdm3jNxybHg+8sj0d/F6vOsnozfKdRnWjl4eCXag70VZ4KHT/DwzKwLFrkuvT54aHyuoq6REEIIiQzPO31a3g3VNZ6Qnnd0da27p/dbSV3vbhn9ZsUj14Lf2LT9j/rtU32mVeP8N5qW35Fao+6zymHU41UfI/+26mqV6TDiUVGP437NuO9mz1dVj5NHpcOqHlUmqvO614eHV30KjxX2MR544PHZQ+2Ch9ec4IEHHjoP9flWu3/w8Kq7Ylet6PFYe9VcVMyGyiHyfqtwqZqNHTwyXSocdvW4shndS9UWu3tczUxLKvsfcf+s5rFK8PBJxnMPjzkLtcPpHs/PLbXDyR6ODid6ODv8XX8AGSpv1w=="
+      data = "eJzt2cty4zAMRFE7+f9/TjapclyyzQeAbpJ30aXdDIgjQJJzv91uX7+5H3D9y3dwomtU96nSI8MCDzx2uDrvqZM8MmcDjz331Eke0RZ4+MwFHnisfq2wyKxd3T/mYm+PFR129MicDTw89lR1jxz66LqnHmcOD+2eUvXGoZ/sKTzwwOMUj2iLq+d5Va8c+unqofBx6OcqHi0+sz116OdM7SqLrDly6OtuHj1z9Gzg0NfV9lS2mbqvePx3Ufd1ZE/h4XPd1WI1j90t1B6vEjkX7/4fR1+1x7v+zcxFj7GTS8v9+ulMGft/pk8jNTt5fKon2iXz7KM1uniM2s08Lypq7K1N3dtIm57ndlVdO89Fi8mnVNfkMKsk/n2q556bjbp3mR7PLqPnjnh/OXF3ttzXo/8GHh7Bwyt4eKXKAwsPDyw8PDDw8MAhzoTntVeuvmd6oz4DIYScFna0T/i+8sjMeyYuORZ8f3kk+rtYfZ7Vk/E7hfpMKwcPr0R7sLfiTPDwCR6emXXBItel1wcPjc9V1DUSQgghkeF5p0/Lu6G6xhPS846urnX39H4rqevdLaPfrHjkWvAbm7b/Ub99qs+0apz/RtPyO1Jr1H1WOYx6vOpj5N9WXa0yHUY8Kupx3K8Z993s+arqcfKodFjVo8pEdV73+vDwqk/hscI+xgMPPD57qF3w8JoTPPDAQ+ehPt9q9w8eXnVX7KoVPR5rr5qLitlQOUTebxUuVbOxg0emS4XDrh5XNqN7qdpid4+rmWlJZf8j7p/VPFYJHj7JeO7hMWehdjjd4/m5pXY42cPR4UQPZ4e/6w/PiFof"
     },
     {
       type = "tilelayer",
@@ -916,6 +916,97 @@ return {
           properties = {
             ["destruible"] = true
           }
+        },
+        {
+          id = 71,
+          name = "punto_inicio",
+          type = "",
+          shape = "point",
+          x = 3121.21,
+          y = 139.394,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 72,
+          name = "punto_inicio",
+          type = "",
+          shape = "point",
+          x = 3042.42,
+          y = 3112.12,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 73,
+          name = "punto_inicio",
+          type = "",
+          shape = "point",
+          x = 1417.58,
+          y = 2729.7,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 74,
+          name = "punto_inicio",
+          type = "",
+          shape = "point",
+          x = 1581.82,
+          y = 1969.7,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 75,
+          name = "punto_inicio",
+          type = "",
+          shape = "point",
+          x = 1754.55,
+          y = 1057.58,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 76,
+          name = "punto_inicio",
+          type = "",
+          shape = "point",
+          x = 2651.52,
+          y = 1472.73,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 77,
+          name = "punto_inicio",
+          type = "",
+          shape = "point",
+          x = 151.515,
+          y = 3160.61,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {}
         }
       }
     },

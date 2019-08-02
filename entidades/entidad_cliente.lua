@@ -3,7 +3,9 @@ local sti = require "libs.sti"
 local img_personajes_cliente = require "entidades.solo_cliente.img_personajes_cliente"
 local img_balas_cliente = require "entidades.solo_cliente.img_balas_cliente"
 local img_objetos_cliente = require "entidades.solo_cliente.img_objetos_cliente"
+local img_enemigos_cliente = require "entidades.solo_cliente.img_enemigos_cliente"
 local teclas = require "entidades.funciones.teclas"
+
 
 local utf8 = require("utf8")
 
@@ -65,6 +67,8 @@ function entidad_cliente:draw_entidad()
 end
 
 function entidad_cliente:update_entidad(dt)
+ 
+
 	if self.map then
     self.map:update(dt)
   end
@@ -206,7 +210,7 @@ function entidad_cliente:custom_layers()
   
   Enemigos_layers.draw = function(obj)
     for _, obj_data in ipairs(self.gameobject.enemigos) do
-      --obj_data:draw()
+      img_enemigos_cliente:dibujar_enemigo(obj_data,self.mapa_files.enemigos)
     end
   end
   

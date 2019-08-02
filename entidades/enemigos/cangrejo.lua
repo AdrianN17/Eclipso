@@ -9,6 +9,7 @@ local cangrejo = Class{
 
 function cangrejo:init(entidades,x,y)
 	self.tipo="cangrejo"
+	self.clase="enemigos_marinos"
 
 	self.entidades=entidades
 	self.creador=entidades.enemigos_id_creador

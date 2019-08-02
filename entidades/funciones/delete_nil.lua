@@ -13,7 +13,11 @@ function delete_nil:remove()
   
   self.entidades.server:sendToAll("remover", posicion)
 
-  
+end
+
+function delete_nil:remove_final()
+	self.entidades:reiniciar_punto_resureccion(self.identificador_nacimiento_player)
+	self:remove()
 end
 
 return delete_nil

@@ -12,6 +12,7 @@ local muymuy = Class{
 function muymuy:init(entidades,x,y)
 
 	self.tipo="muymuy"
+  self.clase="enemigos_marinos"
 
 	self.entidades=entidades
 	self.creador=entidades.enemigos_id_creador

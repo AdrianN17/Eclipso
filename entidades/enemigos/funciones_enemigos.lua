@@ -122,11 +122,11 @@ function funciones_enemigos:dibujar_enemigo(obj)
     
     lg.draw(obj.spritesheet["image"],obj.spritesheet[obj.tipo][obj.iterator],obj.ox,obj.oy,obj.radio,obj.spritesheet[obj.tipo].scale,obj.spritesheet[obj.tipo].scale,w/2,h/2)
     
-    lg.print(obj.fsm.current .. " ,  " .. tostring(obj.semi_presa.x) .. " , " .. tostring(obj.semi_presa.y),obj.ox,obj.oy-100)
+    --[[lg.print(obj.fsm.current .. " ,  " .. tostring(obj.semi_presa.x) .. " , " .. tostring(obj.semi_presa.y),obj.ox,obj.oy-100)
 
     if obj.semi_presa.x then
     	love.graphics.circle("fill", obj.semi_presa.x, obj.semi_presa.y, 15)
-    end
+    end]]
     
     
 end
@@ -402,7 +402,7 @@ end
 function funciones_enemigos:empaquetado_1(obj)
     local pack = {}
 
-    pack=extra:enviar_data_jugador(obj,"ox","oy","radio","hp","ira","tipo","iterator","estados")
+    pack=extra:enviar_data_jugador(obj,"ox","oy","radio","hp","ira","tipo","clase","iterator","estados")
 
     return pack
 end

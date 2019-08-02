@@ -11,7 +11,10 @@ local aegis = Class{
 }
 
 
-function aegis:init(entidades,x,y,creador,nombre)
+function aegis:init(entidades,creador,nombre)
+	local x,y,identificador_player = entidades:dar_xy_personaje()
+	self.identificador_nacimiento_player=identificador_player
+
 	self.tipo="aegis"
 	self.tipo_escudo="magnetico"
 

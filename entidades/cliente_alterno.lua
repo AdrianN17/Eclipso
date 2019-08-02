@@ -69,6 +69,7 @@ function cliente_alterno:dar_forma_data(data)
 	t_final.max_jugadores = t[2]
 	t_final.can_jugadores = t[3]
 	t_final.ip = t[4]
+	t_final.jugando= t[5]
 
 	self:validar_data(t_final)
 end
@@ -81,7 +82,7 @@ function cliente_alterno:validar_data(data)
 			if datos.ip ~= data.ip then
 				table.insert(self.registro_server,data)
 			else
-				self.registro_server[i].max_jugadores, self.registro_server[i].can_jugadores = data.max_jugadores , data.can_jugadores
+				self.registro_server[i].max_jugadores, self.registro_server[i].can_jugadores, self.registro_server[i].jugando = data.max_jugadores , data.can_jugadores,data.jugando
 			end
 		end
 	else

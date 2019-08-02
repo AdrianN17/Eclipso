@@ -10,7 +10,10 @@ local xeon = Class{
 }
 
 
-function xeon:init(entidades,x,y,creador,nombre)
+function xeon:init(entidades,creador,nombre)
+    local x,y,identificador = entidades:dar_xy_personaje()
+    self.identificador_nacimiento_player=identificador
+
     self.tipo="xeon"
     self.tipo_escudo="espinas"
 

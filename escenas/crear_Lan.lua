@@ -2,6 +2,8 @@ local Class= require "libs.hump.class"
 local suit=require "libs.suit"
 local socket = require "socket"
 
+local slab = require "libs.slab"
+
 local Servidor=require "entidades.servidor"
 
 local crear_lan= Class{}
@@ -29,14 +31,23 @@ function crear_lan:enter()
 
 	self.max_personajes=#self.tabla_personajes
 	self.max_mapas=#self.tabla_mapas
+
+	slab.Initialize()
+
+	self.alerta_1=false
+	self.alerta_2=false
+	self.alerta_3=false
+
 end
 
 function crear_lan:draw()
 	self.gui:draw()
+	slab.Draw()
 end
 
 function crear_lan:update(dt)
 
+	slab.Update(dt)
 
 	self.gui.layout:reset(self.center.x-200,self.center.y-285)
 	self.gui.layout:padding(250,20)
@@ -125,16 +136,48 @@ function crear_lan:update(dt)
 
 				if ok then
 					Gamestate.switch(Servidor,nickname,max_jugadores,max_enemigos,personaje,mapa,ip)
+				else
+					self.alerta_3=true
 				end
+			else
+				self.alerta_2=true
 			end
+		else
+			self.alerta_1=true
+			
 		end
-		
 	end
 
 	if self.gui:Button("Volver" ,{id=6}, self.gui.layout:col()).hit then
 		Gamestate.switch(Menu)
 	end
 	
+
+	if self.alerta_1 then
+		slab.BeginWindow('Excepcion_1', {Title = "Caracter no valido",X=self.center.x-25,Y=self.center.y-25})
+			if slab.Button("Ok") then
+				self.alerta_1=false
+			end
+
+		slab.EndWindow()
+	end
+
+	if self.alerta_2 then
+		slab.BeginWindow('Excepcion_2', {Title = "Cantidad no valida",X=self.center.x-25,Y=self.center.y-25})
+			if slab.Button("Ok") then
+				self.alerta_2=false
+			end
+	    slab.EndWindow()
+	end
+
+	if self.alerta_3 then
+		slab.BeginWindow('Excepcion_3', {Title = "Servidor activo",X=self.center.x-25,Y=self.center.y-25})
+			if slab.Button("Ok") then
+				self.alerta_3=false	
+			end	
+	    slab.EndWindow()
+	end
+
 end
 
 function crear_lan:textinput(t)

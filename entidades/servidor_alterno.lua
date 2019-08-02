@@ -39,7 +39,8 @@ function servidor_alterno:update_alterno(dt)
 
 	if self.updateTick > self.updateRate then
 
-		local datos = self.datos_servidor.mapa .. "," .. self.datos_servidor.max_jugadores .. "," .. self.server:getClientCount() .. "," .. self.ip_value
+		local datos = self.datos_servidor.mapa .. "," .. self.datos_servidor.max_jugadores .. "," .. self.server:getClientCount() .. "," .. self.ip_value .. "," .. tostring(self.iniciar_partida)
+
 	   	local data_encode = mime.b64(datos)
 
 	   	for i = 1, max_clients do

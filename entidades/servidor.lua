@@ -28,7 +28,8 @@ function servidor:init()
 end
 
 function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,mapas,ip_direccion)
-
+  self.iniciar_partida=false
+  
 	self.mapa_files=require ("entidades.mapas." .. mapas)
 	self.map=sti(self.mapa_files.mapa)
 
@@ -44,7 +45,7 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
 
 	entidad_servidor.init(self)
 
-	personajes[personaje](self,100,100,self.id_creador,nickname)
+	personajes[personaje](self,self.id_creador,nickname)
   self:aumentar_id_creador()
 
 	--informacion de servidor
@@ -75,7 +76,7 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
   	self.server:on("informacion_primaria", function(data, client)
     	local index=client:getIndex()
 
-    	self.gameobject.players[index] = personajes[data.personaje](self,100,100,self.id_creador,data.nickname)
+    	self.gameobject.players[index] = personajes[data.personaje](self,self.id_creador,data.nickname)
       self:aumentar_id_creador()
   	end)
 
@@ -161,25 +162,6 @@ function servidor:draw()
 
   	self.map:draw(-cx,-cy,1,1)
 
-  	self.cam:draw(function(l,t,w,h)
-      
-	    for _, body in pairs(self.world:getBodies()) do
-	      for _, fixture in pairs(body:getFixtures()) do
-	          local shape = fixture:getShape()
-	   
-	          if shape:typeOf("CircleShape") then
-	              local cx, cy = body:getWorldPoints(shape:getPoint())
-	              love.graphics.circle("line", cx, cy, shape:getRadius())
-	          elseif shape:typeOf("PolygonShape") then
-	              love.graphics.polygon("line", body:getWorldPoints(shape:getPoints()))
-	          else
-	              love.graphics.line(body:getWorldPoints(shape:getPoints()))
-	          end
-	      end
-	    end
-    
-  	end)
-
     self:draw_entidad()
 
   	lg.print("Current FPS: "..tostring(love.timer.getFPS( )), 10, 10)
@@ -195,10 +177,14 @@ function servidor:update(dt)
         self.tick = 0
         
 	    self.server:update(dt)
-	    self:update_entidad(dt)
-	    
-	    self.world:update(dt) 
-	    self.map:update(dt) 
+      self:update_entidad(dt)
+
+      if self.iniciar_partida then
+
+  	    self.world:update(dt) 
+  	    self.map:update(dt) 
+
+      end
 
       if #self.chat>0 then
 
@@ -221,7 +207,7 @@ function servidor:update(dt)
 		      end
 		    end
 
-		    local balas_data = extra:extra_data(self)
+		    local balas_data,enemigo_data = extra:extra_data(self)
 
         if self.envio_destruible then
           local destruible_data = extra:extra_destruibles(self)
@@ -230,7 +216,7 @@ function servidor:update(dt)
           self.envio_destruible=false
         end
 
-		    self.server:sendToAll("jugadores", {player_data,balas_data})
+		    self.server:sendToAll("jugadores", {player_data,balas_data,enemigo_data})
 		end
 end
 

@@ -10,7 +10,10 @@ local solange = Class{
 }
 
 
-function solange:init(entidades,x,y,creador,nombre)
+function solange:init(entidades,creador,nombre)
+	local x,y,identificador = entidades:dar_xy_personaje()
+	self.identificador_nacimiento_player=identificador
+
 	self.tipo="solange"
 	self.tipo_escudo="plasma"
 
