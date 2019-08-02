@@ -47,17 +47,17 @@ function arrecife:recorte_figura(poligono_enemigo)
   
   local nuevo_poligono = polybool(self.poligono, poligono_enemigo, "not")
 
-  if #nuevo_poligono<6 then
+  if #nuevo_poligono<4 then
   		local lista_poligono={}
 
 	    for i=1, #nuevo_poligono ,1 do
 
 	    	if funciones:get_area_poligono(nuevo_poligono[i]) >100 then
-		    	local poligono_entero = funciones:poligono_floor(nuevo_poligono[i])
-		    	local poligono_mejorado = funciones:validar_distancia_poligono(poligono_entero)
 
-		    	if poligono_mejorado  then
-		        	arrecife(self.entidades,poligono_mejorado)
+	    		local poligono_validado = funciones:validar_poligono_box2d(nuevo_poligono[i])
+
+	    		if #poligono_validado>=6 and #poligono_validado%2==0 then
+		        	arrecife(self.entidades,poligono_validado)
 		        end
 		    end
 	    end
