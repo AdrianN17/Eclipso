@@ -17,7 +17,7 @@ function entidad_servidor:init()
 	self.world = love.physics.newWorld(0, 0, false)
   self.world:setCallbacks(self:callbacks())
 
-  self:close_map()
+  --self:close_map()
 
 	self.gameobject={}
 
@@ -30,9 +30,10 @@ function entidad_servidor:init()
   self.gameobject.arboles={}
   self.gameobject.inicios={}
 
-  self:map_read(self.map)
+  self:crear_objetos_mapa()
+
+  --self:map_read(self.map)
   self:inicios_random()
-  self:custom_layers()
 
   self.chat={}
   self.texto_escrito=""
@@ -43,31 +44,6 @@ function entidad_servidor:init()
 
   self.envio_destruible=false
 
-end
-
-function entidad_servidor:draw_entidad()
-  if self.escribiendo then
-    lg.setColor( 46/255, 49/255, 49/255, 0.5 )
-    lg.rectangle("fill", 0, lg.getHeight()-50, 280, 20 )
-    lg.setColor( 1, 1, 1, 1 )
-
-    lg.printf(self.texto_escrito, 0, lg.getHeight()-50, lg.getWidth())
-  end
-
-  if #self.chat>0 then
-
-    local w = lg.getWidth()-(40*7)
-
-    lg.setColor( 46/255, 49/255, 49/255, 0.5 )
-    lg.rectangle("fill", w, 0, 280, 20*#self.chat )
-    lg.setColor( 1, 1, 1, 1 )
-
-    local h=0
-    for i,texto in ipairs(self.chat) do
-      lg.print(texto, w, h)
-      h=i*20
-    end
-  end
 end
 
 function entidad_servidor:callbacks()
@@ -177,36 +153,18 @@ function entidad_servidor:getXY()
 	return cx,cy
 end
 
-function entidad_servidor:custom_layers()
-  
-  local Balas_layers = self.map.layers["Balas"]
-  
-  local Enemigos_layers = self.map.layers["Enemigos"] 
-  
-  local Personajes_layers = self.map.layers["Personajes"]
-  
-  local Destruible_layers = self.map.layers["Destruible"]
-  
-  local Objetos_layers = self.map.layers["Objetos"]
-  
-  local Arboles_layers = self.map.layers["Arboles"]
+function entidad_servidor:update_entidades(dt)
 
-  local Inicios_layers = self.map.layers["Inicios"]
-  
-  Balas_layers.update = function(obj,dt)
     for _, obj_data in ipairs(self.gameobject.balas) do
       obj_data:update(dt)
     end
-  end
+
   
-  Enemigos_layers.update = function(obj,dt)
     for _, obj_data in ipairs(self.gameobject.enemigos) do
-      
       obj_data:update(dt)
     end
-  end
+
   
-  Personajes_layers.update = function(obj,dt)
     for i=1,#self.gameobject.players,1 do
       local obj_data = self.gameobject.players[i]
 
@@ -214,124 +172,26 @@ function entidad_servidor:custom_layers()
         obj_data:update(dt)
       end
     end
-  end
   
-  Destruible_layers.update = function(obj,dt)
     for _, obj_data in pairs(self.gameobject.destruible) do
       if obj_data then
         obj_data:update(dt)
       end
     end
-  end
   
-  Objetos_layers.update = function(obj,dt)
     for _, obj_data in ipairs(self.gameobject.objetos) do
       obj_data:update(dt)
     end
-  end
   
-  Arboles_layers.update = function(obj,dt)
     for _, obj_data in ipairs(self.gameobject.arboles) do
       obj_data:update(dt)
     end
-  end
 
-  Inicios_layers.update = function(obj,dt)
     for _, obj_data in ipairs(self.gameobject.inicios) do
       obj_data:update(dt)
     end
-  end
 end
 
-function entidad_servidor:keypressed(key)
-  if key=="return" then
-    self.escribiendo=not self.escribiendo
-
-    if not self.escribiendo and #self.texto_escrito>0 then
-
-        if self.texto_escrito=="INIT_GAME" then
-          self.texto_escrito="Iniciando partida"
-
-          self:finalizar_busqueda()
-
-          table.insert(self.chat,self.texto_escrito)
-          self.server:sendToAll("chat_total",self.texto_escrito)
-          self.texto_escrito=""
-          self:control_chat()
-
-        elseif self.texto_escrito=="END_GAME" then
-          self.server:destroy()
-          love.event.quit()
-
-        else
-           table.insert(self.chat,self.texto_escrito)
-          self.server:sendToAll("chat_total",self.texto_escrito)
-          self.texto_escrito=""
-          self:control_chat()
-        end
-
-       
-    end
-  end
-
-
-  if self.escribiendo then
-    if key == "backspace" then
-        local byteoffset = utf8.offset(self.texto_escrito, -1)
- 
-        if byteoffset then
-            self.texto_escrito = string.sub(self.texto_escrito, 1, byteoffset - 1)
-        end
-    end
-  else
-
-    local p1 = self.gameobject.players[0]
-    if  p1 and teclas:validar(key) and self.iniciar_partida then
-  		p1:keypressed(key)
-  	end
-  end
-end
-
-function entidad_servidor:keyreleased(key)
-  if not self.escribiendo then
-    local p1 = self.gameobject.players[0]
-  	if p1 and teclas:validar(key) and self.iniciar_partida then
-  		p1:keyreleased(key)
-  	end
-  end
-end
-
-function entidad_servidor:mousepressed(x,y,button)
-  if not self.escribiendo then
-    local p1 = self.gameobject.players[0]
-  	if p1 and self.iniciar_partida then
-  		local cx,cy=self.cam:toWorld(x,y)
-  		p1:mousepressed(cx,cy,button)
-  	end
-  else
-    if button==1 then
-      self.escribiendo=false
-    end
-  end
-end
-
-function entidad_servidor:mousereleased(x,y,button)
-  if not self.escribiendo then
-    local p1 = self.gameobject.players[0]
-  	if p1 and self.iniciar_partida then
-  		local cx,cy=self.cam:toWorld(x,y)
-  		p1:mousereleased(cx,cy,button)
-  	end
-  end
-end
-
-function entidad_servidor:textinput(t)
-    if self.escribiendo then
-      if #self.texto_escrito<40 then
-        self.texto_escrito = self.texto_escrito .. t
-      end
-    end
-end
 
 function entidad_servidor:add_obj(name,obj)
 	table.insert(self.gameobject[name],obj)
@@ -384,7 +244,7 @@ function entidad_servidor:remove_personaje(i)
   end
 end
 
-function entidad_servidor:map_read(objects_map)
+--[[function entidad_servidor:map_read(objects_map)
 
   for _, layer in ipairs(self.map.layers) do
     if layer.type=="tilelayer" then
@@ -396,9 +256,21 @@ function entidad_servidor:map_read(objects_map)
   
   self.map:removeLayer("Borrador")
   
+end]]
+
+function entidad_servidor:crear_objetos_mapa()
+  local objetos = self.mapa_files.objetos_data
+
+  for _,data in ipairs(self.mapa_files.points) do
+    if #data == 3 then
+      objetos[data[1]](self,data[2],data[3])
+    else
+      objetos[data[1]](self,data[2])
+    end
+  end
 end
 
-function entidad_servidor:get_objects(objectlayer,objects_map)
+--[[function entidad_servidor:get_objects(objectlayer,objects_map)
   
     for _, obj in pairs(objectlayer.objects) do
       if obj.name then
@@ -406,19 +278,23 @@ function entidad_servidor:get_objects(objectlayer,objects_map)
 
           local polygon = {}
 
+          print("{ " .. obj.name .. " , {")
           for _,data in ipairs(obj.polygon) do
-     
+        
             table.insert(polygon,data.x)
             table.insert(polygon,data.y)
+            print("{" .. data.x .. " , " .. data.y .. "},")
           end
+          print("} } ")
 
           objects_map[obj.name](self,polygon)
         else
+          --print("{" .. obj.name .. "," .. obj.x .. "," .. obj.y .. "},")
           objects_map[obj.name](self,obj.x,obj.y)
         end
       end
     end
-end
+end]]
 
 function entidad_servidor:control_chat()
   if #self.chat> 11 then

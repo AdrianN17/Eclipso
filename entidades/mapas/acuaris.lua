@@ -1,6 +1,9 @@
 local acuaris={}
 
-acuaris.mapa=  "assets/map/acuaris/acuaris.lua"
+--acuaris.mapa=  "assets/map/acuaris/acuaris.lua"
+acuaris.x,acuaris.y=3200,3200
+
+acuaris.points = require "assets.map.acuaris.acuaris_puntos"
 
 acuaris.objetos_data={}
 acuaris.objetos_data.arbol			= require "entidades.objetos.arbol"

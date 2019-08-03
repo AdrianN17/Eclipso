@@ -3,7 +3,6 @@ local Sock = require "libs.sock.sock"
 local bitser = require "libs.bitser.bitser"
 local gamera = require "libs.gamera.gamera"
 local sti = require "libs.sti"
-local socket = require "socket"
 
 local extra = require "entidades.funciones.extra"
 
@@ -32,14 +31,13 @@ function servidor:enter(gamestate,max_jugadores,max_enemigos,mapas,ip_direccion)
   self.iniciar_partida=false
   
 	self.mapa_files=require ("entidades.mapas." .. mapas)
-	self.map=sti(self.mapa_files.mapa)
 
   self.max_enemigos=max_enemigos
   self.cantidad_actual_enemigos=0
 
-	local x,y=lg.getDimensions( )
-	self.map:resize(x,y)
-	self.cam = gamera.new(0,0,self.map.width*self.map.tilewidth, self.map.height*self.map.tileheight)
+	local x,y=920,640
+
+	self.cam = gamera.new(0,0,self.mapa_files.x, self.mapa_files.y)
 	self.cam:setWindow(0,0,x,y)
 
 	--creacion de servidor
@@ -76,6 +74,11 @@ function servidor:enter(gamestate,max_jugadores,max_enemigos,mapas,ip_direccion)
 
     	self.gameobject.players[index] = personajes[data.personaje](self,self.id_creador,data.nickname)
       self:aumentar_id_creador()
+
+      if self.server:getClients()>1 then
+        self.iniciar_partida=true
+      end
+
   	end)
 
 
@@ -86,6 +89,11 @@ function servidor:enter(gamestate,max_jugadores,max_enemigos,mapas,ip_direccion)
     	self:remove_personaje(index)
 
     	self.server:sendToAll("desconexion_player", index)
+
+      if self.server:getClients()<1 then
+        self.server:destroy()
+        love.event.quit("restart")
+      end
     end)
 
 
@@ -148,15 +156,6 @@ function servidor:enter(gamestate,max_jugadores,max_enemigos,mapas,ip_direccion)
     end)
 end
 
-function servidor:draw()
-	local cx,cy,cw,ch=self.cam:getVisible()
-
-  self:draw_entidad()
-
-  lg.print("Current FPS: "..tostring(love.timer.getFPS( )), 10, 10)
-  lg.print("Clientes: "..tostring(self.server:getClientCount()), 10, 30)
-end
-
 function servidor:update(dt)
 
 	self.tick = self.tick + dt
@@ -169,7 +168,7 @@ function servidor:update(dt)
       if self.iniciar_partida then
 
   	    self.world:update(dt) 
-  	    self.map:update(dt) 
+  	    self.update_entidades(dt)
 
       end
 
