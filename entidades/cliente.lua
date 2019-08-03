@@ -45,6 +45,8 @@ function cliente:enter(gamestate,nickname,personaje,ip)
 
     entidad_cliente.init(self)
 
+    slab.Initialize()
+
 
   
   
