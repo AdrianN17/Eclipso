@@ -168,7 +168,7 @@ function servidor:update(dt)
       if self.iniciar_partida then
 
   	    self.world:update(dt) 
-  	    self.update_entidades(dt)
+  	    self:update_entidades(dt)
 
       end
 
