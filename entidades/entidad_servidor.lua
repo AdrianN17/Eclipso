@@ -7,7 +7,7 @@ local entidad_servidor = Class{}
 
 function entidad_servidor:init()
 
-  self.id_player=0
+  self.id_player=1
 
   self.id_creador=1
   self.enemigos_id_creador=100
@@ -68,16 +68,6 @@ function entidad_servidor:draw_entidad()
       h=i*20
     end
   end
-end
-
-function entidad_servidor:update_entidad(dt)
-	local player = self.gameobject.players[0]
-    
-    --camara-muerte del usuario
-    if  player then
-		  self.cam:setPosition(player.ox,player.oy)
-      player.rx,player.ry=self:getXY()
-	 end
 end
 
 function entidad_servidor:callbacks()
@@ -217,7 +207,7 @@ function entidad_servidor:custom_layers()
   end
   
   Personajes_layers.update = function(obj,dt)
-    for i=0,#self.gameobject.players,1 do
+    for i=1,#self.gameobject.players,1 do
       local obj_data = self.gameobject.players[i]
 
       if obj_data then

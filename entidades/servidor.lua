@@ -165,7 +165,6 @@ function servidor:update(dt)
         self.tick = 0
         
 	    self.server:update(dt)
-      self:update_entidad(dt)
 
       if self.iniciar_partida then
 
