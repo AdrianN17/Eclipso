@@ -45,7 +45,7 @@ function servidor:enter(gamestate,max_jugadores,max_enemigos,mapas,ip_direccion)
 	self.tickRate = 1/60
   self.tick = 0
   
-  self.server = Sock.newServer(ip_direccion,22122,max_jugadores)
+  self.server = Sock.newServer(ip_direccion,75000,max_jugadores)
   self.server:setSerialization(bitser.dumps, bitser.loads)
 
 	self.server:enableCompression()
