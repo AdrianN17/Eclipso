@@ -88,8 +88,9 @@ function entrar_online:update(dt)
 
 		local nickname=self.input_nickname.text
 		local personaje=self.tabla_personajes[self.personajes]
+		local ip = self.input_ip_server.text
 		
-		Gamestate.switch(Cliente,nickname,personaje,"192.168.0.3")
+		Gamestate.switch(Cliente,nickname,personaje,ip)
 		
 	end
 
