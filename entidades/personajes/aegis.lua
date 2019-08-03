@@ -72,6 +72,10 @@ function aegis:init(entidades,creador,nombre)
   	self.iterator_2=1
   
   	self.timer_1=0
+  	
+  	self.tiempo_dash=0
+  	self.max_tiempo_dash=1.5
+
 
   	self.entidades:add_players(self)
 
@@ -92,6 +96,7 @@ function aegis:update(dt)
 		funciones:limite_escudo(self,dt)
 		funciones:iterador_dibujo_ver1(self,dt)
 		funciones:recargando(self,dt)
+		funciones:contador_dash(self,dt)
 	end
 
 	funciones:coger_centro(self)
@@ -107,6 +112,7 @@ function aegis:keypressed(key)
 	funciones:cambio_armas(self,key)
 	funciones:presionar_botones_escudo(self,key)
 	funciones:recargar_balas(self,key)
+	funciones:dash(self,key)
 end
 
 function aegis:keyreleased(key)

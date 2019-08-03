@@ -148,6 +148,8 @@ function entidad_servidor:callbacks()
 
       extra:empujon(obj2.obj,obj1.obj,1)
 
+      obj1.obj.radio=-obj2.obj.radio
+
       obj2.obj.estados.atacando_melee=false
 
     end

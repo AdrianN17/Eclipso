@@ -77,6 +77,9 @@ function radian:init(entidades,creador,nombre)
   
     self.timer_1=0
 
+    self.tiempo_dash=0
+    self.max_tiempo_dash=1
+
     self.entidades:add_players(self)
 
     efectos.init(self)
@@ -99,6 +102,7 @@ function radian:update(dt)
         funciones:limite_escudo(self,dt)
         funciones:iterador_dibujo_ver2(self,dt)
         funciones:recargando(self,dt)
+        funciones:contador_dash(self,dt)
     end
     
     funciones:coger_centro(self)
@@ -111,6 +115,7 @@ function radian:keypressed(key)
     funciones:cambio_armas(self,key)
     funciones:presionar_botones_escudo(self,key)
     funciones:recargar_balas(self,key)
+    funciones:dash(self,key)
 end
 
 function radian:keyreleased(key)

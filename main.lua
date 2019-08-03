@@ -11,6 +11,7 @@ function love.load()
 
   	Gamestate.registerEvents()
   	Gamestate.switch(Menu)
+
 end
 
 --enviar imagenes de personajes del servidor al cliente

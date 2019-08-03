@@ -319,9 +319,9 @@ function funciones_jugadores:nuevas_balas(obj,bala,id_brazo)
 
 
 
-    bala(obj.entidades,px,py,radio-math.rad(5),obj.creador)
-    bala(obj.entidades,px,py,radio,obj.creador)
-    bala(obj.entidades,px,py,radio+math.rad(5),obj.creador)
+    bala(obj.entidades,px,py,radio-math.rad(5),obj.creador,obj.ox,obj.oy)
+    bala(obj.entidades,px,py,radio,obj.creador,obj.ox,obj.oy)
+    bala(obj.entidades,px,py,radio+math.rad(5),obj.creador,obj.ox,obj.oy)
 
 end
 
@@ -409,6 +409,26 @@ function funciones_jugadores:regular_ira(obj,dt)
     if obj.ira <0.1 then
       obj.ira = 0
     end
+  end
+end
+
+function funciones_jugadores:dash(obj,key)
+  if key=="q" then
+    if not obj.estados.dash then
+      obj.estados.dash=true
+      local ix,iy = math.cos(obj.radio),math.sin(obj.radio)
+
+      obj.collider:applyLinearImpulse( 20000*ix,20000*iy )
+    end
+  end
+end
+
+function funciones_jugadores:contador_dash(obj,dt)
+  obj.tiempo_dash=obj.tiempo_dash+dt
+
+  if obj.tiempo_dash>obj.max_tiempo_dash then
+    obj.tiempo_dash=0
+    obj.estados.dash=false
   end
 end
 
