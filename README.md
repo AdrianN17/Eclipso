@@ -11,6 +11,7 @@ The multiplayer work in local (LAN)
 * E : shield (ALL, not work)
 * R : reload bullets (only if you have LD weapons)
 * 1,2 : change weapons 
+* Q : dash
 * Enter : Chat
 
 * Chat command line Server : 
