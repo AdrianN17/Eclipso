@@ -37,9 +37,6 @@ function servidor:enter(gamestate,max_jugadores,max_enemigos,mapas,ip_direccion)
 
 	local x,y=920,640
 
-	self.cam = gamera.new(0,0,self.mapa_files.x, self.mapa_files.y)
-	self.cam:setWindow(0,0,x,y)
-
 	--creacion de servidor
 
 	entidad_servidor.init(self)
