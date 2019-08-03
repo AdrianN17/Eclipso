@@ -11,7 +11,7 @@ function love.load()
 	_G.py=love.physics
 
   	Gamestate.registerEvents()
-  	Gamestate.switch(Servidor,8,25,"acuaris",getIP())
+  	Gamestate.switch(Servidor,8,25,"acuaris","localhost")
 
 end
 
