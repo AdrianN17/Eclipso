@@ -7,7 +7,7 @@ local entidad_servidor = Class{}
 
 function entidad_servidor:init()
 
-  self.id_player=1
+  self.id_player=0
 
   self.id_creador=1
   self.enemigos_id_creador=100
