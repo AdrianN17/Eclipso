@@ -12,13 +12,6 @@ function entidad_servidor:init()
   self.id_creador=1
   self.enemigos_id_creador=100
 
-	self.img_personajes=require "assets.img.personajes.img_personajes"
-	self.img_balas=require "assets.img.balas.img_balas"
-	self.img_escudos=require "assets.img.escudos.img_escudos"
-  self.img_objetos=self.mapa_files.objetos
-  self.img_texturas=self.mapa_files.texturas
-  self.img_enemigos=self.mapa_files.enemigos
-
   self.objetos_enemigos=self.mapa_files.objetos_enemigos
 
 	self.world = love.physics.newWorld(0, 0, false)
@@ -209,12 +202,6 @@ function entidad_servidor:custom_layers()
   local Arboles_layers = self.map.layers["Arboles"]
 
   local Inicios_layers = self.map.layers["Inicios"]
-
-  Balas_layers.draw = function(obj)
-    for _, obj_data in ipairs(self.gameobject.balas) do
-      obj_data:draw()
-    end
-  end
   
   Balas_layers.update = function(obj,dt)
     for _, obj_data in ipairs(self.gameobject.balas) do
@@ -222,31 +209,10 @@ function entidad_servidor:custom_layers()
     end
   end
   
-  
-  
-  Enemigos_layers.draw = function(obj)
-    for _, obj_data in ipairs(self.gameobject.enemigos) do
-      
-      obj_data:draw()
-    end
-  end
-  
   Enemigos_layers.update = function(obj,dt)
     for _, obj_data in ipairs(self.gameobject.enemigos) do
       
       obj_data:update(dt)
-    end
-  end
-  
-  Personajes_layers.draw = function(obj)
-    for i=0,#self.gameobject.players,1 do
-      local obj_data = self.gameobject.players[i]
-
-      if obj_data then
-        
-        obj_data:draw()
-      end
-
     end
   end
   
@@ -260,25 +226,11 @@ function entidad_servidor:custom_layers()
     end
   end
   
-  Destruible_layers.draw = function(obj)
-    for _, obj_data in pairs(self.gameobject.destruible) do
-      if obj_data then
-        obj_data:draw()
-      end
-    end
-  end
-  
   Destruible_layers.update = function(obj,dt)
     for _, obj_data in pairs(self.gameobject.destruible) do
       if obj_data then
         obj_data:update(dt)
       end
-    end
-  end
-  
-  Objetos_layers.draw = function(obj)
-    for _, obj_data in ipairs(self.gameobject.objetos) do
-      obj_data:draw()
     end
   end
   
@@ -288,21 +240,9 @@ function entidad_servidor:custom_layers()
     end
   end
   
-  Arboles_layers.draw = function(obj)
-    for _, obj_data in ipairs(self.gameobject.arboles) do
-      obj_data:draw()
-    end
-  end
-  
   Arboles_layers.update = function(obj,dt)
     for _, obj_data in ipairs(self.gameobject.arboles) do
       obj_data:update(dt)
-    end
-  end
-
-  Inicios_layers.draw = function(obj)
-    for _, obj_data in ipairs(self.gameobject.inicios) do
-      obj_data:draw()
     end
   end
 
@@ -322,12 +262,6 @@ function entidad_servidor:keypressed(key)
         if self.texto_escrito=="INIT_GAME" then
           self.texto_escrito="Iniciando partida"
 
-          self.timer_udp_lista:after(1,function() 
-            self.udp_server:close()
-            self.usar_puerto_udp=false
-
-          end)
-
           self:finalizar_busqueda()
 
           table.insert(self.chat,self.texto_escrito)
@@ -336,10 +270,8 @@ function entidad_servidor:keypressed(key)
           self:control_chat()
 
         elseif self.texto_escrito=="END_GAME" then
-          self.udp_server:close()
           self.server:destroy()
-          self.timer_udp_lista:clear()
-          Gamestate.switch(Menu)
+          love.event.quit()
 
         else
            table.insert(self.chat,self.texto_escrito)

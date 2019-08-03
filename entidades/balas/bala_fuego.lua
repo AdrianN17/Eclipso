@@ -23,18 +23,12 @@ function bala_fuego:init(entidades,x,y,radio,creador,ix,iy)
 
 	self.efecto= "quemadura"
 
-	self.spritesheet=self.entidades.img_balas
-
 	funciones:crear_cuerpo(self,x,y,area,ix,iy)
 	funciones:masa_bala(self,mass)
 
 	self.entidades:add_obj("balas",self)
 
 	delete.init(self,"balas")
-end
-
-function bala_fuego:draw()
-	funciones:dibujar_bala(self)
 end
 
 function bala_fuego:update(dt)

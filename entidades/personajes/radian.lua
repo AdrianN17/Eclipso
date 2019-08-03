@@ -68,9 +68,6 @@ function radian:init(entidades,creador,nombre)
 
 
     --dibujo
-
-    self.spritesheet=self.entidades.img_personajes.radian
-    self.spritesheet_escudos=self.entidades.img_escudos
   
     self.iterator=1
     self.iterator_2=1
@@ -84,12 +81,6 @@ function radian:init(entidades,creador,nombre)
 
     efectos.init(self)
     delete.init(self)
-end
-
-function radian:draw()
-    funciones:dibujar_melee(self)
-    funciones:dibujar_personaje(self)
-    funciones:dibujar_escudo(self)
 end
 
 function radian:update(dt)

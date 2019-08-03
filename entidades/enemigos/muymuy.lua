@@ -55,8 +55,6 @@ function muymuy:init(entidades,x,y)
 
   self.velocidad=velocidad
 
-  self.spritesheet=self.entidades.img_enemigos.enemigos_marinos
-
   self.iterator=1
   self.timer_1=0
   self.max_iterator=1
@@ -88,10 +86,6 @@ function muymuy:init(entidades,x,y)
 	}
   })
 
-end
-
-function muymuy:draw()
-	funcion:dibujar_enemigo(self)
 end
 
 function muymuy:update(dt)

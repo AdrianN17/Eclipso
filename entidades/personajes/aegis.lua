@@ -64,9 +64,6 @@ function aegis:init(entidades,creador,nombre)
 
 
 	--dibujo
-
-	self.spritesheet=self.entidades.img_personajes.aegis
-  	self.spritesheet_escudos=self.entidades.img_escudos
   
   	self.iterator=1
   	self.iterator_2=1
@@ -81,11 +78,6 @@ function aegis:init(entidades,creador,nombre)
 
   	efectos.init(self)
   	delete.init(self)
-end
-
-function aegis:draw()
-	funciones:dibujar_personaje(self)
-	funciones:dibujar_escudo(self)
 end
 
 function aegis:update(dt)

@@ -185,22 +185,6 @@ function funciones_jugadores:soltar_arma_de_fuego(obj)
   obj.estados.atacando=false
 end
 
---dibujo
-
-function funciones_jugadores:dibujar_personaje(obj)
-  local x,y,w,h = obj.spritesheet[obj.iterator][obj.iterator_2]:getViewport( )
-    
-    lg.draw(obj.spritesheet["image"],obj.spritesheet[obj.iterator][obj.iterator_2],obj.ox,obj.oy,obj.radio + math.pi/2,
-      obj.spritesheet.scale,obj.spritesheet.scale,w/2,h/2)
-end
-
-function funciones_jugadores:dibujar_escudo(obj)
-  if obj.estados.protegido then
-    local x_s,y_s,w_s,h_s = obj.spritesheet_escudos[obj.tipo_escudo]:getViewport( )
-    lg.draw(obj.spritesheet_escudos["image"],obj.spritesheet_escudos[obj.tipo_escudo],obj.ox,obj.oy,0,obj.spritesheet_escudos.scale,
-      obj.spritesheet_escudos.scale,w_s/2,h_s/2)
-  end
-end
 
 function funciones_jugadores:iterador_dibujo_ver1(obj,dt)
   if obj.estados.moviendo then

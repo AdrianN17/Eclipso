@@ -1,5 +1,5 @@
 Gamestate = require "libs.hump.gamestate"
-Menu = require "escenas.menu"
+Servidor = require "entidades.servidor"
 
 function love.load()
 	
@@ -10,7 +10,7 @@ function love.load()
 	_G.py=love.physics
 
   	Gamestate.registerEvents()
-  	Gamestate.switch(Menu)
+  	Gamestate.switch(Servidor,2,25,"acuaris","192.168.0.3")
 
 end
 

@@ -39,13 +39,4 @@ function funciones_balas:centro_bala(obj)
 	obj.ox,obj.oy=obj.collider:getX(),obj.collider:getY()
 end
 
-
---dibujo
-
-function funciones_balas:dibujar_bala(obj)
-	local x,y,w,h = obj.spritesheet[obj.tipo]:getViewport( )
-  
-  	lg.draw(obj.spritesheet.image,obj.spritesheet[obj.tipo],obj.ox,obj.oy,0,obj.spritesheet.scale,obj.spritesheet.scale,w/2,h/2)
-end
-
 return funciones_balas

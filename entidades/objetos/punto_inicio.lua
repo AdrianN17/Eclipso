@@ -7,19 +7,12 @@ function punto_inicio:init(entidades,x,y)
 	self.tipo="punto_inicio"
 	self.entidades=entidades
 
-	self.spritesheet=self.entidades.img_objetos
-
 	self.radio=0
 	self.ox,self.oy=x,y
 
 	self.entidades:add_obj("inicios",self)
 
 	self.creacion_players=false
-end
-
-
-function punto_inicio:draw()
-	funciones:dibujar_objetos(self)
 end
 
 function punto_inicio:update(dt)

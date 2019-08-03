@@ -16,21 +16,18 @@ personajes.solange = require "entidades.personajes.solange"
 personajes.xeon = require "entidades.personajes.xeon"
 personajes.radian = require "entidades.personajes.radian"
 
-local servidor_alterno = require "entidades.servidor_alterno"
 local timer = require "libs.hump.timer"
 
 
 local servidor = Class{
-	__includes={entidad_servidor,servidor_alterno}
+	__includes={entidad_servidor}
 }
 
 function servidor:init()
 	
 end
 
-function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,mapas,ip_direccion)
-  self.timer_udp_lista=timer.new()
-  self.usar_puerto_udp=true
+function servidor:enter(gamestate,max_jugadores,max_enemigos,mapas,ip_direccion)
 
   self.iniciar_partida=false
   
@@ -48,9 +45,6 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
 	--creacion de servidor
 
 	entidad_servidor.init(self)
-
-	personajes[personaje](self,self.id_creador,nickname)
-  self:aumentar_id_creador()
 
 	--informacion de servidor
 	self.tickRate = 1/60
@@ -152,33 +146,18 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
         	pl:keyreleased(datos.key)
       	end
     end)
-
-    self.datos_servidor={
-      mapa = mapas,
-      max_jugadores = max_jugadores
-    }
-
-    servidor_alterno.init(self,ip_direccion)
 end
 
 function servidor:draw()
 	local cx,cy,cw,ch=self.cam:getVisible()
 
-  	self.map:draw(-cx,-cy,1,1)
+  self:draw_entidad()
 
-    self:draw_entidad()
-
-  	lg.print("Current FPS: "..tostring(love.timer.getFPS( )), 10, 10)
-    lg.print("Clientes: "..tostring(self.server:getClientCount()), 10, 30)
+  lg.print("Current FPS: "..tostring(love.timer.getFPS( )), 10, 10)
+  lg.print("Clientes: "..tostring(self.server:getClientCount()), 10, 30)
 end
 
 function servidor:update(dt)
-
-  self.timer_udp_lista:update(dt)
-
-  if self.usar_puerto_udp then
-    self:update_alterno(dt)
-  end
 
 	self.tick = self.tick + dt
 
@@ -230,9 +209,7 @@ function servidor:update(dt)
 end
 
 function servidor:quit()
-  self.timer_udp_lista:clear()
 	self.server:destroy()
-  self.udp_server:close()
   
 end
 

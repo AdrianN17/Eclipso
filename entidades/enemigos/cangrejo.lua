@@ -54,8 +54,6 @@ function cangrejo:init(entidades,x,y)
 
 	self.velocidad=velocidad
 
-	self.spritesheet=self.entidades.img_enemigos.enemigos_marinos
-
 	self.iterator=1
 	self.timer_1=0
 	self.max_iterator=1
@@ -82,10 +80,6 @@ function cangrejo:init(entidades,x,y)
 			{ name = "rastreando" , from = {"ataca","alerta"} , to = "rastreo" }
 	}
 	})
-end
-
-function cangrejo:draw()
-	funcion:dibujar_enemigo(self)
 end
 
 function cangrejo:update(dt)

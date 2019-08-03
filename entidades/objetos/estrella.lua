@@ -28,18 +28,11 @@ function estrella:init(entidades,x,y)
 -50 , 12,
 -73 , -14}
 
-	self.spritesheet=self.entidades.img_objetos
-
 	self.radio=0
 
 	funciones:crear_objeto_poligono(self,poligono,x,y)
 
 	self.entidades:add_obj("objetos",self)
-end
-
-
-function estrella:draw()
-	funciones:dibujar_objetos(self)
 end
 
 function estrella:update(dt)

@@ -115,22 +115,6 @@ function funciones_enemigos:coger_centro(obj)
   obj.collider:setAngle(obj.radio)
 end
 
---dibujado
-
-function funciones_enemigos:dibujar_enemigo(obj)
-	local x,y,w,h = obj.spritesheet[obj.tipo][obj.iterator]:getViewport( )
-    
-    lg.draw(obj.spritesheet["image"],obj.spritesheet[obj.tipo][obj.iterator],obj.ox,obj.oy,obj.radio,obj.spritesheet[obj.tipo].scale,obj.spritesheet[obj.tipo].scale,w/2,h/2)
-    
-    --[[lg.print(obj.fsm.current .. " ,  " .. tostring(obj.semi_presa.x) .. " , " .. tostring(obj.semi_presa.y),obj.ox,obj.oy-100)
-
-    if obj.semi_presa.x then
-    	love.graphics.circle("fill", obj.semi_presa.x, obj.semi_presa.y, 15)
-    end]]
-    
-    
-end
-
 --animacion
 
 function funciones_enemigos:animacion_enemigo(obj,dt)

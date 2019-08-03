@@ -64,9 +64,6 @@ function solange:init(entidades,creador,nombre)
 
 
 	--dibujo
-
-	self.spritesheet=self.entidades.img_personajes.solange
-  	self.spritesheet_escudos=self.entidades.img_escudos
   
   	self.iterator=1
   	self.iterator_2=1
@@ -80,11 +77,6 @@ function solange:init(entidades,creador,nombre)
 
   	efectos.init(self)
   	delete.init(self)
-end
-
-function solange:draw()
-	funciones:dibujar_personaje(self)
-	funciones:dibujar_escudo(self)
 end
 
 function solange:update(dt)
