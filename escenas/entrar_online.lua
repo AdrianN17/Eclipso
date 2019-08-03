@@ -1,5 +1,6 @@
 local Class= require "libs.hump.class"
 local suit=require "libs.suit"
+local Cliente=require "entidades.cliente"
 
 local entrar_online = Class{}
 
@@ -87,9 +88,9 @@ function entrar_online:update(dt)
 
 		local nickname=self.input_nickname.text
 		local personaje=self.tabla_personajes[self.personajes]
-		local ip=self.input_ip_server.text
 		
-		Gamestate.switch(Cliente,nickname,personaje,ip)
+		Gamestate.switch(Cliente,nickname,personaje,"192.168.0.3")
+		
 	end
 
 	if self.gui:Slider(self.slider_server, {id=8,vertical = true}, self.center.x,self.center.y-200 ,30,500) then
