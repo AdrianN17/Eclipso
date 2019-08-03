@@ -5,7 +5,7 @@ local img_balas_cliente = require "entidades.solo_cliente.img_balas_cliente"
 local img_objetos_cliente = require "entidades.solo_cliente.img_objetos_cliente"
 local img_enemigos_cliente = require "entidades.solo_cliente.img_enemigos_cliente"
 local teclas = require "entidades.funciones.teclas"
-
+local extra = require "entidades.funciones.extra"
 
 local utf8 = require("utf8")
 
@@ -14,6 +14,7 @@ local entidad_cliente = Class{}
 function entidad_cliente:init()
 	self.gameobject={}
 	self.gameobject.players={}
+  self.gameobject.players[0]=nil
 	self.gameobject.balas={}
 	self.gameobject.efectos={}
   self.gameobject.destruible={}
@@ -226,13 +227,7 @@ function entidad_cliente:custom_layers()
       local obj_data = self.gameobject.players[i]
 
       if obj_data then
-        local tipo=obj_data.tipo
-        local tipo_escudo=obj_data.tipo_escudo
-        local spritesheet=self.img_personajes[tipo]
-        local spritesheet_escudo=self.img_escudos
-
-
-        img_personajes_cliente:tipos(tipo,obj_data,spritesheet,spritesheet_escudo)
+        obj_data:draw()
       end
 
     end
@@ -268,6 +263,17 @@ end
 function entidad_cliente:control_chat()
   if #self.chat> 11 then
       table.remove(self.chat,1)
+  end
+end
+
+function entidad_cliente:recepcionar_paquete(paquete)
+  for i=0, #paquete,1 do
+    local pack = paquete[i]
+    if pack then
+      if self.gameobject.players[pack.index] then
+        extra:recibir_data_jugador(pack.paquete,self.gameobject.players[pack.index])
+      end
+    end
   end
 end
 

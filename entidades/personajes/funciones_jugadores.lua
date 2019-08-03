@@ -114,6 +114,7 @@ function funciones_jugadores:movimiento(obj,dt)
 		if vx<obj.velocidad or vy<obj.velocidad then
 			obj.collider:applyLinearImpulse(mx,my)
 		end
+
 	end
 
 end
@@ -122,6 +123,8 @@ function funciones_jugadores:coger_centro(obj)
 	obj.ox,obj.oy=obj.collider:getX(),obj.collider:getY()
 
   obj.collider:setAngle(obj.radio)
+
+  obj.vx,obj.vy=obj.collider:getLinearVelocity()
 end
 
 --controles
@@ -388,7 +391,7 @@ end
 function funciones_jugadores:empaquetado_1(obj)
     local pack = {}
 
-    pack=extra:enviar_data_jugador(obj,"ox","oy","radio","hp","ira","tipo","tipo_escudo","iterator","iterator_2","nombre","estados")
+    pack=extra:enviar_data_jugador(obj,"ox","oy","radio","hp","ira","iterator","iterator_2","estados","vx","vy")
 
     return pack
 end
@@ -396,7 +399,7 @@ end
 function funciones_jugadores:empaquetado_2(obj)
     local pack = {}
 
-    pack=extra:enviar_data_jugador(obj,"ox","oy","radio","hp","ira","tipo","tipo_escudo","iterator","iterator_2","nombre","estados","melee_x","melee_y")
+    pack=extra:enviar_data_jugador(obj,"ox","oy","radio","hp","ira","iterator","iterator_2","estados","melee_x","melee_y","vx","vy")
 
     return pack
 end

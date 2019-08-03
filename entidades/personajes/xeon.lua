@@ -78,6 +78,8 @@ function xeon:init(entidades,creador,nombre)
     self.tiempo_dash=0
     self.max_tiempo_dash=1
 
+    self.vx,self.vy=0,0
+
     self.entidades:add_players(self)
 
     efectos.init(self)
@@ -91,6 +93,8 @@ function xeon:draw()
 end
 
 function xeon:update(dt)
+
+    self.vx,self.vy=0,0
 
     self:update_efecto(dt)
 

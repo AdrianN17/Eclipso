@@ -76,11 +76,14 @@ function aegis:init(entidades,creador,nombre)
   	self.tiempo_dash=0
   	self.max_tiempo_dash=1.5
 
+  	self.vx,self.vy=0,0
+
 
   	self.entidades:add_players(self)
 
   	efectos.init(self)
   	delete.init(self)
+
 end
 
 function aegis:draw()
@@ -89,6 +92,8 @@ function aegis:draw()
 end
 
 function aegis:update(dt)
+
+	self:update_efecto(dt)
 
 	if self.efecto_tenidos.current ~= "congelado" then
 		funciones:angulo(self)
@@ -104,7 +109,7 @@ function aegis:update(dt)
 	funciones:muerte(self)
 	funciones:regular_ira(self,dt)
 
-	self:update_efecto(dt)
+	
 end
 
 function aegis:keypressed(key)

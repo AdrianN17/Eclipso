@@ -66,6 +66,8 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
     "nickname"
   })
 
+  
+
 
 
 	self.server:on("connect", function(data, client)
@@ -74,7 +76,8 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
       local objetos_data,arboles_data,inicios_data = extra:extra_data_fija(self)
       local destruible_data = extra:extra_destruibles(self)
 
-      client:send("player_init_data", {index,mapas,objetos_data,arboles_data,inicios_data,destruible_data}) --, self.img_personajes,self.img_balas,self.img_escudos})
+      client:send("player_init_data", {index,mapas,objetos_data,arboles_data,inicios_data,destruible_data}) 
+
   	end)
   
   	self.server:on("informacion_primaria", function(data, client)
@@ -82,6 +85,15 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
 
     	self.gameobject.players[index] = personajes[data.personaje](self,self.id_creador,data.nickname)
       self:aumentar_id_creador()
+
+      local pj=self.gameobject.players[index]
+
+      
+      self.server:sendToAll("creacion_jugador_cliente",{index,pj.ox,pj.oy,pj.tipo,pj.tipo_escudo,pj.nombre})
+
+      local pj_0=self.gameobject.players[0]
+
+      client:send("creacion_jugador_cliente",{0,pj_0.ox,pj_0.oy,pj_0.tipo,pj_0.tipo_escudo,pj_0.nombre})
   	end)
 
 
@@ -159,6 +171,7 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
     }
 
     servidor_alterno.init(self,ip_direccion)
+
 end
 
 function servidor:draw()
@@ -206,13 +219,15 @@ function servidor:update(dt)
 
       end
 
+
 	    local player_data={}
     
 		    for i=0,#self.gameobject.players,1 do 
 		      if self.gameobject.players[i] == nil then
 		        player_data[i]=nil
 		      else
-		        player_data[i]=self.gameobject.players[i]:pack()
+            local t = self.gameobject.players[i]:pack()
+		        player_data[i]= {index = i , paquete = t}
 		      end
 		    end
 
@@ -225,8 +240,11 @@ function servidor:update(dt)
           self.envio_destruible=false
         end
 
-		    self.server:sendToAll("jugadores", {player_data,balas_data,enemigo_data})
-		end
+		    self.server:sendToAll("data_movil", {player_data,balas_data,enemigo_data})
+
+        self.tiempo_envio_data=0
+  end
+
 end
 
 function servidor:quit()

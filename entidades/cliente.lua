@@ -4,6 +4,7 @@ local bitser = require "libs.bitser.bitser"
 local gamera = require "libs.gamera.gamera"
 local extra = require "entidades.funciones.extra"
 local slab = require "libs.slab"
+local molde_personaje = require "entidades.solo_cliente.molde_personaje"
 
 local entidad_cliente = require "entidades.entidad_cliente"
 
@@ -43,12 +44,14 @@ function cliente:enter(gamestate,nickname,personaje,ip)
 	
   	self.client:enableCompression()
 
+    self.world = love.physics.newWorld(0, 0, false)
+
     entidad_cliente.init(self)
 
 
   
   
-  	self.client:setSchema("jugadores", {
+  	self.client:setSchema("data_movil", {
         "player_data",
         "balas_data",
         "enemigo_data"
@@ -62,10 +65,16 @@ function cliente:enter(gamestate,nickname,personaje,ip)
         "arboles",
         "inicios",
         "destruible"
-        --"img_personajes",
-        --"img_balas",
-        --"img_escudos"
     })
+
+    self.client:setSchema("creacion_jugador_cliente",{
+    "index",
+    "x",
+    "y",
+    "personaje",
+    "escudo",
+    "nombre"
+  })
 
     self.client:on("player_init_data", function(data)
 
@@ -83,13 +92,13 @@ function cliente:enter(gamestate,nickname,personaje,ip)
 
         self.gameobject.destruible = mesh_destruible:generar_mesh(data.destruible,self.img_texturas)
 
-        --self.img_personajes= data.img_personajes
-        --self.img_balas= data.img_balas
-        --self.img_escudos= data.img_escudos
-
         
         self.client:send("informacion_primaria", {personaje,nickname})
         
+    end)
+
+    self.client:on("creacion_jugador_cliente", function(data)
+        self.gameobject.players[data.index]=molde_personaje(self,data.x,data.y,data.personaje,data.escudo,data.nombre)
     end)
 
     self.client:on("nuevos_destruibles", function(data)
@@ -108,14 +117,18 @@ function cliente:enter(gamestate,nickname,personaje,ip)
         end
     end)
 
-    self.client:on("jugadores", function(data)
+    self.client:on("data_movil", function(data)
         local players = data.player_data
         local balas = data.balas_data
         local enemigos = data.enemigo_data
 
         if self.id_player then
 
-            self.gameobject.players=players
+            --print(self.gameobject.players[0],self.gameobject.players[1])
+
+            self:recepcionar_paquete(players)
+            
+            --self.gameobject.players=players
             self.gameobject.balas=balas
             self.gameobject.enemigos=enemigos
         end
@@ -147,6 +160,7 @@ end
 
 function cliente:update(dt)
     self.client:update()
+    self.world:update(dt) 
     slab.Update(dt)
 
     if not self.id_player then
