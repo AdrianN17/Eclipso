@@ -75,7 +75,7 @@ function servidor:enter(gamestate,max_jugadores,max_enemigos,mapas,ip_direccion)
     	self.gameobject.players[index] = personajes[data.personaje](self,self.id_creador,data.nickname)
       self:aumentar_id_creador()
 
-      if self.server:getClients()>1 then
+      if self.server:getClientCount()>1 then
         self.iniciar_partida=true
       end
 
