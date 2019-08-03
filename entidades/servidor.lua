@@ -90,7 +90,7 @@ function servidor:enter(gamestate,max_jugadores,max_enemigos,mapas,ip_direccion)
 
     	self.server:sendToAll("desconexion_player", index)
 
-      if self.server:getClientCount()<1 then
+      if self.server:getClientCount()<1 and self.iniciar_partida then
         self.server:destroy()
         love.event.quit("restart")
       end
