@@ -89,6 +89,7 @@ function aegis:draw()
 end
 
 function aegis:update(dt)
+	self:update_efecto(dt)
 
 	if self.efecto_tenidos.current ~= "congelado" then
 		funciones:angulo(self)
@@ -103,8 +104,7 @@ function aegis:update(dt)
 
 	funciones:muerte(self)
 	funciones:regular_ira(self,dt)
-
-	self:update_efecto(dt)
+	
 end
 
 function aegis:keypressed(key)
