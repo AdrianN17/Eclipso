@@ -133,7 +133,7 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
     	local index = client:getIndex()
       	local pl=self.gameobject.players[index]
 
-      	if pl then
+      	if pl and self.iniciar_partida then
         	pl:mousepressed(datos.x,datos.y,datos.button)
       	end
     end)
@@ -142,7 +142,7 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
     	local index = client:getIndex()
       	local pl=self.gameobject.players[index]
 
-      	if pl then
+      	if pl and self.iniciar_partida then
         	pl:mousereleased(datos.x,datos.y,datos.button)
       	end
     end)
@@ -151,7 +151,7 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
     	local index = client:getIndex()
       	local pl=self.gameobject.players[index]
 
-      	if pl then
+      	if pl and self.iniciar_partida then
         	pl:keypressed(datos.key)
       	end
     end)
@@ -160,7 +160,7 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
     	local index = client:getIndex()
       	local pl=self.gameobject.players[index]
 
-       	if pl then
+       	if pl and self.iniciar_partida then
         	pl:keyreleased(datos.key)
       	end
     end)
