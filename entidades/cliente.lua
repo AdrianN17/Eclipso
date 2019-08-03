@@ -37,7 +37,7 @@ function cliente:enter(gamestate,nickname,personaje,ip)
 
 
 
-	self.client = Sock.newClient(ip, 22122)
+	self.client = Sock.newClient(ip, 75000)
 	self.client:setSerialization(bitser.dumps, bitser.loads)
 
 	
