@@ -1,8 +1,6 @@
 local Class= require "libs.hump.class"
 local Sock = require "libs.sock.sock"
 local bitser = require "libs.bitser.bitser"
-local gamera = require "libs.gamera.gamera"
-local sti = require "libs.sti"
 
 local extra = require "entidades.funciones.extra"
 
