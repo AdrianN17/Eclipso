@@ -92,7 +92,7 @@ function servidor:enter(gamestate,max_jugadores,max_enemigos,mapas,ip_direccion)
 
       if self.server:getClientCount()<1 and self.iniciar_partida then
         self.server:destroy()
-        love.event.quit("restart")
+        love.event.quit()
       end
     end)
 
