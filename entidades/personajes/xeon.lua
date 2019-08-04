@@ -91,6 +91,8 @@ function xeon:update(dt)
         funciones:recargando(self,dt)
         funciones:contador_dash(self,dt)
     end
+
+    funciones:coger_brazos(self)
     
     funciones:coger_centro(self)
     funciones:muerte(self)

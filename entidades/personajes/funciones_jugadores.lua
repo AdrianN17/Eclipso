@@ -416,7 +416,13 @@ function funciones_jugadores:contador_dash(obj,dt)
   end
 end
 
+function funciones_jugadores:coger_brazos(obj)
+  local shape= obj.melee_weapon.fixture:getShape()
+  local x1,y1,x2,y2,x3,y3,x4,y4 = obj.collider:getWorldPoints(shape:getPoints())
+  local ox,oy=(x1+x2+x3+x4)/4,(y1+y2+y3+y4)/4
 
+  obj.melee_x,obj.melee_y=ox,oy
+end
 
 
 return funciones_jugadores
