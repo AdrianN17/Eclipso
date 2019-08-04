@@ -33,8 +33,6 @@ function servidor:enter(gamestate,max_jugadores,max_enemigos,mapas,ip_direccion)
   self.max_enemigos=max_enemigos
   self.cantidad_actual_enemigos=0
 
-	local x,y=920,640
-
 	--creacion de servidor
 
 	entidad_servidor.init(self)
@@ -148,16 +146,18 @@ end
 
 function servidor:update(dt)
 
-	self.tick = self.tick + dt
+  self.tick = self.tick + dt
 
-	if self.tick >= self.tickRate then
+  if self.tick >= self.tickRate then
         self.tick = 0
         
-	    self.server:update(dt)
+      self.server:update(dt)
 
       if self.iniciar_partida then
-        self:update_entidades(dt)
-  	    self.world:update(dt) 
+
+        self.world:update(dt) 
+        self:update_entidades(dt) 
+
       end
 
       if #self.chat>0 then
@@ -171,17 +171,17 @@ function servidor:update(dt)
 
       end
 
-	    local player_data={}
+      local player_data={}
     
-		    for i=0,#self.gameobject.players,1 do 
-		      if self.gameobject.players[i] == nil then
-		        player_data[i]=nil
-		      else
-		        player_data[i]=self.gameobject.players[i]:pack()
-		      end
-		    end
+        for i=0,#self.gameobject.players,1 do 
+          if self.gameobject.players[i] == nil then
+            player_data[i]=nil
+          else
+            player_data[i]=self.gameobject.players[i]:pack()
+          end
+        end
 
-		    local balas_data,enemigo_data = extra:extra_data(self)
+        local balas_data,enemigo_data = extra:extra_data(self)
 
         if self.envio_destruible then
           local destruible_data = extra:extra_destruibles(self)
@@ -190,15 +190,16 @@ function servidor:update(dt)
           self.envio_destruible=false
         end
 
-		    self.server:sendToAll("jugadores", {player_data,balas_data,enemigo_data})
-	end
+        self.server:sendToAll("jugadores", {player_data,balas_data,enemigo_data})
+    end
 
-  if self.server:getClientCount()<1 and self.iniciar_partida then
-    self.server:destroy()
-    love.event.quit()
-  end
-
+    if self.server:getClientCount()<1 and self.iniciar_partida then
+      self.server:destroy()
+      love.event.quit()
+    end
 end
+
+  
 
 function servidor:quit()
 	self.server:destroy()

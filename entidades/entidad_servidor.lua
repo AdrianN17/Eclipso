@@ -44,6 +44,8 @@ function entidad_servidor:init()
 
   self.envio_destruible=false
 
+  self:close_map()
+
 end
 
 function entidad_servidor:callbacks()
@@ -197,15 +199,6 @@ function entidad_servidor:add_obj(name,obj)
 	table.insert(self.gameobject[name],obj)
 end
 
-function entidad_servidor:add_players(obj)
-    if #self.gameobject.players==0 and  self.gameobject.players[0] == nil then
-
-      self.gameobject.players[0]=obj
-    else
-      self.gameobject.players[#self.gameobject.players+1]=obj
-    end
-end
-
 function entidad_servidor:remove_obj(name,obj)
 	for i, e in ipairs(self.gameobject[name]) do
 		if e==obj then
@@ -307,7 +300,7 @@ function entidad_servidor:aumentar_id_creador()
 end
 
 function entidad_servidor:close_map()
-  local w,h=self.map.width*self.map.tilewidth, self.map.height*self.map.tileheight
+  local w,h=self.mapa_files.x,self.mapa_files.y
   local fin_mapa={}
   fin_mapa.collider=py.newBody(self.world,0,0,"static")
   fin_mapa.shape=py.newChainShape(true,0,0,w,0,h,w,0,h)

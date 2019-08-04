@@ -73,8 +73,6 @@ function solange:init(entidades,creador,nombre)
   	self.tiempo_dash=0
   	self.max_tiempo_dash=1.5
 
-  	self.entidades:add_players(self)
-
   	efectos.init(self)
   	delete.init(self)
 end
