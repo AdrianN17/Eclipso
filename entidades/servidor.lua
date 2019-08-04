@@ -84,11 +84,6 @@ function servidor:enter(gamestate,max_jugadores,max_enemigos,mapas,ip_direccion)
     	self:remove_personaje(index)
 
     	self.server:sendToAll("desconexion_player", index)
-
-      if self.server:getClientCount()<1 and self.iniciar_partida then
-        self.server:destroy()
-        love.event.quit()
-      end
     end)
 
 
@@ -161,10 +156,8 @@ function servidor:update(dt)
 	    self.server:update(dt)
 
       if self.iniciar_partida then
-
+        self:update_entidades(dt)
   	    self.world:update(dt) 
-  	    self:update_entidades(dt)
-
       end
 
       if #self.chat>0 then
@@ -198,7 +191,13 @@ function servidor:update(dt)
         end
 
 		    self.server:sendToAll("jugadores", {player_data,balas_data,enemigo_data})
-		end
+	end
+
+  if self.server:getClientCount()<1 and self.iniciar_partida then
+    self.server:destroy()
+    love.event.quit()
+  end
+
 end
 
 function servidor:quit()
