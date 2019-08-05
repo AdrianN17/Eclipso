@@ -353,8 +353,8 @@ function entidad_servidor:keypressed(key)
 
     local p1 = self.gameobject.players[1]
     if  p1 and teclas:validar(key) and self.iniciar_partida then
+      self.server:sendToAll("recibir_servidor_cliente_1_1_muchos",{"keypressed",{key}})
   		p1.obj:keypressed(key)
-  		self.server:sendToAll("key_pressed_servidor",{key})
   	end
   end
 end
@@ -363,8 +363,8 @@ function entidad_servidor:keyreleased(key)
   if not self.escribiendo then
     local p1 = self.gameobject.players[1]
   	if p1 and teclas:validar(key) and self.iniciar_partida then
+      self.server:sendToAll("recibir_servidor_cliente_1_1_muchos",{"keyreleased",{key}})
   		p1.obj:keyreleased(key)
-  		self.server:sendToAll("key_released_servidor",{key})
   	end
   end
 end
@@ -374,9 +374,8 @@ function entidad_servidor:mousepressed(x,y,button)
     local p1 = self.gameobject.players[1]
   	if p1 and self.iniciar_partida then
   		local cx,cy=self.cam:toWorld(x,y)
+      self.server:sendToAll("recibir_servidor_cliente_1_1_muchos",{"mousepressed",{x,y,button}})
   		p1.obj:mousepressed(cx,cy,button)
-
-  		self.server:sendToAll("mouse_pressed_servidor",{cx,cy,button})
   	end
   else
     if button==1 then
@@ -390,8 +389,8 @@ function entidad_servidor:mousereleased(x,y,button)
     local p1 = self.gameobject.players[1]
   	if p1 and self.iniciar_partida then
   		local cx,cy=self.cam:toWorld(x,y)
+      self.server:sendToAll("recibir_servidor_cliente_1_1_muchos",{"mousereleased",{x,y,button}})
   		p1.obj:mousereleased(cx,cy,button)
-  		self.server:sendToAll("mouse_released_servidor",{cx,cy,button})
   	end
   end
 end

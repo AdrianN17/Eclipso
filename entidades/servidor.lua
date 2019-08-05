@@ -28,7 +28,7 @@ function servidor:init()
 end
 
 function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,mapas,ip_direccion)
-  print(nickname)
+
 	self.timer_udp_lista=timer.new()
 	self.usar_puerto_udp=true
 
@@ -68,14 +68,32 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
 		"nickname"
 	})
 
-  self.server:setSchema("data_necesaria_segundos_player",{
-    "radio",
-    "hp",
-    "ira",
-    "ox",
-    "oy",
-    "input_jugador"
-  })
+
+  self.server:setSchema("recibir_cliente_servidor_1_1",
+    {"tipo","data"})
+
+
+  self.server:on("recibir_cliente_servidor_1_1" ,function(data,client)
+    local index=client:getIndex()
+
+    if obj then
+
+      local obj = self:verificar_existencia(index)
+
+      if data.tipo=="keypressed" then
+        obj.obj:keypressed(data.data[1])
+      elseif data.tipo=="keyreleased" then
+        obj.obj:keyreleased(data.data[1])
+      elseif data.tipo=="mousepressed" then
+        obj.obj:mousepressed(data.data[1],data.data[2],data.data[3])
+      elseif data.tipo=="mousereleased" then
+        obj.obj:mousereleased(data.data[1],data.data[2],data.data[3])
+      end
+
+      self.server:sendToAllBut(client,"recibir_servidor_cliente_1_muchos",{index,data.tipo,data.data})
+    end
+
+  end)
 
 
 

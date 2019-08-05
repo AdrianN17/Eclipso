@@ -403,7 +403,7 @@ function entidad_cliente:keypressed(key)
         local pl = self:verificar_existencia(self.id_player)
 
         if pl and self.iniciar_partida then
-         
+          self.client:send("recibir_cliente_servidor_1_1",{"keypressed",{key}})
           pl.obj:keypressed(key)
         end
       end
@@ -417,7 +417,7 @@ function entidad_cliente:keyreleased(key)
         local pl = self:verificar_existencia(self.id_player)
 
         if pl and self.iniciar_partida then
-        
+          self.client:send("recibir_cliente_servidor_1_1",{"keyreleased",{key}})
           pl.obj:keyreleased(key)
         end
       end
@@ -431,7 +431,7 @@ function entidad_cliente:mousepressed(x,y,button)
 
           if pl and self.iniciar_partida then
   	        local cx,cy=self.cam:toWorld(x,y)
-         
+            self.client:send("recibir_cliente_servidor_1_1",{"mousepressed",{x,y,button}})
             pl.obj:mousepressed(x,y,button)
   	      end
       else
@@ -449,7 +449,7 @@ function entidad_cliente:mousereleased(x,y,button)
 
           if pl and self.iniciar_partida then
           	local cx,cy=self.cam:toWorld(x,y)
-          
+            self.client:send("recibir_cliente_servidor_1_1",{"mousereleased",{x,y,button}})
             pl.obj:mousereleased(x,y,button)
       	  end
       end

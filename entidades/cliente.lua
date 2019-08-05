@@ -24,7 +24,7 @@ function cliente:init()
 end
 
 function cliente:enter(gamestate,nickname,personaje,ip)
-     print(nickname)
+
 	self.center={}
 	self.center.x=lg.getWidth()/2
 	self.center.y=lg.getHeight()/2
@@ -70,11 +70,57 @@ function cliente:enter(gamestate,nickname,personaje,ip)
         "y"
     })
 
+    --servidor a cliente menos el anterior cliente
+    self.client:setSchema("recibir_servidor_cliente_1_muchos",{
+        "index","tipo","data"
+    })
+
+    --servidor envia inputs
+    self.client:setSchema("recibir_servidor_cliente_1_1_muchos",{
+        "index","tipo","data"
+    })
+
+
+
    
 
     self.client:on("connect" , function(data)
     	self.client:send("informacion_primaria", {personaje,nickname})
    	end)
+
+    self.client:on("recibir_servidor_cliente_1_muchos", function(data)
+
+        local obj = self:verificar_existencia(data.index)
+
+        if obj then
+            if data.tipo=="keypressed" then
+              obj.obj:keypressed(data.data[1])
+            elseif data.tipo=="keyreleased" then
+              obj.obj:keyreleased(data.data[1])
+            elseif data.tipo=="mousepressed" then
+              obj.obj:mousepressed(data.data[1],data.data[2],data.data[3])
+            elseif data.tipo=="mousereleased" then
+              obj.obj:mousereleased(data.data[1],data.data[2],data.data[3])
+            end
+        end
+    end)
+
+    self.client:on("recibir_servidor_cliente_1_1_muchos" , function(data)
+        local obj = self:verificar_existencia(0)
+
+        if obj then
+            if data.tipo=="keypressed" then
+              obj.obj:keypressed(data.data[1])
+            elseif data.tipo=="keyreleased" then
+              obj.obj:keyreleased(data.data[1])
+            elseif data.tipo=="mousepressed" then
+              obj.obj:mousepressed(data.data[1],data.data[2],data.data[3])
+            elseif data.tipo=="mousereleased" then
+              obj.obj:mousereleased(data.data[1],data.data[2],data.data[3])
+            end
+        end
+
+    end)
 
 
    self.client:on("player_init_data", function(data)
