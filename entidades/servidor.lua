@@ -72,7 +72,7 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
   self.server:setSchema("recibir_cliente_servidor_1_1",
     {"tipo","data"})
 
-  self.server:setSchema("recibir_mira_cliente_servidor_1_1",{"rx","ry"})
+  self.server:setSchema("recibir_mira_cliente_servidor_1_1",{"rx","ry","cx","cy","cw","ch"})
 
 
   self.server:on("recibir_mira_cliente_servidor_1_1",function(data,client)
@@ -81,6 +81,8 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
 
       if obj then
         obj.obj.rx,obj.obj.ry=data.rx,data.ry
+
+        obj.cx,obj.cy,obj.cw,obj.ch=data.cx,data.cy,data.cw,data.ch
 
         self.server:sendToAllBut(client,"recibir_mira_servidor_cliente_1_muchos",{index,data.rx,data.ry})
       end
@@ -136,6 +138,9 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
         table.insert(actual_players,t)
       end
 
+      _G.lm.setRandomSeed(1)
+      _G.seed = lm.getRandomSeed()
+
 
       client:send("player_init_data", {index,mapas,seed,actual_players,self.max_enemigos}) 
 
@@ -180,8 +185,7 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
 end
 
 function servidor:draw()
-	local cx,cy,cw,ch=self.cam:getVisible()
-
+    local cx,cy,cw,ch=self.cam:getVisible()
   	self.map:draw(-cx,-cy,1,1)
 
     self:draw_entidad()
@@ -214,6 +218,9 @@ function servidor:update(dt)
     end
 
 
+    self:envio_masivo_validaciones()
+
+
 		if #self.chat>0 then
 
       self.tiempo_chat=self.tiempo_chat+dt   
@@ -244,6 +251,20 @@ function servidor:verificar_existencia(index)
 	end
 
 	return obj
+end
+
+function servidor:envio_masivo_validaciones()
+    local clientes = self.server:getClients()
+
+    for _, cliente in ipairs(clientes) do
+      local index = cliente:getIndex()
+      local peer = self.server:getPeerByIndex(index)
+      local obj = self:verificar_existencia(index)
+
+      if obj and obj.cx and obj.cy and obj.cw and obj.ch then
+        self.server:sendToPeer( peer,"enviar_data_principal", {extra:enviar_data_primordiar_jugador(self,obj)})
+      end
+    end
 end
 
 function servidor:quit()

@@ -21,24 +21,6 @@ function extra:recibir_data_jugador(data,obj)
 	end
 end
 
-function extra:extra_data(obj)
-
-  local balas_data={}
-  local data_enemigo={}
- 
-	for i,bala in ipairs(obj.gameobject.balas) do 
-		local t=self:enviar_data_jugador(bala,"tipo","ox","oy","radio")
-		table.insert(balas_data,t)
-	end
-  
-  	for i,enemigo in ipairs(obj.gameobject.enemigos) do 
-		local t=self:enviar_data_jugador(enemigo,"tipo","clase","ox","oy","radio","hp","ira","iterator")
-		table.insert(data_enemigo,t)
-	end
-  
-	return balas_data,data_enemigo
-end
-
 function extra:extra_destruibles(obj)
 	local destruibles_data={}
 
@@ -117,5 +99,121 @@ function extra:empujon(realiza,recibe,direccion)
     local ix,iy=math.cos(r),math.sin(r)
     recibe.collider:applyLinearImpulse( 10000*ix*direccion,10000*iy*direccion )
 end
+
+function extra:collides_object(obj,x,y,w,h)
+	if obj.ox>x and obj.oy>y and obj.ox<w and obj.oy<h then
+		return true
+	else
+		return false
+	end
+end
+
+function extra:enviar_data_primordiar_jugador(obj,player_main)
+	local data_player={}
+	local data_enemigos={}
+
+	if player_main then
+		local cx,cy,cw,ch=player_main.cx,player_main.cy,player_main.cw,player_main.ch
+
+		local vcx=cx-200
+		local vcy=cy-200
+		local vcw=cx+cw+200
+		local vch=cy+ch+200
+
+		for _, player in ipairs(obj.gameobject.players) do
+			if self:collides_object(player_main.obj,vcx,vcy,vcw,vch) then
+				local objeto = player.obj 
+				local t={index=player.index,ox=objeto.ox,oy=objeto.oy,hp=objeto.hp,ira=objeto.ira,estados=objeto.estados,efecto=objeto.efecto_tenidos.current}
+
+				table.insert(data_player,t)
+			end
+		end
+
+		for _ ,enemigo in ipairs(obj.gameobject.enemigos) do
+			if self:collides_object(player_main.obj,vcx,vcy,vcw,vch) then
+				local t={index=enemigo.index,ox=enemigo.ox,oy=enemigo.oy,radio=enemigo.radio,fsm=enemigo.fsm.current,efecto=enemigo.efecto_tenidos.current,tipo=enemigo.tipo}
+			end
+		end
+
+
+	else
+		for _, player in ipairs(obj.gameobject.players) do
+				local t = {}
+				local objeto = player.obj 
+				local t={index=player.index,ox=objeto.ox,oy=objeto.oy,hp=objeto.hp,ira=objeto.ira,estados=objeto.estados,efecto=objeto.efecto_tenidos.current}
+				table.insert(data_player,t)
+		end
+
+		for _ ,enemigo in ipairs(obj.gameobject.enemigos) do
+				local t={index=enemigo.index,ox=enemigo.ox,oy=enemigo.oy,radio=enemigo.radio,fsm=enemigo.fsm.current,efecto=objeto.efecto_tenidos.current,tipo=enemigo.tipo}
+				table.insert(data_enemigos,t)
+		end
+	end
+
+	
+	return data_player,data_enemigos
+end
+
+
+function extra:ingresar_datos_personaje(obj,data)
+
+
+	if obj.ox ~= data.ox and obj.oy ~= data.oy then
+		obj.ox=data.ox
+		obj.oy=data.oy
+		obj.collider:setPosition( data.ox, data.oy )
+	end
+
+	obj.hp=data.hp
+	obj.ira=data.ira
+	obj.estados=data.estados
+
+	if data.efecto =="ninguno" and obj.efecto_tenidos.current ~="ninguno" then
+		obj.efecto_tenidos:normalidad()
+	elseif data.efecto == "quemado" and obj.efecto_tenidos.current =="ninguno" then
+		obj.efecto_tenidos:esquemado()
+	elseif data.efecto == "congelado" and obj.efecto_tenidos.current =="ninguno" then
+		obj.efecto_tenidos:escongelado()
+	elseif data.efecto == "electrocutado"and obj.efecto_tenidos.current =="ninguno"  then
+		obj.efecto_tenidos:eselectrocutado()
+	end
+
+end
+
+function extra:ingresar_datos_enemigo(obj,data)
+	print(data.radio)
+	obj.radio=data.radio
+	if obj.ox ~= data.ox and obj.oy ~= data.oy then
+		obj.ox=data.ox
+		obj.oy=data.oy
+		obj.collider:setPosition( data.ox, data.oy )
+	end
+
+	obj.hp=data.hp
+	obj.ira=data.ira
+	obj.estados=data.estados
+
+
+	if data.efecto =="ninguno" and obj.efecto_tenidos.current ~="ninguno" then
+		obj.efecto_tenidos:normalidad()
+	elseif data.efecto == "quemado" and obj.efecto_tenidos.current =="ninguno" then
+		obj.efecto_tenidos:esquemado()
+	elseif data.efecto == "congelado" and obj.efecto_tenidos.current =="ninguno" then
+		obj.efecto_tenidos:escongelado()
+	elseif data.efecto == "electrocutado"and obj.efecto_tenidos.current =="ninguno"  then
+		obj.efecto_tenidos:eselectrocutado()
+	end
+
+	if data.fsm == "rastreando" and obj.fsm.current ~= "rastreando" then
+		obj.fsm:rastreando()
+	elseif data.fsm == "alerta" and obj.fsm.current == "rastreando" then
+		obj.fsm:alertado()
+	elseif data.fsm == "atacando" and obj.fsm.current == "rastreando" then
+		obj.fsm:atacando()
+	end
+end
+
+
+
 
 return extra

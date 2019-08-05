@@ -48,7 +48,7 @@ function entidad_servidor:init()
 	self.tiempo_chat=0
 	self.max_tiempo_chat=3
 
-
+  self.index_enemigos=1
 end
 
 
@@ -517,6 +517,10 @@ function entidad_servidor:remove_player(obj)
       return id
     end
   end
+end
+
+function entidad_servidor:get_enemigo_id()
+    self.index_enemigos=self.index_enemigos+1
 end
 
 return entidad_servidor

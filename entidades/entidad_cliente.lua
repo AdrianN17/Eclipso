@@ -38,6 +38,8 @@ function entidad_cliente:init()
 	self.tiempo_chat=0
 	self.max_tiempo_chat=3
 
+  self.index_enemigos=1
+
 end
 
 function entidad_cliente:callbacks()
@@ -480,8 +482,8 @@ function entidad_cliente:remove_player(obj)
   end
 end
 
-
-
-
+function entidad_cliente:get_enemigo_id()
+    self.index_enemigos=self.index_enemigos+1
+end
 
 return entidad_cliente

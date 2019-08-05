@@ -4,6 +4,8 @@ local funciones_enemigos = {}
 
 function funciones_enemigos:crear_cuerpo(obj,x,y,poligono)
 
+	obj.index = obj.entidades:get_enemigo_id()
+
 	obj.collider=py.newBody(obj.entidades.world,x,y,"dynamic")
 	obj.collider:setFixedRotation(true)
 

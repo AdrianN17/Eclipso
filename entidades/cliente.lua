@@ -52,6 +52,10 @@ function cliente:enter(gamestate,nickname,personaje,ip)
 
 	slab.Initialize()
 
+    self.client:setSchema("enviar_data_principal",{
+        "data_player","data_enemigos"
+    })
+
 	self.client:setSchema("player_init_data",
     {
         "id",
@@ -92,6 +96,17 @@ function cliente:enter(gamestate,nickname,personaje,ip)
     	self.client:send("informacion_primaria", {personaje,nickname})
    	end)
 
+    self.client:on("enviar_data_principal" , function(data)
+  
+        if data.data_player then
+            self:validar_pos_personajes(data.data_player)
+        end
+
+        if data.data_enemigos then
+            self:validar_pos_enemigos(data.data_enemigos)
+        end
+    end)
+
     self.client:on("recibir_mira_servidor_cliente_1_muchos", function(data) 
         local obj = self:verificar_existencia(data.index)
         if obj then
@@ -106,9 +121,6 @@ function cliente:enter(gamestate,nickname,personaje,ip)
             obj.obj.rx,obj.obj.ry=data.rx,data.ry
         end
     end)
-
-
-
 
     self.client:on("recibir_servidor_cliente_1_muchos", function(data)
 
@@ -266,8 +278,10 @@ function cliente:update(dt)
             self.cam:setPosition(pl.obj.ox,pl.obj.oy)
 
             pl.obj.rx,pl.obj.ry=self:getXY()
+
+            local cx,cy,cw,ch=self.cam:getVisible()
             
-            self.client:send("recibir_mira_cliente_servidor_1_1",{pl.obj.rx,pl.obj.ry})
+            self.client:send("recibir_mira_cliente_servidor_1_1",{pl.obj.rx,pl.obj.ry,cx,cy,cw,ch})
         end
     end
 end
@@ -340,6 +354,36 @@ function cliente:verificar_existencia(index)
 	end
 
 	return obj
+end
+
+function cliente:validar_pos_personajes(data)
+    for _,obj_data in ipairs(data) do
+        local obj = self:verificar_existencia(obj_data.index)
+
+        if obj then
+            extra:ingresar_datos_personaje(obj.obj,obj_data)
+        end
+    end
+end
+
+function cliente:validar_pos_enemigos(data)
+    for _,obj_data in ipairs(data) do
+        local obj = self:verificar_existencia(obj_data.index)
+
+        if obj then
+            extra:ingresar_datos_enemigos(obj,obj_data)
+        end
+    end
+end
+
+function cliente:verificar_existencia_enemigo(index)
+    for _,ene in ipairs(sel.gameobject.enemigos) do
+        if ene.index==index then
+            return ene
+        end
+    end 
+
+    return nil
 end
 
 function cliente:quit()
