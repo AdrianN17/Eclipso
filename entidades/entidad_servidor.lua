@@ -83,6 +83,7 @@ function entidad_servidor:update_entidad(dt)
   if  player then
     self.cam:setPosition(player.ox,player.oy)
     player.rx,player.ry=self:getXY()
+    self.server:sendToAll("recibir_mira_servidor_cliente_1_1_muchos",{player.rx,player.ry})
   end
 end 
 
@@ -353,6 +354,7 @@ function entidad_servidor:keypressed(key)
 
     local p1 = self.gameobject.players[1]
     if  p1 and teclas:validar(key) and self.iniciar_partida then
+
       self.server:sendToAll("recibir_servidor_cliente_1_1_muchos",{"keypressed",{key}})
   		p1.obj:keypressed(key)
   	end
@@ -363,6 +365,7 @@ function entidad_servidor:keyreleased(key)
   if not self.escribiendo then
     local p1 = self.gameobject.players[1]
   	if p1 and teclas:validar(key) and self.iniciar_partida then
+
       self.server:sendToAll("recibir_servidor_cliente_1_1_muchos",{"keyreleased",{key}})
   		p1.obj:keyreleased(key)
   	end
@@ -374,6 +377,7 @@ function entidad_servidor:mousepressed(x,y,button)
     local p1 = self.gameobject.players[1]
   	if p1 and self.iniciar_partida then
   		local cx,cy=self.cam:toWorld(x,y)
+
       self.server:sendToAll("recibir_servidor_cliente_1_1_muchos",{"mousepressed",{x,y,button}})
   		p1.obj:mousepressed(cx,cy,button)
   	end

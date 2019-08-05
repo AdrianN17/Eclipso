@@ -77,16 +77,38 @@ function cliente:enter(gamestate,nickname,personaje,ip)
 
     --servidor envia inputs
     self.client:setSchema("recibir_servidor_cliente_1_1_muchos",{
-        "index","tipo","data"
+        "tipo","data"
     })
 
+    self.client:setSchema("recibir_mira_servidor_cliente_1_muchos",{
+        "index","rx","ry"
+    })
 
-
-   
+    self.client:setSchema("recibir_mira_servidor_cliente_1_1_muchos",{
+        "rx","ry"
+    })
 
     self.client:on("connect" , function(data)
     	self.client:send("informacion_primaria", {personaje,nickname})
    	end)
+
+    self.client:on("recibir_mira_servidor_cliente_1_muchos", function(data) 
+        local obj = self:verificar_existencia(data.index)
+        if obj then
+            obj.obj.rx,obj.obj.ry=data.rx,data.ry
+        end
+    end)
+
+    self.client:on("recibir_mira_servidor_cliente_1_1_muchos", function(data)
+        local obj= self:verificar_existencia(0)
+
+        if obj then
+            obj.obj.rx,obj.obj.ry=data.rx,data.ry
+        end
+    end)
+
+
+
 
     self.client:on("recibir_servidor_cliente_1_muchos", function(data)
 
@@ -244,8 +266,8 @@ function cliente:update(dt)
             self.cam:setPosition(pl.obj.ox,pl.obj.oy)
 
             pl.obj.rx,pl.obj.ry=self:getXY()
-
             
+            self.client:send("recibir_mira_cliente_servidor_1_1",{pl.obj.rx,pl.obj.ry})
         end
     end
 end

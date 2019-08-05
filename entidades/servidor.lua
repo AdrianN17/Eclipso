@@ -72,13 +72,31 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
   self.server:setSchema("recibir_cliente_servidor_1_1",
     {"tipo","data"})
 
+  self.server:setSchema("recibir_mira_cliente_servidor_1_1",{"rx","ry"})
+
+
+  self.server:on("recibir_mira_cliente_servidor_1_1",function(data,client)
+      local index =client:getIndex()
+      local obj = self:verificar_existencia(index)
+
+      if obj then
+        obj.obj.rx,obj.obj.ry=data.rx,data.ry
+
+        self.server:sendToAllBut(client,"recibir_mira_servidor_cliente_1_muchos",{index,data.rx,data.ry})
+      end
+
+    end)
+
 
   self.server:on("recibir_cliente_servidor_1_1" ,function(data,client)
     local index=client:getIndex()
 
-    if obj then
+    local obj = self:verificar_existencia(index)
 
-      local obj = self:verificar_existencia(index)
+    --print("recibir_cliente_servidor_1_1",data.tipo,obj,index)
+
+
+    if obj then
 
       if data.tipo=="keypressed" then
         obj.obj:keypressed(data.data[1])
@@ -123,8 +141,12 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
 
 
       local obj = self:verificar_existencia(index)
+
+      if obj then
       
-      self.server:sendToAllBut(client,"nuevo_player", {index,obj.obj.tipo,obj.obj.nickname,obj.obj.x,obj.obj.y})
+        self.server:sendToAllBut(client,"nuevo_player", {index,obj.obj.tipo,obj.obj.nickname,obj.obj.x,obj.obj.y})
+
+      end
 
   	end)
 
@@ -148,12 +170,7 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
       self.server:sendToAllBut(client,"chat_total",chat)
 
     end)
-
-    --callbacks
-
-   
-
-
+  
     self.datos_servidor={
       mapa = mapas,
       max_jugadores = max_jugadores
