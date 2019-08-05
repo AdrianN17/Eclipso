@@ -1,5 +1,5 @@
 local acuaris={}
-
+acuaris.x,acuaris.y=3200,3200
 acuaris.mapa=  "assets/map/acuaris/acuaris.lua"
 acuaris.enemigos = require "assets.img.enemigos.img_enemigos"
 acuaris.objetos = require "assets.img.objetos.img_objetos"

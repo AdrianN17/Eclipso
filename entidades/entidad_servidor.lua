@@ -7,50 +7,50 @@ local entidad_servidor = Class{}
 
 function entidad_servidor:init()
 
-  self.id_player=0
+	self.id_player=0
 
-  self.id_creador=1
-  self.enemigos_id_creador=100
+	self.id_creador=1
+	self.enemigos_id_creador=100
 
 	self.img_personajes=require "assets.img.personajes.img_personajes"
 	self.img_balas=require "assets.img.balas.img_balas"
 	self.img_escudos=require "assets.img.escudos.img_escudos"
-  self.img_objetos=self.mapa_files.objetos
-  self.img_texturas=self.mapa_files.texturas
-  self.img_enemigos=self.mapa_files.enemigos
+	self.img_objetos=self.mapa_files.objetos
+	self.img_texturas=self.mapa_files.texturas
+	self.img_enemigos=self.mapa_files.enemigos
 
-  self.objetos_enemigos=self.mapa_files.objetos_enemigos
+	self.objetos_enemigos=self.mapa_files.objetos_enemigos
 
 	self.world = love.physics.newWorld(0, 0, false)
-  self.world:setCallbacks(self:callbacks())
+	self.world:setCallbacks(self:callbacks())
 
-  self:close_map()
+	self:close_map()
 
 	self.gameobject={}
 
 	self.gameobject.players={}
 	self.gameobject.balas={}
 	self.gameobject.efectos={}
-  self.gameobject.destruible={}
+	self.gameobject.destruible={}
 	self.gameobject.enemigos={}
 	self.gameobject.objetos={}
-  self.gameobject.arboles={}
-  self.gameobject.inicios={}
+	self.gameobject.arboles={}
+	self.gameobject.inicios={}
 
-  self:map_read(self.map)
-  self:inicios_random()
-  self:custom_layers()
+	self:map_read(self.map)
+	self:inicios_random()
+	self:custom_layers()
 
-  self.chat={}
-  self.texto_escrito=""
-  self.escribiendo=false
+	self.chat={}
+	self.texto_escrito=""
+	self.escribiendo=false
 
-  self.tiempo_chat=0
-  self.max_tiempo_chat=3
+	self.tiempo_chat=0
+	self.max_tiempo_chat=3
 
-  self.envio_destruible=false
 
 end
+
 
 function entidad_servidor:draw_entidad()
   if self.escribiendo then
@@ -78,14 +78,14 @@ function entidad_servidor:draw_entidad()
 end
 
 function entidad_servidor:update_entidad(dt)
-	local player = self.gameobject.players[0]
-    
-    --camara-muerte del usuario
-    if  player then
-		  self.cam:setPosition(player.ox,player.oy)
-      player.rx,player.ry=self:getXY()
-	 end
-end
+  local player = self.gameobject.players[1].obj
+
+  if  player then
+    self.cam:setPosition(player.ox,player.oy)
+    player.rx,player.ry=self:getXY()
+  end
+end 
+
 
 function entidad_servidor:callbacks()
 	local beginContact =  function(a, b, coll)
@@ -222,41 +222,28 @@ function entidad_servidor:custom_layers()
     end
   end
   
-  
-  
   Enemigos_layers.draw = function(obj)
     for _, obj_data in ipairs(self.gameobject.enemigos) do
-      
       obj_data:draw()
+      lg.print(obj_data.fsm.current ,obj_data.ox,obj_data.oy)
     end
   end
   
   Enemigos_layers.update = function(obj,dt)
     for _, obj_data in ipairs(self.gameobject.enemigos) do
-      
       obj_data:update(dt)
     end
   end
   
   Personajes_layers.draw = function(obj)
-    for i=0,#self.gameobject.players,1 do
-      local obj_data = self.gameobject.players[i]
-
-      if obj_data then
-        
-        obj_data:draw()
-      end
-
+    for _, obj_data in ipairs(self.gameobject.players) do
+      obj_data.obj:draw()
     end
   end
   
   Personajes_layers.update = function(obj,dt)
-    for i=0,#self.gameobject.players,1 do
-      local obj_data = self.gameobject.players[i]
-
-      if obj_data then
-        obj_data:update(dt)
-      end
+    for _, obj_data in ipairs(self.gameobject.players) do
+      obj_data.obj:update(dt)
     end
   end
   
@@ -328,6 +315,8 @@ function entidad_servidor:keypressed(key)
 
           end)
 
+          self.server:sendToAll("iniciar_juego",true)
+
           self:finalizar_busqueda()
 
           table.insert(self.chat,self.texto_escrito)
@@ -352,7 +341,6 @@ function entidad_servidor:keypressed(key)
     end
   end
 
-
   if self.escribiendo then
     if key == "backspace" then
         local byteoffset = utf8.offset(self.texto_escrito, -1)
@@ -363,28 +351,32 @@ function entidad_servidor:keypressed(key)
     end
   else
 
-    local p1 = self.gameobject.players[0]
+    local p1 = self.gameobject.players[1]
     if  p1 and teclas:validar(key) and self.iniciar_partida then
-  		p1:keypressed(key)
+  		p1.obj:keypressed(key)
+  		self.server:sendToAll("key_pressed_servidor",{key})
   	end
   end
 end
 
 function entidad_servidor:keyreleased(key)
   if not self.escribiendo then
-    local p1 = self.gameobject.players[0]
+    local p1 = self.gameobject.players[1]
   	if p1 and teclas:validar(key) and self.iniciar_partida then
-  		p1:keyreleased(key)
+  		p1.obj:keyreleased(key)
+  		self.server:sendToAll("key_released_servidor",{key})
   	end
   end
 end
 
 function entidad_servidor:mousepressed(x,y,button)
   if not self.escribiendo then
-    local p1 = self.gameobject.players[0]
+    local p1 = self.gameobject.players[1]
   	if p1 and self.iniciar_partida then
   		local cx,cy=self.cam:toWorld(x,y)
-  		p1:mousepressed(cx,cy,button)
+  		p1.obj:mousepressed(cx,cy,button)
+
+  		self.server:sendToAll("mouse_pressed_servidor",{cx,cy,button})
   	end
   else
     if button==1 then
@@ -395,10 +387,11 @@ end
 
 function entidad_servidor:mousereleased(x,y,button)
   if not self.escribiendo then
-    local p1 = self.gameobject.players[0]
+    local p1 = self.gameobject.players[1]
   	if p1 and self.iniciar_partida then
   		local cx,cy=self.cam:toWorld(x,y)
-  		p1:mousereleased(cx,cy,button)
+  		p1.obj:mousereleased(cx,cy,button)
+  		self.server:sendToAll("mouse_released_servidor",{cx,cy,button})
   	end
   end
 end
@@ -415,15 +408,6 @@ function entidad_servidor:add_obj(name,obj)
 	table.insert(self.gameobject[name],obj)
 end
 
-function entidad_servidor:add_players(obj)
-    if #self.gameobject.players==0 and  self.gameobject.players[0] == nil then
-
-      self.gameobject.players[0]=obj
-    else
-      self.gameobject.players[#self.gameobject.players+1]=obj
-    end
-end
-
 function entidad_servidor:remove_obj(name,obj)
 	for i, e in ipairs(self.gameobject[name]) do
 		if e==obj then
@@ -431,35 +415,6 @@ function entidad_servidor:remove_obj(name,obj)
 			return
 		end
 	end
-end
-
-function entidad_servidor:identificador(obj)
-  for i=0,#self.gameobject.players,1 do
-    local obj_data = self.gameobject.players[i]
-
-    if obj_data and obj == obj_data then
-      return i
-    end
-  end
-end
-
-function entidad_servidor:remove_to_nill(obj)
-  for i=0,#self.gameobject.players,1 do
-    local obj_data = self.gameobject.players[i]
-
-    if obj_data and obj == obj_data then
-      self.gameobject.players[i]=nil
-
-      return i
-    end
-  end
-end
-
-function entidad_servidor:remove_personaje(i)
-  if self.gameobject.players[i] then
-    self.gameobject.players[i]:remove_final()   
-    self.gameobject.players[i]=nil
-  end
 end
 
 function entidad_servidor:map_read(objects_map)
@@ -524,9 +479,11 @@ function entidad_servidor:dar_xy_personaje()
   for i, ini in ipairs(self.gameobject.inicios) do
     if not ini.creacion_players and ini.tipo=="punto_inicio" then
       ini.creacion_players=true
-      return ini.ox,ini.oy,i
+      --return ini.ox,ini.oy,i
     end
   end
+
+  return 100,100,1
 end
 
 function entidad_servidor:inicios_random()
@@ -541,13 +498,22 @@ function entidad_servidor:inicios_random()
 
 end
 
-
 function entidad_servidor:reiniciar_punto_resureccion(i)
     self.gameobject.inicios[i].creacion_players=false
 end
 
 function entidad_servidor:finalizar_busqueda()
   self.iniciar_partida=true
+end
+
+function entidad_servidor:remove_player(obj)
+  for i,data in ipairs(self.gameobject.players) do
+    if data.obj==obj then
+      local id = data.index
+      table.remove(self.gameobject.players,i)
+      return id
+    end
+  end
 end
 
 return entidad_servidor

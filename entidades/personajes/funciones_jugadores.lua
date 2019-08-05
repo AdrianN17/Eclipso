@@ -124,6 +124,15 @@ function funciones_jugadores:coger_centro(obj)
   obj.collider:setAngle(obj.radio)
 end
 
+function funciones_jugadores:coger_centro_melee(obj)
+  local shape= obj.melee_weapon.fixture:getShape()
+  local x1,y1,x2,y2,x3,y3,x4,y4 = obj.collider:getWorldPoints(shape:getPoints())
+
+  local ox,oy=(x1+x2+x3+x4)/4,(y1+y2+y3+y4)/4
+
+  obj.melee_x,obj.melee_y=ox,oy
+end
+
 --controles
 
 function funciones_jugadores:presionar_botones_movimiento(obj,key)
@@ -279,14 +288,6 @@ end
 function funciones_jugadores:dibujar_melee(obj)
   if obj.estados.atacando_melee then
     local x,y,w,h = obj.spritesheet["melee"]:getViewport( )
-
-    local shape= obj.melee_weapon.fixture:getShape()
-    local x1,y1,x2,y2,x3,y3,x4,y4 = obj.collider:getWorldPoints(shape:getPoints())
-
-    local ox,oy=(x1+x2+x3+x4)/4,(y1+y2+y3+y4)/4
-
-    obj.melee_x,obj.melee_y=ox,oy
-
     
    lg.draw(obj.spritesheet["image"],obj.spritesheet["melee"],ox,oy,obj.radio + math.pi/2,
       obj.spritesheet.scale,obj.spritesheet.scale,w/2,h/2)

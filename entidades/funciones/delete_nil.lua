@@ -9,15 +9,17 @@ end
 function delete_nil:remove()
   self.collider:destroy()
 
-  local posicion = self.entidades:remove_to_nill(self)
-  
-  self.entidades.server:sendToAll("remover", posicion)
+  local posicion = self.entidades:remove_player(self)
+  if self.entidades.server then
+  	self.entidades.server:sendToAll("remover_player", posicion)
+  end
 
 end
 
 function delete_nil:remove_final()
 	self.entidades:reiniciar_punto_resureccion(self.identificador_nacimiento_player)
-	self:remove()
+	self.collider:destroy()
+  	local posicion = self.entidades:remove_player(self)
 end
 
 return delete_nil

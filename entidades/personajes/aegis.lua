@@ -12,14 +12,23 @@ local aegis = Class{
 }
 
 
-function aegis:init(entidades,creador,nombre)
-	local x,y,identificador_player = entidades:dar_xy_personaje()
-	self.identificador_nacimiento_player=identificador_player
+function aegis:init(entidades,creador,nickname,cx,cy)
+	local x,y = nil,nil
+
+    if entidades.server then
+        local nx,ny,identificador_nacimiento = entidades:dar_xy_personaje()
+        self.x,self.y=nx,ny
+        x,y=nx,ny
+        self.identificador_nacimiento_player=identificador_nacimiento
+    else
+        x,y=cx,cy
+    end
+
 
 	self.tipo="aegis"
 	self.tipo_escudo="magnetico"
 
-	self.nombre=nombre
+	self.nickname=nickname
 
 	self.entidades=entidades
 	self.creador=creador
@@ -75,9 +84,6 @@ function aegis:init(entidades,creador,nombre)
   	
   	self.tiempo_dash=0
   	self.max_tiempo_dash=1.5
-
-
-  	self.entidades:add_players(self)
 
   	efectos.init(self)
   	delete.init(self)

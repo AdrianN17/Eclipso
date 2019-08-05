@@ -9,14 +9,22 @@ local radian = Class{
     __includes={delete,efectos}
 }
 
-function radian:init(entidades,creador,nombre)
-    local x,y,identificador = entidades:dar_xy_personaje()
-    self.identificador_nacimiento_player=identificador
+function radian:init(entidades,creador,nickname,cx,cy)
+    local x,y = nil,nil
+
+    if entidades.server then
+        local nx,ny,identificador_nacimiento = entidades:dar_xy_personaje()
+        self.x,self.y=nx,ny
+        x,y=nx,ny
+        self.identificador_nacimiento_player=identificador_nacimiento
+    else
+        x,y=cx,cy
+    end
 
     self.tipo="radian"
     self.tipo_escudo="solar"
 
-    self.nombre=nombre
+    self.nickname=nickname
 
 
     self.entidades=entidades
@@ -80,8 +88,6 @@ function radian:init(entidades,creador,nombre)
     self.tiempo_dash=0
     self.max_tiempo_dash=1
 
-    self.entidades:add_players(self)
-
     efectos.init(self)
     delete.init(self)
 end
@@ -99,6 +105,7 @@ function radian:update(dt)
 
     	funciones:angulo(self)
         funciones:movimiento(self,dt)
+        funciones:coger_centro_melee(self)
         funciones:limite_escudo(self,dt)
         funciones:iterador_dibujo_ver2(self,dt)
         funciones:recargando(self,dt)

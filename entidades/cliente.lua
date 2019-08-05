@@ -2,12 +2,18 @@ local Class= require "libs.hump.class"
 local Sock = require "libs.sock.sock"
 local bitser = require "libs.bitser.bitser"
 local gamera = require "libs.gamera.gamera"
+local sti = require "libs.sti"
 local extra = require "entidades.funciones.extra"
 local slab = require "libs.slab"
 
 local entidad_cliente = require "entidades.entidad_cliente"
 
-local mesh_destruible = require "entidades.solo_cliente.mesh_destruible"
+local personajes = {}
+
+personajes.aegis = require "entidades.personajes.aegis"
+personajes.solange = require "entidades.personajes.solange"
+personajes.xeon = require "entidades.personajes.xeon"
+personajes.radian = require "entidades.personajes.radian"
 
 local cliente = Class{
     __includes={entidad_cliente}
@@ -18,111 +24,103 @@ function cliente:init()
 end
 
 function cliente:enter(gamestate,nickname,personaje,ip)
-    self.center={}
-    self.center.x=lg.getWidth()/2
-    self.center.y=lg.getHeight()/2
+     print(nickname)
+	self.center={}
+	self.center.x=lg.getWidth()/2
+	self.center.y=lg.getHeight()/2
 
-    self.contador_no_game=0
-    self.id_player=nil
+	self.contador_no_game=0
+	self.id_player=nil
 
-    local x,y=lg.getDimensions( )
-
-    self.cam = gamera.new(0,0,1000,1000)
-    self.cam:setWindow(0,0,x,y)
-
-    self.map=nil
+	local x,y=lg.getDimensions( )
 
 	self.tickRate = 1/60
-  	self.tick = 0
+	self.tick = 0
 
+	self.max_enemigos=0
+	self.cantidad_actual_enemigos=0
 
 
 	self.client = Sock.newClient(ip, 22122)
 
 	self.client:setSerialization(bitser.dumps, bitser.loads)
 
-	
-  	self.client:enableCompression()
 
-    entidad_cliente.init(self)
+	self.client:enableCompression()
 
-    slab.Initialize()
+	entidad_cliente.init(self)
 
+	slab.Initialize()
 
-  
-  
-  	self.client:setSchema("jugadores", {
-        "player_data",
-        "balas_data",
-        "enemigo_data"
-    })
-
-    self.client:setSchema("player_init_data",
+	self.client:setSchema("player_init_data",
     {
         "id",
         "mapa",
-        "objetos",
-        "arboles",
-        "inicios",
-        "destruible"
-        --"img_personajes",
-        --"img_balas",
-        --"img_escudos"
+        "seed",
+        "actual_players",
+        "max_enemigos"
     })
 
-    self.client:on("player_init_data", function(data)
+    self.client:setSchema("nuevo_player",
+    {
+        "index",
+        "personaje",
+        "nickname",
+        "x",
+        "y"
+    })
 
-        self.contador_no_game=0
+   
 
-        self.id_player=data.id  
+    self.client:on("connect" , function(data)
+    	self.client:send("informacion_primaria", {personaje,nickname})
+   	end)
+
+
+   self.client:on("player_init_data", function(data)
+   		self.contador_no_game=0
+
+        self.id_player=data.id
+
+        lm.setRandomSeed(data.seed)
+
+        self.max_enemigos=data.max_enemigos
       
-        self:crear_mapa(data.mapa)
-
-        self.gameobject.objetos=data.objetos
-        self.gameobject.arboles=data.arboles
-        self.gameobject.inicios=data.inicios
+        self:nuevo_mapa(data.mapa)
 
 
+        for i, player in ipairs(data.actual_players) do
+        	self:crear_personaje_principal(player.index,player.personaje,player.nickname,player.x,player.y)
+        end
 
-        self.gameobject.destruible = mesh_destruible:generar_mesh(data.destruible,self.img_texturas)
+        local pl = self:verificar_existencia(self.id_player)
+        self.cam:setPosition(pl.obj.ox,pl.obj.oy)
 
-        --self.img_personajes= data.img_personajes
-        --self.img_balas= data.img_balas
-        --self.img_escudos= data.img_escudos
-
-        
-        self.client:send("informacion_primaria", {personaje,nickname})
-        
     end)
 
-    self.client:on("nuevos_destruibles", function(data)
-        self.gameobject.destruible = mesh_destruible:generar_mesh(data,self.img_texturas)
+    self.client:on("nuevo_player", function(data)
+        self:crear_personaje_principal(data.index,data.personaje,data.nickname,data.x,data.y)
     end)
 
-    self.client:on("desconexion_player",function(data)
-        if self.gameobject.players[data] then
-            self.gameobject.players[data]=nil
+    self.client:on("desconexion_player",function(index)
+
+        local obj = self:verificar_existencia(index)
+        if obj then
+            obj.obj:remove()
         end
     end)
 
-    self.client:on("remover",function(data)
-        if self.gameobject.players[data] then
-          self.gameobject.players[data]=nil
+    self.client:on("remover_player",function(index)
+        local obj = self:verificar_existencia(index)
+        if obj then
+            obj.obj:remove()
         end
     end)
 
-    self.client:on("jugadores", function(data)
-        local players = data.player_data
-        local balas = data.balas_data
-        local enemigos = data.enemigo_data
-
-        if self.id_player then
-
-            self.gameobject.players=players
-            self.gameobject.balas=balas
-            self.gameobject.enemigos=enemigos
-        end
+    self.client:on("iniciar_juego",function(data)
+        self.iniciar_partida=true
     end)
+
 
     self.client:on("chat_total", function(chat)
         table.insert(self.chat,chat)
@@ -132,7 +130,9 @@ function cliente:enter(gamestate,nickname,personaje,ip)
 
   	self.client:connect()
 
-    
+  	self.iniciar_partida=false
+
+
 end
 
 function cliente:draw()
@@ -149,6 +149,9 @@ function cliente:draw()
 end
 
 function cliente:update(dt)
+
+    dt = math.min (dt, 1/30)
+
     self.client:update()
     slab.Update(dt)
 
@@ -188,21 +191,20 @@ function cliente:update(dt)
 
         end
 
-        local pl = self.gameobject.players[self.id_player] 
+        local pl = self:verificar_existencia(self.id_player)
 
-        if self.id_player and pl  then
+        if self.id_player and pl  and self.iniciar_partida then
             
-            self.cam:setPosition(pl.ox,pl.oy)
+            self.cam:setPosition(pl.obj.ox,pl.obj.oy)
 
-            pl.rx,pl.ry=self:getXY()
+            pl.obj.rx,pl.obj.ry=self:getXY()
 
             
-            local datos=extra:enviar_data_jugador(pl,"rx","ry")
-            
-            self.client:send("datos", datos)
         end
     end
 end
+
+
 
 function cliente:conexion_perdida()
     slab.BeginWindow('Excepcion', {Title = "Conexion fallida",X=self.center.x-25,Y=self.center.y-25})
@@ -212,6 +214,68 @@ function cliente:conexion_perdida()
             Gamestate.switch(Menu)
         end 
     slab.EndWindow()
+end
+
+function cliente:nuevo_mapa(mapa)
+	self.mapa_files=require ("entidades.mapas." .. mapa)
+	self.map=sti(self.mapa_files.mapa)
+
+
+
+	local x,y=lg.getDimensions( )
+	self.map:resize(x,y)
+	self.cam = gamera.new(0,0,self.mapa_files.x,self.mapa_files.y)
+	self.cam:setWindow(0,0,x,y)
+
+	self.img_personajes=require "assets.img.personajes.img_personajes"
+	self.img_balas=require "assets.img.balas.img_balas"
+	self.img_escudos=require "assets.img.escudos.img_escudos"
+	self.img_objetos=self.mapa_files.objetos
+	self.img_texturas=self.mapa_files.texturas
+	self.img_enemigos=self.mapa_files.enemigos
+
+	self.objetos_enemigos=self.mapa_files.objetos_enemigos
+
+	self:close_map()
+
+	self:map_read(self.map)
+	self:custom_layers()
+end
+
+function cliente:verificar_existencia(index)
+	local obj = nil
+
+	for i,data in ipairs(self.gameobject.players) do
+		if data.index==index then
+			obj=data
+			break
+		end
+	end
+
+	return obj
+end
+
+function cliente:crear_personaje_principal(id,personaje,nickname,x,y)
+	t={index=id, obj = personajes[personaje](self,self.id_creador,nickname,x,y)}
+    self:add_obj("players",t)
+    self:aumentar_id_creador()
+end
+
+function cliente:verificar_existencia(index)
+	local obj = nil
+
+	for i,data in ipairs(self.gameobject.players) do
+		if data.index==index then
+			obj=data
+			break
+		end
+	end
+
+	return obj
+end
+
+function cliente:quit()
+    self.client:disconnectNow()
 end
 
 return cliente

@@ -62,8 +62,7 @@ function arrecife:recorte_figura(poligono_enemigo)
 		    end
 	    end
   end
-	    
-  self.entidades.envio_destruible=true
+	   
   self:remove() 
 
 end

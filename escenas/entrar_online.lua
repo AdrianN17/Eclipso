@@ -1,6 +1,6 @@
 local Class= require "libs.hump.class"
 local suit=require "libs.suit"
-local Cliente=require "entidades.cliente"
+--local Cliente=require "entidades.cliente"
 
 local entrar_online = Class{}
 

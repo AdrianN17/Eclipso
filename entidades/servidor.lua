@@ -19,7 +19,6 @@ personajes.radian = require "entidades.personajes.radian"
 local servidor_alterno = require "entidades.servidor_alterno"
 local timer = require "libs.hump.timer"
 
-
 local servidor = Class{
 	__includes={entidad_servidor,servidor_alterno}
 }
@@ -29,80 +28,97 @@ function servidor:init()
 end
 
 function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,mapas,ip_direccion)
-  self.timer_udp_lista=timer.new()
-  self.usar_puerto_udp=true
+  print(nickname)
+	self.timer_udp_lista=timer.new()
+	self.usar_puerto_udp=true
 
-  self.iniciar_partida=false
-  
+	self.iniciar_partida=false
+
 	self.mapa_files=require ("entidades.mapas." .. mapas)
 	self.map=sti(self.mapa_files.mapa)
 
-  self.max_enemigos=max_enemigos
-  self.cantidad_actual_enemigos=0
+	self.max_enemigos=max_enemigos
+	self.cantidad_actual_enemigos=0
 
 	local x,y=lg.getDimensions( )
 	self.map:resize(x,y)
-	self.cam = gamera.new(0,0,self.map.width*self.map.tilewidth, self.map.height*self.map.tileheight)
+	self.cam = gamera.new(0,0,self.mapa_files.x,self.mapa_files.y)
+  
 	self.cam:setWindow(0,0,x,y)
 
 	--creacion de servidor
 
 	entidad_servidor.init(self)
 
-	personajes[personaje](self,self.id_creador,nickname)
-  self:aumentar_id_creador()
+	
 
 	--informacion de servidor
 	self.tickRate = 1/60
-  self.tick = 0
-  
-  self.server = Sock.newServer(ip_direccion,22122,max_jugadores)
-  self.server:setSerialization(bitser.dumps, bitser.loads)
+	self.tick = 0
+
+	self.server = Sock.newServer(ip_direccion,22122,max_jugadores)
+	self.server:setSerialization(bitser.dumps, bitser.loads)
 
 	self.server:enableCompression()
 
-  self.server:setSchema("informacion_primaria",{
-    "personaje",
-    "nickname"
+  self:crear_personaje_principal(0,personaje,nickname)
+
+	self.server:setSchema("informacion_primaria",{
+		"personaje",
+		"nickname"
+	})
+
+  self.server:setSchema("data_necesaria_segundos_player",{
+    "radio",
+    "hp",
+    "ira",
+    "ox",
+    "oy",
+    "input_jugador"
   })
 
 
 
-	self.server:on("connect", function(data, client)
-		  local index=client:getIndex()
 
-      local objetos_data,arboles_data,inicios_data = extra:extra_data_fija(self)
-      local destruible_data = extra:extra_destruibles(self)
-
-      client:send("player_init_data", {index,mapas,objetos_data,arboles_data,inicios_data,destruible_data}) --, self.img_personajes,self.img_balas,self.img_escudos})
-  	end)
-  
-  	self.server:on("informacion_primaria", function(data, client)
+	self.server:on("informacion_primaria", function(data, client)
     	local index=client:getIndex()
 
-    	self.gameobject.players[index] = personajes[data.personaje](self,self.id_creador,data.nickname)
-      self:aumentar_id_creador()
+      self:crear_personaje_principal(index,data.personaje,data.nickname)
+
+      local index=client:getIndex()
+
+      local actual_players={}
+
+      for i,player in ipairs(self.gameobject.players) do
+        local t = {}
+        t.index = player.index 
+        t.x=player.obj.x
+        t.y=player.obj.y
+        t.nickname=player.obj.nickname
+        t.personaje=player.obj.tipo
+
+        table.insert(actual_players,t)
+      end
+
+
+      client:send("player_init_data", {index,mapas,seed,actual_players,self.max_enemigos}) 
+
+
+      local obj = self:verificar_existencia(index)
+      
+      self.server:sendToAllBut(client,"nuevo_player", {index,obj.obj.tipo,obj.obj.nickname,obj.obj.x,obj.obj.y})
+
   	end)
 
-
-    self.server:on("disconnect", function(data, client)
+  	self.server:on("disconnect", function(data, client)
 
     	local index =client:getIndex()
 
-    	self:remove_personaje(index)
-
-    	self.server:sendToAll("desconexion_player", index)
-    end)
-
-
-    self.server:on("datos", function(datos, client)
-      	local index = client:getIndex()
-
-      	local pl=self.gameobject.players[index]
-
-      	if pl then
-        	extra:recibir_data_jugador(datos,pl)
-      	end
+    	local obj = self:verificar_existencia(index)
+    	if obj then
+    		obj.obj:remove_final()
+    		self.server:sendToAll("desconexion_player", index)
+    	end
     end)
 
     self.server:on("chat", function(chat,client)
@@ -117,41 +133,8 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
 
     --callbacks
 
-    self.server:on("mouse_pressed" , function(datos, client)
-    	local index = client:getIndex()
-      	local pl=self.gameobject.players[index]
+   
 
-      	if pl and self.iniciar_partida then
-        	pl:mousepressed(datos.x,datos.y,datos.button)
-      	end
-    end)
-
-    self.server:on("mouse_released" , function(datos, client)
-    	local index = client:getIndex()
-      	local pl=self.gameobject.players[index]
-
-      	if pl and self.iniciar_partida then
-        	pl:mousereleased(datos.x,datos.y,datos.button)
-      	end
-    end)
-
-    self.server:on("key_pressed" , function(datos, client)
-    	local index = client:getIndex()
-      	local pl=self.gameobject.players[index]
-
-      	if pl and self.iniciar_partida then
-        	pl:keypressed(datos.key)
-      	end
-    end)
-
-    self.server:on("key_released" , function(datos, client)
-    	local index = client:getIndex()
-      	local pl=self.gameobject.players[index]
-
-       	if pl and self.iniciar_partida then
-        	pl:keyreleased(datos.key)
-      	end
-    end)
 
     self.datos_servidor={
       mapa = mapas,
@@ -174,69 +157,65 @@ end
 
 function servidor:update(dt)
 
-  self.timer_udp_lista:update(dt)
+  dt = math.min (dt, 1/30)
 
-  if self.usar_puerto_udp then
-    self:update_alterno(dt)
-  end
+	self.timer_udp_lista:update(dt)
+
+	if self.usar_puerto_udp then
+		self:update_alterno(dt)
+	end
 
 	self.tick = self.tick + dt
 
 	if self.tick >= self.tickRate then
-        self.tick = 0
-        
-	    self.server:update(dt)
-      self:update_entidad(dt)
+		self.tick = 0
 
-      if self.iniciar_partida then
+		self.server:update(dt)
+		self:update_entidad(dt)
 
-  	    self.world:update(dt) 
-  	    self.map:update(dt) 
+		if self.iniciar_partida then
+  	   self.world:update(dt) 
+  	   self.map:update(dt) 
+    end
 
-      end
 
-      if #self.chat>0 then
+		if #self.chat>0 then
 
-        self.tiempo_chat=self.tiempo_chat+dt   
+      self.tiempo_chat=self.tiempo_chat+dt   
 
         if self.tiempo_chat>self.max_tiempo_chat then
           table.remove(self.chat,1)
           self.tiempo_chat=0
         end
-
       end
+	end
+end
 
-	    local player_data={}
-    
-		    for i=0,#self.gameobject.players,1 do 
-		      if self.gameobject.players[i] == nil then
-		        player_data[i]=nil
-		      else
-		        player_data[i]=self.gameobject.players[i]:pack()
-		      end
-		    end
 
-		    local balas_data,enemigo_data = extra:extra_data(self)
+function servidor:crear_personaje_principal(id,personaje,nickname)
+	t={index=id, obj = personajes[personaje](self,self.id_creador,nickname)}
+    self:add_obj("players",t)
+    self:aumentar_id_creador()
+end
 
-        if self.envio_destruible then
-          local destruible_data = extra:extra_destruibles(self)
-          self.server:sendToAll("nuevos_destruibles",destruible_data)
+function servidor:verificar_existencia(index)
+	local obj = nil
 
-          self.envio_destruible=false
-        end
-
-		    self.server:sendToAll("jugadores", {player_data,balas_data,enemigo_data})
+	for i,data in ipairs(self.gameobject.players) do
+		if data.index==index then
+			obj=data
+			break
 		end
+	end
+
+	return obj
 end
 
 function servidor:quit()
   self.timer_udp_lista:clear()
-	self.server:destroy()
+  self.server:destroy()
   self.udp_server:close()
-  
 end
 
-
-
-
 return servidor
+
