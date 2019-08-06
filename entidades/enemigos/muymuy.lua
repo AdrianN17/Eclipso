@@ -34,7 +34,7 @@ function muymuy:init(entidades,x,y)
   local puntos_arma={{x=0,y=-75}}
   local puntos_melee=nil
   local puntos_rango={x=0,y=-100,r=100}
-  local max_acercamiento=60
+  local max_acercamiento=40
   local max_acercamiento_real = max_acercamiento*3
   local objeto_balas={{bala=bala_pulso,tiempo=0.5,max_stock=7,stock=7,tiempo_recarga=1}}
   local tiempo_max_recarga=1.5
@@ -108,8 +108,12 @@ function muymuy:update(dt)
   		funcion:funcion_realizar_busqueda(self,dt,self.fsm.current)
   		funcion:modulo_disparo(self,dt)
   	elseif self.fsm.current == "ataca" then
-  		funcion:funcion_realizar_busqueda(self,dt,self.fsm.current)
-  		funcion:modulo_disparo(self,dt)
+      if #self.presas>0 then
+        funcion:funcion_realizar_busqueda(self,dt,self.fsm.current)
+        funcion:modulo_disparo(self,dt)
+      else
+        self.fsm:rastreando()
+      end  
   	end
   end
 	

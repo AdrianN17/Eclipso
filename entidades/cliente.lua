@@ -162,9 +162,9 @@ function cliente:enter(gamestate,nickname,personaje,ip)
 
         self.id_player=data.id
 
-        lm.setRandomSeed(data.seed)
-
         self.max_enemigos=data.max_enemigos
+
+        math.randomseed(data.seed)
       
         self:nuevo_mapa(data.mapa)
 
@@ -359,7 +359,6 @@ end
 function cliente:validar_pos_personajes(data)
     for _,obj_data in ipairs(data) do
         local obj = self:verificar_existencia(obj_data.index)
-
         if obj then
             extra:ingresar_datos_personaje(obj.obj,obj_data)
         end
@@ -368,8 +367,7 @@ end
 
 function cliente:validar_pos_enemigos(data)
     for _,obj_data in ipairs(data) do
-        local obj = self:verificar_existencia(obj_data.index)
-
+        local obj = self:verificar_existencia_enemigo(obj_data.index)
         if obj then
             extra:ingresar_datos_enemigos(obj,obj_data)
         end
@@ -377,7 +375,7 @@ function cliente:validar_pos_enemigos(data)
 end
 
 function cliente:verificar_existencia_enemigo(index)
-    for _,ene in ipairs(sel.gameobject.enemigos) do
+    for _,ene in ipairs(self.gameobject.enemigos) do
         if ene.index==index then
             return ene
         end

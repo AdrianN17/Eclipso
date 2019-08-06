@@ -18,10 +18,7 @@ function punto_enemigo:init(entidades,x,y)
 
 	self.tiempo_invocacion=0
 
-	self.tiempo_max_invocacion=lm.random(1,3)
-
-	self.tipo_elegido = lm.random(1,#self.objetos_enemigos)
-
+	self.tiempo_max_invocacion=get_random(1,3)
 
 	self.entidades:add_obj("inicios",self)
 end
@@ -40,7 +37,7 @@ function punto_enemigo:update(dt)
 
 			
 
-			self.objetos_enemigos[self.tipo_elegido](self.entidades,self.ox,self.oy)
+			self.objetos_enemigos[get_random(1,#self.objetos_enemigos)](self.entidades,self.ox,self.oy)
 
 			self.entidades.cantidad_actual_enemigos=self.entidades.cantidad_actual_enemigos+1
 

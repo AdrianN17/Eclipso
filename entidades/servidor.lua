@@ -46,6 +46,9 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
   
 	self.cam:setWindow(0,0,x,y)
 
+  --creacion servidor udp 
+  servidor_alterno.init(self,ip_direccion)
+
 	--creacion de servidor
 
 	entidad_servidor.init(self)
@@ -138,9 +141,6 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
         table.insert(actual_players,t)
       end
 
-      _G.lm.setRandomSeed(1)
-      _G.seed = lm.getRandomSeed()
-
 
       client:send("player_init_data", {index,mapas,seed,actual_players,self.max_enemigos}) 
 
@@ -181,14 +181,32 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
       max_jugadores = max_jugadores
     }
 
-    servidor_alterno.init(self,ip_direccion)
+    
 end
 
 function servidor:draw()
     local cx,cy,cw,ch=self.cam:getVisible()
+
   	self.map:draw(-cx,-cy,1,1)
 
     self:draw_entidad()
+
+    self.cam:draw(function(l,t,w,h)
+      for _, body in pairs(self.world:getBodies()) do
+          for _, fixture in pairs(body:getFixtures()) do
+              local shape = fixture:getShape()
+       
+              if shape:typeOf("CircleShape") then
+                  local cx, cy = body:getWorldPoints(shape:getPoint())
+                  love.graphics.circle("line", cx, cy, shape:getRadius())
+              elseif shape:typeOf("PolygonShape") then
+                  love.graphics.polygon("line", body:getWorldPoints(shape:getPoints()))
+              else
+                  love.graphics.line(body:getWorldPoints(shape:getPoints()))
+              end
+          end
+      end
+    end)
 
   	lg.print("Current FPS: "..tostring(love.timer.getFPS( )), 10, 10)
     lg.print("Clientes: "..tostring(self.server:getClientCount()), 10, 30)
@@ -272,6 +290,8 @@ function servidor:quit()
   self.server:destroy()
   self.udp_server:close()
 end
+
+
 
 return servidor
 

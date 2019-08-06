@@ -5,6 +5,7 @@ local funciones_enemigos = {}
 function funciones_enemigos:crear_cuerpo(obj,x,y,poligono)
 
 	obj.index = obj.entidades:get_enemigo_id()
+	obj.entidades:incrementar_enemigo_id()
 
 	obj.collider=py.newBody(obj.entidades.world,x,y,"dynamic")
 	obj.collider:setFixedRotation(true)
@@ -84,7 +85,7 @@ function funciones_enemigos:crear_raycast(obj,max_acercamiento,radio)
     	local tipo_obj=fixture:getUserData().data
     
 	    if tipo_obj == "objeto" or  tipo_obj =="destruible" then
-	    	local r = lm.random(1,2)
+	    	local r = get_random(1,2)
 	    	if r == 1 then
 	       		obj.radio=obj.radio + math.pi/2
 	       	elseif r == 2 then
@@ -97,7 +98,7 @@ function funciones_enemigos:crear_raycast(obj,max_acercamiento,radio)
 	       	obj.fsm:rastreando()
 	    end
 	    
-	    return 1
+	    return -1
   	end
 
 end
@@ -303,7 +304,7 @@ function funciones_enemigos:realizar_rastreo(obj,dt)
 end
 
 function funciones_enemigos:nuevo_radio_random(obj)
-	obj.radio = math.rad(lm.random(0,18)*20)
+	obj.radio = math.rad(get_random(0,18)*20)
 end
 
 function funciones_enemigos:nuevo_radio_elegido(obj,x,y)
@@ -319,17 +320,17 @@ function funciones_enemigos:actualizar_raycast(obj,dt)
 
 	if obj.time_raycast>0.1 then
 
-		obj.estados.colision=false
-
 		
-		local raycast = obj.fixture_raycast:getShape( )
-		local x,y,w,h = obj.collider:getWorldPoints(raycast:getPoints())
-
-
-		obj.entidades.world:rayCast(x,y,w,h, obj.funcion_raycast)
+		self:generar_raycast(obj)
 
 		obj.time_raycast=0
 	end
+end
+
+function funciones_enemigos:generar_raycast(obj)
+	local raycast = obj.fixture_raycast:getShape( )
+	local x,y,w,h = obj.collider:getWorldPoints(raycast:getPoints())
+	obj.entidades.world:rayCast(x,y,w,h, obj.funcion_raycast)
 end
 
 function funciones_enemigos:cazar_puntos(obj)

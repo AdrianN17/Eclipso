@@ -49,6 +49,7 @@ function entidad_servidor:init()
 	self.max_tiempo_chat=3
 
   self.index_enemigos=1
+
 end
 
 
@@ -78,12 +79,12 @@ function entidad_servidor:draw_entidad()
 end
 
 function entidad_servidor:update_entidad(dt)
-  local player = self.gameobject.players[1].obj
+  local player = self.gameobject.players[1]
 
   if  player then
-    self.cam:setPosition(player.ox,player.oy)
-    player.rx,player.ry=self:getXY()
-    self.server:sendToAll("recibir_mira_servidor_cliente_1_1_muchos",{player.rx,player.ry})
+    self.cam:setPosition(player.obj.ox,player.obj.oy)
+    player.obj.rx,player.obj.ry=self:getXY()
+    self.server:sendToAll("recibir_mira_servidor_cliente_1_1_muchos",{player.obj.rx,player.obj.ry})
   end
 end 
 
@@ -520,7 +521,11 @@ function entidad_servidor:remove_player(obj)
 end
 
 function entidad_servidor:get_enemigo_id()
-    self.index_enemigos=self.index_enemigos+1
+    return self.index_enemigos
+end
+
+function entidad_servidor:incrementar_enemigo_id()
+  self.index_enemigos=self.index_enemigos+1
 end
 
 return entidad_servidor

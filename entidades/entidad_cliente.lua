@@ -483,7 +483,11 @@ function entidad_cliente:remove_player(obj)
 end
 
 function entidad_cliente:get_enemigo_id()
-    self.index_enemigos=self.index_enemigos+1
+    return self.index_enemigos
+end
+
+function entidad_cliente:incrementar_enemigo_id()
+  self.index_enemigos=self.index_enemigos+1
 end
 
 return entidad_cliente

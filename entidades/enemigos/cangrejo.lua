@@ -99,8 +99,11 @@ function cangrejo:update(dt)
 			funcion:funcion_realizar_busqueda(self,dt,self.fsm.current)
 			
 		elseif self.fsm.current == "ataca" then
-			funcion:funcion_realizar_busqueda(self,dt,self.fsm.current)
-
+			if #self.presas>0 then
+				funcion:funcion_realizar_busqueda(self,dt,self.fsm.current)
+			else
+				self.fsm:rastreando()
+			end
 		end
 	end
 	

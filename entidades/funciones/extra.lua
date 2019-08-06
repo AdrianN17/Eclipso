@@ -76,7 +76,7 @@ end
 
 function extra:efecto(objetivo,bala)
 	if objetivo.efecto_tenidos.current=="ninguno" then
-		local azar = lm.random(1,20)
+		local azar = get_random(1,20)
 
 		if bala.efecto=="quemadura" then
 			if azar%3==0 then
@@ -112,7 +112,7 @@ function extra:enviar_data_primordiar_jugador(obj,player_main)
 	local data_player={}
 	local data_enemigos={}
 
-	if player_main then
+	--[[if player_main then
 		local cx,cy,cw,ch=player_main.cx,player_main.cy,player_main.cw,player_main.ch
 
 		local vcx=cx-200
@@ -121,22 +121,22 @@ function extra:enviar_data_primordiar_jugador(obj,player_main)
 		local vch=cy+ch+200
 
 		for _, player in ipairs(obj.gameobject.players) do
-			if self:collides_object(player_main.obj,vcx,vcy,vcw,vch) then
+			if self:collides_object(player.obj,vcx,vcy,vcw,vch) then
 				local objeto = player.obj 
 				local t={index=player.index,ox=objeto.ox,oy=objeto.oy,hp=objeto.hp,ira=objeto.ira,estados=objeto.estados,efecto=objeto.efecto_tenidos.current}
-
 				table.insert(data_player,t)
 			end
 		end
 
 		for _ ,enemigo in ipairs(obj.gameobject.enemigos) do
-			if self:collides_object(player_main.obj,vcx,vcy,vcw,vch) then
-				local t={index=enemigo.index,ox=enemigo.ox,oy=enemigo.oy,radio=enemigo.radio,fsm=enemigo.fsm.current,efecto=enemigo.efecto_tenidos.current,tipo=enemigo.tipo}
+			if self:collides_object(enemigo,vcx,vcy,vcw,vch) then
+				local t={index=enemigo.index,ox=enemigo.ox,oy=enemigo.oy,radio=enemigo.radio,fsm=enemigo.fsm.current,efecto=enemigo.efecto_tenidos.current,tipo=enemigo.tipo,estados=enemigo.estados}
+				table.insert(data_enemigos,t)
 			end
 		end
 
 
-	else
+	else]]
 		for _, player in ipairs(obj.gameobject.players) do
 				local t = {}
 				local objeto = player.obj 
@@ -145,12 +145,11 @@ function extra:enviar_data_primordiar_jugador(obj,player_main)
 		end
 
 		for _ ,enemigo in ipairs(obj.gameobject.enemigos) do
-				local t={index=enemigo.index,ox=enemigo.ox,oy=enemigo.oy,radio=enemigo.radio,fsm=enemigo.fsm.current,efecto=objeto.efecto_tenidos.current,tipo=enemigo.tipo}
+				local t={index=enemigo.index,ox=enemigo.ox,oy=enemigo.oy,radio=enemigo.radio,fsm=enemigo.fsm.current,efecto=enemigo.efecto_tenidos.current,tipo=enemigo.tipo,estados=enemigo.estados}
 				table.insert(data_enemigos,t)
 		end
-	end
+	--end
 
-	
 	return data_player,data_enemigos
 end
 
@@ -180,19 +179,17 @@ function extra:ingresar_datos_personaje(obj,data)
 
 end
 
-function extra:ingresar_datos_enemigo(obj,data)
-	print(data.radio)
+function extra:ingresar_datos_enemigos(obj,data)
+
 	obj.radio=data.radio
-	if obj.ox ~= data.ox and obj.oy ~= data.oy then
-		obj.ox=data.ox
-		obj.oy=data.oy
-		obj.collider:setPosition( data.ox, data.oy )
-	end
+	obj.collider:setAngle(data.radio)
+	obj.ox=data.ox
+	obj.oy=data.oy
+	obj.collider:setPosition( data.ox, data.oy )
 
 	obj.hp=data.hp
 	obj.ira=data.ira
 	obj.estados=data.estados
-
 
 	if data.efecto =="ninguno" and obj.efecto_tenidos.current ~="ninguno" then
 		obj.efecto_tenidos:normalidad()

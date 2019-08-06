@@ -1,7 +1,7 @@
 local funciones_objetos={}
 
 function funciones_objetos:crear_objeto_poligono(obj,poligono,x,y)
-	obj.radio=math.rad(lm.random(36)*10)
+	obj.radio=math.rad(get_random(36)*10)
 
 	obj.collider=py.newBody(obj.entidades.world,x,y,"kinematic")
 	obj.shape=py.newChainShape(true,poligono)
