@@ -227,12 +227,12 @@ function entidad_servidor:custom_layers()
   Enemigos_layers.draw = function(obj)
     for _, obj_data in ipairs(self.gameobject.enemigos) do
       obj_data:draw()
-      lg.print(obj_data.fsm.current,obj_data.ox,obj_data.oy-100)
-      lg.print(#obj_data.presas,obj_data.ox,obj_data.oy-150)
+      --lg.print(obj_data.fsm.current,obj_data.ox,obj_data.oy-100)
+      --lg.print(#obj_data.presas,obj_data.ox,obj_data.oy-150)
 
-      for i,presa in ipairs(obj_data.presas) do
+      --[[for i,presa in ipairs(obj_data.presas) do
         lg.circle("fill",presa.ox,presa.oy,20)
-      end
+      end]]
     end
   end
   
@@ -245,8 +245,8 @@ function entidad_servidor:custom_layers()
   Personajes_layers.draw = function(obj)
     for _, obj_data in ipairs(self.gameobject.players) do
       if obj_data.obj then
-        --obj_data.obj:draw()
-        lg.print(obj_data.obj.efecto_tenidos.current,obj_data.obj.ox,obj_data.obj.oy-100)
+        obj_data.obj:draw()
+        --lg.print(obj_data.obj.efecto_tenidos.current,obj_data.obj.ox,obj_data.obj.oy-100)
       end
     end
   end
@@ -521,6 +521,16 @@ function entidad_servidor:finalizar_busqueda()
 end
 
 function entidad_servidor:remove_player(obj)
+  for i,data in ipairs(self.gameobject.players) do
+    if data.obj==obj then
+      local id = data.index
+      self.gameobject.players[i].obj=nil
+      return id
+    end
+  end
+end
+
+function entidad_servidor:remove_player_total(obj)
   for i,data in ipairs(self.gameobject.players) do
     if data.obj==obj then
       local id = data.index

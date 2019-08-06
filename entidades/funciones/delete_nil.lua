@@ -19,7 +19,7 @@ end
 function delete_nil:remove_final()
 	self.entidades:reiniciar_punto_resureccion(self.identificador_nacimiento_player)
 	self.collider:destroy()
-  	local posicion = self.entidades:remove_player(self)
+  	local posicion = self.entidades:remove_player_total(self)
 end
 
 return delete_nil

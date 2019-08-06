@@ -180,9 +180,9 @@ function entidad_cliente:custom_layers()
   Enemigos_layers.draw = function(obj)
     for _, obj_data in ipairs(self.gameobject.enemigos) do
       obj_data:draw()
-      lg.print(obj_data.hp,obj_data.ox,obj_data.oy-50)
-      lg.print(obj_data.fsm.current,obj_data.ox,obj_data.oy-100)
-      lg.print(obj_data.efecto_tenidos.current,obj_data.ox,obj_data.oy-150)
+      --lg.print(obj_data.hp,obj_data.ox,obj_data.oy-50)
+      --lg.print(obj_data.fsm.current,obj_data.ox,obj_data.oy-100)
+      --lg.print(obj_data.efecto_tenidos.current,obj_data.ox,obj_data.oy-150)
     end
   end
   
@@ -196,7 +196,7 @@ function entidad_cliente:custom_layers()
     for _, obj_data in ipairs(self.gameobject.players) do
       if obj_data.obj then
         obj_data.obj:draw()
-        lg.print(obj_data.obj.efecto_tenidos.current,obj_data.obj.ox,obj_data.obj.oy-150)
+        --lg.print(obj_data.obj.efecto_tenidos.current,obj_data.obj.ox,obj_data.obj.oy-150)
       end
     end
   end
@@ -369,7 +369,7 @@ function entidad_cliente:update_entidad(dt)
       if self.id_player then
         local pl = self:verificar_existencia(self.id_player)
 
-        if pl then
+        if pl and pl.obj then
           self.cam:setPosition(pl.obj.ox,pl.obj.oy)
           pl.obj.rx,pl.obj.ry=self:getXY()
         end
@@ -412,7 +412,7 @@ function entidad_cliente:keypressed(key)
       if teclas:validar(key) then
         local pl = self:verificar_existencia(self.id_player)
 
-        if pl and self.iniciar_partida then
+        if pl and self.iniciar_partida and pl.obj then
           self.client:send("recibir_cliente_servidor_1_1",{"keypressed",{key}})
           pl.obj:keypressed(key)
         end
@@ -426,7 +426,7 @@ function entidad_cliente:keyreleased(key)
       if teclas:validar(key) and not self.escribiendo then
         local pl = self:verificar_existencia(self.id_player)
 
-        if pl and self.iniciar_partida then
+        if pl and self.iniciar_partida and pl.obj then
           self.client:send("recibir_cliente_servidor_1_1",{"keyreleased",{key}})
           pl.obj:keyreleased(key)
         end
@@ -439,7 +439,7 @@ function entidad_cliente:mousepressed(x,y,button)
       if not self.escribiendo then
        	local pl = self:verificar_existencia(self.id_player)
 
-          if pl and self.iniciar_partida then
+          if pl and self.iniciar_partida and pl.obj then
   	        local cx,cy=self.cam:toWorld(x,y)
             self.client:send("recibir_cliente_servidor_1_1",{"mousepressed",{x,y,button}})
             pl.obj:mousepressed(x,y,button)
@@ -457,7 +457,7 @@ function entidad_cliente:mousereleased(x,y,button)
       if not self.escribiendo then
       	local pl = self:verificar_existencia(self.id_player)
 
-          if pl and self.iniciar_partida then
+          if pl and self.iniciar_partida and pl.obj then
           	local cx,cy=self.cam:toWorld(x,y)
             self.client:send("recibir_cliente_servidor_1_1",{"mousereleased",{x,y,button}})
             pl.obj:mousereleased(x,y,button)

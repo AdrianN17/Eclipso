@@ -75,31 +75,37 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
   self.server:setSchema("recibir_cliente_servidor_1_1",
     {"tipo","data"})
 
-  self.server:setSchema("recibir_mira_cliente_servidor_1_1",{"rx","ry","cx","cy","cw","ch"})
+  self.server:setSchema("recibir_mira_cliente_servidor_1_1",{"rx","ry"})
+
+  self.server:setSchema("enviar_vista",{"cx","cy","cw","ch"})
 
 
   self.server:on("recibir_mira_cliente_servidor_1_1",function(data,client)
       local index =client:getIndex()
       local obj = self:verificar_existencia(index)
 
-      if obj then
+      if obj and obj.obj then
         obj.obj.rx,obj.obj.ry=data.rx,data.ry
-
-        obj.cx,obj.cy,obj.cw,obj.ch=data.cx,data.cy,data.cw,data.ch
 
         self.server:sendToAllBut(client,"recibir_mira_servidor_cliente_1_muchos",{index,data.rx,data.ry})
       end
 
     end)
 
+  self.server:on("enviar_vista", function(data,client)
+      local index =client:getIndex()
+      local obj = self:verificar_existencia(index)
+
+      if obj then
+        obj.cx,obj.cy,obj.cw,obj.ch=data.cx,data.cy,data.cw,data.ch
+      end
+  end)
+
 
   self.server:on("recibir_cliente_servidor_1_1" ,function(data,client)
     local index=client:getIndex()
 
     local obj = self:verificar_existencia(index)
-
-    --print("recibir_cliente_servidor_1_1",data.tipo,obj,index)
-
 
     if obj then
 

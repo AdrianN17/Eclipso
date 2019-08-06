@@ -271,17 +271,27 @@ function cliente:update(dt)
 
         end
 
-        local pl = self:verificar_existencia(self.id_player)
+        
 
-        if self.id_player and pl  and self.iniciar_partida then
+        if self.id_player then
+
+            local pl = self:verificar_existencia(self.id_player)
+
+            if pl  and self.iniciar_partida then
             
-            self.cam:setPosition(pl.obj.ox,pl.obj.oy)
+                if pl.obj then
+                    self.cam:setPosition(pl.obj.ox,pl.obj.oy)
 
-            pl.obj.rx,pl.obj.ry=self:getXY()
+                    pl.obj.rx,pl.obj.ry=self:getXY()
+
+                    self.client:send("recibir_mira_cliente_servidor_1_1",{pl.obj.rx,pl.obj.ry})
+                end
+            end
 
             local cx,cy,cw,ch=self.cam:getVisible()
             
-            self.client:send("recibir_mira_cliente_servidor_1_1",{pl.obj.rx,pl.obj.ry,cx,cy,cw,ch})
+            self.client:send("enviar_vista",{cx,cy,cw,ch})
+
         end
     end
 end
