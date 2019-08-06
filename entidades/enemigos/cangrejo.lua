@@ -111,7 +111,6 @@ function cangrejo:update(dt)
 
 	funcion:muerte(self)
 
-	
 end
 
 function cangrejo:validar_estado_bala(bala_obj)

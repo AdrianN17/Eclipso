@@ -13,7 +13,7 @@ function love.load()
   	Gamestate.registerEvents()
   	Gamestate.switch(Menu)
 
-  	_G.seed = love.timer.getTime()
+  	_G.seed = 105
   	math.randomseed(seed)
 
 end

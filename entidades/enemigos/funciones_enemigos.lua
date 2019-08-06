@@ -124,14 +124,7 @@ function funciones_enemigos:dibujar_enemigo(obj)
 	local x,y,w,h = obj.spritesheet[obj.tipo][obj.iterator]:getViewport( )
     
     lg.draw(obj.spritesheet["image"],obj.spritesheet[obj.tipo][obj.iterator],obj.ox,obj.oy,obj.radio,obj.spritesheet[obj.tipo].scale,obj.spritesheet[obj.tipo].scale,w/2,h/2)
-    
-    --[[lg.print(obj.fsm.current .. " ,  " .. tostring(obj.semi_presa.x) .. " , " .. tostring(obj.semi_presa.y),obj.ox,obj.oy-100)
-
-    if obj.semi_presa.x then
-    	love.graphics.circle("fill", obj.semi_presa.x, obj.semi_presa.y, 15)
-    end]]
-    
-    
+      
 end
 
 --animacion
@@ -207,8 +200,10 @@ function funciones_enemigos:nueva_presa(obj,objeto)
 		obj.fsm:atacando() 
 	else
 		for _, presa in ipairs(obj.presas) do
-	      if presa~= obj then
-	        table.insert(obj.presas,obj)
+	      if presa == objeto then
+
+	      else
+	      	table.insert(obj.presas,objeto)
 	      end
 	    end
 	end
@@ -216,7 +211,7 @@ end
 
 function funciones_enemigos:eliminar_presa(obj,objeto)
   for i, presa in ipairs(obj.presas) do
-    if presa== objeto then
+    if presa.creador ==  objeto.creador then
       table.remove(obj.presas,i)
     end
   end

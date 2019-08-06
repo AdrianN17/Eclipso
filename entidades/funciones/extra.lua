@@ -145,7 +145,7 @@ function extra:enviar_data_primordiar_jugador(obj,player_main)
 		end
 
 		for _ ,enemigo in ipairs(obj.gameobject.enemigos) do
-				local t={index=enemigo.index,ox=enemigo.ox,oy=enemigo.oy,radio=enemigo.radio,fsm=enemigo.fsm.current,efecto=enemigo.efecto_tenidos.current,tipo=enemigo.tipo,estados=enemigo.estados}
+				local t={index=enemigo.index,ox=enemigo.ox,oy=enemigo.oy,radio=enemigo.radio,fsm=enemigo.fsm.current,efecto=enemigo.efecto_tenidos.current,tipo=enemigo.tipo,estados=enemigo.estados,hp=enemigo.hp,ira=enemigo.ira}
 				table.insert(data_enemigos,t)
 		end
 	--end

@@ -180,6 +180,9 @@ function entidad_cliente:custom_layers()
   Enemigos_layers.draw = function(obj)
     for _, obj_data in ipairs(self.gameobject.enemigos) do
       obj_data:draw()
+      lg.print(obj_data.hp,obj_data.ox,obj_data.oy-50)
+      lg.print(obj_data.fsm.current,obj_data.ox,obj_data.oy-100)
+      lg.print(obj_data.efecto_tenidos.current,obj_data.ox,obj_data.oy-150)
     end
   end
   
@@ -191,13 +194,18 @@ function entidad_cliente:custom_layers()
   
   Personajes_layers.draw = function(obj)
     for _, obj_data in ipairs(self.gameobject.players) do
-      obj_data.obj:draw()
+      if obj_data.obj then
+        obj_data.obj:draw()
+        lg.print(obj_data.obj.efecto_tenidos.current,obj_data.obj.ox,obj_data.obj.oy-150)
+      end
     end
   end
   
   Personajes_layers.update = function(obj,dt)
     for _, obj_data in ipairs(self.gameobject.players) do
-      obj_data.obj:update(dt)
+      if obj_data.obj then
+        obj_data.obj:update(dt)
+      end
     end
   end
   

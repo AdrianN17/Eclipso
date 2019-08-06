@@ -98,8 +98,6 @@ function muymuy:update(dt)
   self:update_efecto(dt)
 	funcion:actualizar_raycast(self,dt)
 
-  
-
   if self.efecto_tenidos.current ~="congelado" then
 
   	if self.fsm.current == "rastreo" then
