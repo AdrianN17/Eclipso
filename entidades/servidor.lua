@@ -195,7 +195,11 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
 
     	local obj = self:verificar_existencia(index)
     	if obj then
-    		obj.obj:remove_final()
+        if obj.obj then
+    		  obj.obj:remove_final()
+        else
+          self:remove_desde_raiz(obj)
+        end
     		self.server:sendToAll("desconexion_player", index)
     	end
     end)
@@ -309,7 +313,7 @@ end
 function servidor:crear_personaje_principal(id,personaje,nickname)
   local obj = personajes[personaje](self,self.id_creador,nickname)
 
-	t={index=id, obj =obj ,personaje=personaje,nickname=nickname,vidas=self.max_revivir,creador = self.id_creador}
+	t={index=id, obj =obj ,personaje=personaje,nickname=nickname,vidas=self.max_revivir,creador = self.id_creador,kills_enemigos=0,kills_personajes=0}
     self:add_obj("players",t)
     self:aumentar_id_creador()
 end
@@ -401,7 +405,7 @@ end
 function servidor:contabilizar_jugadores()
   local i = 0
   for _,player in ipairs(self.gameobject.players) do
-    if player.obj  then
+    if player.obj  or player.vidas>0 then
       i=i+1
     end
   end
@@ -414,7 +418,7 @@ function servidor:pantalla_score()
   slab.BeginListBox('lista_players')
     for i, player in ipairs(self.jugadores_ganadores) do
         slab.BeginListBoxItem('lista_player' .. i, {Selected = Selected == i})
-        slab.Text(i .. " : " .. player.nickname)
+        slab.Text(i .. " : " .. player.nickname .. " Kills personajes : " .. player.kills_personajes .. " kills enemigos : " .. player.kills_enemigos )
         slab.EndListBoxItem()
     end
   slab.EndListBox()
@@ -429,12 +433,44 @@ end
 function servidor:ver_jugadores_ultimos_vivos()
     for i,player in ipairs(self.gameobject.players) do
       if player and player.obj then
-        t={nickname = player.nickname}
+        t={nickname = player.nickname, kills_personajes = player.kills_personajes, kills_enemigos = player.kills_enemigos}
         table.insert(self.jugadores_ganadores,t)
       end
     end
 end
 
+function servidor:buscar_personaje_creador(creador)
+  local obj=nil
+  for i,player in ipairs(self.gameobject.players) do
+    if player and player.obj and player.obj.creador == creador then
+      obj=player
+    end
+  end
+
+  return obj
+end
+
+function servidor:aumentar_kill_personaje(creador)
+  local obj = self:buscar_personaje_creador(creador)
+  if obj then
+    obj.kills_personajes=obj.kills_personajes+1
+  end
+end
+
+function servidor:aumentar_kill_enemigo(creador)
+  local obj = self:buscar_personaje_creador(creador)
+  if obj then
+    obj.kills_enemigos=obj.kills_enemigos+1
+  end
+end
+
+function servidor:remove_desde_raiz(obj)
+  for i,player in ipairs(self.gameobject.players) do
+    if player == obj then
+      table.remove(self.gameobject.players,i)
+    end
+  end
+end
 
 return servidor
 

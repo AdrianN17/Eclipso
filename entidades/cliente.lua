@@ -511,7 +511,7 @@ function cliente:pantalla_score()
   slab.BeginListBox('lista_players')
     for i, player in ipairs(self.jugadores_ganadores) do
         slab.BeginListBoxItem('lista_player' .. i, {Selected = Selected == i})
-        slab.Text(i .. " : " .. player.nickname)
+        slab.Text(i .. " : " .. player.nickname .. " Kills personajes : " .. player.kills_personajes .. " kills enemigos : " .. player.kills_enemigos )
         slab.EndListBoxItem()
     end
   slab.EndListBox()

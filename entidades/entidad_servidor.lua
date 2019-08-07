@@ -119,14 +119,29 @@ function entidad_servidor:callbacks()
       
       obj1.obj:remove()
     elseif obj1.data=="personaje" and obj2.data=="bala" then
-      extra:dano(obj1.obj,obj2.obj.dano)
+      local esta_muerto = extra:dano(obj1.obj,obj2.obj.dano)
+
+      if esta_muerto then
+        local creador = obj2.obj.creador
+        if creador == self.enemigos_id_creador then
+
+        else
+          self:aumentar_kill_personaje(creador)
+        end
+      end
+
+
       extra:efecto(obj1.obj,obj2.obj)
       obj2.obj:remove()
     elseif obj1.data=="escudo" and obj2.data=="bala" and obj1.obj.estados.protegido then
       obj2.obj:remove()
     elseif obj1.data=="personaje" and obj2.data=="melee" and obj2.obj.estados.atacando_melee then
-      extra:dano(obj1.obj,obj2.obj.dano_melee)
-      
+      local esta_muerto = extra:dano(obj1.obj,obj2.obj.dano_melee)
+      if esta_muerto then
+        local creador = obj2.obj.creador
+        self:aumentar_kill_personaje(creador)
+      end
+
       extra:empujon(obj2.obj,obj1.obj,-1)
 
       obj2.obj.estados.atacando_melee=false
@@ -136,17 +151,32 @@ function entidad_servidor:callbacks()
     --callback de enemigos
     elseif obj1.data == "bala" and obj2.data == "enemigos" then
       obj2.obj:validar_estado_bala(obj1.obj)
-      extra:dano(obj2.obj,obj1.obj.dano)
+      local esta_muerto = extra:dano(obj2.obj,obj1.obj.dano)
+
+      if esta_muerto then
+        local creador = obj1.obj.creador
+        self:aumentar_kill_enemigo(creador)
+      end
+
       extra:efecto(obj2.obj,obj1.obj)
       obj1.obj:remove()
     elseif obj1.data=="personaje" and obj2.data=="vision_enemigo" then
       obj2.obj:nueva_presas(obj1.obj)
     elseif obj1.data=="personaje" and obj2.data=="melee_enemigo" then
-      extra:dano(obj1.obj,obj2.obj.dano_melee)
+      local esta_muerto = extra:dano(obj1.obj,obj2.obj.dano_melee)
+
+      if esta_muerto then
+
+      end
       
       extra:empujon(obj2.obj,obj1.obj,1)
     elseif obj1.data=="enemigos" and obj2.data=="melee" and obj2.obj.estados.atacando_melee then
-      extra:dano(obj1.obj,obj2.obj.dano_melee)
+      local esta_muerto = extra:dano(obj1.obj,obj2.obj.dano_melee)
+
+      if esta_muerto then
+        local creador = obj2.obj.creador
+        self:aumentar_kill_enemigo(creador)
+      end
 
       extra:empujon(obj2.obj,obj1.obj,1)
 

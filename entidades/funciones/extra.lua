@@ -70,7 +70,10 @@ function extra:dano(objetivo,dano)
 
 	if objetivo.hp<1 then
 		objetivo.estados.vivo=false
+		return true
 	end
+
+	return false
 
 end
 
