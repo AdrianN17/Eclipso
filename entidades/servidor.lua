@@ -47,6 +47,7 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
 	self.cam:setWindow(0,0,x,y)
 
   self.respawn_enemigos_lista={}
+  self.enemigos_eliminados={}
 
   --creacion servidor udp 
   servidor_alterno.init(self,ip_direccion)
@@ -291,9 +292,13 @@ function servidor:envio_masivo_validaciones()
       local obj = self:verificar_existencia(index)
 
       if obj and obj.cx and obj.cy and obj.cw and obj.ch then
-        self.server:sendToPeer( peer,"enviar_data_principal", {extra:enviar_data_primordiar_jugador(self,obj)})
+        local aliados,enemigos = extra:enviar_data_primordiar_jugador(self,obj)
+        self.server:sendToPeer( peer,"enviar_data_principal", {aliados,enemigos,self.respawn_enemigos_lista,self.enemigos_eliminados})
       end
     end
+
+    self.respawn_enemigos_lista={}
+    self.enemigos_eliminados={}
 end
 
 function servidor:enviar_radios_objetos()

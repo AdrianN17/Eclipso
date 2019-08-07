@@ -115,10 +115,10 @@ function extra:enviar_data_primordiar_jugador(obj,player_main)
 	if player_main then
 		local cx,cy,cw,ch=player_main.cx,player_main.cy,player_main.cw,player_main.ch
 
-		local vcx=cx-200
-		local vcy=cy-200
-		local vcw=cx+cw+200
-		local vch=cy+ch+200
+		local vcx=cx-400
+		local vcy=cy-400
+		local vcw=cx+cw+400
+		local vch=cy+ch+400
 
 		for _, player in ipairs(obj.gameobject.players) do
 			if player.obj then
@@ -169,8 +169,9 @@ function extra:ingresar_datos_personaje(obj,data)
 	obj.hp=data.hp
 	obj.ira=data.ira
 	obj.estados=data.estados
+	obj.efecto_tenidos.current = data.efecto
 
-	if data.efecto =="ninguno" and obj.efecto_tenidos.current ~="ninguno" then
+	--[[if data.efecto =="ninguno" and obj.efecto_tenidos.current ~="ninguno" then
 		obj.efecto_tenidos:normalidad()
 	elseif data.efecto == "quemado" and obj.efecto_tenidos.current =="ninguno" then
 		obj.efecto_tenidos:esquemado()
@@ -178,7 +179,7 @@ function extra:ingresar_datos_personaje(obj,data)
 		obj.efecto_tenidos:escongelado()
 	elseif data.efecto == "electrocutado"and obj.efecto_tenidos.current =="ninguno"  then
 		obj.efecto_tenidos:eselectrocutado()
-	end
+	end]]
 
 end
 
@@ -197,7 +198,10 @@ function extra:ingresar_datos_enemigos(obj,data)
 	obj.ira=data.ira
 	obj.estados=data.estados
 
-	if data.efecto =="ninguno" and obj.efecto_tenidos.current ~="ninguno" then
+	obj.efecto_tenidos.current=data.efecto
+	obj.fsm.current=data.fsm
+
+	--[[if data.efecto =="ninguno" and obj.efecto_tenidos.current ~="ninguno" then
 		obj.efecto_tenidos:normalidad()
 	elseif data.efecto == "quemado" and obj.efecto_tenidos.current =="ninguno" then
 		obj.efecto_tenidos:esquemado()
@@ -213,7 +217,7 @@ function extra:ingresar_datos_enemigos(obj,data)
 		obj.fsm:alertado()
 	elseif data.fsm == "atacando" and obj.fsm.current == "rastreando" then
 		obj.fsm:atacando()
-	end
+	end]]
 
 end
 

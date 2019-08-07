@@ -36,7 +36,7 @@ function punto_enemigo:update(dt)
 			if self.tiempo_invocacion>self.tiempo_max_invocacion then
 
 				
-				local tipo = get_random(1,#self.objetos_enemigos)
+				local tipo = lm.random(1,#self.objetos_enemigos)
 				self.objetos_enemigos[tipo](self.entidades,self.ox,self.oy)
 
 				self.entidades.cantidad_actual_enemigos=self.entidades.cantidad_actual_enemigos+1

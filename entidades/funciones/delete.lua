@@ -13,7 +13,12 @@ function delete:remove()
 
     end
 
+    if self.entidades.server and self.name_table=="enemigos" then
+    	table.insert(self.entidades.enemigos_eliminados,{index = self.index})
+    end
+
 	self.entidades:remove_obj(self.name_table,self)
+
 end
 
 return delete

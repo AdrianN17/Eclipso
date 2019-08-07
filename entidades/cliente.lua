@@ -53,7 +53,7 @@ function cliente:enter(gamestate,nickname,personaje,ip)
 	slab.Initialize()
 
     self.client:setSchema("enviar_data_principal",{
-        "data_player","data_enemigos"
+        "data_player","data_enemigos","data_nacimientos_enemigos","data_muertes_enemigos"
     })
 
 	self.client:setSchema("player_init_data",
@@ -103,8 +103,16 @@ function cliente:enter(gamestate,nickname,personaje,ip)
             self:validar_pos_personajes(data.data_player)
         end
 
+        if data.data_nacimientos_enemigos then
+            self:crear_enemigos_nuevos(data.data_nacimientos_enemigos)
+        end
+
         if data.data_enemigos then
             self:validar_pos_enemigos(data.data_enemigos)
+        end
+
+        if data.data_muertes_enemigos then
+            self:eliminar_enemigos(data.data_muertes_enemigos)
         end
     end)
 
@@ -413,6 +421,23 @@ function cliente:acomodar_radio_arboles(data_obj)
         for _,obj in ipairs(self.gameobject.arboles) do
             if data.ox == obj.ox and data.oy == obj.oy then
                 obj.radio=data.radio
+                break
+            end
+        end
+    end
+end
+
+function cliente:crear_enemigos_nuevos(lista)
+    for _,enemigo in ipairs(lista) do
+        self.objetos_enemigos[enemigo.tipo](self,enemigo.ox,enemigo.oy)
+    end
+end
+
+function cliente:eliminar_enemigos(lista)
+    for _,data in ipairs(lista) do
+        for _,obj in ipairs(self.gameobject.enemigos) do
+            if obj.index == data.index then
+                obj:remove()
                 break
             end
         end

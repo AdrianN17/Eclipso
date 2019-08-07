@@ -73,7 +73,7 @@ function entidad_cliente:callbacks()
       obj1.obj:remove()
     elseif obj1.data=="personaje" and obj2.data=="bala" then
       --extra:dano(obj1.obj,obj2.obj.dano)
-      extra:efecto(obj1.obj,obj2.obj)
+      --extra:efecto(obj1.obj,obj2.obj)
       obj2.obj:remove()
     elseif obj1.data=="escudo" and obj2.data=="bala" and obj1.obj.estados.protegido then
       obj2.obj:remove()
@@ -90,7 +90,7 @@ function entidad_cliente:callbacks()
     elseif obj1.data == "bala" and obj2.data == "enemigos" then
       obj2.obj:validar_estado_bala(obj1.obj)
       --extra:dano(obj2.obj,obj1.obj.dano)
-      extra:efecto(obj2.obj,obj1.obj)
+      --extra:efecto(obj2.obj,obj1.obj)
       obj1.obj:remove()
     elseif obj1.data=="personaje" and obj2.data=="vision_enemigo" then
       obj2.obj:nueva_presas(obj1.obj)
@@ -181,8 +181,8 @@ function entidad_cliente:custom_layers()
     for _, obj_data in ipairs(self.gameobject.enemigos) do
       obj_data:draw()
       --lg.print(obj_data.hp,obj_data.ox,obj_data.oy-50)
-      --lg.print(obj_data.fsm.current,obj_data.ox,obj_data.oy-100)
-      --lg.print(obj_data.efecto_tenidos.current,obj_data.ox,obj_data.oy-150)
+      lg.print(obj_data.fsm.current,obj_data.ox,obj_data.oy-100)
+      lg.print(obj_data.efecto_tenidos.current,obj_data.ox,obj_data.oy-150)
     end
   end
   
@@ -196,7 +196,7 @@ function entidad_cliente:custom_layers()
     for _, obj_data in ipairs(self.gameobject.players) do
       if obj_data.obj then
         obj_data.obj:draw()
-        --lg.print(obj_data.obj.efecto_tenidos.current,obj_data.obj.ox,obj_data.obj.oy-150)
+        lg.print(obj_data.obj.efecto_tenidos.current,obj_data.obj.ox,obj_data.obj.oy-150)
       end
     end
   end

@@ -227,8 +227,8 @@ function entidad_servidor:custom_layers()
   Enemigos_layers.draw = function(obj)
     for _, obj_data in ipairs(self.gameobject.enemigos) do
       obj_data:draw()
-      --lg.print(obj_data.fsm.current,obj_data.ox,obj_data.oy-100)
-      --lg.print(#obj_data.presas,obj_data.ox,obj_data.oy-150)
+      lg.print(obj_data.fsm.current,obj_data.ox,obj_data.oy-100)
+      lg.print(obj_data.efecto_tenidos.current,obj_data.ox,obj_data.oy-150)
 
       --[[for i,presa in ipairs(obj_data.presas) do
         lg.circle("fill",presa.ox,presa.oy,20)
@@ -246,7 +246,7 @@ function entidad_servidor:custom_layers()
     for _, obj_data in ipairs(self.gameobject.players) do
       if obj_data.obj then
         obj_data.obj:draw()
-        --lg.print(obj_data.obj.efecto_tenidos.current,obj_data.obj.ox,obj_data.obj.oy-100)
+        lg.print(obj_data.obj.efecto_tenidos.current,obj_data.obj.ox,obj_data.obj.oy-100)
       end
     end
   end
