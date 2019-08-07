@@ -196,6 +196,7 @@ function entidad_cliente:custom_layers()
     for _, obj_data in ipairs(self.gameobject.players) do
       if obj_data.obj then
         obj_data.obj:draw()
+        lg.print(tostring(obj_data.obj.nickname),obj_data.obj.ox,obj_data.obj.oy-75)
          --lg.print(obj_data.index,obj_data.obj.ox,obj_data.obj.oy-150)
         --lg.print(obj_data.obj.efecto_tenidos.current,obj_data.obj.ox,obj_data.obj.oy-150)
       end

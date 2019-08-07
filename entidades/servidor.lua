@@ -413,18 +413,43 @@ function servidor:contabilizar_jugadores()
 end
 
 function servidor:pantalla_score()
-  slab.BeginWindow('Fin_juego', {Title = "Juego finalizado",X=self.center.x,Y=self.center.y , AutoSizeWindow = false, AllowMove=false})
+  slab.BeginWindow('Fin_juego', {Title = "Juego finalizado",X=self.center.x -250,Y=self.center.y-200 ,W = 500,H = 400, AutoSizeWindow = false, AllowMove=false,Columns = 4,AllowResize = false})
 
-  slab.BeginListBox('lista_players')
+    slab.BeginColumn(1)
+    slab.Text("Lista", {CenterX = true})
+    slab.Separator()
     for i, player in ipairs(self.jugadores_ganadores) do
-        slab.BeginListBoxItem('lista_player' .. i, {Selected = Selected == i})
-        slab.Text(i .. " : " .. player.nickname .. " Kills personajes : " .. player.kills_personajes .. " kills enemigos : " .. player.kills_enemigos )
-        slab.EndListBoxItem()
+        slab.Text(i, {CenterX = true})
     end
-  slab.EndListBox()
+    slab.EndColumn()
+
+    slab.BeginColumn(2)
+    slab.Text("Nickname", {CenterX = true})
+    slab.Separator()
+    for i, player in ipairs(self.jugadores_ganadores) do
+        slab.Text(player.nickname , {CenterX = true})
+    end
+    slab.EndColumn()
+
+    slab.BeginColumn(3)
+    slab.Text("Kills personaje", {CenterX = true})
+    slab.Separator()
+    for i, player in ipairs(self.jugadores_ganadores) do
+        slab.Text(player.kills_personajes , {CenterX = true})
+    end
+    slab.EndColumn()
+
+    slab.BeginColumn(4)
+    slab.Text("Kills enemigos", {CenterX = true})
+    slab.Separator()
+    for i, player in ipairs(self.jugadores_ganadores) do
+        slab.Text(player.kills_enemigos , {CenterX = true})
+    end
+    slab.EndColumn()
 
 
-  if slab.Button("Volver al menu") then
+
+  if slab.Button("Volver al menu",{ExpandW = true}) then
     self:volver_menu() 
   end 
   slab.EndWindow()

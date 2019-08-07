@@ -289,7 +289,7 @@ function funciones_jugadores:dibujar_melee(obj)
   if obj.estados.atacando_melee then
     local x,y,w,h = obj.spritesheet["melee"]:getViewport( )
     
-   lg.draw(obj.spritesheet["image"],obj.spritesheet["melee"],ox,oy,obj.radio + math.pi/2,
+   lg.draw(obj.spritesheet["image"],obj.spritesheet["melee"],obj.melee_x,obj.melee_y,obj.radio + math.pi/2,
       obj.spritesheet.scale,obj.spritesheet.scale,w/2,h/2)
   end
 end

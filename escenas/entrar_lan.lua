@@ -95,7 +95,7 @@ function entrar_lan:update(dt)
 	if #self.registro_server>0 then
 
 
-		slab.BeginWindow('Lista_servidores', {Title = "Lista de servidores",X=self.center.x+150,Y=self.center.y-200 , AutoSizeWindow = false, AllowMove=false})
+		slab.BeginWindow('Lista_servidores', {Title = "Lista de servidores",X=self.center.x+100,Y=self.center.y-200,W=300 , AutoSizeWindow = false, AllowMove=false,AllowResize = false})
 
 		  slab.BeginListBox('lista_servers')
 		    for i, dato in ipairs(self.registro_server) do

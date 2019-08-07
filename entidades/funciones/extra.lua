@@ -125,12 +125,12 @@ function extra:enviar_data_primordiar_jugador(obj,player_main)
 
 		for _, player in ipairs(obj.gameobject.players) do
 			if player.obj then
-				if self:collides_object(player.obj,vcx,vcy,vcw,vch) then
+				--if self:collides_object(player.obj,vcx,vcy,vcw,vch) then
 					local t = {}
 					local objeto = player.obj 
 					local t={index=player.index,ox=objeto.ox,oy=objeto.oy,hp=objeto.hp,ira=objeto.ira,estados=objeto.estados,efecto=objeto.efecto_tenidos.current}
 					table.insert(data_player,t)
-				end
+				--end
 			end
 		end
 
