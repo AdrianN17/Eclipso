@@ -52,9 +52,6 @@ function cliente:enter(gamestate,nickname,personaje,ip)
 
 	slab.Initialize()
 
-    self.client:setSchema("enviar_data_principal",{
-        "data_player","data_enemigos","data_nacimientos_enemigos","data_muertes_enemigos"
-    })
 
 	self.client:setSchema("player_init_data",
     {
@@ -64,6 +61,10 @@ function cliente:enter(gamestate,nickname,personaje,ip)
         "max_enemigos",
         "radios_objetos",
         "radios_arboles"
+    })
+
+    self.client:setSchema("enviar_data_principal",{
+        "data_player","data_enemigos","data_nacimientos_enemigos","data_muertes_enemigos"
     })
 
     self.client:setSchema("nuevo_player",
@@ -93,9 +94,33 @@ function cliente:enter(gamestate,nickname,personaje,ip)
         "rx","ry"
     })
 
+    self.client:setSchema("revivir_usuarios",{
+        "index",
+        "personaje",
+        "nickname",
+        "creador",
+        "ox",
+        "oy"
+    })
+
     self.client:on("connect" , function(data)
     	self.client:send("informacion_primaria", {personaje,nickname})
    	end)
+
+    self.client:on("revivir_usuarios", function(data)
+
+        local index = data.index
+        local personaje=data.personaje
+        local nickname=data.nickname
+        local creador= data.creador
+        local ox,oy=data.ox,data.oy
+
+        local obj = self:verificar_existencia(index)
+
+        if obj then
+            obj.obj = personajes[personaje](self,creador,nickname,ox,oy)
+        end
+    end)
 
     self.client:on("enviar_data_principal" , function(data)
   
@@ -126,7 +151,7 @@ function cliente:enter(gamestate,nickname,personaje,ip)
     self.client:on("recibir_mira_servidor_cliente_1_1_muchos", function(data)
         local obj= self:verificar_existencia(0)
 
-        if obj then
+        if obj and obj.obj then
             obj.obj.rx,obj.obj.ry=data.rx,data.ry
         end
     end)
@@ -135,7 +160,7 @@ function cliente:enter(gamestate,nickname,personaje,ip)
 
         local obj = self:verificar_existencia(data.index)
 
-        if obj then
+        if obj and obj.obj then
             if data.tipo=="keypressed" then
               obj.obj:keypressed(data.data[1])
             elseif data.tipo=="keyreleased" then
@@ -151,7 +176,7 @@ function cliente:enter(gamestate,nickname,personaje,ip)
     self.client:on("recibir_servidor_cliente_1_1_muchos" , function(data)
         local obj = self:verificar_existencia(0)
 
-        if obj then
+        if obj and obj.obj then
             if data.tipo=="keypressed" then
               obj.obj:keypressed(data.data[1])
             elseif data.tipo=="keyreleased" then
@@ -195,15 +220,15 @@ function cliente:enter(gamestate,nickname,personaje,ip)
     self.client:on("desconexion_player",function(index)
 
         local obj = self:verificar_existencia(index)
-        if obj then
-            obj.obj:remove()
+        if obj and obj.obj then
+            obj.obj:remove_final()
         end
     end)
 
     self.client:on("remover_player",function(index)
         local obj = self:verificar_existencia(index)
-        if obj then
-            obj.obj:remove()
+        if obj and obj.obj then
+            obj.obj:remove("soy cliente")
         end
     end)
 
@@ -379,7 +404,7 @@ end
 function cliente:validar_pos_personajes(data)
     for _,obj_data in ipairs(data) do
         local obj = self:verificar_existencia(obj_data.index)
-        if obj then
+        if obj and obj.obj then
             extra:ingresar_datos_personaje(obj.obj,obj_data)
         end
     end
@@ -445,7 +470,22 @@ function cliente:eliminar_enemigos(lista)
 end
 
 function cliente:quit()
+    self:clear()
     self.client:disconnectNow()
+end
+
+function cliente:clear()
+  self.map=nil
+  self.cam=nil
+  self.world:destroy( )
+  self.gameobject.players={}
+  self.gameobject.balas={}
+  self.gameobject.efectos={}
+  self.gameobject.destruible={}
+  self.gameobject.enemigos={}
+  self.gameobject.objetos={}
+  self.gameobject.arboles={}
+  self.gameobject.inicios={}
 end
 
 return cliente

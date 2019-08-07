@@ -103,8 +103,13 @@ function muymuy:update(dt)
   	if self.fsm.current == "rastreo" then
   		funcion:realizar_rastreo(self,dt)
   	elseif self.fsm.current == "alerta" then
-  		funcion:funcion_realizar_busqueda(self,dt,self.fsm.current)
-  		funcion:modulo_disparo(self,dt)
+      if self.semi_presa.x and self.semi_presa.y then
+        funcion:funcion_realizar_busqueda(self,dt,self.fsm.current)
+        funcion:modulo_disparo(self,dt)
+      else
+        self.fsm:rastreando()
+      end
+  		
   	elseif self.fsm.current == "ataca" then
       if #self.presas>0 then
         funcion:funcion_realizar_busqueda(self,dt,self.fsm.current)

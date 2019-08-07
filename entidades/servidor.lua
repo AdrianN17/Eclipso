@@ -27,9 +27,13 @@ function servidor:init()
 	
 end
 
-function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,mapas,ip_direccion)
+function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,mapas,ip_direccion,tiempo,revivir)
+  self.tiempo_partida=tiempo 
+  self.max_revivir=revivir
 
 	self.timer_udp_lista=timer.new()
+  self.timer_juego=timer.new()
+
 	self.usar_puerto_udp=true
 
 	self.iniciar_partida=false
@@ -239,6 +243,7 @@ function servidor:update(dt)
 	if self.tick >= self.tickRate then
 		self.tick = 0
 
+    self.timer_juego:update(dt)
 		self.server:update(dt)
 		self:update_entidad(dt)
 
@@ -265,9 +270,22 @@ end
 
 
 function servidor:crear_personaje_principal(id,personaje,nickname)
-	t={index=id, obj = personajes[personaje](self,self.id_creador,nickname)}
+  local obj = personajes[personaje](self,self.id_creador,nickname)
+
+	t={index=id, obj =obj ,personaje=personaje,nickname=nickname,vidas=self.max_revivir,creador = self.id_creador}
     self:add_obj("players",t)
     self:aumentar_id_creador()
+end
+
+function servidor:crear_personaje_principal_otravez(player,personaje,nickname,creador)
+  player.obj = personajes[personaje](self,creador,nickname)
+  player.vidas=player.vidas-1
+
+  local ox,oy = player.obj.ox,player.obj.oy
+  local index = player.index
+
+  self.server:sendToAll("revivir_usuarios",{index,personaje,nickname,creador,ox,oy})
+
 end
 
 function servidor:verificar_existencia(index)
@@ -322,9 +340,25 @@ function servidor:enviar_radios_arboles()
 end
 
 function servidor:quit()
+  self.timer_juego:clear()
   self.timer_udp_lista:clear()
+  self:clear()
   self.server:destroy()
   self.udp_server:close()
+end
+
+function servidor:clear()
+  self.map=nil
+  self.cam=nil
+  self.world:destroy( )
+  self.gameobject.players={}
+  self.gameobject.balas={}
+  self.gameobject.efectos={}
+  self.gameobject.destruible={}
+  self.gameobject.enemigos={}
+  self.gameobject.objetos={}
+  self.gameobject.arboles={}
+  self.gameobject.inicios={}
 end
 
 

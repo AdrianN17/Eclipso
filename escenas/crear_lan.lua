@@ -22,6 +22,8 @@ function crear_lan:enter()
 	self.input_nickname={text = ""}
 	self.input_jugadores={text = "8"}
 	self.input_enemigos={text = "25"}
+	self.input_tiempo={text = "5"}
+	self.input_revivir={text = "0"}
 
 	self.personajes=1
 	self.mapas=1
@@ -110,7 +112,18 @@ function crear_lan:update(dt)
 	self.gui:Input(self.input_enemigos, self.gui.layout:row())
 
 
-	
+	self.gui.layout:reset(self.center.x+100,self.center.y+45)
+    self.gui.layout:padding(25,25)
+
+    self.gui:Label("Tiempo : ", {align="left"} , self.gui.layout:row(100,30))
+    self.gui:Label("Revivir : ", {align="left"} , self.gui.layout:row())
+
+    self.gui.layout:reset(self.center.x+220,self.center.y+45)
+    self.gui.layout:padding(25,25)
+
+    self.gui:Input(self.input_tiempo, self.gui.layout:row(50,30))
+    self.gui:Input(self.input_revivir, self.gui.layout:row(50,30))
+
 
 	self.gui.layout:reset(self.center.x-200,self.center.y+225)
     self.gui.layout:padding(150,25)
@@ -124,18 +137,21 @@ function crear_lan:update(dt)
 		local nickname=self.input_nickname.text
 		local max_jugadores=tonumber(self.input_jugadores.text)
 		local max_enemigos=tonumber(self.input_enemigos.text)
+		local tiempo=tonumber(self.input_tiempo.text)
+		local revivir=tonumber(self.input_revivir.text)
+
 		local personaje=self.tabla_personajes[self.personajes]
 		local mapa = self.tabla_mapas[self.mapas]
 
 
-		if max_jugadores~= nil and max_enemigos~= nil then
-			if max_jugadores<9 and max_enemigos<51 then
+		if max_jugadores~= nil and max_enemigos~= nil and tiempo~= nil and revivir~= nil then
+			if max_jugadores<9 and max_jugadores>=0 and max_enemigos<51 and max_enemigos>=0 and tiempo<20 and tiempo>=5 and revivir<10 and revivir>=0 then
 				
 				local ip = self:getIP()
 				local ok = self:validar_puerto(ip)
 
 				if ok then
-					Gamestate.switch(Servidor,nickname,max_jugadores,max_enemigos,personaje,mapa,ip)
+					Gamestate.switch(Servidor,nickname,max_jugadores,max_enemigos,personaje,mapa,ip,tiempo,revivir)
 				else
 					self.alerta_3=true
 				end

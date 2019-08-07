@@ -7,19 +7,27 @@ function delete_nil:init()
 end
 
 function delete_nil:remove()
-  self.collider:destroy()
 
-  local posicion = self.entidades:remove_player(self)
-  if self.entidades.server then
-  	self.entidades.server:sendToAll("remover_player", posicion)
-  end
+  	self.collider:destroy()
+
+  	local posicion = self.entidades:remove_player(self)
+  	if self.entidades.server then
+  		self.entidades:reiniciar_punto_resureccion(self.identificador_nacimiento_player)
+  	
+  		self.entidades.server:sendToAll("remover_player", posicion)
+  	end
 
 end
 
 function delete_nil:remove_final()
-	self.entidades:reiniciar_punto_resureccion(self.identificador_nacimiento_player)
 	self.collider:destroy()
-  	local posicion = self.entidades:remove_player_total(self)
+
+	if self.entidades.server then
+		self.entidades:reiniciar_punto_resureccion(self.identificador_nacimiento_player)
+	end
+
+	
+  	self.entidades:remove_player_total(self)
 end
 
 return delete_nil

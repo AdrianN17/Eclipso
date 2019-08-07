@@ -181,8 +181,8 @@ function entidad_cliente:custom_layers()
     for _, obj_data in ipairs(self.gameobject.enemigos) do
       obj_data:draw()
       --lg.print(obj_data.hp,obj_data.ox,obj_data.oy-50)
-      lg.print(obj_data.fsm.current,obj_data.ox,obj_data.oy-100)
-      lg.print(obj_data.efecto_tenidos.current,obj_data.ox,obj_data.oy-150)
+      --lg.print(obj_data.fsm.current,obj_data.ox,obj_data.oy-100)
+      --lg.print(obj_data.efecto_tenidos.current,obj_data.ox,obj_data.oy-150)
     end
   end
   
@@ -196,7 +196,8 @@ function entidad_cliente:custom_layers()
     for _, obj_data in ipairs(self.gameobject.players) do
       if obj_data.obj then
         obj_data.obj:draw()
-        lg.print(obj_data.obj.efecto_tenidos.current,obj_data.obj.ox,obj_data.obj.oy-150)
+         --lg.print(obj_data.index,obj_data.obj.ox,obj_data.obj.oy-150)
+        --lg.print(obj_data.obj.efecto_tenidos.current,obj_data.obj.ox,obj_data.obj.oy-150)
       end
     end
   end
@@ -385,9 +386,8 @@ function entidad_cliente:keypressed(key)
 
       if not self.escribiendo and #self.texto_escrito>0 then
           if self.texto_escrito == "EXIT_GAME" then
-            
+            self:clear()
             self.client:disconnectNow()
-
             Gamestate.switch(Menu)
           else
             table.insert(self.chat,self.texto_escrito)
@@ -484,7 +484,7 @@ function entidad_cliente:remove_player(obj)
   for i,data in ipairs(self.gameobject.players) do
     if data.obj==obj then
       local id = data.index
-      table.remove(self.gameobject.players,i)
+      self.gameobject.players[i].obj=nil
       return id
     end
   end
@@ -496,6 +496,16 @@ end
 
 function entidad_cliente:incrementar_enemigo_id()
   self.index_enemigos=self.index_enemigos+1
+end
+
+function entidad_cliente:remove_player_total(obj)
+  for i,data in ipairs(self.gameobject.players) do
+    if data.obj==obj then
+      local id = data.index
+      table.remove(self.gameobject.players,i)
+      return id
+    end
+  end
 end
 
 return entidad_cliente

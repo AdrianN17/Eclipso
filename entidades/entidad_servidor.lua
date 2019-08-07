@@ -81,7 +81,7 @@ end
 function entidad_servidor:update_entidad(dt)
   local player = self.gameobject.players[1]
 
-  if  player then
+  if  player and player.obj then
     self.cam:setPosition(player.obj.ox,player.obj.oy)
     player.obj.rx,player.obj.ry=self:getXY()
     self.server:sendToAll("recibir_mira_servidor_cliente_1_1_muchos",{player.obj.rx,player.obj.ry})
@@ -227,8 +227,8 @@ function entidad_servidor:custom_layers()
   Enemigos_layers.draw = function(obj)
     for _, obj_data in ipairs(self.gameobject.enemigos) do
       obj_data:draw()
-      lg.print(obj_data.fsm.current,obj_data.ox,obj_data.oy-100)
-      lg.print(obj_data.efecto_tenidos.current,obj_data.ox,obj_data.oy-150)
+      --lg.print(obj_data.fsm.current,obj_data.ox,obj_data.oy-100)
+      --lg.print(obj_data.efecto_tenidos.current,obj_data.ox,obj_data.oy-150)
 
       --[[for i,presa in ipairs(obj_data.presas) do
         lg.circle("fill",presa.ox,presa.oy,20)
@@ -246,7 +246,7 @@ function entidad_servidor:custom_layers()
     for _, obj_data in ipairs(self.gameobject.players) do
       if obj_data.obj then
         obj_data.obj:draw()
-        lg.print(obj_data.obj.efecto_tenidos.current,obj_data.obj.ox,obj_data.obj.oy-100)
+        --lg.print(obj_data.obj.efecto_tenidos.current,obj_data.obj.ox,obj_data.obj.oy-100)
       end
     end
   end
@@ -337,6 +337,8 @@ function entidad_servidor:keypressed(key)
           self:control_chat()
 
         elseif self.texto_escrito=="END_GAME" then
+          self:clear()
+          self.timer_juego:clear()
           self.udp_server:close()
           self.server:destroy()
           self.timer_udp_lista:clear()
@@ -364,7 +366,7 @@ function entidad_servidor:keypressed(key)
   else
 
     local p1 = self.gameobject.players[1]
-    if  p1 and teclas:validar(key) and self.iniciar_partida then
+    if p1 and p1.obj and teclas:validar(key) and self.iniciar_partida then
 
       self.server:sendToAll("recibir_servidor_cliente_1_1_muchos",{"keypressed",{key}})
   		p1.obj:keypressed(key)
@@ -375,7 +377,7 @@ end
 function entidad_servidor:keyreleased(key)
   if not self.escribiendo then
     local p1 = self.gameobject.players[1]
-  	if p1 and teclas:validar(key) and self.iniciar_partida then
+  	if p1 and p1.obj and teclas:validar(key) and self.iniciar_partida then
 
       self.server:sendToAll("recibir_servidor_cliente_1_1_muchos",{"keyreleased",{key}})
   		p1.obj:keyreleased(key)
@@ -386,7 +388,7 @@ end
 function entidad_servidor:mousepressed(x,y,button)
   if not self.escribiendo then
     local p1 = self.gameobject.players[1]
-  	if p1 and self.iniciar_partida then
+  	if p1 and p1.obj and self.iniciar_partida then
   		local cx,cy=self.cam:toWorld(x,y)
 
       self.server:sendToAll("recibir_servidor_cliente_1_1_muchos",{"mousepressed",{x,y,button}})
@@ -402,7 +404,7 @@ end
 function entidad_servidor:mousereleased(x,y,button)
   if not self.escribiendo then
     local p1 = self.gameobject.players[1]
-  	if p1 and self.iniciar_partida then
+  	if p1 and p1.obj and self.iniciar_partida then
   		local cx,cy=self.cam:toWorld(x,y)
       self.server:sendToAll("recibir_servidor_cliente_1_1_muchos",{"mousereleased",{x,y,button}})
   		p1.obj:mousereleased(cx,cy,button)
@@ -493,11 +495,9 @@ function entidad_servidor:dar_xy_personaje()
   for i, ini in ipairs(self.gameobject.inicios) do
     if not ini.creacion_players and ini.tipo=="punto_inicio" then
       ini.creacion_players=true
-      --return ini.ox,ini.oy,i
+      return ini.ox,ini.oy,i
     end
   end
-
-  return 100,100,1
 end
 
 function entidad_servidor:inicios_random()
@@ -525,6 +525,19 @@ function entidad_servidor:remove_player(obj)
     if data.obj==obj then
       local id = data.index
       self.gameobject.players[i].obj=nil
+      --crear nuevo personaje
+      if self.gameobject.players[i].vidas>0 then
+
+          self.timer_juego:after(0.5, function()
+            local player = self.gameobject.players[i]
+            if player then
+              self:crear_personaje_principal_otravez(player,player.personaje,player.nickname,player.creador)
+
+            end
+          end)
+      end
+
+
       return id
     end
   end
