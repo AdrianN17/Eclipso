@@ -95,7 +95,7 @@ function entrar_lan:update(dt)
 	if #self.registro_server>0 then
 
 
-		slab.BeginWindow('Lista_servidores', {Title = "Lista de servidores",X=self.center.x+150,Y=self.center.y-200 , AutoSizeWindow = false})
+		slab.BeginWindow('Lista_servidores', {Title = "Lista de servidores",X=self.center.x+150,Y=self.center.y-200 , AutoSizeWindow = false, AllowMove=false})
 
 		  slab.BeginListBox('lista_servers')
 		    for i, dato in ipairs(self.registro_server) do
@@ -123,7 +123,7 @@ function entrar_lan:update(dt)
 
 
 	if self.alerta_1 then
-		slab.BeginWindow('Excepcion_1', {Title = "Servidor Lleno",X=self.center.x-25,Y=self.center.y-25})
+		slab.BeginWindow('Excepcion_1', {Title = "Servidor Lleno",X=self.center.x-25,Y=self.center.y-25, AllowMove=false})
 			if slab.Button("Ok") then
 				self.alerta_1=false	
 			end	
@@ -131,7 +131,7 @@ function entrar_lan:update(dt)
 	end
 
 	if self.alerta_2 then
-		slab.BeginWindow('Excepcion_2', {Title = "Juego Iniciado",X=self.center.x-25,Y=self.center.y-25})
+		slab.BeginWindow('Excepcion_2', {Title = "Juego Iniciado",X=self.center.x-25,Y=self.center.y-25, AllowMove=false})
 			if slab.Button("Ok") then
 				self.alerta_2=false	
 			end	

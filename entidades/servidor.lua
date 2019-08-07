@@ -413,7 +413,7 @@ function servidor:contabilizar_jugadores()
 end
 
 function servidor:pantalla_score()
-  slab.BeginWindow('Fin_juego', {Title = "Juego finalizado",X=self.center.x-25,Y=self.center.y-25 , AutoSizeWindow = false})
+  slab.BeginWindow('Fin_juego', {Title = "Juego finalizado",X=self.center.x,Y=self.center.y , AutoSizeWindow = false, AllowMove=false})
 
   slab.BeginListBox('lista_players')
     for i, player in ipairs(self.jugadores_ganadores) do

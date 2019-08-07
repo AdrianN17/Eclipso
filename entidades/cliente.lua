@@ -351,7 +351,7 @@ end
 
 
 function cliente:conexion_perdida()
-    slab.BeginWindow('Excepcion', {Title = "Conexion fallida",X=self.center.x-25,Y=self.center.y-25})
+    slab.BeginWindow('Excepcion', {Title = "Conexion fallida",X=self.center.x-25,Y=self.center.y-25, AllowMove=false})
         if slab.Button("Ok") then
             self.client:disconnectNow()
 
@@ -506,7 +506,7 @@ function cliente:clear()
 end
 
 function cliente:pantalla_score()
-  slab.BeginWindow('Fin_juego', {Title = "Juego finalizado",X=self.center.x-25,Y=self.center.y-25 , AutoSizeWindow = false})
+  slab.BeginWindow('Fin_juego', {Title = "Juego finalizado",X=self.center.x,Y=self.center.y , AutoSizeWindow = false, AllowMove=false})
 
   slab.BeginListBox('lista_players')
     for i, player in ipairs(self.jugadores_ganadores) do

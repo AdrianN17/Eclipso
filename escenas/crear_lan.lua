@@ -170,7 +170,7 @@ function crear_lan:update(dt)
 	
 
 	if self.alerta_1 then
-		slab.BeginWindow('Excepcion_1', {Title = "Caracter no valido",X=self.center.x-25,Y=self.center.y-25})
+		slab.BeginWindow('Excepcion_1', {Title = "Caracter no valido",X=self.center.x-25,Y=self.center.y-25, AllowMove=false})
 			if slab.Button("Ok") then
 				self.alerta_1=false
 			end
@@ -179,7 +179,7 @@ function crear_lan:update(dt)
 	end
 
 	if self.alerta_2 then
-		slab.BeginWindow('Excepcion_2', {Title = "Cantidad no valida",X=self.center.x-25,Y=self.center.y-25})
+		slab.BeginWindow('Excepcion_2', {Title = "Cantidad no valida",X=self.center.x-25,Y=self.center.y-25, AllowMove=false})
 			if slab.Button("Ok") then
 				self.alerta_2=false
 			end
@@ -187,7 +187,7 @@ function crear_lan:update(dt)
 	end
 
 	if self.alerta_3 then
-		slab.BeginWindow('Excepcion_3', {Title = "Servidor activo",X=self.center.x-25,Y=self.center.y-25})
+		slab.BeginWindow('Excepcion_3', {Title = "Servidor activo",X=self.center.x-25,Y=self.center.y-25, AllowMove=false})
 			if slab.Button("Ok") then
 				self.alerta_3=false	
 			end	
