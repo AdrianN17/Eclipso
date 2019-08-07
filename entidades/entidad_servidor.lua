@@ -366,7 +366,7 @@ function entidad_servidor:keypressed(key)
   else
 
     local p1 = self.gameobject.players[1]
-    if p1 and p1.obj and teclas:validar(key) and self.iniciar_partida then
+    if p1 and p1.obj and teclas:validar(key) and self.estado_partida.current == "inicio" then
 
       self.server:sendToAll("recibir_servidor_cliente_1_1_muchos",{"keypressed",{key}})
   		p1.obj:keypressed(key)
@@ -377,7 +377,7 @@ end
 function entidad_servidor:keyreleased(key)
   if not self.escribiendo then
     local p1 = self.gameobject.players[1]
-  	if p1 and p1.obj and teclas:validar(key) and self.iniciar_partida then
+  	if p1 and p1.obj and teclas:validar(key) and self.estado_partida.current == "inicio" then
 
       self.server:sendToAll("recibir_servidor_cliente_1_1_muchos",{"keyreleased",{key}})
   		p1.obj:keyreleased(key)
@@ -388,7 +388,7 @@ end
 function entidad_servidor:mousepressed(x,y,button)
   if not self.escribiendo then
     local p1 = self.gameobject.players[1]
-  	if p1 and p1.obj and self.iniciar_partida then
+  	if p1 and p1.obj and self.estado_partida.current == "inicio" then
   		local cx,cy=self.cam:toWorld(x,y)
 
       self.server:sendToAll("recibir_servidor_cliente_1_1_muchos",{"mousepressed",{x,y,button}})
@@ -404,7 +404,7 @@ end
 function entidad_servidor:mousereleased(x,y,button)
   if not self.escribiendo then
     local p1 = self.gameobject.players[1]
-  	if p1 and p1.obj and self.iniciar_partida then
+  	if p1 and p1.obj and self.estado_partida.current == "inicio" then
   		local cx,cy=self.cam:toWorld(x,y)
       self.server:sendToAll("recibir_servidor_cliente_1_1_muchos",{"mousereleased",{x,y,button}})
   		p1.obj:mousereleased(cx,cy,button)
@@ -517,7 +517,7 @@ function entidad_servidor:reiniciar_punto_resureccion(i)
 end
 
 function entidad_servidor:finalizar_busqueda()
-  self.iniciar_partida=true
+  self.estado_partida:empezando()
 end
 
 function entidad_servidor:remove_player(obj)

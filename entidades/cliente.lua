@@ -5,7 +5,7 @@ local gamera = require "libs.gamera.gamera"
 local sti = require "libs.sti"
 local extra = require "entidades.funciones.extra"
 local slab = require "libs.slab"
-
+local machine = require "libs.statemachine.statemachine"
 local entidad_cliente = require "entidades.entidad_cliente"
 
 local personajes = {}
@@ -47,6 +47,14 @@ function cliente:enter(gamestate,nickname,personaje,ip)
 
 
 	self.client:enableCompression()
+
+    self.estado_partida=machine.create({
+    initial="espera",
+    events = {
+      {name = "empezando", from = "espera" , to = "inicio"},
+      {name = "finalizando" , from = "inicio", to = "fin"}
+  }
+  })
 
 	entidad_cliente.init(self)
 
@@ -233,7 +241,7 @@ function cliente:enter(gamestate,nickname,personaje,ip)
     end)
 
     self.client:on("iniciar_juego",function(data)
-        self.iniciar_partida=true
+        self.estado_partida:empezando()
     end)
 
 
@@ -241,12 +249,13 @@ function cliente:enter(gamestate,nickname,personaje,ip)
         table.insert(self.chat,chat)
         self:control_chat()
     end)
+
+    self.client:on("partida_finalizada", function(data)
+        self.estado_partida:finalizando()
+    end)
    
 
   	self.client:connect()
-
-  	self.iniciar_partida=false
-
 
 end
 
@@ -312,7 +321,7 @@ function cliente:update(dt)
 
             local pl = self:verificar_existencia(self.id_player)
 
-            if pl  and self.iniciar_partida then
+            if pl  and self.estado_partida.current == "inicio" then
             
                 if pl.obj then
                     self.cam:setPosition(pl.obj.ox,pl.obj.oy)

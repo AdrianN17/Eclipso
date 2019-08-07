@@ -4,9 +4,8 @@ local bitser = require "libs.bitser.bitser"
 local gamera = require "libs.gamera.gamera"
 local sti = require "libs.sti"
 local socket = require "socket"
-
+local machine = require "libs.statemachine.statemachine"
 local extra = require "entidades.funciones.extra"
-
 local entidad_servidor = require "entidades.entidad_servidor"
 
 local personajes = {}
@@ -28,7 +27,8 @@ function servidor:init()
 end
 
 function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,mapas,ip_direccion,tiempo,revivir)
-  self.tiempo_partida=tiempo 
+  self.tiempo_partida=tiempo*60
+  self.tiempo_partida_inicial=0
   self.max_revivir=revivir
 
 	self.timer_udp_lista=timer.new()
@@ -36,7 +36,13 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
 
 	self.usar_puerto_udp=true
 
-	self.iniciar_partida=false
+  self.estado_partida=machine.create({
+    initial="espera",
+    events = {
+      {name = "empezando", from = "espera" , to = "inicio"},
+      {name = "finalizando" , from = "inicio", to = "fin"}
+  }
+  })
 
 	self.mapa_files=require ("entidades.mapas." .. mapas)
 	self.map=sti(self.mapa_files.mapa)
@@ -135,38 +141,42 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
 
 
 	self.server:on("informacion_primaria", function(data, client)
-    	local index=client:getIndex()
+    if self.estado_partida.current=="espera" then
+      	local index=client:getIndex()
 
-      self:crear_personaje_principal(index,data.personaje,data.nickname)
+        self:crear_personaje_principal(index,data.personaje,data.nickname)
 
-      local index=client:getIndex()
+        local index=client:getIndex()
 
-      local actual_players={}
+        local actual_players={}
 
-      for i,player in ipairs(self.gameobject.players) do
-        local t = {}
-        t.index = player.index 
-        t.x=player.obj.x
-        t.y=player.obj.y
-        t.nickname=player.obj.nickname
-        t.personaje=player.obj.tipo
+        for i,player in ipairs(self.gameobject.players) do
+          local t = {}
+          t.index = player.index 
+          t.x=player.obj.x
+          t.y=player.obj.y
+          t.nickname=player.obj.nickname
+          t.personaje=player.obj.tipo
 
-        table.insert(actual_players,t)
-      end
+          table.insert(actual_players,t)
+        end
 
-      local radios_objetos = self:enviar_radios_objetos()
-      local radios_arboles = self:enviar_radios_arboles()
-
-
-      client:send("player_init_data", {index,mapas,actual_players,self.max_enemigos,radios_objetos,radios_arboles}) 
+        local radios_objetos = self:enviar_radios_objetos()
+        local radios_arboles = self:enviar_radios_arboles()
 
 
-      local obj = self:verificar_existencia(index)
+        client:send("player_init_data", {index,mapas,actual_players,self.max_enemigos,radios_objetos,radios_arboles}) 
 
-      if obj then
-      
-        self.server:sendToAllBut(client,"nuevo_player", {index,obj.obj.tipo,obj.obj.nickname,obj.obj.x,obj.obj.y})
 
+        local obj = self:verificar_existencia(index)
+
+        if obj then
+        
+          self.server:sendToAllBut(client,"nuevo_player", {index,obj.obj.tipo,obj.obj.nickname,obj.obj.x,obj.obj.y})
+
+        end
+      else
+        client:disconnectNow()
       end
 
   	end)
@@ -207,7 +217,7 @@ function servidor:draw()
 
     self:draw_entidad()
 
-    self.cam:draw(function(l,t,w,h)
+    --[[self.cam:draw(function(l,t,w,h)
       for _, body in pairs(self.world:getBodies()) do
           for _, fixture in pairs(body:getFixtures()) do
               local shape = fixture:getShape()
@@ -222,7 +232,7 @@ function servidor:draw()
               end
           end
       end
-    end)
+    end)]]
 
   	lg.print("Current FPS: "..tostring(love.timer.getFPS( )), 10, 10)
     lg.print("Clientes: "..tostring(self.server:getClientCount()), 10, 30)
@@ -247,7 +257,16 @@ function servidor:update(dt)
 		self.server:update(dt)
 		self:update_entidad(dt)
 
-		if self.iniciar_partida then
+		if self.estado_partida.current == "inicio" then
+        self.tiempo_partida_inicial=self.tiempo_partida_inicial+dt
+
+        if self.tiempo_partida_inicial>self.tiempo_partida then
+            self.server:sendToAll("partida_finalizada",true)
+            self.estado_partida:finalizando()
+
+          self.tiempo_partida_inicial=0
+        end
+
   	   self.world:update(dt) 
   	   self.map:update(dt) 
     end

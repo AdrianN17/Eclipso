@@ -363,7 +363,7 @@ function entidad_cliente:draw_entidad()
 end
 
 function entidad_cliente:update_entidad(dt)
-	if self.map and self.iniciar_partida then
+	if self.map and self.estado_partida.current == "inicio" then
 		  self.world:update(dt)
     	self.map:update(dt)
 
@@ -412,7 +412,7 @@ function entidad_cliente:keypressed(key)
       if teclas:validar(key) then
         local pl = self:verificar_existencia(self.id_player)
 
-        if pl and self.iniciar_partida and pl.obj then
+        if pl and self.estado_partida.current == "inicio" and pl.obj then
           self.client:send("recibir_cliente_servidor_1_1",{"keypressed",{key}})
           pl.obj:keypressed(key)
         end
@@ -426,7 +426,7 @@ function entidad_cliente:keyreleased(key)
       if teclas:validar(key) and not self.escribiendo then
         local pl = self:verificar_existencia(self.id_player)
 
-        if pl and self.iniciar_partida and pl.obj then
+        if pl and self.estado_partida.current == "inicio" and pl.obj then
           self.client:send("recibir_cliente_servidor_1_1",{"keyreleased",{key}})
           pl.obj:keyreleased(key)
         end
@@ -439,7 +439,7 @@ function entidad_cliente:mousepressed(x,y,button)
       if not self.escribiendo then
        	local pl = self:verificar_existencia(self.id_player)
 
-          if pl and self.iniciar_partida and pl.obj then
+          if pl and self.estado_partida.current == "inicio" and pl.obj then
   	        local cx,cy=self.cam:toWorld(x,y)
             self.client:send("recibir_cliente_servidor_1_1",{"mousepressed",{x,y,button}})
             pl.obj:mousepressed(x,y,button)
@@ -457,7 +457,7 @@ function entidad_cliente:mousereleased(x,y,button)
       if not self.escribiendo then
       	local pl = self:verificar_existencia(self.id_player)
 
-          if pl and self.iniciar_partida and pl.obj then
+          if pl and self.estado_partida.current == "inicio" and pl.obj then
           	local cx,cy=self.cam:toWorld(x,y)
             self.client:send("recibir_cliente_servidor_1_1",{"mousereleased",{x,y,button}})
             pl.obj:mousereleased(x,y,button)

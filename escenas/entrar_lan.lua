@@ -119,7 +119,7 @@ function entrar_lan:update(dt)
 
 					if max_players - max_players_now > 0 then
 
-						if jugando =="false" then
+						if jugando =="espera" then
 
 							self.udp_cliente:close()
 							
