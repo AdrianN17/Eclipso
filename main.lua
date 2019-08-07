@@ -13,21 +13,7 @@ function love.load()
   	Gamestate.registerEvents()
   	Gamestate.switch(Menu)
 
-  	_G.seed = 105
-  	math.randomseed(seed)
 
-end
-
-
-function get_random(min,max)
-	local value
-	if max then
-		value = math.random(min,max)
-	else
-		value = math.random(1,min)
-	end
-
-	return value
 end
 
 --enviar imagenes de personajes del servidor al cliente

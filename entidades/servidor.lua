@@ -46,6 +46,8 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
   
 	self.cam:setWindow(0,0,x,y)
 
+  self.respawn_enemigos_lista={}
+
   --creacion servidor udp 
   servidor_alterno.init(self,ip_direccion)
 
@@ -147,8 +149,11 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
         table.insert(actual_players,t)
       end
 
+      local radios_objetos = self:enviar_radios_objetos()
+      local radios_arboles = self:enviar_radios_arboles()
 
-      client:send("player_init_data", {index,mapas,seed,actual_players,self.max_enemigos}) 
+
+      client:send("player_init_data", {index,mapas,actual_players,self.max_enemigos,radios_objetos,radios_arboles}) 
 
 
       local obj = self:verificar_existencia(index)
@@ -289,6 +294,26 @@ function servidor:envio_masivo_validaciones()
         self.server:sendToPeer( peer,"enviar_data_principal", {extra:enviar_data_primordiar_jugador(self,obj)})
       end
     end
+end
+
+function servidor:enviar_radios_objetos()
+    local obj_lista={}
+    for _,obj in ipairs(self.gameobject.objetos) do
+      local t={ox=obj.ox,oy=obj.oy,radio=obj.radio}
+      table.insert(obj_lista,t)
+    end
+
+    return obj_lista
+end
+
+function servidor:enviar_radios_arboles()
+    local obj_lista={}
+    for _,obj in ipairs(self.gameobject.arboles) do
+      local t={ox=obj.ox,oy=obj.oy,radio=obj.radio}
+      table.insert(obj_lista,t)
+    end
+
+    return obj_lista
 end
 
 function servidor:quit()

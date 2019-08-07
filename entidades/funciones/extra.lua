@@ -76,7 +76,7 @@ end
 
 function extra:efecto(objetivo,bala)
 	if objetivo.efecto_tenidos.current=="ninguno" then
-		local azar = get_random(1,20)
+		local azar = lm.random(1,20)
 
 		if bala.efecto=="quemadura" then
 			if azar%3==0 then

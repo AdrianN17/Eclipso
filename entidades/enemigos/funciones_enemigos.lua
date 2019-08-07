@@ -85,7 +85,7 @@ function funciones_enemigos:crear_raycast(obj,max_acercamiento,radio)
     	local tipo_obj=fixture:getUserData().data
     
 	    if tipo_obj == "objeto" or  tipo_obj =="destruible" then
-	    	local r = get_random(1,2)
+	    	local r = lm.random(1,2)
 	    	if r == 1 then
 	       		obj.radio=obj.radio + math.pi/2
 	       	elseif r == 2 then
@@ -299,7 +299,7 @@ function funciones_enemigos:realizar_rastreo(obj,dt)
 end
 
 function funciones_enemigos:nuevo_radio_random(obj)
-	obj.radio = math.rad(get_random(0,18)*20)
+	obj.radio = math.rad(lm.random(0,18)*20)
 end
 
 function funciones_enemigos:nuevo_radio_elegido(obj,x,y)
