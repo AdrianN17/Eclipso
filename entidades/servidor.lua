@@ -273,7 +273,7 @@ function servidor:update(dt)
 		if self.estado_partida.current == "inicio" then
         self.tiempo_partida_inicial=self.tiempo_partida_inicial+dt
 
-        if self.tiempo_partida_inicial>self.tiempo_partida or self:contabilizar_jugadores() ==0 then
+        if self.tiempo_partida_inicial>self.tiempo_partida or self:contabilizar_jugadores() <= 1 then
             self:ver_jugadores_ultimos_vivos()
             self.server:sendToAll("partida_finalizada",self.jugadores_ganadores)
             self.estado_partida:finalizando()

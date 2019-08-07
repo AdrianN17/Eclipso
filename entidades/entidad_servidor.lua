@@ -318,7 +318,7 @@ function entidad_servidor:keypressed(key)
 
     if not self.escribiendo and #self.texto_escrito>0 then
 
-        if self.texto_escrito=="INIT_GAME" then
+        if self.texto_escrito=="INIT_GAME" and #self.gameobject.players>1 then
           self.texto_escrito="Iniciando partida"
 
           self.timer_udp_lista:after(1,function() 

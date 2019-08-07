@@ -94,9 +94,6 @@ function entrar_online:update(dt)
 		
 	end
 
-	if self.gui:Slider(self.slider_server, {id=8,vertical = true}, self.center.x,self.center.y-200 ,30,500) then
-		self.slider_server.value=math.floor(self.slider_server.value)
-	end
 end
 
 function entrar_online:textinput(t)

@@ -145,7 +145,7 @@ function crear_lan:update(dt)
 
 
 		if max_jugadores~= nil and max_enemigos~= nil and tiempo~= nil and revivir~= nil then
-			if max_jugadores<9 and max_jugadores>=0 and max_enemigos<51 and max_enemigos>=0 and tiempo<20 and tiempo>=5 and revivir<10 and revivir>=0 then
+			if max_jugadores<9 and max_jugadores>=1 and max_enemigos<51 and max_enemigos>=0 and tiempo<20 and tiempo>=5 and revivir<10 and revivir>=0 then
 				
 				local ip = self:getIP()
 				local ok = self:validar_puerto(ip)

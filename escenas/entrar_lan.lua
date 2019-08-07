@@ -94,78 +94,31 @@ function entrar_lan:update(dt)
 
 	if #self.registro_server>0 then
 
-		self.gui.layout:reset(self.center.x+150,self.center.y-200)
-		self.gui.layout:padding(30,30)
 
+		slab.BeginWindow('Lista_servidores', {Title = "Lista de servidores",X=self.center.x+150,Y=self.center.y-200 , AutoSizeWindow = false})
 
-		for i,dato in ipairs(self.registro_server) do
+		  slab.BeginListBox('lista_servers')
+		    for i, dato in ipairs(self.registro_server) do
+		        slab.BeginListBoxItem('server' .. i, {Selected = Selected == i})
+		        slab.Text(i .. " Mapa : " .. dato.mapa .. " | Cantidad : " .. dato.max_jugadores .. "/" .. dato.can_jugadores)
 
-			if i>(self.index-1)*5 and i<self.index*5 then
-
-				if self.gui:Button("Mapa : " .. dato.mapa .. " | Cantidad : " .. dato.max_jugadores .. "/" .. dato.can_jugadores ,{align="left" , id = 7+i},self.gui.layout:row(250,30)).hit then
-
-					if self.input_nickname.text=="" then
-						self.input_nickname.text="player"
-					end
-
-					local nickname=self.input_nickname.text
-					local personaje=self.tabla_personajes[self.personajes]
-					local ip=dato.ip
-
-					local max_players = tonumber(dato.max_jugadores)
-					local max_players_now = tonumber(dato.can_jugadores)
-
-					local jugando = dato.jugando
-
-					if max_players - max_players_now > 0 then
-
-						if jugando =="espera" then
-
-							self.udp_cliente:close()
-							
-							Gamestate.switch(Cliente,nickname,personaje,ip)
-
-						else
-							self.alerta_2=true
-						end
-
-					else
-						self.alerta_1=true
-					end
-
+		        if slab.IsListBoxItemClicked() then
+					self:elegir_servidor(dato)
 				end
-			end
-		end
+
+		        slab.EndListBoxItem()
+		    end
+		  slab.EndListBox()
+
+
+		  if slab.Button("Volver al menu") then
+		    self:volver_menu() 
+		  end 
+  		slab.EndWindow()
 
 	else
 		--logo cargando
 		self.gui:Label("Cargando .... " , self.center.x+150,self.center.y,100,30)
-	end
-
-	self.gui.layout:reset(self.center.x+100,self.center.y+120)
-	self.gui.layout:padding(100,20)
-
-
-	local maximo_registro_server =math.floor( (#self.registro_server/5) + 0.9 ) 
-
-	if self.gui:Button("Atras" ,{id=6}, self.gui.layout:col(100,30)).hit then
-		if #self.registro_server>0 then
-			self.index=self.index-1
-
-			if self.index < 1 then
-				self.index=maximo_registro_server
-			end
-		end
-	end
-
-	if self.gui:Button("Adelante" ,{id=7}, self.gui.layout:col(100,30)).hit then
-		if #self.registro_server>0 then
-			self.index=self.index+1
-
-			if self.index > maximo_registro_server then
-				self.index=1
-			end
-		end
 	end
 
 
@@ -196,6 +149,37 @@ end
 
 function entrar_lan:quit()
 	self.udp_cliente:close()
+end
+
+function entrar_lan:elegir_servidor(dato)
+	if self.input_nickname.text=="" then
+		self.input_nickname.text="player"
+	end
+
+	local nickname=self.input_nickname.text
+	local personaje=self.tabla_personajes[self.personajes]
+	local ip=dato.ip
+
+	local max_players = tonumber(dato.max_jugadores)
+	local max_players_now = tonumber(dato.can_jugadores)
+
+	local jugando = dato.jugando
+
+	if max_players - max_players_now > 0 then
+
+		if jugando =="espera" then
+
+			self.udp_cliente:close()
+			
+			Gamestate.switch(Cliente,nickname,personaje,ip)
+
+		else
+			self.alerta_2=true
+		end
+
+	else
+		self.alerta_1=true
+	end
 end
 
 return entrar_lan
