@@ -337,12 +337,7 @@ function entidad_servidor:keypressed(key)
           self:control_chat()
 
         elseif self.texto_escrito=="END_GAME" then
-          self:clear()
-          self.timer_juego:clear()
-          self.udp_server:close()
-          self.server:destroy()
-          self.timer_udp_lista:clear()
-          Gamestate.switch(Menu)
+          self:volver_menu()
 
         else
            table.insert(self.chat,self.texto_escrito)
@@ -559,6 +554,15 @@ end
 
 function entidad_servidor:incrementar_enemigo_id()
   self.index_enemigos=self.index_enemigos+1
+end
+
+function entidad_servidor:volver_menu()
+  self:clear()
+  self.timer_juego:clear()
+  self.udp_server:close()
+  self.server:destroy()
+  self.timer_udp_lista:clear()
+  Gamestate.switch(Menu)
 end
 
 return entidad_servidor

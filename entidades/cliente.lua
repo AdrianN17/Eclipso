@@ -251,11 +251,14 @@ function cliente:enter(gamestate,nickname,personaje,ip)
     end)
 
     self.client:on("partida_finalizada", function(data)
+        self.jugadores_ganadores=data
         self.estado_partida:finalizando()
     end)
    
 
   	self.client:connect()
+
+    self.jugadores_ganadores={}
 
 end
 
@@ -276,9 +279,10 @@ function cliente:update(dt)
 
     dt = math.min (dt, 1/30)
 
-    self.client:update()
     slab.Update(dt)
 
+    self.client:update()
+    
     if not self.id_player then
   
         self.contador_no_game=self.contador_no_game+dt
@@ -317,11 +321,11 @@ function cliente:update(dt)
 
         
 
-        if self.id_player then
+        if self.id_player and self.estado_partida.current == "inicio" then
 
             local pl = self:verificar_existencia(self.id_player)
 
-            if pl  and self.estado_partida.current == "inicio" then
+            if pl then
             
                 if pl.obj then
                     self.cam:setPosition(pl.obj.ox,pl.obj.oy)
@@ -337,6 +341,10 @@ function cliente:update(dt)
             self.client:send("enviar_vista",{cx,cy,cw,ch})
 
         end
+    end
+
+    if self.estado_partida.current == "fin" then
+        self:pantalla_score()
     end
 end
 
@@ -495,6 +503,24 @@ function cliente:clear()
   self.gameobject.objetos={}
   self.gameobject.arboles={}
   self.gameobject.inicios={}
+end
+
+function cliente:pantalla_score()
+  slab.BeginWindow('Fin_juego', {Title = "Juego finalizado",X=self.center.x-25,Y=self.center.y-25 , AutoSizeWindow = false})
+
+  slab.BeginListBox('lista_players')
+    for i, player in ipairs(self.jugadores_ganadores) do
+        slab.BeginListBoxItem('lista_player' .. i, {Selected = Selected == i})
+        slab.Text(i .. " : " .. player.nickname)
+        slab.EndListBoxItem()
+    end
+  slab.EndListBox()
+
+
+  if slab.Button("Volver al menu") then
+    self:volver_menu() 
+  end 
+  slab.EndWindow()
 end
 
 return cliente

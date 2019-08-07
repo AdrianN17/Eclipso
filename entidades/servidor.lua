@@ -18,6 +18,8 @@ personajes.radian = require "entidades.personajes.radian"
 local servidor_alterno = require "entidades.servidor_alterno"
 local timer = require "libs.hump.timer"
 
+local slab = require "libs.slab"
+
 local servidor = Class{
 	__includes={entidad_servidor,servidor_alterno}
 }
@@ -27,6 +29,12 @@ function servidor:init()
 end
 
 function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,mapas,ip_direccion,tiempo,revivir)
+
+  self.center={}
+  self.center.x=lg.getWidth()/2
+  self.center.y=lg.getHeight()/2
+
+
   self.tiempo_partida=tiempo*60
   self.tiempo_partida_inicial=0
   self.max_revivir=revivir
@@ -207,6 +215,7 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
       max_jugadores = max_jugadores
     }
 
+    self.jugadores_ganadores={}
     
 end
 
@@ -236,11 +245,15 @@ function servidor:draw()
 
   	lg.print("Current FPS: "..tostring(love.timer.getFPS( )), 10, 10)
     lg.print("Clientes: "..tostring(self.server:getClientCount()), 10, 30)
+
+    slab.Draw()
 end
 
 function servidor:update(dt)
 
   dt = math.min (dt, 1/30)
+
+  slab.Update(dt)
 
 	self.timer_udp_lista:update(dt)
 
@@ -260,8 +273,9 @@ function servidor:update(dt)
 		if self.estado_partida.current == "inicio" then
         self.tiempo_partida_inicial=self.tiempo_partida_inicial+dt
 
-        if self.tiempo_partida_inicial>self.tiempo_partida then
-            self.server:sendToAll("partida_finalizada",true)
+        if self.tiempo_partida_inicial>self.tiempo_partida or self:contabilizar_jugadores() ==0 then
+            self:ver_jugadores_ultimos_vivos()
+            self.server:sendToAll("partida_finalizada",self.jugadores_ganadores)
             self.estado_partida:finalizando()
 
           self.tiempo_partida_inicial=0
@@ -284,7 +298,11 @@ function servidor:update(dt)
           self.tiempo_chat=0
         end
       end
-	end
+	 end
+
+    if self.estado_partida.current == "fin" then
+      self:pantalla_score()
+    end
 end
 
 
@@ -380,6 +398,42 @@ function servidor:clear()
   self.gameobject.inicios={}
 end
 
+function servidor:contabilizar_jugadores()
+  local i = 0
+  for _,player in ipairs(self.gameobject.players) do
+    if player.obj  then
+      i=i+1
+    end
+  end
+  return i
+end
+
+function servidor:pantalla_score()
+  slab.BeginWindow('Fin_juego', {Title = "Juego finalizado",X=self.center.x-25,Y=self.center.y-25 , AutoSizeWindow = false})
+
+  slab.BeginListBox('lista_players')
+    for i, player in ipairs(self.jugadores_ganadores) do
+        slab.BeginListBoxItem('lista_player' .. i, {Selected = Selected == i})
+        slab.Text(i .. " : " .. player.nickname)
+        slab.EndListBoxItem()
+    end
+  slab.EndListBox()
+
+
+  if slab.Button("Volver al menu") then
+    self:volver_menu() 
+  end 
+  slab.EndWindow()
+end
+
+function servidor:ver_jugadores_ultimos_vivos()
+    for i,player in ipairs(self.gameobject.players) do
+      if player and player.obj then
+        t={nickname = player.nickname}
+        table.insert(self.jugadores_ganadores,t)
+      end
+    end
+end
 
 
 return servidor

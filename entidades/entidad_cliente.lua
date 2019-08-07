@@ -386,9 +386,7 @@ function entidad_cliente:keypressed(key)
 
       if not self.escribiendo and #self.texto_escrito>0 then
           if self.texto_escrito == "EXIT_GAME" then
-            self:clear()
-            self.client:disconnectNow()
-            Gamestate.switch(Menu)
+            self:volver_menu()
           else
             table.insert(self.chat,self.texto_escrito)
             self.client:send("chat", self.texto_escrito )
@@ -506,6 +504,12 @@ function entidad_cliente:remove_player_total(obj)
       return id
     end
   end
+end
+
+function entidad_cliente:volver_menu()
+  self:clear()
+  self.client:disconnectNow()
+  Gamestate.switch(Menu)
 end
 
 return entidad_cliente
