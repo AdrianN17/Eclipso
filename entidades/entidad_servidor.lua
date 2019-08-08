@@ -19,6 +19,8 @@ function entidad_servidor:init()
 	self.img_texturas=self.mapa_files.texturas
 	self.img_enemigos=self.mapa_files.enemigos
 
+  self.tipo_suelo = self.mapa_files.tipo_suelo
+
 	self.objetos_enemigos=self.mapa_files.objetos_enemigos
 
 	self.world = love.physics.newWorld(0, 0, false)
@@ -36,6 +38,8 @@ function entidad_servidor:init()
 	self.gameobject.objetos={}
 	self.gameobject.arboles={}
 	self.gameobject.inicios={}
+  self.gameobject.otros={}
+  self.gameobject.suelos={}
 
 	self:map_read(self.map)
 	self:inicios_random()
@@ -55,11 +59,12 @@ end
 
 function entidad_servidor:draw_entidad()
   if self.escribiendo then
+    local lg_heigh = (lg.getHeight()*3/4)
     lg.setColor( 46/255, 49/255, 49/255, 0.5 )
-    lg.rectangle("fill", 0, lg.getHeight()-50, 280, 20 )
+    lg.rectangle("fill", 0, lg_heigh-50, 280, 20 )
     lg.setColor( 1, 1, 1, 1 )
 
-    lg.printf(self.texto_escrito, 0, lg.getHeight()-50, lg.getWidth())
+    lg.printf(self.texto_escrito, 0, lg_heigh-50, lg.getWidth())
   end
 
   if #self.chat>0 then
@@ -184,6 +189,18 @@ function entidad_servidor:callbacks()
 
       obj2.obj.estados.atacando_melee=false
 
+    elseif obj1.data=="personaje" and obj2.data=="destruible" then
+      if obj2.obj.efecto then
+        obj2.obj:efecto(obj1.obj)
+      end
+
+    elseif obj1.data=="enemigos" and obj2.data=="destruible" then
+      if obj2.obj.efecto then
+        obj2.obj:efecto(obj1.obj)
+      end
+    elseif obj1.data=="personaje" and obj2.data=="efecto_suelo" then
+      obj1.obj.friccion = obj2.friccion
+      obj1.obj.tocando = obj2.tocando
     end
 
   end
@@ -206,6 +223,8 @@ function entidad_servidor:callbacks()
 
     if obj1.data=="personaje" and obj2.data=="vision_enemigo" then
       obj2.obj:eliminar_presas(obj1.obj)
+    elseif obj1.data=="personaje" and obj2.data=="efecto_suelo" then
+      --obj1.obj.friccion = obj1.obj.friccion_original
     end
     
   end
@@ -277,7 +296,7 @@ function entidad_servidor:custom_layers()
       if obj_data.obj then
         obj_data.obj:draw()
         lg.print(obj_data.nickname,obj_data.obj.ox,obj_data.obj.oy-75)
-        --lg.print(obj_data.obj.efecto_tenidos.current,obj_data.obj.ox,obj_data.obj.oy-100)
+        lg.print(obj_data.obj.friccion,obj_data.obj.ox,obj_data.obj.oy-100)
       end
     end
   end
@@ -463,7 +482,7 @@ function entidad_servidor:map_read(objects_map)
 
   for _, layer in ipairs(self.map.layers) do
     if layer.type=="tilelayer" then
-      --self:get_tile(layer)
+      self:get_tile(layer)
     elseif layer.type=="objectgroup" then
       self:get_objects(layer,self.mapa_files.objetos_data)
     end
@@ -489,10 +508,33 @@ function entidad_servidor:get_objects(objectlayer,objects_map)
 
           objects_map[obj.name](self,polygon)
         else
+
           objects_map[obj.name](self,obj.x,obj.y)
         end
       end
     end
+end
+
+function entidad_servidor:get_tile(layer)
+    --
+    local lista = {}
+    for y=1, layer.height,1 do
+      for x=1, layer.width,1 do
+        local tile = layer.data[y][x]
+
+        if tile then
+          if tile.properties.efecto then
+              local ox,oy = (x-1),(y-1)
+              local t = {x=ox*self.w_tile,y=oy*self.h_tile,w=self.w_tile,h=self.h_tile}
+              table.insert(lista,t)
+          end
+        end
+      end
+    end
+
+    local objeto = self.tipo_suelo[layer.properties.efecto](self.world,lista)
+    self.gameobject.suelos[layer.properties.efecto]=objeto
+
 end
 
 function entidad_servidor:control_chat()

@@ -4,6 +4,9 @@ local funciones_jugadores ={}
 
 function funciones_jugadores:crear_cuerpo(obj,x,y,area)
 	--cuerpo
+  obj.tocando = nil
+  obj.friccion_original=1
+  obj.friccion = obj.friccion_original
   
   obj.collider=py.newBody(obj.entidades.world,x,y,"dynamic")
 	obj.collider:setFixedRotation(true)
@@ -106,10 +109,10 @@ function funciones_jugadores:movimiento(obj,dt)
   	end
 
   	if obj.estados.moviendo and not obj.estados.atacado and not obj.estados.dash then
-		local mx,my=x*obj.mass*obj.velocidad*dt,y*obj.mass*obj.velocidad*dt
+		local mx,my=x*obj.mass*obj.velocidad*dt*obj.friccion,y*obj.mass*obj.velocidad*dt*obj.friccion
 		local vx,vy=obj.collider:getLinearVelocity()
     
-
+    vx,vy=vx*obj.friccion,vy*obj.friccion
 
 		if vx<obj.velocidad or vy<obj.velocidad then
 			obj.collider:applyLinearImpulse(mx,my)
@@ -430,6 +433,20 @@ function funciones_jugadores:contador_dash(obj,dt)
   if obj.tiempo_dash>obj.max_tiempo_dash then
     obj.tiempo_dash=0
     obj.estados.dash=false
+  end
+end
+
+function funciones_jugadores:devolver_friccion(obj)
+  if obj.friccion ~= obj.friccion_original then
+      if obj.tocando then
+
+          local collider = obj.entidades.gameobject.suelos[obj.tocando].collider
+
+          if collider and not obj.collider:isTouching( collider ) then
+              obj.friccion = obj.friccion_original
+              obj.tocando=nil
+          end
+      end
   end
 end
 

@@ -110,10 +110,6 @@ function entrar_lan:update(dt)
 		    end
 		  slab.EndListBox()
 
-
-		  if slab.Button("Volver al menu") then
-		    self:volver_menu() 
-		  end 
   		slab.EndWindow()
 
 	else

@@ -115,6 +115,7 @@ function radian:update(dt)
     funciones:coger_centro(self)
     funciones:muerte(self)
     funciones:regular_ira(self,dt)
+    funciones:devolver_friccion(self)
 end
 
 function radian:keypressed(key)

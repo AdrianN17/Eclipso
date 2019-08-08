@@ -39,6 +39,9 @@ return {
       tiles = {
         {
           id = 2,
+          properties = {
+            ["efecto"] = true
+          },
           animation = {
             {
               tileid = 2,
@@ -66,27 +69,12 @@ return {
       opacity = 1,
       offsetx = 0,
       offsety = 0,
-      properties = {},
+      properties = {
+        ["efecto"] = "agua"
+      },
       encoding = "base64",
       compression = "zlib",
       data = "eJzt2cty4zAMRFE7+f9/TjapclyyzQeAbpJ30aXdDIgjQJJzv91uX7+5H3D9y3dwomtU96nSI8MCDzx2uDrvqZM8MmcDjz331Eke0RZ4+MwFHnisfq2wyKxd3T/mYm+PFR129MicDTw89lR1jxz66LqnHmcOD+2eUvXGoZ/sKTzwwOMUj2iLq+d5Va8c+unqofBx6OcqHi0+sz116OdM7SqLrDly6OtuHj1z9Gzg0NfV9lS2mbqvePx3Ufd1ZE/h4XPd1WI1j90t1B6vEjkX7/4fR1+1x7v+zcxFj7GTS8v9+ulMGft/pk8jNTt5fKon2iXz7KM1uniM2s08Lypq7K1N3dtIm57ndlVdO89Fi8mnVNfkMKsk/n2q556bjbp3mR7PLqPnjnh/OXF3ttzXo/8GHh7Bwyt4eKXKAwsPDyw8PDDw8MAhzoTntVeuvmd6oz4DIYScFna0T/i+8sjMeyYuORZ8f3kk+rtYfZ7Vk/E7hfpMKwcPr0R7sLfiTPDwCR6emXXBItel1wcPjc9V1DUSQgghkeF5p0/Lu6G6xhPS846urnX39H4rqevdLaPfrHjkWvAbm7b/Ub99qs+0apz/RtPyO1Jr1H1WOYx6vOpj5N9WXa0yHUY8Kupx3K8Z993s+arqcfKodFjVo8pEdV73+vDwqk/hscI+xgMPPD57qF3w8JoTPPDAQ+ehPt9q9w8eXnVX7KoVPR5rr5qLitlQOUTebxUuVbOxg0emS4XDrh5XNqN7qdpid4+rmWlJZf8j7p/VPFYJHj7JeO7hMWehdjjd4/m5pXY42cPR4UQPZ4e/6w/PiFof"
-    },
-    {
-      type = "tilelayer",
-      id = 4,
-      name = "Suelo2",
-      x = 0,
-      y = 0,
-      width = 100,
-      height = 100,
-      visible = true,
-      opacity = 1,
-      offsetx = 0,
-      offsety = 0,
-      properties = {},
-      encoding = "base64",
-      compression = "zlib",
-      data = "eJztwTEBAAAAwqD1T+1lC6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAbnEAAAQ=="
     },
     {
       type = "objectgroup",
@@ -191,19 +179,6 @@ return {
           properties = {}
         },
         {
-          id = 17,
-          name = "arbol",
-          type = "",
-          shape = "point",
-          x = 989,
-          y = 533,
-          width = 0,
-          height = 0,
-          rotation = 0,
-          visible = true,
-          properties = {}
-        },
-        {
           id = 18,
           name = "arbol",
           type = "",
@@ -234,8 +209,8 @@ return {
           name = "arbol",
           type = "",
           shape = "point",
-          x = 1200,
-          y = 460,
+          x = 1292,
+          y = 426,
           width = 0,
           height = 0,
           rotation = 0,
@@ -247,8 +222,8 @@ return {
           name = "arbol",
           type = "",
           shape = "point",
-          x = 1412,
-          y = 228,
+          x = 1450,
+          y = 240,
           width = 0,
           height = 0,
           rotation = 0,

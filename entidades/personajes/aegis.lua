@@ -107,9 +107,9 @@ function aegis:update(dt)
 	end
 
 	funciones:coger_centro(self)
-
 	funciones:muerte(self)
 	funciones:regular_ira(self,dt)
+	funciones:devolver_friccion(self)
 	
 end
 

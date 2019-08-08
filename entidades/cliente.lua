@@ -367,6 +367,7 @@ function cliente:nuevo_mapa(mapa)
 
 
 	local x,y=lg.getDimensions( )
+    y=y-y/4
 	self.map:resize(x,y)
 	self.cam = gamera.new(0,0,self.mapa_files.x,self.mapa_files.y)
 	self.cam:setWindow(0,0,x,y)

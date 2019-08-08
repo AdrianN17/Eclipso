@@ -29,7 +29,7 @@ function crear_lan:enter()
 	self.mapas=1
 
 	self.tabla_personajes={"aegis","solange","xeon","radian"}
-	self.tabla_mapas={"acuaris"}
+	self.tabla_mapas={"acuaris","acuaris_volcan"}
 
 	self.max_personajes=#self.tabla_personajes
 	self.max_mapas=#self.tabla_mapas
@@ -77,15 +77,7 @@ function crear_lan:update(dt)
 		end
 	end
 
-	if self.gui:Button("Adelante" ,{id=3}, self.gui.layout:col()).hit then
-		self.mapas=self.mapas+1
-
-		if self.mapas > self.max_mapas then
-			self.mapas=1
-		end
-	end
-
-	if self.gui:Button("Atras" ,{id=4}, self.gui.layout:col()).hit then
+	if self.gui:Button("Atras" ,{id=3}, self.gui.layout:col()).hit then
 		self.mapas=self.mapas-1
 
 		if self.mapas < 1 then
@@ -93,6 +85,13 @@ function crear_lan:update(dt)
 		end
 	end
 
+	if self.gui:Button("Adelante" ,{id=4}, self.gui.layout:col()).hit then
+		self.mapas=self.mapas+1
+
+		if self.mapas > self.max_mapas then
+			self.mapas=1
+		end
+	end
 
 	self.gui.layout:reset(self.center.x-250,self.center.y+45)
     self.gui.layout:padding(25,25)

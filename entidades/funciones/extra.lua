@@ -128,7 +128,7 @@ function extra:enviar_data_primordiar_jugador(obj,player_main)
 				--if self:collides_object(player.obj,vcx,vcy,vcw,vch) then
 					local t = {}
 					local objeto = player.obj 
-					local t={index=player.index,ox=objeto.ox,oy=objeto.oy,hp=objeto.hp,ira=objeto.ira,estados=objeto.estados,efecto=objeto.efecto_tenidos.current}
+					local t={index=player.index,ox=objeto.ox,oy=objeto.oy,hp=objeto.hp,ira=objeto.ira,estados=objeto.estados,efecto=objeto.efecto_tenidos.current,friccion = objeto.friccion}
 					table.insert(data_player,t)
 				--end
 			end
@@ -145,7 +145,7 @@ function extra:enviar_data_primordiar_jugador(obj,player_main)
 			if player.obj then
 				local t = {}
 				local objeto = player.obj 
-				local t={index=player.index,ox=objeto.ox,oy=objeto.oy,hp=objeto.hp,ira=objeto.ira,estados=objeto.estados,efecto=objeto.efecto_tenidos.current}
+				local t={index=player.index,ox=objeto.ox,oy=objeto.oy,hp=objeto.hp,ira=objeto.ira,estados=objeto.estados,efecto=objeto.efecto_tenidos.current,friccion = objeto.friccion}
 				table.insert(data_player,t)
 			end
 		end
@@ -173,6 +173,7 @@ function extra:ingresar_datos_personaje(obj,data)
 	obj.ira=data.ira
 	obj.estados=data.estados
 	obj.efecto_tenidos.current = data.efecto
+	obj.friccion=data.friccion
 
 	--[[if data.efecto =="ninguno" and obj.efecto_tenidos.current ~="ninguno" then
 		obj.efecto_tenidos:normalidad()

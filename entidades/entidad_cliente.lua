@@ -196,8 +196,8 @@ function entidad_cliente:custom_layers()
     for _, obj_data in ipairs(self.gameobject.players) do
       if obj_data.obj then
         obj_data.obj:draw()
-        lg.print(tostring(obj_data.obj.nickname),obj_data.obj.ox,obj_data.obj.oy-75)
-         --lg.print(obj_data.index,obj_data.obj.ox,obj_data.obj.oy-150)
+        lg.print(obj_data.obj.nickname,obj_data.obj.ox,obj_data.obj.oy-75)
+        --lg.print(obj_data.obj.friccion,obj_data.obj.ox,obj_data.obj.oy-150)
         --lg.print(obj_data.obj.efecto_tenidos.current,obj_data.obj.ox,obj_data.obj.oy-150)
       end
     end
@@ -339,11 +339,12 @@ function entidad_cliente:draw_entidad()
     	self.map:draw(-cx,-cy,1,1)
 
 	    if self.escribiendo then
+        local lg_heigh = (lg.getHeight()*3/4)
 	      lg.setColor( 46/255, 49/255, 49/255, 0.5 )
-	      lg.rectangle("fill", 0, lg.getHeight()-50, 280, 20 )
+	      lg.rectangle("fill", 0, lg_heigh-50, 280, 20 )
 	      lg.setColor( 1, 1, 1, 1 )
 
-	      lg.printf(self.texto_escrito, 0, lg.getHeight()-50, lg.getWidth())
+	      lg.printf(self.texto_escrito, 0, lg_heigh-50, lg.getWidth())
 	    end
 
 	    if #self.chat>0 then

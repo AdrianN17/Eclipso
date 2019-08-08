@@ -54,11 +54,13 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
 
 	self.mapa_files=require ("entidades.mapas." .. mapas)
 	self.map=sti(self.mapa_files.mapa)
+  self.w_tile,self.h_tile=self.mapa_files.w_tile,self.mapa_files.h_tile
 
 	self.max_enemigos=max_enemigos
 	self.cantidad_actual_enemigos=0
 
 	local x,y=lg.getDimensions( )
+  y=y-y/4
 	self.map:resize(x,y)
 	self.cam = gamera.new(0,0,self.mapa_files.x,self.mapa_files.y)
   
@@ -230,7 +232,7 @@ function servidor:draw()
 
     self:draw_entidad()
 
-    --[[self.cam:draw(function(l,t,w,h)
+    self.cam:draw(function(l,t,w,h)
       for _, body in pairs(self.world:getBodies()) do
           for _, fixture in pairs(body:getFixtures()) do
               local shape = fixture:getShape()
@@ -245,7 +247,7 @@ function servidor:draw()
               end
           end
       end
-    end)]]
+    end)
 
   	lg.print("Current FPS: "..tostring(love.timer.getFPS( )), 10, 10)
     lg.print("Clientes: "..tostring(self.server:getClientCount()), 10, 30)

@@ -2,13 +2,11 @@
 <map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="12" nextobjectid="78">
  <tileset firstgid="1" source="tiled_playa.tsx"/>
  <layer id="3" name="Suelo" width="100" height="100">
+  <properties>
+   <property name="efecto" value="agua"/>
+  </properties>
   <data encoding="base64" compression="zlib">
    eJzt2cty4zAMRFE7+f9/TjapclyyzQeAbpJ30aXdDIgjQJJzv91uX7+5H3D9y3dwomtU96nSI8MCDzx2uDrvqZM8MmcDjz331Eke0RZ4+MwFHnisfq2wyKxd3T/mYm+PFR129MicDTw89lR1jxz66LqnHmcOD+2eUvXGoZ/sKTzwwOMUj2iLq+d5Va8c+unqofBx6OcqHi0+sz116OdM7SqLrDly6OtuHj1z9Gzg0NfV9lS2mbqvePx3Ufd1ZE/h4XPd1WI1j90t1B6vEjkX7/4fR1+1x7v+zcxFj7GTS8v9+ulMGft/pk8jNTt5fKon2iXz7KM1uniM2s08Lypq7K1N3dtIm57ndlVdO89Fi8mnVNfkMKsk/n2q556bjbp3mR7PLqPnjnh/OXF3ttzXo/8GHh7Bwyt4eKXKAwsPDyw8PDDw8MAhzoTntVeuvmd6oz4DIYScFna0T/i+8sjMeyYuORZ8f3kk+rtYfZ7Vk/E7hfpMKwcPr0R7sLfiTPDwCR6emXXBItel1wcPjc9V1DUSQgghkeF5p0/Lu6G6xhPS846urnX39H4rqevdLaPfrHjkWvAbm7b/Ub99qs+0apz/RtPyO1Jr1H1WOYx6vOpj5N9WXa0yHUY8Kupx3K8Z993s+arqcfKodFjVo8pEdV73+vDwqk/hscI+xgMPPD57qF3w8JoTPPDAQ+ehPt9q9w8eXnVX7KoVPR5rr5qLitlQOUTebxUuVbOxg0emS4XDrh5XNqN7qdpid4+rmWlJZf8j7p/VPFYJHj7JeO7hMWehdjjd4/m5pXY42cPR4UQPZ4e/6w/PiFof
-  </data>
- </layer>
- <layer id="4" name="Suelo2" width="100" height="100">
-  <data encoding="base64" compression="zlib">
-   eJztwTEBAAAAwqD1T+1lC6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAbnEAAAQ==
   </data>
  </layer>
  <objectgroup id="2" name="Borrador">
@@ -33,19 +31,16 @@
   <object id="16" name="arbol" x="173" y="533">
    <point/>
   </object>
-  <object id="17" name="arbol" x="989" y="533">
-   <point/>
-  </object>
   <object id="18" name="arbol" x="1037" y="713">
    <point/>
   </object>
   <object id="19" name="arbol" x="1044" y="252">
    <point/>
   </object>
-  <object id="20" name="arbol" x="1200" y="460">
+  <object id="20" name="arbol" x="1292" y="426">
    <point/>
   </object>
-  <object id="21" name="arbol" x="1412" y="228">
+  <object id="21" name="arbol" x="1450" y="240">
    <point/>
   </object>
   <object id="22" name="punto_enemigo" x="2752" y="412">

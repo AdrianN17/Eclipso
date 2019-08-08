@@ -113,6 +113,7 @@ function xeon:update(dt)
     funciones:coger_centro(self)
     funciones:muerte(self)
     funciones:regular_ira(self,dt)
+    funciones:devolver_friccion(self)
 end
 
 function xeon:keypressed(key)
