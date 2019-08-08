@@ -13,6 +13,8 @@ function love.load()
   	Gamestate.registerEvents()
   	Gamestate.switch(Menu)
 
+  	love.graphics.setDefaultFilter( 'nearest', 'nearest' )
+
 
 end
 

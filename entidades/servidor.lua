@@ -252,10 +252,14 @@ function servidor:draw()
       end
     end)]]
 
+    self:gui_usuario()
+
   	lg.print("Current FPS: "..tostring(love.timer.getFPS( )), 10, 10)
     lg.print("Clientes: "..tostring(self.server:getClientCount()), 10, 30)
 
     slab.Draw()
+
+
 end
 
 function servidor:update(dt)
@@ -499,6 +503,21 @@ function servidor:remove_desde_raiz(obj)
     if player == obj then
       table.remove(self.gameobject.players,i)
     end
+  end
+end
+
+function servidor:gui_usuario()
+  local objeto_player = self:verificar_existencia(0)
+
+  if objeto_player and objeto_player.obj then
+    obj = objeto_player.obj
+
+    
+    
+    --[[print(obj.hp,obj.ira,obj.nickname,obj.efecto_tenidos.current)
+    print(#obj.balas)
+    print(obj.balas[1].stock)
+    print(obj.balas[2].stock)]]
   end
 end
 
