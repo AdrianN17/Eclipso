@@ -40,6 +40,7 @@ end
 
 function entrar_lan:draw( )
 	lg.print(self.personajes,self.center.x-200,self.center.y-150)
+	print(self.personajes)
 
 	self.gui:draw()
 	slab.Draw()

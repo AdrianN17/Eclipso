@@ -577,6 +577,8 @@ function cliente:gui_usuario(index)
 
   local recargando = false
 
+  local efecto = "ninguno"
+
   if objeto_player then
     if objeto_player.obj then
       local obj = objeto_player.obj
@@ -593,7 +595,9 @@ function cliente:gui_usuario(index)
         bala2_max=obj.balas[2].balas_max
       end
 
-      recargando=obj.estados.recargando
+        efecto = obj.efecto_tenidos.current
+
+        recargando=obj.estados.recargando
 
     end
   end
@@ -608,6 +612,8 @@ function cliente:gui_usuario(index)
   if gui.bala[2] then
     lg.print(gui.bala[2] .. "  " .. bala2_max .. "/" .. bala2 ,self.center.x+25,self.center.y+280)
   end
+
+  lg.print("Estado : " .. efecto,self.center.x+120,self.center.y+200)
 
   if recargando then
     lg.print("recargando ...." , self.center.x,self.center.y)

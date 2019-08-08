@@ -404,7 +404,7 @@ function entidad_cliente:keypressed(key)
       self.escribiendo=not self.escribiendo
 
       if not self.escribiendo and #self.texto_escrito>0 then
-          if self.texto_escrito == "EXIT_GAME" then
+          if self.texto_escrito == "END_GAME" then
             self:volver_menu()
           else
             table.insert(self.chat,self.texto_escrito)
