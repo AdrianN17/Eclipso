@@ -500,23 +500,26 @@ function entidad_servidor:get_objects(objectlayer,objects_map)
 
           local polygon = {}
 
+           --print("{ '" .. obj.name .. "', {" )
           for _,data in ipairs(obj.polygon) do
-     
+            --print( data.x .. "," .. data.y .. "," )
             table.insert(polygon,data.x)
             table.insert(polygon,data.y)
           end
+          --print( "}}," )
 
           objects_map[obj.name](self,polygon)
         else
-
+          --print("{'" .. obj.name .. "'," .. obj.x .. "," .. obj.y .. "},")
           objects_map[obj.name](self,obj.x,obj.y)
+
         end
       end
     end
 end
 
 function entidad_servidor:get_tile(layer)
-    --
+    print("{'" .. layer.properties.efecto .. "' , {")
     local lista = {}
     for y=1, layer.height,1 do
       for x=1, layer.width,1 do
@@ -526,11 +529,15 @@ function entidad_servidor:get_tile(layer)
           if tile.properties.efecto then
               local ox,oy = (x-1),(y-1)
               local t = {x=ox*self.w_tile,y=oy*self.h_tile,w=self.w_tile,h=self.h_tile}
+
+              print("{" .. t.x .. "," .. t.y .. "," .. t.w .. "," .. t.h .. "},")
               table.insert(lista,t)
           end
         end
       end
     end
+
+  print("}}")
 
     local objeto = self.tipo_suelo[layer.properties.efecto](self.world,lista)
     self.gameobject.suelos[layer.properties.efecto]=objeto
