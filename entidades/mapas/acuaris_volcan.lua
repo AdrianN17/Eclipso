@@ -1,6 +1,6 @@
 local acuaris_volcan={}
 acuaris_volcan.x,acuaris_volcan.y=3200,3200
-acuaris.w_tile,acuaris.h_tile=32,32
+acuaris_volcan.w_tile,acuaris_volcan.h_tile=32,32
 
 acuaris_volcan.mapa=  "assets/map/acuaris/acuaris_volcan.lua"
 acuaris_volcan.enemigos = require "assets.img.enemigos.img_enemigos"
@@ -22,7 +22,7 @@ acuaris_volcan.objetos_enemigos={}
 acuaris_volcan.objetos_enemigos[1]			= require "entidades.enemigos.muymuy"
 acuaris_volcan.objetos_enemigos[2]			= require "entidades.enemigos.cangrejo"
 
-acuaris.tipo_suelo={}
-acuaris.tipo_suelo.agua= require "entidades.suelo.agua"
+acuaris_volcan.tipo_suelo={}
+acuaris_volcan.tipo_suelo.agua= require "entidades.suelo.agua"
 
 return acuaris_volcan
