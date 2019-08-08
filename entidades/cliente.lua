@@ -32,6 +32,7 @@ function cliente:enter(gamestate,nickname,personaje,ip)
 	self.contador_no_game=0
 	self.id_player=nil
 
+    self.escala = 0.7
 	local x,y=lg.getDimensions( )
 
 	self.tickRate = 1/60
@@ -368,9 +369,10 @@ function cliente:nuevo_mapa(mapa)
 
 	local x,y=lg.getDimensions( )
     y=y-y/4
-	self.map:resize(x,y)
+	self.map:resize(x/self.escala,y/self.escala)
 	self.cam = gamera.new(0,0,self.mapa_files.x,self.mapa_files.y)
 	self.cam:setWindow(0,0,x,y)
+    self.cam:setScale(self.escala)
 
 	self.img_personajes=require "assets.img.personajes.img_personajes"
 	self.img_balas=require "assets.img.balas.img_balas"

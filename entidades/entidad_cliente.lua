@@ -336,7 +336,24 @@ function entidad_cliente:draw_entidad()
 	if self.map and self.cam then
 		local cx,cy,cw,ch=self.cam:getVisible()
 
-    	self.map:draw(-cx,-cy,1,1)
+    	self.map:draw(-cx,-cy,self.escala,self.escala)
+
+      --[[self.cam:draw(function(l,t,w,h)
+      for _, body in pairs(self.world:getBodies()) do
+          for _, fixture in pairs(body:getFixtures()) do
+              local shape = fixture:getShape()
+       
+              if shape:typeOf("CircleShape") then
+                  local cx, cy = body:getWorldPoints(shape:getPoint())
+                  love.graphics.circle("line", cx, cy, shape:getRadius())
+              elseif shape:typeOf("PolygonShape") then
+                  love.graphics.polygon("line", body:getWorldPoints(shape:getPoints()))
+              else
+                  love.graphics.line(body:getWorldPoints(shape:getPoints()))
+              end
+          end
+      end
+    end)]]
 
 	    if self.escribiendo then
         local lg_heigh = (lg.getHeight()*3/4)
