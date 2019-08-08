@@ -58,7 +58,7 @@ function cangrejo:init(entidades,x,y)
 
 	self.iterator=1
 	self.timer_1=0
-	self.max_iterator=1
+	self.max_iterator=2
 
 	self.tiempo_rastreo=0
 	self.max_tiempo_rastreo=1
@@ -91,6 +91,7 @@ end
 function cangrejo:update(dt)
 	self:update_efecto(dt)
 	funcion:actualizar_raycast(self,dt)
+	funcion:animacion_enemigo(self,dt)
 
 	if self.efecto_tenidos.current ~="congelado" then
 		if self.fsm.current == "rastreo" then
