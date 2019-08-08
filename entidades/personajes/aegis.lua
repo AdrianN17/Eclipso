@@ -54,6 +54,7 @@ function aegis:init(entidades,creador,nickname,cx,cy)
 
 	--asignar variables
 	self.hp=hp 
+	self.max_hp=self.hp
 	self.ira=0
 	self.max_ira=ira
 
@@ -107,9 +108,9 @@ function aegis:update(dt)
 	end
 
 	funciones:coger_centro(self)
+	funciones:devolver_friccion(self)
 	funciones:muerte(self)
 	funciones:regular_ira(self,dt)
-	funciones:devolver_friccion(self)
 	
 end
 

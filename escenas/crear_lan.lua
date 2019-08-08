@@ -43,6 +43,9 @@ function crear_lan:enter()
 end
 
 function crear_lan:draw()
+	lg.print(self.personajes,self.center.x-150,self.center.y-150)
+	lg.print(self.mapas,self.center.x+200,self.center.y-150)
+
 	self.gui:draw()
 	slab.Draw()
 end

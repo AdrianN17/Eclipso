@@ -261,6 +261,10 @@ function cliente:enter(gamestate,nickname,personaje,ip)
 
     self.jugadores_ganadores={}
 
+    self.jugadores_ganadores={}
+
+    self.gui_principal_player=require ("assets/gui/" .. personaje .. "/img_gui")
+
 end
 
 function cliente:draw()
@@ -273,7 +277,13 @@ function cliente:draw()
     
     lg.print("Current FPS: "..tostring(love.timer.getFPS( )), 10, 10)
 
+    if self.id_player then
+        self:gui_usuario(self.id_player)
+    end
+
     slab.Draw()
+
+
 end
 
 function cliente:update(dt)
@@ -549,6 +559,60 @@ function cliente:pantalla_score()
     self:volver_menu() 
   end 
   slab.EndWindow()
+end
+
+function cliente:gui_usuario(index)
+
+  local gui = self.gui_principal_player
+
+  local objeto_player = self:verificar_existencia(index)
+
+  local estado_vida = "muerto"
+  local hp = 0
+  local bala1=0
+  local bala2=0
+
+  local bala1_max=0
+  local bala2_max=0
+
+  local recargando = false
+
+  if objeto_player then
+    if objeto_player.obj then
+      local obj = objeto_player.obj
+      estado_vida="vivo"
+      hp = math.floor((obj.hp/obj.max_hp)*100)
+
+      if obj.balas[1] then
+        bala1=obj.balas[1].stock
+        bala1_max=obj.balas[1].balas_max
+      end
+
+      if obj.balas[2] then
+        bala2=obj.balas[2].stock
+        bala2_max=obj.balas[2].balas_max
+      end
+
+      recargando=obj.estados.recargando
+
+    end
+  end
+
+  lg.draw(gui.img_corazon,gui.corazon[estado_vida],self.center.x,self.center.y+180,0,gui.corazon.scale,gui.corazon.scale)
+  lg.print(hp .. "%",self.center.x+25,self.center.y+200)
+
+  if gui.bala[1] then
+    lg.print(gui.bala[1] .. "  " .. bala1_max .. "/" .. bala1 ,self.center.x+25,self.center.y+260)
+  end
+
+  if gui.bala[2] then
+    lg.print(gui.bala[2] .. "  " .. bala2_max .. "/" .. bala2 ,self.center.x+25,self.center.y+280)
+  end
+
+  if recargando then
+    lg.print("recargando ...." , self.center.x,self.center.y)
+  end
+
 end
 
 return cliente

@@ -225,6 +225,8 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
     }
 
     self.jugadores_ganadores={}
+
+    self.gui_principal_player=require ("assets/gui/" .. personaje .. "/img_gui")
     
 end
 
@@ -252,7 +254,7 @@ function servidor:draw()
       end
     end)]]
 
-    self:gui_usuario()
+    self:gui_usuario(0)
 
   	lg.print("Current FPS: "..tostring(love.timer.getFPS( )), 10, 10)
     lg.print("Clientes: "..tostring(self.server:getClientCount()), 10, 30)
@@ -506,19 +508,58 @@ function servidor:remove_desde_raiz(obj)
   end
 end
 
-function servidor:gui_usuario()
-  local objeto_player = self:verificar_existencia(0)
+function servidor:gui_usuario(index)
 
-  if objeto_player and objeto_player.obj then
-    obj = objeto_player.obj
+  local gui = self.gui_principal_player
 
-    
-    
-    --[[print(obj.hp,obj.ira,obj.nickname,obj.efecto_tenidos.current)
-    print(#obj.balas)
-    print(obj.balas[1].stock)
-    print(obj.balas[2].stock)]]
+  local objeto_player = self:verificar_existencia(index)
+
+  local estado_vida = "muerto"
+  local hp = 0
+  local bala1=0
+  local bala2=0
+
+  local bala1_max=0
+  local bala2_max=0
+
+  local recargando = false
+
+  if objeto_player then
+    if objeto_player.obj then
+      local obj = objeto_player.obj
+      estado_vida="vivo"
+      hp = math.floor((obj.hp/obj.max_hp)*100)
+
+      if obj.balas[1] then
+        bala1=obj.balas[1].stock
+        bala1_max=obj.balas[1].balas_max
+      end
+
+      if obj.balas[2] then
+        bala2=obj.balas[2].stock
+        bala2_max=obj.balas[2].balas_max
+      end
+
+      recargando=obj.estados.recargando
+
+    end
   end
+
+  lg.draw(gui.img_corazon,gui.corazon[estado_vida],self.center.x,self.center.y+180,0,gui.corazon.scale,gui.corazon.scale)
+  lg.print(hp .. "%",self.center.x+25,self.center.y+200)
+
+  if gui.bala[1] then
+    lg.print(gui.bala[1] .. "  " .. bala1_max .. "/" .. bala1 ,self.center.x+25,self.center.y+260)
+  end
+
+  if gui.bala[2] then
+    lg.print(gui.bala[2] .. "  " .. bala2_max .. "/" .. bala2 ,self.center.x+25,self.center.y+280)
+  end
+
+  if recargando then
+    lg.print("recargando ...." , self.center.x,self.center.y)
+  end
+
 end
 
 return servidor

@@ -1,6 +1,6 @@
 local Class= require "libs.hump.class"
 local suit=require "libs.suit"
---local Cliente=require "entidades.cliente"
+local Cliente=require "entidades.cliente"
 
 local entrar_online = Class{}
 
@@ -26,6 +26,8 @@ function entrar_online:enter( )
 end
 
 function entrar_online:draw( )
+	lg.print(self.personajes,self.center.x-200,self.center.y-150)
+
 	self.gui:draw()
 end
 
