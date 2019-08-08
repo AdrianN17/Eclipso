@@ -39,8 +39,7 @@ function entrar_lan:enter( )
 end
 
 function entrar_lan:draw( )
-	lg.print(self.personajes,self.center.x-200,self.center.y-150)
-	print(self.personajes)
+	--lg.print(self.personajes,self.center.x-200,self.center.y-150)
 
 	self.gui:draw()
 	slab.Draw()
@@ -50,6 +49,8 @@ function entrar_lan:update(dt)
 
 	self:update_alterno(dt)
 	slab.Update(dt)
+
+	self.gui:Label(tostring(self.personajes),self.center.x-200,self.center.y-150,100,30)
 
 	self.gui.layout:reset(self.center.x-250,self.center.y-285)
 	self.gui.layout:padding(300,20)
@@ -94,6 +95,8 @@ function entrar_lan:update(dt)
 		self.udp_cliente:close()
 		Gamestate.switch(Menu)
 	end
+
+	
 
 	if #self.registro_server>0 then
 

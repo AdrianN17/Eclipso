@@ -26,12 +26,14 @@ function entrar_online:enter( )
 end
 
 function entrar_online:draw( )
-	lg.print(self.personajes,self.center.x-200,self.center.y-150)
+	--lg.print(self.personajes,self.center.x-200,self.center.y-150)
 
 	self.gui:draw()
 end
 
 function entrar_online:update(dt)
+
+	self.gui:Label(tostring(self.personajes),self.center.x-200,self.center.y-150,100,30)
 
 	self.gui.layout:reset(self.center.x-250,self.center.y-285)
 	self.gui.layout:padding(300,20)

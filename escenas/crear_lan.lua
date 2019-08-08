@@ -43,8 +43,8 @@ function crear_lan:enter()
 end
 
 function crear_lan:draw()
-	lg.print(self.personajes,self.center.x-150,self.center.y-150)
-	lg.print(self.mapas,self.center.x+200,self.center.y-150)
+	--lg.print(self.personajes,self.center.x-150,self.center.y-150)
+	--lg.print(self.mapas,self.center.x+200,self.center.y-150)
 
 	self.gui:draw()
 	slab.Draw()
@@ -53,6 +53,9 @@ end
 function crear_lan:update(dt)
 
 	slab.Update(dt)
+
+	self.gui:Label(tostring(self.personajes),self.center.x-150,self.center.y-150,100,30)
+    self.gui:Label(tostring(self.mapas),self.center.x+200,self.center.y-150,100,30)
 
 	self.gui.layout:reset(self.center.x-200,self.center.y-285)
 	self.gui.layout:padding(250,20)
@@ -126,10 +129,10 @@ function crear_lan:update(dt)
     self.gui:Input(self.input_tiempo, self.gui.layout:row(50,30))
     self.gui:Input(self.input_revivir, self.gui.layout:row(50,30))
 
-
 	self.gui.layout:reset(self.center.x-200,self.center.y+225)
     self.gui.layout:padding(150,25)
 
+    --de momento
 
 	if self.gui:Button("Jugar" ,{id=5}, self.gui.layout:col(150,50)).hit then
 		if self.input_nickname.text=="" then
