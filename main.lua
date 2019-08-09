@@ -9,7 +9,7 @@ function love.load()
 	_G.lm.setRandomSeed(love.timer.getTime())
 	--_G.font = font
 	_G.py=love.physics
-	_G.version_juego = "Beta 5.4.0"
+	_G.version_juego = "Beta 5.4.2"
 
   	Gamestate.registerEvents()
   	Gamestate.switch(Menu)
