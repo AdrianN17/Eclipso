@@ -133,7 +133,7 @@ function servidor:enter(gamestate,nickname,max_jugadores,max_enemigos,personaje,
 
     local obj = self:verificar_existencia(index)
 
-    if obj then
+    if obj and obj.obj then
 
       if data.tipo=="keypressed" then
         obj.obj:keypressed(data.data[1])
