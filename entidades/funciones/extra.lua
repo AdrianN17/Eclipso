@@ -129,6 +129,17 @@ function extra:enviar_data_primordiar_jugador(obj,player_main)
 					local t = {}
 					local objeto = player.obj 
 					local t={index=player.index,ox=objeto.ox,oy=objeto.oy,hp=objeto.hp,ira=objeto.ira,estados=objeto.estados,efecto=objeto.efecto_tenidos.current,friccion = objeto.friccion}
+
+					if objeto.balas then
+						if objeto.balas[1] then
+							t.bala_1_stock = objeto.balas[1].stock
+						end
+
+						if objeto.balas[2] then
+							t.bala_2_stock = objeto.balas[2].stock
+						end
+					end
+
 					table.insert(data_player,t)
 				--end
 			end
@@ -137,6 +148,19 @@ function extra:enviar_data_primordiar_jugador(obj,player_main)
 		for _ ,enemigo in ipairs(obj.gameobject.enemigos) do
 			if self:collides_object(enemigo,vcx,vcy,vcw,vch) then
 				local t={index=enemigo.index,ox=enemigo.ox,oy=enemigo.oy,radio=enemigo.radio,fsm=enemigo.fsm.current,efecto=enemigo.efecto_tenidos.current,tipo=enemigo.tipo,estados=enemigo.estados,hp=enemigo.hp,ira=enemigo.ira}
+				
+				if enemigo.balas then
+					if enemigo.balas[1] then
+						t.bala_1_stock = enemigo.balas[1].stock
+					end
+				end
+
+				if enemigo.balas then
+					if enemigo.balas[2] then
+						t.bala_2_stock = enemigo.balas[2].stock
+					end
+				end
+
 				table.insert(data_enemigos,t)
 			end
 		end
@@ -146,12 +170,36 @@ function extra:enviar_data_primordiar_jugador(obj,player_main)
 				local t = {}
 				local objeto = player.obj 
 				local t={index=player.index,ox=objeto.ox,oy=objeto.oy,hp=objeto.hp,ira=objeto.ira,estados=objeto.estados,efecto=objeto.efecto_tenidos.current,friccion = objeto.friccion}
+				
+				if objeto.balas then
+					if objeto.balas[1] then
+						t.bala_1_stock = objeto.balas[1].stock
+					end
+
+					if objeto.balas[2] then
+						t.bala_2_stock = objeto.balas[2].stock
+					end
+				end
+
 				table.insert(data_player,t)
 			end
 		end
 
 		for _ ,enemigo in ipairs(obj.gameobject.enemigos) do
 				local t={index=enemigo.index,ox=enemigo.ox,oy=enemigo.oy,radio=enemigo.radio,fsm=enemigo.fsm.current,efecto=enemigo.efecto_tenidos.current,tipo=enemigo.tipo,estados=enemigo.estados,hp=enemigo.hp,ira=enemigo.ira}
+				
+				if enemigo.balas then
+					if enemigo.balas[1] then
+						t.bala_1_stock = enemigo.balas[1].stock
+					end
+				end
+
+				if enemigo.balas then
+					if enemigo.balas[2] then
+						t.bala_2_stock = enemigo.balas[2].stock
+					end
+				end
+
 				table.insert(data_enemigos,t)
 		end
 	end
@@ -175,16 +223,17 @@ function extra:ingresar_datos_personaje(obj,data)
 	obj.efecto_tenidos.current = data.efecto
 	obj.friccion=data.friccion
 
-	--[[if data.efecto =="ninguno" and obj.efecto_tenidos.current ~="ninguno" then
-		obj.efecto_tenidos:normalidad()
-	elseif data.efecto == "quemado" and obj.efecto_tenidos.current =="ninguno" then
-		obj.efecto_tenidos:esquemado()
-	elseif data.efecto == "congelado" and obj.efecto_tenidos.current =="ninguno" then
-		obj.efecto_tenidos:escongelado()
-	elseif data.efecto == "electrocutado"and obj.efecto_tenidos.current =="ninguno"  then
-		obj.efecto_tenidos:eselectrocutado()
-	end]]
+	print(data.bala_1_stock,data.bala_2_stock)
 
+	if obj.balas then
+		if obj.balas[1] then
+			obj.balas[1].stock = data.bala_1_stock
+		end
+
+		if obj.balas[2] then
+			obj.balas[2].stock = data.bala_2_stock
+		end
+	end
 end
 
 function extra:ingresar_datos_enemigos(obj,data)
@@ -205,26 +254,16 @@ function extra:ingresar_datos_enemigos(obj,data)
 	obj.efecto_tenidos.current=data.efecto
 	obj.fsm.current=data.fsm
 
-	--[[if data.efecto =="ninguno" and obj.efecto_tenidos.current ~="ninguno" then
-		obj.efecto_tenidos:normalidad()
-	elseif data.efecto == "quemado" and obj.efecto_tenidos.current =="ninguno" then
-		obj.efecto_tenidos:esquemado()
-	elseif data.efecto == "congelado" and obj.efecto_tenidos.current =="ninguno" then
-		obj.efecto_tenidos:escongelado()
-	elseif data.efecto == "electrocutado"and obj.efecto_tenidos.current =="ninguno"  then
-		obj.efecto_tenidos:eselectrocutado()
+	if obj.balas then
+		if obj.balas[1] then
+			obj.balas[1].stock = data.bala_1_stock
+		end
+
+		if obj.balas[2] then
+			obj.balas[2].stock = data.bala_2_stock
+		end
 	end
-
-	if data.fsm == "rastreando" and obj.fsm.current ~= "rastreando" then
-		obj.fsm:rastreando()
-	elseif data.fsm == "alerta" and obj.fsm.current == "rastreando" then
-		obj.fsm:alertado()
-	elseif data.fsm == "atacando" and obj.fsm.current == "rastreando" then
-		obj.fsm:atacando()
-	end]]
-
 end
-
 
 
 
