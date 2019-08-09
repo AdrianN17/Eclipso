@@ -56,8 +56,9 @@ function menu:update(dt)
 	if self.gui:Button("Configuracion", {id=4}, self.gui.layout:row()).hit then
 		--mandar a configuracion
 		Gamestate.switch(configuracion)
-
 	end
+
+	self.gui:Label("Version : " .. version_juego,self.center.x+275,self.center.y+250,100,50)
 
 end
 

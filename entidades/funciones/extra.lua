@@ -223,8 +223,6 @@ function extra:ingresar_datos_personaje(obj,data)
 	obj.efecto_tenidos.current = data.efecto
 	obj.friccion=data.friccion
 
-	print(data.bala_1_stock,data.bala_2_stock)
-
 	if obj.balas then
 		if obj.balas[1] then
 			obj.balas[1].stock = data.bala_1_stock
