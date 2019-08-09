@@ -18,7 +18,7 @@ The multiplayer work in local (LAN)
   * INIT_GAME : Start game
   * END_GAME  : Finish game and go to Menu
 * Chat command line Client : 
-  * EXIT_GAME : Exit game and go to Menu
+  * END_GAME : Exit game and go to Menu
 
 ## Images
 
