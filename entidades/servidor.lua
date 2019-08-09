@@ -298,10 +298,12 @@ function servidor:update(dt)
 
   	   self.world:update(dt) 
   	   self.map:update(dt) 
+
+       self:envio_masivo_validaciones()
     end
 
 
-    self:envio_masivo_validaciones()
+    
 
 
 		if #self.chat>0 then

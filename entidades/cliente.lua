@@ -306,6 +306,8 @@ function cliente:update(dt)
         end
     elseif self.id_player and not self.client:isConnected() and self.client:getRoundTripTime()> 400 and self.estado_partida.current == "inicio" then
         self:conexion_perdida()
+    elseif self.id_player and not self.client:isConnected() and self.client:getRoundTripTime()> 400 and self.estado_partida.current == "espera" then
+        self:conexion_perdida()
     end
 
   
