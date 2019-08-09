@@ -269,6 +269,7 @@ end
 function servidor:update(dt)
 
   dt = math.min (dt, 1/30)
+  --print(dt)
 
   slab.Update(dt)
 
