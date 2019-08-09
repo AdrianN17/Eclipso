@@ -277,7 +277,7 @@ function cliente:draw()
     
     lg.print("Current FPS: "..tostring(love.timer.getFPS( )), 10, 10)
 
-    if self.id_player then
+    if self.id_player and  self.estado_partida.current ~= "fin"  then
         self:gui_usuario(self.id_player)
     end
 

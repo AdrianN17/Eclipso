@@ -254,7 +254,9 @@ function servidor:draw()
       end
     end)]]
 
-    self:gui_usuario(0)
+    if self.estado_partida ~= "fin" then
+      self:gui_usuario(0)
+    end
 
   	lg.print("Current FPS: "..tostring(love.timer.getFPS( )), 10, 10)
     lg.print("Clientes: "..tostring(self.server:getClientCount()), 10, 30)
@@ -301,10 +303,6 @@ function servidor:update(dt)
 
        self:envio_masivo_validaciones()
     end
-
-
-    
-
 
 		if #self.chat>0 then
 

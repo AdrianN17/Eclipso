@@ -296,7 +296,7 @@ function entidad_servidor:custom_layers()
       if obj_data.obj then
         obj_data.obj:draw()
         lg.print(obj_data.nickname,obj_data.obj.ox,obj_data.obj.oy-75)
-        lg.print(obj_data.obj.friccion,obj_data.obj.ox,obj_data.obj.oy-100)
+        --lg.print(obj_data.obj.friccion,obj_data.obj.ox,obj_data.obj.oy-100)
       end
     end
   end
