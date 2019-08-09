@@ -8,10 +8,10 @@ The multiplayer work in local (LAN)
 ## Controls
 
 * ASDW : move 
-* E : shield (ALL, not work)
+* E : shield (ALL)
 * R : reload bullets (only if you have LD weapons)
 * 1,2 : change weapons 
-* Q : dash
+* Q : dash (ALL)
 * Enter : Chat
 
 * Chat command line Server : 
