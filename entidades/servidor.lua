@@ -8,12 +8,7 @@ local machine = require "libs.statemachine.statemachine"
 local extra = require "entidades.funciones.extra"
 local entidad_servidor = require "entidades.entidad_servidor"
 
-local personajes = {}
-
-personajes.aegis = require "entidades.personajes.aegis"
-personajes.solange = require "entidades.personajes.solange"
-personajes.xeon = require "entidades.personajes.xeon"
-personajes.radian = require "entidades.personajes.radian"
+local personajes = require "entidades.personajes.lista_personajes"
 
 local servidor_alterno = require "entidades.servidor_alterno"
 local timer = require "libs.hump.timer"

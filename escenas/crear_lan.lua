@@ -3,6 +3,8 @@ local suit=require "libs.suit"
 local socket = require "socket"
 
 local slab = require "libs.slab"
+local lista_personajes = require "api.lista_personajes"
+local lista_mapas = require "api.lista_mapas"
 
 local Servidor=require "entidades.servidor"
 
@@ -28,8 +30,8 @@ function crear_lan:enter()
 	self.personajes=1
 	self.mapas=1
 
-	self.tabla_personajes={"aegis","solange","xeon","radian"}
-	self.tabla_mapas={"acuaris","acuaris_volcan"}
+	self.tabla_personajes=lista_personajes
+	self.tabla_mapas=lista_mapas
 
 	self.max_personajes=#self.tabla_personajes
 	self.max_mapas=#self.tabla_mapas

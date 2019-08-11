@@ -8,12 +8,7 @@ local slab = require "libs.slab"
 local machine = require "libs.statemachine.statemachine"
 local entidad_cliente = require "entidades.entidad_cliente"
 
-local personajes = {}
-
-personajes.aegis = require "entidades.personajes.aegis"
-personajes.solange = require "entidades.personajes.solange"
-personajes.xeon = require "entidades.personajes.xeon"
-personajes.radian = require "entidades.personajes.radian"
+local personajes = require "entidades.personajes.lista_personajes"
 
 local cliente = Class{
     __includes={entidad_cliente}
@@ -23,7 +18,7 @@ function cliente:init()
 	
 end
 
-function cliente:enter(gamestate,nickname,personaje,ip)
+function cliente:enter(gamestate,nickname,personaje,ip,port)
 
 	self.center={}
 	self.center.x=lg.getWidth()/2
@@ -42,7 +37,7 @@ function cliente:enter(gamestate,nickname,personaje,ip)
 	self.cantidad_actual_enemigos=0
 
 
-	self.client = Sock.newClient(ip, 22122)
+	self.client = Sock.newClient(ip, port or 22122)
 
 	self.client:setSerialization(bitser.dumps, bitser.loads)
 

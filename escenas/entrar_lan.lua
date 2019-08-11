@@ -2,7 +2,7 @@ local Class= require "libs.hump.class"
 local suit=require "libs.suit"
 local Cliente=require "entidades.cliente"
 local cliente_alterno = require "entidades.cliente_alterno"
-
+local lista_personajes = require "api.lista_personajes"
 local slab = require "libs.slab"
 
 local entrar_lan = Class{
@@ -20,7 +20,7 @@ function entrar_lan:enter( )
 	self.center.x=lg.getWidth()/2
 	self.center.y=lg.getHeight()/2
 
-	self.tabla_personajes={"aegis","solange","xeon","radian"}
+	self.tabla_personajes=lista_personajes
 
 	self.input_nickname={text = ""}
 
@@ -98,12 +98,9 @@ function entrar_lan:update(dt)
 
 	
 
-	if #self.registro_server>0 then
+	slab.BeginWindow('Lista_servidores', {Title = "Lista de servidores",X=self.center.x+100,Y=self.center.y-200,W=300 , AutoSizeWindow = false, AllowMove=false,AllowResize = false})
 
-
-		slab.BeginWindow('Lista_servidores', {Title = "Lista de servidores",X=self.center.x+100,Y=self.center.y-200,W=300 , AutoSizeWindow = false, AllowMove=false,AllowResize = false})
-
-		  slab.BeginListBox('lista_servers')
+	  	slab.BeginListBox('lista_servers')
 		    for i, dato in ipairs(self.registro_server) do
 		        slab.BeginListBoxItem('server' .. i, {Selected = Selected == i})
 		        slab.Text(i .. " Mapa : " .. dato.mapa .. " | Cantidad : " .. dato.max_jugadores .. "/" .. dato.can_jugadores)
@@ -114,14 +111,11 @@ function entrar_lan:update(dt)
 
 		        slab.EndListBoxItem()
 		    end
-		  slab.EndListBox()
+	  	slab.EndListBox()
 
-  		slab.EndWindow()
+	slab.EndWindow()
 
-	else
-		--logo cargando
-		self.gui:Label("Cargando .... " , self.center.x+150,self.center.y,100,30)
-	end
+
 
 
 	if self.alerta_1 then
