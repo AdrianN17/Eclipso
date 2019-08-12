@@ -82,7 +82,7 @@ function entrar_online:update(dt)
 	self.gui.layout:reset(self.center.x-350,self.center.y+60)
 	self.gui.layout:padding(20,20)
 
-	self.gui:Label("Nickname : " ,{align="left"}, self.gui.layout:row(120,30))
+	self.gui:Label("Nickname : " ,{align="left"}, self.gui.layout:row(140,30))
 	self.gui:Label("IP Servidor LAN : " ,{align="left"}, self.gui.layout:row())
 	self.gui:Label("Puerto (opcional) : " ,{align="left"}, self.gui.layout:row())
 

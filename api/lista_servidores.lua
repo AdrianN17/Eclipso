@@ -13,9 +13,6 @@ function lista_servidores:listar(pais_buscado,mapa_buscado)
 	request_body.pais = pais_buscado or "All"
 	request_body.mapa = mapa_buscado or "All"
 
-
-	print(json:encode(request_body))
-
 	local res,code,response_headers = http.request{
 	  url="http://index_server.test/api.php",
 	  method = "POST",
@@ -23,7 +20,14 @@ function lista_servidores:listar(pais_buscado,mapa_buscado)
 	  source = ltn12.source.string(json:encode(request_body))
   	}
 
-	local data_lua =  json:decode(response_body[1])
+  	local data_lua
+
+  	if response_body[1] then
+
+		 data_lua =  json:decode(response_body[1])
+
+	end
+
 	return data_lua or {}
 end
 

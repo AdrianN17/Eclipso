@@ -136,7 +136,11 @@ function crear_lan:update(dt)
 
     --de momento
 
-	if self.gui:Button("Jugar" ,{id=5}, self.gui.layout:col(150,50)).hit then
+    if self.gui:Button("Volver" ,{id=5}, self.gui.layout:col(150,50)).hit then
+		Gamestate.switch(Menu)
+	end
+
+	if self.gui:Button("Jugar" ,{id=6}, self.gui.layout:col()).hit then
 		if self.input_nickname.text=="" then
 			self.input_nickname.text="player"
 		end
@@ -171,9 +175,7 @@ function crear_lan:update(dt)
 		end
 	end
 
-	if self.gui:Button("Volver" ,{id=6}, self.gui.layout:col()).hit then
-		Gamestate.switch(Menu)
-	end
+	
 	
 
 	if self.alerta_1 then
