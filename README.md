@@ -20,8 +20,9 @@ The multiplayer work in local (LAN)
 * Chat command line Client : 
   * END_GAME : Exit game and go to Menu
 
-## Images
+## Gameplay
 
+[Demo multiplayer](https://www.youtube.com/watch?v=0-I6bZolMzg)
 
 
 ## Future implementations
