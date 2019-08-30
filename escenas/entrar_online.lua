@@ -13,8 +13,7 @@ function entrar_online:init( )
 end
 
 function entrar_online:enter( )
-	table.insert(lista_mapas,1,"All")
-	table.insert(lista_paises,1,"All")
+
 
 	self.gui = suit.new()
 

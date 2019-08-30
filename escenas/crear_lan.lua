@@ -161,6 +161,10 @@ function crear_lan:update(dt)
 				local ip = self:getIP()
 				local ok = self:validar_puerto(ip)
 
+				if mapa=="All" then
+					mapa = self.tabla_mapas[lm.random(2,#self.tabla_mapas)]
+				end
+
 				if ok then
 					Gamestate.switch(Servidor,nickname,max_jugadores,max_enemigos,personaje,mapa,ip,tiempo,revivir)
 				else
